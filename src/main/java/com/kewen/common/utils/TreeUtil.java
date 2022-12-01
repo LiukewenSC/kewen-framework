@@ -84,7 +84,7 @@ public class TreeUtil {
          * @return
          */
         default boolean isTop(ID p) {
-            return p == null;
+            return p == this.getParentId();
         }
 
         void setSubs(List<T> subs);
