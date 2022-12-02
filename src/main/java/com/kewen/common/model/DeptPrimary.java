@@ -19,7 +19,7 @@ public class DeptPrimary extends Dept {
         this.isPrimary = isPrimary;
     }
 
-    public Boolean getPrimary() {
+    public Boolean getIsPrimary() {
         return isPrimary;
     }
 
