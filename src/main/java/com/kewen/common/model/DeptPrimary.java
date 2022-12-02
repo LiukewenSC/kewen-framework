@@ -23,8 +23,8 @@ public class DeptPrimary extends Dept {
         return isPrimary;
     }
 
-    public void setPrimary(Boolean primary) {
-        isPrimary = primary;
+    public void setIsPrimary(Boolean isPrimary) {
+        this.isPrimary = isPrimary;
     }
 
     @Override
