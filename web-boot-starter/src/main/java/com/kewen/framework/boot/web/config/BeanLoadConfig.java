@@ -1,5 +1,6 @@
 package com.kewen.framework.boot.web.config;
 
+import com.kewen.framework.boot.web.filter.RequestLogInterceptor;
 import com.kewen.framework.boot.web.interceptor.tenant.DefaultTenantInterceptor;
 import com.kewen.framework.boot.web.interceptor.trace.TraceInterceptor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -31,5 +32,14 @@ public class BeanLoadConfig {
     @Bean
     TraceInterceptor traceInterceptor(){
         return new TraceInterceptor();
+    }
+
+    /**
+     * 请求日志打印
+     * @return
+     */
+    @Bean
+    RequestLogInterceptor requestLogInterceptor(){
+        return new RequestLogInterceptor();
     }
 }
