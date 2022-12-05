@@ -1,4 +1,4 @@
-package com.kewen.framework.boot.web.interceptor;
+package com.kewen.framework.boot.web.interceptor.tenant;
 
 /**
  * @author kewen

@@ -1,6 +1,6 @@
 package com.kewen.framework.boot.web.config;
 
-import com.kewen.framework.boot.web.interceptor.TenantInterceptor;
+import com.kewen.framework.boot.web.interceptor.tenant.TenantInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;

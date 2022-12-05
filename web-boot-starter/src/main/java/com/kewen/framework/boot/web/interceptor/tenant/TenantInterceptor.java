@@ -1,4 +1,4 @@
-package com.kewen.framework.boot.web.interceptor;
+package com.kewen.framework.boot.web.interceptor.tenant;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.ui.ModelMap;
