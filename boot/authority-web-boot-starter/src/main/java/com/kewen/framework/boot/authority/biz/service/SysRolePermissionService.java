@@ -1,22 +1,36 @@
 package com.kewen.framework.boot.authority.biz.service;
 
-import java.util.List;
-import com.kewen.framework.boot.authority.biz.mapper.entity.SysRolePermission;
+import com.kewen.framework.boot.authority.biz.entity.SysRolePermission;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.kewen.framework.base.common.model.Permission;
-
-public interface SysRolePermissionService extends IService<SysRolePermission>{
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 
-    int updateBatch(List<SysRolePermission> list);
+import java.util.List;
 
-    int updateBatchSelective(List<SysRolePermission> list);
 
-    int batchInsert(List<SysRolePermission> list);
+/**
+ * <p>
+ * 角色权限关联表 服务类
+ * </p>
+ *
+ * @author kewen
+ * @since 2022-12-05
+ */
+public interface SysRolePermissionService extends IService<SysRolePermission> {
 
-    int insertOrUpdate(SysRolePermission record);
+        /**
+         * 分页查询
+         * @param pageNo 页数
+         * @param pageSize 页面大小
+         * @param queryModel 查询参数
+         * @return Page<SysRolePermission>
+         */
+        Page<SysRolePermission> pageQuery(Integer pageNo, Integer pageSize, SysRolePermission queryModel);
 
-    int insertOrUpdateSelective(SysRolePermission record);
-
-    List<Permission> listRolePosition(List<Integer> roleIds);
+        /**
+         * 列表查询
+         * @param queryModel 查询参数
+         * @return List<SysRolePermission>
+         */
+        List<SysRolePermission> findList(SysRolePermission queryModel);
 }

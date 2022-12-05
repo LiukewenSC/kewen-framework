@@ -3,7 +3,6 @@ package com.kewen.framework.boot.authority.biz.controller;
 import com.kewen.framework.boot.authority.advance.authcheck.AuthBusinessOperate;
 import com.kewen.framework.boot.authority.advance.authcheck.DefaultApplicationBusiness;
 import com.kewen.framework.boot.authority.advance.menucheck.AuthMenu;
-import com.kewen.framework.boot.authority.biz.mapper.entity.Test;
 import com.kewen.framework.boot.authority.biz.service.TestService;
 import com.kewen.framework.base.common.model.Result;
 import lombok.extern.slf4j.Slf4j;
@@ -44,8 +43,7 @@ public class TestController {
     @RequestMapping("/testAuthRange")
     public Result testAuthVisible(){
         log.info("测试 测试数据可见权限");
-        List<Test> test = testService.test();
-        return Result.success(test);
+        return Result.success();
     }
     /**
      * 单条数据的编辑权限

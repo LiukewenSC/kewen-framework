@@ -1,42 +1,41 @@
 package com.kewen.framework.boot.authority.biz.service.impl;
 
-import com.kewen.framework.base.common.model.Position;
+import com.kewen.framework.boot.authority.biz.entity.SysUserPosition;
 import com.kewen.framework.boot.authority.biz.mapper.SysUserPositionMapper;
-import com.kewen.framework.boot.authority.biz.mapper.entity.SysUserPosition;
 import com.kewen.framework.boot.authority.biz.service.SysUserPositionService;
-import org.springframework.stereotype.Service;
-
-import java.util.Collections;
-import java.util.List;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+/**
+ * <p>
+ * 用户岗位关联表 服务实现类
+ * </p>
+ *
+ * @author kewen
+ * @since 2022-12-05
+ */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class SysUserPositionServiceImpl extends ServiceImpl<SysUserPositionMapper, SysUserPosition> implements SysUserPositionService {
 
     @Override
-    public List<Position> listUserPosition(Integer userId) {
-        List<Position> positions = baseMapper.listUserPosition(userId);
-        return positions==null? Collections.emptyList():positions;
+    public Page<SysUserPosition> pageQuery(Integer pageNo, Integer pageSize, SysUserPosition queryModel) {
+        Page<SysUserPosition> page = new Page<>();
+        Wrapper<SysUserPosition> wrapper = new LambdaQueryWrapper<SysUserPosition>()
+                .orderByDesc(SysUserPosition::getUpdateTime);
+        return this.page(page,wrapper);
     }
 
     @Override
-    public int updateBatch(List<SysUserPosition> list) {
-        return baseMapper.updateBatch(list);
+    public List<SysUserPosition> findList(SysUserPosition queryModel) {
+        Wrapper<SysUserPosition> wrapper = new LambdaQueryWrapper<SysUserPosition>()
+                .orderByDesc(SysUserPosition::getUpdateTime);
+        return this.list(wrapper);
     }
-    @Override
-    public int updateBatchSelective(List<SysUserPosition> list) {
-        return baseMapper.updateBatchSelective(list);
-    }
-    @Override
-    public int batchInsert(List<SysUserPosition> list) {
-        return baseMapper.batchInsert(list);
-    }
-    @Override
-    public int insertOrUpdate(SysUserPosition record) {
-        return baseMapper.insertOrUpdate(record);
-    }
-    @Override
-    public int insertOrUpdateSelective(SysUserPosition record) {
-        return baseMapper.insertOrUpdateSelective(record);
-    }
+
 }

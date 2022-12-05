@@ -1,34 +1,41 @@
 package com.kewen.framework.boot.authority.biz.service.impl;
 
+import com.kewen.framework.boot.authority.biz.entity.SysPosition;
 import com.kewen.framework.boot.authority.biz.mapper.SysPositionMapper;
-import com.kewen.framework.boot.authority.biz.mapper.entity.SysPosition;
 import com.kewen.framework.boot.authority.biz.service.SysPositionService;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-
+/**
+ * <p>
+ * 岗位表 服务实现类
+ * </p>
+ *
+ * @author kewen
+ * @since 2022-12-05
+ */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class SysPositionServiceImpl extends ServiceImpl<SysPositionMapper, SysPosition> implements SysPositionService {
 
     @Override
-    public int updateBatch(List<SysPosition> list) {
-        return baseMapper.updateBatch(list);
+    public Page<SysPosition> pageQuery(Integer pageNo, Integer pageSize, SysPosition queryModel) {
+        Page<SysPosition> page = new Page<>();
+        Wrapper<SysPosition> wrapper = new LambdaQueryWrapper<SysPosition>()
+                .orderByDesc(SysPosition::getUpdateTime);
+        return this.page(page,wrapper);
     }
+
     @Override
-    public int updateBatchSelective(List<SysPosition> list) {
-        return baseMapper.updateBatchSelective(list);
+    public List<SysPosition> findList(SysPosition queryModel) {
+        Wrapper<SysPosition> wrapper = new LambdaQueryWrapper<SysPosition>()
+                .orderByDesc(SysPosition::getUpdateTime);
+        return this.list(wrapper);
     }
-    @Override
-    public int batchInsert(List<SysPosition> list) {
-        return baseMapper.batchInsert(list);
-    }
-    @Override
-    public int insertOrUpdate(SysPosition record) {
-        return baseMapper.insertOrUpdate(record);
-    }
-    @Override
-    public int insertOrUpdateSelective(SysPosition record) {
-        return baseMapper.insertOrUpdateSelective(record);
-    }
+
 }

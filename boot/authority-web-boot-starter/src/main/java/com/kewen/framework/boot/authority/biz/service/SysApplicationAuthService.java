@@ -1,25 +1,36 @@
 package com.kewen.framework.boot.authority.biz.service;
 
-import com.kewen.framework.boot.authority.biz.mapper.entity.SysApplicationAuth;
+import com.kewen.framework.boot.authority.biz.entity.SysApplicationAuth;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
-import java.util.Collection;import java.util.List;
+
+import java.util.List;
+
 
 /**
+ * <p>
+ * 应用权限表 服务类
+ * </p>
+ *
  * @author kewen
- * @descrpition 业务权限
- * @since 2022-11-25 9:39
+ * @since 2022-12-05
  */
-public interface SysApplicationAuthService {
-    boolean hasAuth(Collection<String> auths, String module, String operate, Integer businessId);
+public interface SysApplicationAuthService extends IService<SysApplicationAuth> {
 
-    int updateBatch(List<SysApplicationAuth> list);
+        /**
+         * 分页查询
+         * @param pageNo 页数
+         * @param pageSize 页面大小
+         * @param queryModel 查询参数
+         * @return Page<SysApplicationAuth>
+         */
+        Page<SysApplicationAuth> pageQuery(Integer pageNo, Integer pageSize, SysApplicationAuth queryModel);
 
-    int updateBatchSelective(List<SysApplicationAuth> list);
-
-    int batchInsert(List<SysApplicationAuth> list);
-
-    int insertOrUpdate(SysApplicationAuth record);
-
-    int insertOrUpdateSelective(SysApplicationAuth record);
+        /**
+         * 列表查询
+         * @param queryModel 查询参数
+         * @return List<SysApplicationAuth>
+         */
+        List<SysApplicationAuth> findList(SysApplicationAuth queryModel);
 }
-

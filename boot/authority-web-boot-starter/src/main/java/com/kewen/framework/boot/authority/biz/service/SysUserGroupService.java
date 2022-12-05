@@ -1,19 +1,36 @@
 package com.kewen.framework.boot.authority.biz.service;
 
-import java.util.List;
-import com.kewen.framework.boot.authority.biz.mapper.entity.SysUserGroup;
+import com.kewen.framework.boot.authority.biz.entity.SysUserGroup;
 import com.baomidou.mybatisplus.extension.service.IService;
-public interface SysUserGroupService extends IService<SysUserGroup>{
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 
-    int updateBatch(List<SysUserGroup> list);
+import java.util.List;
 
-    int updateBatchSelective(List<SysUserGroup> list);
 
-    int batchInsert(List<SysUserGroup> list);
+/**
+ * <p>
+ * 用户角色组关联表 服务类
+ * </p>
+ *
+ * @author kewen
+ * @since 2022-12-05
+ */
+public interface SysUserGroupService extends IService<SysUserGroup> {
 
-    int insertOrUpdate(SysUserGroup record);
+        /**
+         * 分页查询
+         * @param pageNo 页数
+         * @param pageSize 页面大小
+         * @param queryModel 查询参数
+         * @return Page<SysUserGroup>
+         */
+        Page<SysUserGroup> pageQuery(Integer pageNo, Integer pageSize, SysUserGroup queryModel);
 
-    int insertOrUpdateSelective(SysUserGroup record);
-
+        /**
+         * 列表查询
+         * @param queryModel 查询参数
+         * @return List<SysUserGroup>
+         */
+        List<SysUserGroup> findList(SysUserGroup queryModel);
 }

@@ -1,10 +1,16 @@
 package com.kewen.framework.boot.authority.biz.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.kewen.framework.boot.authority.biz.mapper.entity.SysUserInfo;
+import com.kewen.framework.base.common.model.Dept;
+import com.kewen.framework.base.common.model.DeptPrimary;
+import com.kewen.framework.base.common.utils.BeanUtil;
+import com.kewen.framework.boot.authority.biz.entity.SysDept;
+import com.kewen.framework.boot.authority.biz.entity.SysUserDept;
+import com.kewen.framework.boot.authority.biz.entity.SysUserInfo;
 import com.kewen.framework.boot.authority.biz.model.req.LoginReq;
 import com.kewen.framework.boot.authority.biz.model.resp.LoginResp;
 import com.kewen.framework.boot.authority.biz.service.LoginService;
+import com.kewen.framework.boot.authority.biz.service.SysDeptService;
 import com.kewen.framework.boot.authority.biz.service.SysRolePermissionService;
 import com.kewen.framework.boot.authority.biz.service.SysUserDeptService;
 import com.kewen.framework.boot.authority.biz.service.SysUserInfoService;
@@ -39,6 +45,8 @@ public class LoginServiceImpl implements LoginService {
 
     @Autowired
     private SysUserDeptService userDeptService;
+    @Autowired
+    private SysDeptService deptService;
     @Autowired
     private SysUserPositionService userPositionService;
     @Autowired
@@ -75,26 +83,38 @@ public class LoginServiceImpl implements LoginService {
 
     private UserDetail fetchUserDetail( Long userId,String userName) {
         //查询机构
-        UserDept userDept = userDeptService.getUserDept(userId);
+        SysUserDept sysUserDept = userDeptService.getOne(
+                new LambdaQueryWrapper<SysUserDept>()
+                        .eq(SysUserDept::getUserId, userId)
+        );
+        List<SysDept> sysDepts = deptService.list(
+                new LambdaQueryWrapper<SysDept>()
+                        .in(SysDept::getId, sysUserDept.getDeptId())
+        );
+        SysDept sysDept = sysDepts.remove(0);
+        UserDept userDept = new UserDept(
+                new DeptPrimary(sysDept.getId(),sysDept.getName(),true),
+                BeanUtil.toList(sysDepts, Dept.class)
+                );
 
         //查询岗位
-        List<Position> positions = userPositionService.listUserPosition(userId);
+       //List<Position> positions = userPositionService.listUserPosition(userId);
 
         //查询角色
-        List<Role> roles = userRoleService.listUserRole(userId);
+        //List<Role> roles = userRoleService.listUserRole(userId);
 
         //查询权限
-        List<Integer> roleIds = roles.stream().map(Role::getId).collect(Collectors.toList());
-        List<Permission> permissions = null;
-        if (!CollectionUtils.isEmpty(roleIds)) {
-            permissions = rolePermissionService.listRolePosition(roleIds);
-        }
+        //List<Integer> roleIds = roles.stream().map(Role::getId).collect(Collectors.toList());
+        //List<Permission> permissions = null;
+        //if (!CollectionUtils.isEmpty(roleIds)) {
+        //    permissions = rolePermissionService.listRolePosition(roleIds);
+        //}
 
         return  UserDetail.builder()
                 .user(new User(userId, userName))
                 .dept(userDept)
-                .roles(roles)
-                .permissions(permissions)
+                //.roles(roles)
+                //.permissions(permissions)
                 .build()
                 ;
     }

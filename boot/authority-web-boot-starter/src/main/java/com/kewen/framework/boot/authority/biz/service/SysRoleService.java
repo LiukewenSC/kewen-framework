@@ -1,19 +1,36 @@
 package com.kewen.framework.boot.authority.biz.service;
 
-import java.util.List;
-import com.kewen.framework.boot.authority.biz.mapper.entity.SysRole;
+import com.kewen.framework.boot.authority.biz.entity.SysRole;
 import com.baomidou.mybatisplus.extension.service.IService;
-public interface SysRoleService extends IService<SysRole>{
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 
-    int updateBatch(List<SysRole> list);
+import java.util.List;
 
-    int updateBatchSelective(List<SysRole> list);
 
-    int batchInsert(List<SysRole> list);
+/**
+ * <p>
+ * 角色表 服务类
+ * </p>
+ *
+ * @author kewen
+ * @since 2022-12-05
+ */
+public interface SysRoleService extends IService<SysRole> {
 
-    int insertOrUpdate(SysRole record);
+        /**
+         * 分页查询
+         * @param pageNo 页数
+         * @param pageSize 页面大小
+         * @param queryModel 查询参数
+         * @return Page<SysRole>
+         */
+        Page<SysRole> pageQuery(Integer pageNo, Integer pageSize, SysRole queryModel);
 
-    int insertOrUpdateSelective(SysRole record);
-
+        /**
+         * 列表查询
+         * @param queryModel 查询参数
+         * @return List<SysRole>
+         */
+        List<SysRole> findList(SysRole queryModel);
 }
