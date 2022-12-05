@@ -23,12 +23,23 @@
 
     <dependencyManagement>
         <dependencies>
+
+            <!--************子工程模块************-->
+
             <dependency>
                 <groupId>com.kewen.framework</groupId>
                 <artifactId>common</artifactId>
                 <version>${framework-version}</version>
             </dependency>
 
+
+
+            <!--************spring-cloud相关************-->
+
+
+
+
+            <!--************spring-boot相关************-->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
@@ -36,6 +47,26 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
+            <!--************spring相关************-->
+
+
+
+
+
+
+            <!--************apache工具************-->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-collections4</artifactId>
+                <version>4.3</version>
+            </dependency>
+
+
+
+
+
+            <!--************其他依赖************-->
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
@@ -47,19 +78,13 @@
                 <version>3.5.2</version>
             </dependency>
 
-
-
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
                 <version>2.0.9</version>
             </dependency>
 
-            <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-collections4</artifactId>
-                <version>4.3</version>
-            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
