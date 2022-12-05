@@ -8,23 +8,23 @@ import java.util.Objects;
  * @author kewen
  * @since 2022-11-23 10:32
  */
-public class User {
-    private Integer id;
+public class User implements IUser {
+    private Long id;
     private String name;
 
     public User() {
     }
 
-    public User(Integer id, String name) {
+    public User(Long id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -47,5 +47,15 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public Long getUserId() {
+        return id;
+    }
+
+    @Override
+    public String getUserName() {
+        return name;
     }
 }
