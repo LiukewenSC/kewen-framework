@@ -8,22 +8,22 @@ import java.util.Objects;
  * @since 2022-11-23 10:32
  */
 public class Dept {
-    protected Integer id;
+    protected Long id;
     protected String name;
 
     public Dept() {
     }
 
-    public Dept(Integer id, String name) {
+    public Dept(Long id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

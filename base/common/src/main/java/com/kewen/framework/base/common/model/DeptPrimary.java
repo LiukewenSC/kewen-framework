@@ -14,7 +14,7 @@ public class DeptPrimary extends Dept {
     public DeptPrimary() {
     }
 
-    public DeptPrimary(Integer id, String name, Boolean isPrimary) {
+    public DeptPrimary(Long id, String name, Boolean isPrimary) {
         super(id, name);
         this.isPrimary = isPrimary;
     }
