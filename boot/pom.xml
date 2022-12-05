@@ -16,6 +16,7 @@
     <modules>
         <module>web-boot-starter</module>
         <module>authority-web-boot-starter</module>
+        <module>datasource-starter</module>
     </modules>
 
 </project>

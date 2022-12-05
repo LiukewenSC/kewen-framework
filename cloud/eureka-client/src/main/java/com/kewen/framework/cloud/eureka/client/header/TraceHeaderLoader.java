@@ -1,6 +1,6 @@
 package com.kewen.framework.cloud.eureka.client.header;
 
-import com.kewen.framework.boot.web.interceptor.trace.TraceContext;
+import com.kewen.common.context.TraceContext;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import org.springframework.context.annotation.Configuration;
