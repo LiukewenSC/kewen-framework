@@ -1,11 +1,11 @@
 package com.kewen.framework.boot.authority.utils;
 
-import com.kewen.common.model.Dept;
-import com.kewen.common.model.Permission;
-import com.kewen.common.model.Position;
-import com.kewen.common.model.Role;
-import com.kewen.common.model.User;
-import com.kewen.common.model.UserDetail;
+import com.kewen.framework.base.common.model.Dept;
+import com.kewen.framework.base.common.model.Permission;
+import com.kewen.framework.base.common.model.Position;
+import com.kewen.framework.base.common.model.Role;
+import com.kewen.framework.base.common.model.User;
+import com.kewen.framework.base.common.model.UserDetail;
 import com.kewen.framework.boot.authority.model.Authority;
 import com.kewen.framework.boot.authority.model.AuthorityObject;
 import lombok.extern.slf4j.Slf4j;

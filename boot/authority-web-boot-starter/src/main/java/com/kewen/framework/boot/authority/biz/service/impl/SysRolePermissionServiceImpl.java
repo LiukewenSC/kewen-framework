@@ -1,6 +1,6 @@
 package com.kewen.framework.boot.authority.biz.service.impl;
 
-import com.kewen.common.model.Permission;
+import com.kewen.framework.base.common.model.Permission;
 import com.kewen.framework.boot.authority.biz.mapper.SysRolePermissionMapper;
 import com.kewen.framework.boot.authority.biz.mapper.entity.SysRolePermission;
 import com.kewen.framework.boot.authority.biz.service.SysRolePermissionService;

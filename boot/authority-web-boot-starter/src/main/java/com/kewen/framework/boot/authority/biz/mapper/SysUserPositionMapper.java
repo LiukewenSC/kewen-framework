@@ -5,7 +5,7 @@ import com.kewen.framework.boot.authority.biz.mapper.entity.SysUserPosition;
 
 import java.util.List;
 
-import com.kewen.common.model.Position;
+import com.kewen.framework.base.common.model.Position;
 import org.apache.ibatis.annotations.Param;
 
 public interface SysUserPositionMapper extends BaseMapper<SysUserPosition> {

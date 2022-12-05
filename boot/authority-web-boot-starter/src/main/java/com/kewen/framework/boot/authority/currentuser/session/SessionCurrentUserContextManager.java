@@ -2,7 +2,7 @@ package com.kewen.framework.boot.authority.currentuser.session;
 
 import com.kewen.framework.boot.authority.biz.model.resp.LoginResp;
 import com.kewen.framework.boot.authority.currentuser.AbstractCurrentUserContextManager;
-import com.kewen.common.model.UserDetail;
+import com.kewen.framework.base.common.model.UserDetail;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;

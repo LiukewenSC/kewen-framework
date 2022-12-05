@@ -3,11 +3,11 @@ package com.kewen.framework.boot.authority.biz.service;
 import java.util.List;
 import com.kewen.framework.boot.authority.biz.mapper.entity.SysUserPosition;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.kewen.common.model.Position;
+import com.kewen.framework.base.common.model.Position;
 
 public interface SysUserPositionService extends IService<SysUserPosition>{
 
-    List<Position> listUserPosition(Integer userId);
+    List<Position> listUserPosition(Long userId);
 
     int updateBatch(List<SysUserPosition> list);
 

@@ -1,6 +1,6 @@
 package com.kewen.framework.boot.web.interceptor.tenant;
 
-import com.kewen.common.context.TenantContext;
+import com.kewen.framework.base.common.context.TenantContext;
 
 /**
  * @author kewen

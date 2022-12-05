@@ -1,8 +1,8 @@
 package com.kewen.framework.datasource.context;
 
 
-import com.kewen.common.context.UserContext;
-import com.kewen.common.model.IUser;
+import com.kewen.framework.base.common.context.UserContext;
+import com.kewen.framework.base.common.model.IUser;
 
 /**
  * 默认用户上下文,保存数据时自动填充createUserId和createUserName

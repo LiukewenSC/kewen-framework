@@ -3,7 +3,7 @@ package com.kewen.framework.boot.authority.biz.controller;
 import com.kewen.framework.boot.authority.biz.model.req.LoginReq;
 import com.kewen.framework.boot.authority.biz.model.resp.LoginResp;
 import com.kewen.framework.boot.authority.biz.service.LoginService;
-import com.kewen.common.model.Result;
+import com.kewen.framework.base.common.model.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

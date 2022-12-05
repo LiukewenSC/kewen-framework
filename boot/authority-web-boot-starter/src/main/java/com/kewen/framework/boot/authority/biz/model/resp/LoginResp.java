@@ -1,6 +1,6 @@
 package com.kewen.framework.boot.authority.biz.model.resp;
 
-import com.kewen.common.model.UserDetail;
+import com.kewen.framework.base.common.model.UserDetail;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

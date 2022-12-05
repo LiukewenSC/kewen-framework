@@ -1,10 +1,10 @@
 package com.kewen.framework.boot.authority.model;
 
-import com.kewen.common.model.Dept;
-import com.kewen.common.model.Permission;
-import com.kewen.common.model.Position;
-import com.kewen.common.model.Role;
-import com.kewen.common.model.User;
+import com.kewen.framework.base.common.model.Dept;
+import com.kewen.framework.base.common.model.Permission;
+import com.kewen.framework.base.common.model.Position;
+import com.kewen.framework.base.common.model.Role;
+import com.kewen.framework.base.common.model.User;
 import lombok.Data;
 import lombok.experimental.Accessors;
 

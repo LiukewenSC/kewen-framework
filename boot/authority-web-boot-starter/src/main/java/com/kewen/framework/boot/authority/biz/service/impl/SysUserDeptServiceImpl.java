@@ -1,8 +1,8 @@
 package com.kewen.framework.boot.authority.biz.service.impl;
 
-import com.kewen.common.model.Dept;
-import com.kewen.common.model.DeptPrimary;
-import com.kewen.common.model.UserDept;
+import com.kewen.framework.base.common.model.Dept;
+import com.kewen.framework.base.common.model.DeptPrimary;
+import com.kewen.framework.base.common.model.UserDept;
 import com.kewen.framework.boot.authority.biz.mapper.SysUserDeptMapper;
 import com.kewen.framework.boot.authority.biz.mapper.entity.SysUserDept;
 import com.kewen.framework.boot.authority.biz.service.SysUserDeptService;

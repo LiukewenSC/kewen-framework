@@ -5,7 +5,7 @@ import com.kewen.framework.boot.authority.biz.mapper.entity.SysUserDept;
 
 import java.util.List;
 
-import com.kewen.common.model.DeptPrimary;
+import com.kewen.framework.base.common.model.DeptPrimary;
 import org.apache.ibatis.annotations.Param;
 
 public interface SysUserDeptMapper extends BaseMapper<SysUserDept> {

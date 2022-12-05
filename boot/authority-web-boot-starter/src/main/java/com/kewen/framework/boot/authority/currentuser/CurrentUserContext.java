@@ -2,7 +2,7 @@ package com.kewen.framework.boot.authority.currentuser;
 
 import com.kewen.framework.boot.authority.model.Authority;
 import com.kewen.framework.boot.authority.utils.AuthorityConvertUtil;
-import com.kewen.common.model.UserDetail;
+import com.kewen.framework.base.common.model.UserDetail;
 
 import java.util.Collection;
 import java.util.Collections;

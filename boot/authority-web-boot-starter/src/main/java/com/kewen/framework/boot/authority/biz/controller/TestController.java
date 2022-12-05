@@ -5,7 +5,7 @@ import com.kewen.framework.boot.authority.advance.authcheck.DefaultApplicationBu
 import com.kewen.framework.boot.authority.advance.menucheck.AuthMenu;
 import com.kewen.framework.boot.authority.biz.mapper.entity.Test;
 import com.kewen.framework.boot.authority.biz.service.TestService;
-import com.kewen.common.model.Result;
+import com.kewen.framework.base.common.model.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;

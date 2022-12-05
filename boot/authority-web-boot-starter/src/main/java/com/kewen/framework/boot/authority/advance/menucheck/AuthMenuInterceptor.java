@@ -2,7 +2,7 @@ package com.kewen.framework.boot.authority.advance.menucheck;
 
 import com.kewen.framework.boot.authority.biz.service.SysMenuService;
 import com.kewen.framework.boot.authority.currentuser.CurrentUserContext;
-import com.kewen.common.exception.AuthorizationException;
+import com.kewen.framework.base.common.exception.AuthorizationException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

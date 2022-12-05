@@ -1,7 +1,7 @@
 package com.kewen.framework.boot.authority.currentuser;
 
 import com.kewen.framework.boot.authority.biz.model.resp.LoginResp;
-import com.kewen.common.model.UserDetail;
+import com.kewen.framework.base.common.model.UserDetail;
 
 /**
  * @descrpition  存储用户token对应的UserDetail实例的

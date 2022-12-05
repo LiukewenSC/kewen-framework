@@ -1,6 +1,6 @@
 package com.kewen.framework.boot.authority.currentuser.token;
 
-import com.kewen.common.model.UserDetail;
+import com.kewen.framework.base.common.model.UserDetail;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
