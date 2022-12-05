@@ -1,18 +1,16 @@
 package com.kewen.framework.boot.authority.biz.mapper;
 
+import com.kewen.framework.boot.authority.biz.entity.SysGroupRole;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.kewen.framework.boot.authority.biz.mapper.entity.SysGroupRole;
-import java.util.List;
-import org.apache.ibatis.annotations.Param;
 
+/**
+ * <p>
+ * 角色组角色关联表 Mapper 接口
+ * </p>
+ *
+ * @author kewen
+ * @since 2022-12-05
+ */
 public interface SysGroupRoleMapper extends BaseMapper<SysGroupRole> {
-    int updateBatch(List<SysGroupRole> list);
 
-    int updateBatchSelective(List<SysGroupRole> list);
-
-    int batchInsert(@Param("list") List<SysGroupRole> list);
-
-    int insertOrUpdate(SysGroupRole record);
-
-    int insertOrUpdateSelective(SysGroupRole record);
 }

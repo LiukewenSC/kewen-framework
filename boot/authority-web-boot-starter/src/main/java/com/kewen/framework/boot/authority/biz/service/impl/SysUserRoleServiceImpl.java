@@ -1,42 +1,41 @@
 package com.kewen.framework.boot.authority.biz.service.impl;
 
-import com.kewen.framework.base.common.model.Role;
+import com.kewen.framework.boot.authority.biz.entity.SysUserRole;
 import com.kewen.framework.boot.authority.biz.mapper.SysUserRoleMapper;
-import com.kewen.framework.boot.authority.biz.mapper.entity.SysUserRole;
 import com.kewen.framework.boot.authority.biz.service.SysUserRoleService;
-import org.springframework.stereotype.Service;
-
-import java.util.Collections;
-import java.util.List;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+/**
+ * <p>
+ *  服务实现类
+ * </p>
+ *
+ * @author kewen
+ * @since 2022-12-05
+ */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUserRole> implements SysUserRoleService {
 
     @Override
-    public int updateBatch(List<SysUserRole> list) {
-        return baseMapper.updateBatch(list);
-    }
-    @Override
-    public int updateBatchSelective(List<SysUserRole> list) {
-        return baseMapper.updateBatchSelective(list);
-    }
-    @Override
-    public int batchInsert(List<SysUserRole> list) {
-        return baseMapper.batchInsert(list);
-    }
-    @Override
-    public int insertOrUpdate(SysUserRole record) {
-        return baseMapper.insertOrUpdate(record);
-    }
-    @Override
-    public int insertOrUpdateSelective(SysUserRole record) {
-        return baseMapper.insertOrUpdateSelective(record);
+    public Page<SysUserRole> pageQuery(Integer pageNo, Integer pageSize, SysUserRole queryModel) {
+        Page<SysUserRole> page = new Page<>();
+        Wrapper<SysUserRole> wrapper = new LambdaQueryWrapper<SysUserRole>()
+                .orderByDesc(SysUserRole::getUpdateTime);
+        return this.page(page,wrapper);
     }
 
     @Override
-    public List<Role> listUserRole(Integer userId) {
-        List<Role> roles = baseMapper.listUserRole(userId);
-        return roles==null? Collections.emptyList():roles;
+    public List<SysUserRole> findList(SysUserRole queryModel) {
+        Wrapper<SysUserRole> wrapper = new LambdaQueryWrapper<SysUserRole>()
+                .orderByDesc(SysUserRole::getUpdateTime);
+        return this.list(wrapper);
     }
+
 }

@@ -1,22 +1,36 @@
 package com.kewen.framework.boot.authority.biz.service;
 
-import java.util.List;
-import com.kewen.framework.boot.authority.biz.mapper.entity.SysUserRole;
+import com.kewen.framework.boot.authority.biz.entity.SysUserRole;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.kewen.framework.base.common.model.Role;
-
-public interface SysUserRoleService extends IService<SysUserRole>{
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 
-    int updateBatch(List<SysUserRole> list);
+import java.util.List;
 
-    int updateBatchSelective(List<SysUserRole> list);
 
-    int batchInsert(List<SysUserRole> list);
+/**
+ * <p>
+ *  服务类
+ * </p>
+ *
+ * @author kewen
+ * @since 2022-12-05
+ */
+public interface SysUserRoleService extends IService<SysUserRole> {
 
-    int insertOrUpdate(SysUserRole record);
+        /**
+         * 分页查询
+         * @param pageNo 页数
+         * @param pageSize 页面大小
+         * @param queryModel 查询参数
+         * @return Page<SysUserRole>
+         */
+        Page<SysUserRole> pageQuery(Integer pageNo, Integer pageSize, SysUserRole queryModel);
 
-    int insertOrUpdateSelective(SysUserRole record);
-
-    List<Role> listUserRole(Long userId);
+        /**
+         * 列表查询
+         * @param queryModel 查询参数
+         * @return List<SysUserRole>
+         */
+        List<SysUserRole> findList(SysUserRole queryModel);
 }

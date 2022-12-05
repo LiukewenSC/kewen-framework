@@ -1,18 +1,16 @@
 package com.kewen.framework.boot.authority.biz.mapper;
 
+import com.kewen.framework.boot.authority.biz.entity.SysUserGroup;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.kewen.framework.boot.authority.biz.mapper.entity.SysUserGroup;
-import java.util.List;
-import org.apache.ibatis.annotations.Param;
 
+/**
+ * <p>
+ * 用户角色组关联表 Mapper 接口
+ * </p>
+ *
+ * @author kewen
+ * @since 2022-12-05
+ */
 public interface SysUserGroupMapper extends BaseMapper<SysUserGroup> {
-    int updateBatch(List<SysUserGroup> list);
 
-    int updateBatchSelective(List<SysUserGroup> list);
-
-    int batchInsert(@Param("list") List<SysUserGroup> list);
-
-    int insertOrUpdate(SysUserGroup record);
-
-    int insertOrUpdateSelective(SysUserGroup record);
 }

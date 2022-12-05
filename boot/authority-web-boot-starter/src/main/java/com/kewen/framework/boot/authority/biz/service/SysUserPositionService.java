@@ -1,22 +1,36 @@
 package com.kewen.framework.boot.authority.biz.service;
 
-import java.util.List;
-import com.kewen.framework.boot.authority.biz.mapper.entity.SysUserPosition;
+import com.kewen.framework.boot.authority.biz.entity.SysUserPosition;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.kewen.framework.base.common.model.Position;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
-public interface SysUserPositionService extends IService<SysUserPosition>{
 
-    List<Position> listUserPosition(Long userId);
+import java.util.List;
 
-    int updateBatch(List<SysUserPosition> list);
 
-    int updateBatchSelective(List<SysUserPosition> list);
+/**
+ * <p>
+ * 用户岗位关联表 服务类
+ * </p>
+ *
+ * @author kewen
+ * @since 2022-12-05
+ */
+public interface SysUserPositionService extends IService<SysUserPosition> {
 
-    int batchInsert(List<SysUserPosition> list);
+        /**
+         * 分页查询
+         * @param pageNo 页数
+         * @param pageSize 页面大小
+         * @param queryModel 查询参数
+         * @return Page<SysUserPosition>
+         */
+        Page<SysUserPosition> pageQuery(Integer pageNo, Integer pageSize, SysUserPosition queryModel);
 
-    int insertOrUpdate(SysUserPosition record);
-
-    int insertOrUpdateSelective(SysUserPosition record);
-
+        /**
+         * 列表查询
+         * @param queryModel 查询参数
+         * @return List<SysUserPosition>
+         */
+        List<SysUserPosition> findList(SysUserPosition queryModel);
 }

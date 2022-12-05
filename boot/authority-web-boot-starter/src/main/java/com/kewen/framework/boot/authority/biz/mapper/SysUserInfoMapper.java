@@ -1,18 +1,16 @@
 package com.kewen.framework.boot.authority.biz.mapper;
 
+import com.kewen.framework.boot.authority.biz.entity.SysUserInfo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.kewen.framework.boot.authority.biz.mapper.entity.SysUserInfo;
-import java.util.List;
-import org.apache.ibatis.annotations.Param;
 
+/**
+ * <p>
+ * 用户信息表 Mapper 接口
+ * </p>
+ *
+ * @author kewen
+ * @since 2022-12-05
+ */
 public interface SysUserInfoMapper extends BaseMapper<SysUserInfo> {
-    int updateBatch(List<SysUserInfo> list);
 
-    int updateBatchSelective(List<SysUserInfo> list);
-
-    int batchInsert(@Param("list") List<SysUserInfo> list);
-
-    int insertOrUpdate(SysUserInfo record);
-
-    int insertOrUpdateSelective(SysUserInfo record);
 }

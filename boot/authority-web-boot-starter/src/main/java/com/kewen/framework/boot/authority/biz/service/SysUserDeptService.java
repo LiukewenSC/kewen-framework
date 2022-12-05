@@ -1,28 +1,37 @@
 package com.kewen.framework.boot.authority.biz.service;
 
-import java.util.List;
-import com.kewen.framework.boot.authority.biz.mapper.entity.SysUserDept;
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.kewen.framework.base.common.model.UserDept;
+import com.kewen.framework.boot.authority.biz.entity.SysUserDept;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
-public interface SysUserDeptService extends IService<SysUserDept>{
+
+import java.util.List;
 
 
-    /**
-     * 查询用户的部门列表
-     * @param userId
-     * @return
-     */
-    UserDept getUserDept(Long userId);
+/**
+ * <p>
+ * 用户部门关联表 服务类
+ * </p>
+ *
+ * @author kewen
+ * @since 2022-12-05
+ */
+public interface SysUserDeptService extends IService<SysUserDept> {
 
-    int updateBatch(List<SysUserDept> list);
+        /**
+         * 分页查询
+         * @param pageNo 页数
+         * @param pageSize 页面大小
+         * @param queryModel 查询参数
+         * @return Page<SysUserDept>
+         */
+        Page<SysUserDept> pageQuery(Integer pageNo, Integer pageSize, SysUserDept queryModel);
 
-    int updateBatchSelective(List<SysUserDept> list);
-
-    int batchInsert(List<SysUserDept> list);
-
-    int insertOrUpdate(SysUserDept record);
-
-    int insertOrUpdateSelective(SysUserDept record);
-
+        /**
+         * 列表查询
+         * @param queryModel 查询参数
+         * @return List<SysUserDept>
+         */
+        List<SysUserDept> findList(SysUserDept queryModel);
 }

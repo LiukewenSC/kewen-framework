@@ -1,18 +1,16 @@
 package com.kewen.framework.boot.authority.biz.mapper;
 
+import com.kewen.framework.boot.authority.biz.entity.SysPosition;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.kewen.framework.boot.authority.biz.mapper.entity.SysPosition;
-import java.util.List;
-import org.apache.ibatis.annotations.Param;
 
+/**
+ * <p>
+ * 岗位表 Mapper 接口
+ * </p>
+ *
+ * @author kewen
+ * @since 2022-12-05
+ */
 public interface SysPositionMapper extends BaseMapper<SysPosition> {
-    int updateBatch(List<SysPosition> list);
 
-    int updateBatchSelective(List<SysPosition> list);
-
-    int batchInsert(@Param("list") List<SysPosition> list);
-
-    int insertOrUpdate(SysPosition record);
-
-    int insertOrUpdateSelective(SysPosition record);
 }
