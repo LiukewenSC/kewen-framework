@@ -1,5 +1,9 @@
 package com.kewen.framework.base.common.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.Objects;
 
 /**
@@ -7,33 +11,13 @@ import java.util.Objects;
  * @author kewen
  * @since 2022-11-23 10:32
  */
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Role {
-    protected Integer id;
+    protected Long id;
     protected String name;
-
-    public Role() {
-    }
-
-    public Role(Integer id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     @Override
     public boolean equals(Object o) {
