@@ -18,6 +18,7 @@
         <module>web-boot-starter</module>
         <module>sample</module>
         <module>code-generator</module>
+        <module>authority-web-boot-starter</module>
     </modules>
 
 
@@ -29,6 +30,11 @@
             <dependency>
                 <groupId>com.kewen.framework</groupId>
                 <artifactId>common</artifactId>
+                <version>${framework-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.kewen.framework</groupId>
+                <artifactId>web-boot-starter</artifactId>
                 <version>${framework-version}</version>
             </dependency>
 
@@ -84,6 +90,29 @@
                 <version>2.0.9</version>
             </dependency>
 
+
+            <!--************非项目依赖************-->
+            <!--swagger-->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>2.9.2</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>2.9.2</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>swagger-bootstrap-ui</artifactId>
+                <version>1.9.6</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.fastjson2</groupId>
+                <artifactId>fastjson2</artifactId>
+                <version>2.0.9</version>
+            </dependency>
 
         </dependencies>
     </dependencyManagement>
