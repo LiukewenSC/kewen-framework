@@ -10,11 +10,11 @@ public class Config {
     /**
      * 基础包名
      */
-    public static final String BASE_PACKAGE = "com.kewen.framework.code.generator";
+    public static final String BASE_PACKAGE = "com.kewen.framework.boot.authority";
     /**
      * 模块名
      */
-    public static final String MODULE_NAME = "web";
+    public static final String MODULE_NAME = "biz";
 
     /**
      * 数据库配置文件，resources下的配置文件，主要解析 spring.datasource 下的数据库连接参数
@@ -24,6 +24,6 @@ public class Config {
     /**
      * 作者
      */
-    public static final String AUTHOR = "system";
+    public static final String AUTHOR = "kewen";
 
 }
