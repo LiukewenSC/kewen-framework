@@ -1,9 +1,7 @@
 package com.kewen.framework.boot.web.config;
 
 import com.kewen.framework.boot.web.interceptor.tenant.DefaultTenantInterceptor;
-import com.kewen.framework.boot.web.interceptor.tenant.NoTenantInterceptor;
-import com.kewen.framework.boot.web.interceptor.tenant.TenantInterceptor;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import com.kewen.framework.boot.web.interceptor.trace.TraceInterceptor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,15 +14,22 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class BeanLoadConfig {
 
+    /**
+     * 租户拦截器
+     * @return
+     */
     @Bean
     @ConditionalOnProperty(name = "com.kewen.framework.boot.web.tenant",havingValue = "true")
     public DefaultTenantInterceptor defaultTenantInterceptor(){
         return new DefaultTenantInterceptor();
     }
 
+    /**
+     * 日志拦截器
+     * @return
+     */
     @Bean
-    @ConditionalOnMissingBean(TenantInterceptor.class)
-    public NoTenantInterceptor noTenantInterceptor(){
-        return new NoTenantInterceptor();
+    TraceInterceptor traceInterceptor(){
+        return new TraceInterceptor();
     }
 }
