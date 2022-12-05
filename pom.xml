@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 
-    <groupId>com.kewen</groupId>
+    <groupId>com.kewen.framework</groupId>
     <artifactId>kewen-framework</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
