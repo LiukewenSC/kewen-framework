@@ -14,7 +14,7 @@ public class TenantContext {
      * 获取租户id
      * @return
      */
-    public static long get(){
+    public static Long get(){
         return context.get();
     }
 

@@ -16,7 +16,7 @@ public class TraceInterceptor implements WebRequestInterceptor {
 
     @Override
     public void preHandle(WebRequest request) throws Exception{
-        MDC.put("trace", UUIDUtil.generate());
+        TraceContext.set(UUIDUtil.generate());
     }
 
     @Override
@@ -26,6 +26,6 @@ public class TraceInterceptor implements WebRequestInterceptor {
 
     @Override
     public void afterCompletion(WebRequest request, Exception ex) throws Exception{
-        MDC.clear();
+        TraceContext.clear();
     }
 }
