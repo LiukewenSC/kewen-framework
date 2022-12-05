@@ -1,4 +1,4 @@
-package com.kewen.framework.boot.web.interceptor;
+package com.kewen.framework.boot.web.interceptor.tenant;
 
 /**
  * @descrpition 没有租户拦截

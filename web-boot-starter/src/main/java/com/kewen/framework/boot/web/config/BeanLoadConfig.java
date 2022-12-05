@@ -1,8 +1,8 @@
 package com.kewen.framework.boot.web.config;
 
-import com.kewen.framework.boot.web.interceptor.DefaultTenantInterceptor;
-import com.kewen.framework.boot.web.interceptor.NoTenantInterceptor;
-import com.kewen.framework.boot.web.interceptor.TenantInterceptor;
+import com.kewen.framework.boot.web.interceptor.tenant.DefaultTenantInterceptor;
+import com.kewen.framework.boot.web.interceptor.tenant.NoTenantInterceptor;
+import com.kewen.framework.boot.web.interceptor.tenant.TenantInterceptor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
