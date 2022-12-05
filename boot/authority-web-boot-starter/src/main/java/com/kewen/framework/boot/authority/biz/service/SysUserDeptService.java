@@ -3,7 +3,7 @@ package com.kewen.framework.boot.authority.biz.service;
 import java.util.List;
 import com.kewen.framework.boot.authority.biz.mapper.entity.SysUserDept;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.kewen.common.model.UserDept;
+import com.kewen.framework.base.common.model.UserDept;
 
 public interface SysUserDeptService extends IService<SysUserDept>{
 
@@ -13,7 +13,7 @@ public interface SysUserDeptService extends IService<SysUserDept>{
      * @param userId
      * @return
      */
-    UserDept getUserDept(Integer userId);
+    UserDept getUserDept(Long userId);
 
     int updateBatch(List<SysUserDept> list);
 

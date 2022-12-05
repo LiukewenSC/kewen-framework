@@ -1,7 +1,7 @@
 package com.kewen.framework.datasource.context;
 
 
-import com.kewen.common.context.TenantContext;
+import com.kewen.framework.base.common.context.TenantContext;
 
 /**
  * 默认租户配置器

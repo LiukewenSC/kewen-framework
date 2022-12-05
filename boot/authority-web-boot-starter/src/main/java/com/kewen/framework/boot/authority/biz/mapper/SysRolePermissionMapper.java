@@ -5,7 +5,7 @@ import com.kewen.framework.boot.authority.biz.mapper.entity.SysRolePermission;
 
 import java.util.List;
 
-import com.kewen.common.model.Permission;
+import com.kewen.framework.base.common.model.Permission;
 import org.apache.ibatis.annotations.Param;
 
 public interface SysRolePermissionMapper extends BaseMapper<SysRolePermission> {

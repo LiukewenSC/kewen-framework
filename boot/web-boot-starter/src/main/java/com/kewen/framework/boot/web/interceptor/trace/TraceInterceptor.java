@@ -1,7 +1,7 @@
 package com.kewen.framework.boot.web.interceptor.trace;
 
-import com.kewen.common.context.TraceContext;
-import com.kewen.common.utils.UUIDUtil;
+import com.kewen.framework.base.common.context.TraceContext;
+import com.kewen.framework.base.common.utils.UUIDUtil;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.context.request.WebRequestInterceptor;

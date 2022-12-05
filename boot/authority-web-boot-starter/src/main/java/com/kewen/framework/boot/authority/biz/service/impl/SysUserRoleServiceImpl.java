@@ -1,6 +1,6 @@
 package com.kewen.framework.boot.authority.biz.service.impl;
 
-import com.kewen.common.model.Role;
+import com.kewen.framework.base.common.model.Role;
 import com.kewen.framework.boot.authority.biz.mapper.SysUserRoleMapper;
 import com.kewen.framework.boot.authority.biz.mapper.entity.SysUserRole;
 import com.kewen.framework.boot.authority.biz.service.SysUserRoleService;

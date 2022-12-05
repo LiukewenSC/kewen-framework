@@ -1,7 +1,7 @@
 package com.kewen.framework.boot.web.exception;
 
-import com.kewen.common.exception.BizException;
-import com.kewen.common.model.Result;
+import com.kewen.framework.base.common.exception.BizException;
+import com.kewen.framework.base.common.model.Result;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 

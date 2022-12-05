@@ -5,7 +5,7 @@ import com.kewen.framework.boot.authority.biz.mapper.entity.SysUserRole;
 
 import java.util.List;
 
-import com.kewen.common.model.Role;
+import com.kewen.framework.base.common.model.Role;
 import org.apache.ibatis.annotations.Param;
 
 public interface SysUserRoleMapper extends BaseMapper<SysUserRole> {

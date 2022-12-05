@@ -11,13 +11,13 @@ import com.kewen.framework.boot.authority.biz.service.SysUserInfoService;
 import com.kewen.framework.boot.authority.biz.service.SysUserPositionService;
 import com.kewen.framework.boot.authority.biz.service.SysUserRoleService;
 import com.kewen.framework.boot.authority.currentuser.UserDetailStore;
-import com.kewen.common.model.Permission;
-import com.kewen.common.model.Position;
-import com.kewen.common.model.Role;
-import com.kewen.common.model.User;
-import com.kewen.common.model.UserDept;
-import com.kewen.common.model.UserDetail;
-import com.kewen.common.exception.AuthenticationException;
+import com.kewen.framework.base.common.model.Permission;
+import com.kewen.framework.base.common.model.Position;
+import com.kewen.framework.base.common.model.Role;
+import com.kewen.framework.base.common.model.User;
+import com.kewen.framework.base.common.model.UserDept;
+import com.kewen.framework.base.common.model.UserDetail;
+import com.kewen.framework.base.common.exception.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -73,7 +73,7 @@ public class LoginServiceImpl implements LoginService {
         return loginResp;
     }
 
-    private UserDetail fetchUserDetail( Integer userId,String userName) {
+    private UserDetail fetchUserDetail( Long userId,String userName) {
         //查询机构
         UserDept userDept = userDeptService.getUserDept(userId);
 

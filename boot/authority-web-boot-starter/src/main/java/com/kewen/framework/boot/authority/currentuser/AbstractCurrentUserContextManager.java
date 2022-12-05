@@ -1,6 +1,6 @@
 package com.kewen.framework.boot.authority.currentuser;
 
-import com.kewen.common.model.UserDetail;
+import com.kewen.framework.base.common.model.UserDetail;
 import org.springframework.lang.Nullable;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;

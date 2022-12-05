@@ -1,6 +1,6 @@
 package com.kewen.framework.cloud.eureka.client.header;
 
-import com.kewen.common.context.TenantContext;
+import com.kewen.framework.base.common.context.TenantContext;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import org.springframework.context.annotation.Configuration;

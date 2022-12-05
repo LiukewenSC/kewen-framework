@@ -1,6 +1,6 @@
 package com.kewen.framework.boot.authority.biz.service.impl;
 
-import com.kewen.common.model.Position;
+import com.kewen.framework.base.common.model.Position;
 import com.kewen.framework.boot.authority.biz.mapper.SysUserPositionMapper;
 import com.kewen.framework.boot.authority.biz.mapper.entity.SysUserPosition;
 import com.kewen.framework.boot.authority.biz.service.SysUserPositionService;
