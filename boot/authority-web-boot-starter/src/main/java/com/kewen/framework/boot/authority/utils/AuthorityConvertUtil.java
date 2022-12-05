@@ -86,7 +86,7 @@ public class AuthorityConvertUtil {
             String type = split[0];
             switch (type){
                 case USER_CODE:
-                    users.add(new User(Integer.valueOf(split[1]),split[2]));
+                    users.add(new User(Long.valueOf(split[1]),split[2]));
                     break;
                 case DEPT_CODE:
                     depts.add(new Dept(Integer.valueOf(split[1]),split[2]));
@@ -130,7 +130,7 @@ public class AuthorityConvertUtil {
         String type = split[0];
         try {
             if (User.class.isAssignableFrom(tClass) && USER_CODE.equals(type)){
-                return (T) new User(Integer.valueOf(split[1]),split[2]);
+                return (T) new User(Long.valueOf(split[1]),split[2]);
             } else if (Dept.class.isAssignableFrom(tClass) && DEPT_CODE.equals(type)){
                 return (T) new Dept(Integer.valueOf(split[1]),split[2]);
             } else if (Position.class.isAssignableFrom(tClass) && POSITION_CODE.equals(type)){
