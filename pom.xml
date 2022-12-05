@@ -19,6 +19,7 @@
         <module>sample</module>
         <module>code-generator</module>
         <module>authority-web-boot-starter</module>
+        <module>cloud</module>
     </modules>
 
 
@@ -42,7 +43,13 @@
 
             <!--************spring-cloud相关************-->
 
-
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>Hoxton.SR7</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
 
 
             <!--************spring-boot相关************-->
