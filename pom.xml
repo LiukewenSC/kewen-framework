@@ -38,6 +38,11 @@
                 <artifactId>web-boot-starter</artifactId>
                 <version>${framework-version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.kewen.framework.cloud</groupId>
+                <artifactId>eureka-client</artifactId>
+                <version>${framework-version}</version>
+            </dependency>
 
 
 
