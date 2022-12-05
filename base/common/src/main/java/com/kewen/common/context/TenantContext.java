@@ -1,4 +1,4 @@
-package com.kewen.framework.boot.web.interceptor.tenant;
+package com.kewen.common.context;
 
 /**
  * @descrpition 租户上下文
