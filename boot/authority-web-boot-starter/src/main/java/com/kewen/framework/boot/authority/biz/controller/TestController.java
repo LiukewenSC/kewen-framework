@@ -3,7 +3,6 @@ package com.kewen.framework.boot.authority.biz.controller;
 import com.kewen.framework.boot.authority.advance.authcheck.AuthBusinessOperate;
 import com.kewen.framework.boot.authority.advance.authcheck.DefaultApplicationBusiness;
 import com.kewen.framework.boot.authority.advance.menucheck.AuthMenu;
-import com.kewen.framework.boot.authority.biz.service.TestService;
 import com.kewen.framework.base.common.model.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +22,6 @@ import java.util.List;
 @RequestMapping("/test")
 public class TestController {
 
-    @Autowired
-    private TestService testService;
 
     /**
      * 单个模块功能的编辑权限（不针对具体实例数据）

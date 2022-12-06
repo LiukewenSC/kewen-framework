@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 /**
  * <p>
@@ -22,7 +23,11 @@ import java.util.List;
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> implements SysMenuService {
-
+    @Override
+    public boolean hasAuth(Collection<String> authorities, String url) {
+        Integer auth = baseMapper.hasAuth(authorities, url);
+        return auth != null && auth > 0;
+    }
     @Override
     public Page<SysMenu> pageQuery(Integer pageNo, Integer pageSize, SysMenu queryModel) {
         Page<SysMenu> page = new Page<>();

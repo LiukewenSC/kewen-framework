@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 
+import java.util.Collection;
 import java.util.List;
 
 
@@ -18,6 +19,7 @@ import java.util.List;
  */
 public interface SysApplicationAuthService extends IService<SysApplicationAuth> {
 
+        boolean hasAuth(Collection<String> auths, String module, String operate, Integer businessId);
         /**
          * 分页查询
          * @param pageNo 页数

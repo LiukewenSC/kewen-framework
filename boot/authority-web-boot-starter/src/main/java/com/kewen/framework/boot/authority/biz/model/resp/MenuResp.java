@@ -1,8 +1,8 @@
 package com.kewen.framework.boot.authority.biz.model.resp;
 
 
-import com.kewen.framework.boot.authority.biz.mapper.entity.SysMenuAuth;
 import com.kewen.framework.base.common.utils.TreeUtil;
+import com.kewen.framework.boot.authority.biz.entity.SysMenuAuth;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

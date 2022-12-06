@@ -20,5 +20,14 @@
     <sql id="Base_Column_List">
         id, name, parent_id, url, image, type, auth_type, description, create_time, update_time
     </sql>
+    <select id="hasAuth" resultType="java.lang.Integer">
+        select count(1) from sys_menu m inner join sys_menu_auth ma on m.id = ma.menu_id
+        where m.url=#{url,jdbcType=VARCHAR}
+            and ma.authority in
+            <foreach collection="authorities" item="authority" open="(" close=")" separator=",">
+                #{authority}
+            </foreach>
+        limit 1
+    </select>
 
 </mapper>
