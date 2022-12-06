@@ -39,8 +39,7 @@ public class BeanUtil {
      * @return
      */
     public static <T> T copy(T source){
-        String jsonString = com.alibaba.fastjson.JSONObject.toJSONString(source);
-        return (T) com.alibaba.fastjson.JSONObject.parseObject(jsonString, source.getClass());
+        return (T)toBean(source, source.getClass());
     }
 
     /**
