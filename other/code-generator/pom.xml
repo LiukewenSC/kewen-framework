@@ -13,6 +13,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.kewen.framework</groupId>
+            <artifactId>common</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
         </dependency>
