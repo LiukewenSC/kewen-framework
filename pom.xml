@@ -38,7 +38,12 @@
             </dependency>
             <dependency>
                 <groupId>com.kewen.framework.cloud</groupId>
-                <artifactId>eureka-client</artifactId>
+                <artifactId>eureka-client-starter</artifactId>
+                <version>${framework-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.kewen.framework</groupId>
+                <artifactId>datasource-starter</artifactId>
                 <version>${framework-version}</version>
             </dependency>
 
