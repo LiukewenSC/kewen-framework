@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.kewen.framework</groupId>
+
     <artifactId>base</artifactId>
     <packaging>pom</packaging>
 
