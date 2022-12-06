@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 /**
  * <p>
@@ -22,7 +23,19 @@ import java.util.List;
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class SysApplicationAuthServiceImpl extends ServiceImpl<SysApplicationAuthMapper, SysApplicationAuth> implements SysApplicationAuthService {
-
+    @Override
+    public boolean hasAuth(Collection<String> auths, String module, String operate, Integer businessId) {
+        SysApplicationAuth one = getOne(
+                new LambdaQueryWrapper<SysApplicationAuth>()
+                        .eq(SysApplicationAuth::getModule, module)
+                        .eq(SysApplicationAuth::getBusinessId, businessId)
+                        .eq(SysApplicationAuth::getOperate, operate)
+                        .in(SysApplicationAuth::getAuthority, auths)
+                        .last("limit 1")
+                        .select(SysApplicationAuth::getId)
+        );
+        return one != null;
+    }
     @Override
     public Page<SysApplicationAuth> pageQuery(Integer pageNo, Integer pageSize, SysApplicationAuth queryModel) {
         Page<SysApplicationAuth> page = new Page<>();

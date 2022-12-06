@@ -89,13 +89,13 @@ public class AuthorityConvertUtil {
                     users.add(new User(Long.valueOf(split[1]),split[2]));
                     break;
                 case DEPT_CODE:
-                    depts.add(new Dept(Integer.valueOf(split[1]),split[2]));
+                    depts.add(new Dept(Long.valueOf(split[1]),split[2]));
                 case POSITION_CODE:
-                    positions.add( new Position(Integer.valueOf(split[1]),split[2]));
+                    positions.add( new Position(Long.valueOf(split[1]),split[2]));
                 case ROLE_CODE:
-                    roles.add(new Role(Integer.valueOf(split[1]),split[2]));
+                    roles.add(new Role(Long.valueOf(split[1]),split[2]));
                 case PERMISSION_CODE:
-                    permissions.add(new Permission(Integer.valueOf(split[1]),split[2]));
+                    permissions.add(new Permission(Long.valueOf(split[1]),split[2]));
             }
         }
         AuthorityObject object = new AuthorityObject();
@@ -132,13 +132,13 @@ public class AuthorityConvertUtil {
             if (User.class.isAssignableFrom(tClass) && USER_CODE.equals(type)){
                 return (T) new User(Long.valueOf(split[1]),split[2]);
             } else if (Dept.class.isAssignableFrom(tClass) && DEPT_CODE.equals(type)){
-                return (T) new Dept(Integer.valueOf(split[1]),split[2]);
+                return (T) new Dept(Long.valueOf(split[1]),split[2]);
             } else if (Position.class.isAssignableFrom(tClass) && POSITION_CODE.equals(type)){
-                return (T) new Position(Integer.valueOf(split[1]),split[2]);
+                return (T) new Position(Long.valueOf(split[1]),split[2]);
             }else if (Role.class.isAssignableFrom(tClass) && ROLE_CODE.equals(type)){
-                return (T) new Role(Integer.valueOf(split[1]),split[2]);
+                return (T) new Role(Long.valueOf(split[1]),split[2]);
             }else if (Permission.class.isAssignableFrom(tClass) && PERMISSION_CODE.equals(type)){
-                return (T) new Permission(Integer.valueOf(split[1]),split[2]);
+                return (T) new Permission(Long.valueOf(split[1]),split[2]);
             }
             throw new ClassCastException();
         } catch (Exception e) {

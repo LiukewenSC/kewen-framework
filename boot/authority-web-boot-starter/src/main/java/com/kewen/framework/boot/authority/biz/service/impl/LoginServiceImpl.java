@@ -5,13 +5,16 @@ import com.kewen.framework.base.common.model.Dept;
 import com.kewen.framework.base.common.model.DeptPrimary;
 import com.kewen.framework.base.common.utils.BeanUtil;
 import com.kewen.framework.boot.authority.biz.entity.SysDept;
+import com.kewen.framework.boot.authority.biz.entity.SysRole;
 import com.kewen.framework.boot.authority.biz.entity.SysUserDept;
 import com.kewen.framework.boot.authority.biz.entity.SysUserInfo;
+import com.kewen.framework.boot.authority.biz.entity.SysUserRole;
 import com.kewen.framework.boot.authority.biz.model.req.LoginReq;
 import com.kewen.framework.boot.authority.biz.model.resp.LoginResp;
 import com.kewen.framework.boot.authority.biz.service.LoginService;
 import com.kewen.framework.boot.authority.biz.service.SysDeptService;
 import com.kewen.framework.boot.authority.biz.service.SysRolePermissionService;
+import com.kewen.framework.boot.authority.biz.service.SysRoleService;
 import com.kewen.framework.boot.authority.biz.service.SysUserDeptService;
 import com.kewen.framework.boot.authority.biz.service.SysUserInfoService;
 import com.kewen.framework.boot.authority.biz.service.SysUserPositionService;
@@ -24,9 +27,9 @@ import com.kewen.framework.base.common.model.User;
 import com.kewen.framework.base.common.model.UserDept;
 import com.kewen.framework.base.common.model.UserDetail;
 import com.kewen.framework.base.common.exception.AuthenticationException;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -51,6 +54,8 @@ public class LoginServiceImpl implements LoginService {
     private SysUserPositionService userPositionService;
     @Autowired
     private SysUserRoleService userRoleService;
+    @Autowired
+    private SysRoleService roleService;
     @Autowired
     private SysRolePermissionService rolePermissionService;
 
@@ -101,7 +106,20 @@ public class LoginServiceImpl implements LoginService {
        //List<Position> positions = userPositionService.listUserPosition(userId);
 
         //查询角色
-        //List<Role> roles = userRoleService.listUserRole(userId);
+        List<Role> roles = null;
+
+        List<SysUserRole> roleids = userRoleService.list(
+                new LambdaQueryWrapper<SysUserRole>()
+                        .eq(SysUserRole::getUserId, userId)
+        );
+        if (CollectionUtils.isNotEmpty(roleids)){
+            List<SysRole> list = roleService.list(
+                    new LambdaQueryWrapper<SysRole>().in(SysRole::getId, roleids)
+            );
+            if (CollectionUtils.isNotEmpty(list)){
+                roles=list.stream().map(r->new Role(r.getId(),r.getName())).collect(Collectors.toList());
+            }
+        }
 
         //查询权限
         //List<Integer> roleIds = roles.stream().map(Role::getId).collect(Collectors.toList());
@@ -113,7 +131,7 @@ public class LoginServiceImpl implements LoginService {
         return  UserDetail.builder()
                 .user(new User(userId, userName))
                 .dept(userDept)
-                //.roles(roles)
+                .roles(roles)
                 //.permissions(permissions)
                 .build()
                 ;
