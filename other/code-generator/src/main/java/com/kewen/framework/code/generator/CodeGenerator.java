@@ -113,7 +113,7 @@ public class CodeGenerator {
                                 .enableBaseColumnList()//启用xml文件中的BaseColumnList
                                 //.cache(缓存类.class)设置缓存实现类
                                 //.formatMapperFileName("%sDao")//格式化Dao类名称
-                                .formatXmlFileName("%sXml")//格式化xml文件名称
+                                //.formatXmlFileName("%sXml")//格式化xml文件名称
                                 .build()
                             .serviceBuilder()//service文件策略
                                 .fileOverride()
