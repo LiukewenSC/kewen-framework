@@ -1,3 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.kewen.framework.boot.web.config.WebConfig,\
-  com.kewen.framework.boot.web.config.BeanLoadConfig
