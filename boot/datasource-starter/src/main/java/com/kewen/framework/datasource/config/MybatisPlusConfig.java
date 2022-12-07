@@ -8,7 +8,6 @@ import com.baomidou.mybatisplus.extension.plugins.inner.TenantLineInnerIntercept
 import com.kewen.framework.datasource.context.DbTenant;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.LongValue;
-import net.sf.jsqlparser.expression.NullValue;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -23,7 +22,7 @@ import java.util.List;
  * @since 2022-12-05 16:00
  */
 @Configuration
-@MapperScan(basePackages = "com.kewen.**.mapper")
+@MapperScan(basePackages = "com.kewen.framework.boot.authority.mapper")
 public class MybatisPlusConfig {
 
     @Autowired

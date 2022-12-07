@@ -1,6 +1,6 @@
 package com.kewen.framework.boot.authority.advance.authrange;
 
-import com.kewen.framework.boot.authority.currentuser.CurrentUserContext;
+import com.kewen.framework.base.authority.context.CurrentUserContext;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
