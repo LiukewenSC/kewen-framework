@@ -21,12 +21,13 @@ import java.util.Collection;
  * @author kewen
  * @since 2022-11-25 14:39
  */
-@Component
 public class AuthMenuInterceptor implements HandlerInterceptor {
 
-    @Autowired
-    private SysMenuAuthUnify menuService;
+    private final SysMenuAuthUnify menuService;
 
+    public AuthMenuInterceptor(SysMenuAuthUnify menuService) {
+        this.menuService = menuService;
+    }
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {

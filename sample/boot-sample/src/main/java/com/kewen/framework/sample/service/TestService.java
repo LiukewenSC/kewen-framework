@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class TestService {
 
-    @Autowired
+    @Autowired(required = false)
     TenantInterceptor tenantInterceptor;
 
     public void hello(){
