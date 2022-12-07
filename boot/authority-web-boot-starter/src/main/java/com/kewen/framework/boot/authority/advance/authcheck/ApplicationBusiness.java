@@ -10,5 +10,5 @@ public interface ApplicationBusiness {
      * 获取到关联的ID
      * @return 业务关联ID，业务具体事项的主键
      */
-    Integer getBusinessId();
+    Long getBusinessId();
 }

@@ -10,9 +10,9 @@ import lombok.Data;
 @Data
 public class DefaultApplicationBusiness implements ApplicationBusiness {
 
-    private Integer businessId;
+    private Long businessId;
     @Override
-    public Integer getBusinessId() {
+    public Long getBusinessId() {
         return businessId;
     }
 }
