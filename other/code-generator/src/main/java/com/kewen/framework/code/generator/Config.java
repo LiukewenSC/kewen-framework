@@ -14,16 +14,16 @@ public class Config {
      * 工程绝对路径地址，指定到src上面一层;
      * 为空则表示用代码生成器在的路径
      */
-    public static final String ABSOLUTE_PATH="D:\\Projects\\kewen-framework\\cloud\\security-oauth-server";
+    public static final String ABSOLUTE_PATH="D:\\Projects\\kewen-framework\\base\\authority";
 
     /**
      * 基础包名
      */
-    public static final String BASE_PACKAGE = "com.kewen.framework.cloud.security";
+    public static final String BASE_PACKAGE = "com.kewen.framework.base.authority";
     /**
      * 模块名
      */
-    public static final String MODULE_NAME = "service";
+    public static final String MODULE_NAME = null;
 
     /**
      * 数据库配置文件，resources下的配置文件，主要解析 spring.datasource 下的数据库连接参数

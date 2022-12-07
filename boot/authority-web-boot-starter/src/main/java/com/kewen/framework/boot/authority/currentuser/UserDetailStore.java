@@ -1,6 +1,6 @@
 package com.kewen.framework.boot.authority.currentuser;
 
-import com.kewen.framework.boot.authority.biz.model.resp.LoginResp;
+import com.kewen.framework.boot.authority.model.LoginResp;
 import com.kewen.framework.base.common.model.UserDetail;
 
 /**
