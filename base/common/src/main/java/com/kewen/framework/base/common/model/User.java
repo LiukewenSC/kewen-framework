@@ -17,8 +17,8 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 public class User implements IUser {
-    private Long id;
-    private String name;
+    protected Long id;
+    protected String name;
 
     @Override
     public boolean equals(Object o) {

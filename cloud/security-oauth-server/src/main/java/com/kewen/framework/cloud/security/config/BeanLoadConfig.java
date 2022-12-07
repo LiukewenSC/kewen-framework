@@ -1,9 +1,10 @@
 package com.kewen.framework.cloud.security.config;
 
+import com.kewen.framework.base.authority.service.SysUserInfoService;
+import com.kewen.framework.base.authority.service.SysUserRoleService;
 import com.kewen.framework.cloud.security.service.SysUserDetailService;
-import com.kewen.framework.cloud.security.service.service.SysUserInfoService;
-import com.kewen.framework.cloud.security.service.service.SysUserRoleService;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
@@ -15,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * @since 2022-12-07 17:25
  */
 @Configuration
+@ComponentScan("com.kewen.framework.base.authority")
 public class BeanLoadConfig {
 
     @Bean

@@ -15,13 +15,12 @@ import java.util.List;
  */
 @Data
 @Builder
-public class User implements UserDetails{
-
-    private Long id;
+public class SecurityUser implements UserDetails{
+    protected Long id;
+    protected String name;
     private String username;
     private String password;
-    private String name;
-    private List<Authority> authorities;
+    private List<SecurityAuthority> authorities;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

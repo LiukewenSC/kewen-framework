@@ -22,7 +22,7 @@ import java.util.List;
  * @since 2022-12-05 16:00
  */
 @Configuration
-@MapperScan(basePackages = "com.kewen.framework.boot.authority.mapper")
+@MapperScan(basePackages = "com.kewen.**.mapper")
 public class MybatisPlusConfig {
 
     @Autowired

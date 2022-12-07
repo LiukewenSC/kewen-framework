@@ -1,12 +1,12 @@
 package com.kewen.framework.cloud.security.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.kewen.framework.cloud.security.model.Authority;
-import com.kewen.framework.cloud.security.model.User;
-import com.kewen.framework.cloud.security.service.entity.SysUserInfo;
-import com.kewen.framework.cloud.security.service.entity.SysUserRole;
-import com.kewen.framework.cloud.security.service.service.SysUserInfoService;
-import com.kewen.framework.cloud.security.service.service.SysUserRoleService;
+import com.kewen.framework.base.authority.entity.SysUserInfo;
+import com.kewen.framework.base.authority.entity.SysUserRole;
+import com.kewen.framework.base.authority.service.SysUserInfoService;
+import com.kewen.framework.base.authority.service.SysUserRoleService;
+import com.kewen.framework.cloud.security.model.SecurityAuthority;
+import com.kewen.framework.cloud.security.model.SecurityUser;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -38,7 +38,7 @@ public class SysUserDetailService  implements UserDetailsService {
         if (one==null){
             return null;
         }
-        User.UserBuilder userBuilder = User.builder()
+        SecurityUser.SecurityUserBuilder userBuilder = SecurityUser.builder()
                 .id(one.getUserId())
                 .name(one.getNickName())
                 .password(one.getPassword())
@@ -50,7 +50,7 @@ public class SysUserDetailService  implements UserDetailsService {
                         .in(SysUserRole::getUserId, userId)
         );
         if (list!=null){
-            userBuilder.authorities(list.stream().map(r-> new Authority(""+r.getRoleId(),""+r.getRoleId())).collect(Collectors.toList()));
+            userBuilder.authorities(list.stream().map(r-> new SecurityAuthority(""+r.getRoleId(),""+r.getRoleId())).collect(Collectors.toList()));
         }
         return userBuilder.build();
     }
