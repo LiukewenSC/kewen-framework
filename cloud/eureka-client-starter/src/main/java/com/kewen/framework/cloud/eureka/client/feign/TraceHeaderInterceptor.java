@@ -1,4 +1,4 @@
-package com.kewen.framework.cloud.eureka.client.header;
+package com.kewen.framework.cloud.eureka.client.feign;
 
 import com.kewen.framework.base.common.context.TraceContext;
 import feign.RequestInterceptor;
@@ -13,7 +13,7 @@ import org.springframework.util.StringUtils;
  * @since 2022/9/2
  */
 @Configuration
-public class TraceHeaderLoader implements RequestInterceptor {
+public class TraceHeaderInterceptor implements RequestInterceptor {
 
     @Override
     public void apply(RequestTemplate requestTemplate) {
