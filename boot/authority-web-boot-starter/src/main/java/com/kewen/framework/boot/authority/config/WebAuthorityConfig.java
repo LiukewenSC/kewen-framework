@@ -6,9 +6,11 @@ import com.kewen.framework.base.authority.service.impl.SysApplicationAuthService
 import com.kewen.framework.base.authority.service.impl.SysMenuServiceImpl;
 import com.kewen.framework.boot.authority.advance.menucheck.AuthMenuInterceptor;
 import com.kewen.framework.boot.authority.currentuser.AbstractCurrentUserContextManager;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -21,6 +23,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @EnableAspectJAutoProxy
 @Configuration
+@ComponentScan("com.kewen")
+@MapperScan("com.kewen.**.mapper")
 public class WebAuthorityConfig implements WebMvcConfigurer {
 
     @Autowired

@@ -12,6 +12,6 @@ import org.springframework.context.ConfigurableApplicationContext;
 @SpringBootApplication
 public class BootSampleApp {
     public static void main(String[] args) {
-        ConfigurableApplicationContext run = SpringApplication.run(BootSampleApp.class);
+        ConfigurableApplicationContext run = SpringApplication.run(BootSampleApp.class,args);
     }
 }
