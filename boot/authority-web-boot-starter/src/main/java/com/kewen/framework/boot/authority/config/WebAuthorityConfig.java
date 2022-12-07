@@ -1,10 +1,10 @@
 package com.kewen.framework.boot.authority.config;
 
+import com.kewen.framework.base.authority.service.SysApplicationAuthService;
+import com.kewen.framework.base.authority.service.SysMenuService;
+import com.kewen.framework.base.authority.service.impl.SysApplicationAuthServiceImpl;
+import com.kewen.framework.base.authority.service.impl.SysMenuServiceImpl;
 import com.kewen.framework.boot.authority.advance.menucheck.AuthMenuInterceptor;
-import com.kewen.framework.boot.authority.biz.service.SysApplicationAuthService;
-import com.kewen.framework.boot.authority.biz.service.SysMenuService;
-import com.kewen.framework.boot.authority.biz.service.impl.SysApplicationAuthServiceImpl;
-import com.kewen.framework.boot.authority.biz.service.impl.SysMenuServiceImpl;
 import com.kewen.framework.boot.authority.currentuser.AbstractCurrentUserContextManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;

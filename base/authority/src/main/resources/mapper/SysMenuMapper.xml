@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kewen.framework.base.authority.mapper.SysMenuMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.kewen.framework.base.authority.entity.SysMenu">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="parent_id" property="parentId" />
+        <result column="url" property="url" />
+        <result column="image" property="image" />
+        <result column="type" property="type" />
+        <result column="auth_type" property="authType" />
+        <result column="description" property="description" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, parent_id, url, image, type, auth_type, description, create_time, update_time
+    </sql>
+    <select id="hasAuth" resultType="java.lang.Integer">
+        select 1 from sys_menu m
+        inner join sys_menu_authority ma on m.id = ma.menu_id
+        where m.url =#{url,jdbcType=VARCHAR}
+        and ma.authority in
+        <foreach collection="userAuthorities" open="(" close=")" separator="," item="auth">
+            #{auth,jdbcType=VARCHAR}
+        </foreach>
+        limit 1
+    </select>
+
+</mapper>
