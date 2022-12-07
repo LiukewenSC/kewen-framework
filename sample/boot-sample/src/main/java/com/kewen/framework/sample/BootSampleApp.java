@@ -10,8 +10,8 @@ import org.springframework.context.ConfigurableApplicationContext;
  * @since 2022-12-05 9:54
  */
 @SpringBootApplication
-public class SampleApp {
+public class BootSampleApp {
     public static void main(String[] args) {
-        ConfigurableApplicationContext run = SpringApplication.run(SampleApp.class);
+        ConfigurableApplicationContext run = SpringApplication.run(BootSampleApp.class);
     }
 }

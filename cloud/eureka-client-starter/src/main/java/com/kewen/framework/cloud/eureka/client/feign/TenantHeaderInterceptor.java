@@ -1,4 +1,4 @@
-package com.kewen.framework.cloud.eureka.client.header;
+package com.kewen.framework.cloud.eureka.client.feign;
 
 import com.kewen.framework.base.common.context.TenantContext;
 import feign.RequestInterceptor;
@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
  * @since 2022/9/2
  */
 @Configuration
-public class TenantHeaderLoader implements RequestInterceptor {
+public class TenantHeaderInterceptor implements RequestInterceptor {
 
     private static final String TENANT_ID ="tenantId";
 
