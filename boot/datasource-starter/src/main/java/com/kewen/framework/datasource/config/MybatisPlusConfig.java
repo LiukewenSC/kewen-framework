@@ -9,6 +9,7 @@ import com.kewen.framework.datasource.context.DbTenant;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.LongValue;
 import net.sf.jsqlparser.expression.NullValue;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +23,7 @@ import java.util.List;
  * @since 2022-12-05 16:00
  */
 @Configuration
+@MapperScan(basePackages = "com.kewen.**.mapper")
 public class MybatisPlusConfig {
 
     @Autowired
@@ -40,7 +42,7 @@ public class MybatisPlusConfig {
             @Override
             public Expression getTenantId() {
                 Long tenantId = dbTenant.getTenantId();
-                return tenantId==null?new NullValue():new LongValue(tenantId);
+                return tenantId==null?new LongValue(100001):new LongValue(tenantId);
             }
 
             @Override
