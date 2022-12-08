@@ -1,5 +1,6 @@
 package com.kewen.framework.datasource.context;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -30,6 +31,6 @@ public interface DbTenant {
      * @return
      */
     default List<String> ignorePrefixTables(){
-        return Collections.singletonList("uucs_tenant");
+        return Arrays.asList("uucs_tenant", "sys");
     }
 }
