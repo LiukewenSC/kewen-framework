@@ -56,5 +56,9 @@ public class BeanUtil {
         return lists;
     }
 
+    public static String toJsonString(Object bean){
+        return JSONObject.toJSONString(bean);
+    }
+
 
 }

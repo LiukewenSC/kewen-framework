@@ -19,6 +19,7 @@
         <module>base</module>
         <module>boot</module>
         <module>other</module>
+        <module>sample</module>
     </modules>
 
 
@@ -45,6 +46,11 @@
             <dependency>
                 <groupId>com.kewen.framework</groupId>
                 <artifactId>datasource-starter</artifactId>
+                <version>${framework-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.kewen.framework</groupId>
+                <artifactId>authority</artifactId>
                 <version>${framework-version}</version>
             </dependency>
 
@@ -92,6 +98,11 @@
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>3.5.2</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus</artifactId>
                 <version>3.5.2</version>
             </dependency>
             <dependency>
