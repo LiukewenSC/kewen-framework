@@ -28,17 +28,11 @@ public class Config {
     /**
      * 数据库配置文件，resources下的配置文件，主要解析 spring.datasource 下的数据库连接参数
      */
-    public static final String APPLICATION_PROPERTIES = "application-dev.properties";
+    public static final String APPLICATION_CONFIG_FILE = "application-dev";
     /**
      * 是否开启swagger
      */
     public static final boolean ENABLE_SWAGGER = false;
-
-
-    /**
-     * MySQL的schema
-     */
-    public static final String SCHEMA = "uucs";
     //public static final List<String> IGNORE_TABLE_PREFIX = Arrays.asList("sys_");
     public static final List<String> IGNORE_TABLE_PREFIX = null;
     public static final List<String> CONTAINS_TABLE_PREFIX = Arrays.asList("sys_");

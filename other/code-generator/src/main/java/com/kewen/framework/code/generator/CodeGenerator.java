@@ -7,10 +7,17 @@ import com.baomidou.mybatisplus.generator.config.OutputFile;
 import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.VelocityTemplateEngine;
+import com.kewen.framework.base.common.utils.YmlUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.ResourceUtils;
 
+import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
 
@@ -31,26 +39,23 @@ import java.util.Properties;
  */
 public class CodeGenerator {
 
-
-
     public static void main(String[] args) throws SQLException {
 
-        //获取路径
-        // /D:/MyProjects/chinaunicom-authorities/target/classes/com/chinaunicom/
-        String path = CodeGenerator.class.getResource("").getPath();
-        //classpath路径
-        String classpath = path.substring(0, path.indexOf("classes") + "classes".length());
+
         //工程路径
         String projectPath ;
         if (StringUtils.isNotBlank(Config.ABSOLUTE_PATH)){
             projectPath = Config.ABSOLUTE_PATH;
         } else {
+            //获取路径
+            // /D:/MyProjects/chinaunicom-authorities/target/classes/com/chinaunicom/
+            String path = CodeGenerator.class.getResource("").getPath();
             projectPath = path.substring(0, path.indexOf("/target/classes"));
         }
 
 
         //数据源配置
-        DataSourceConfig.Builder dataSourceConfigBuilder = getDateSourceConfigBuilder(classpath);
+        DataSourceConfig.Builder dataSourceConfigBuilder = getDateSourceConfigBuilder();
 
         List<String> tableNames = getTableNames(dataSourceConfigBuilder);
 
@@ -145,21 +150,32 @@ public class CodeGenerator {
 
     /**
      * 获取数据库连接配置
-     *
-     * @param classpath
      * @return
      */
-    private static DataSourceConfig.Builder getDateSourceConfigBuilder(String classpath) {
+    private static DataSourceConfig.Builder getDateSourceConfigBuilder() {
         try {
-
+            File file = ResourceUtils.getFile("classpath:"+Config.APPLICATION_CONFIG_FILE +".properties");
+            InputStream stream = new BufferedInputStream(new FileInputStream(file));
+            //InputStream stream = new FileInputStream(classpath + "/" + APPLICATION_CONFIG_FILE + ".properties");
             Properties pro = new Properties();
-            pro.load(new FileInputStream(classpath + "/" + Config.APPLICATION_PROPERTIES));
+            pro.load(stream);
+            //pro.load(new FileInputStream("classpath:" + APPLICATION_CONFIG_FILE + ".properties"));
             String url = pro.getProperty("spring.datasource.url").trim();
+            String driveClassName = pro.getProperty("spring.datasource.driver-class-name").trim();
             String username = pro.getProperty("spring.datasource.username").trim();
             String password = pro.getProperty("spring.datasource.password").trim();
-            return new DataSourceConfig.Builder(url, username, password);
-        } catch (Exception e) {
-            e.getMessage();
+            return new DataSourceConfig.Builder(url,username,password);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            System.out.println("未找到文件，找 .yml");
+            Map<String,String> map = YmlUtils.parse("classpath:" + Config.APPLICATION_CONFIG_FILE + ".yml" , "spring.datasource" , Map.class);
+            String url = map.get("url").trim();
+            String username = map.get("username".trim());
+            String password = map.get("password").trim();
+            return new DataSourceConfig.Builder(url,username,password);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }
@@ -173,9 +189,15 @@ public class CodeGenerator {
      * @throws SQLException
      */
     private static List<String> getTableNames(DataSourceConfig.Builder dataSourceConfigBuilder) throws SQLException {
-        String tableSchema = Config.SCHEMA;
+        DataSourceConfig dataSourceConfig = dataSourceConfigBuilder.build();
+        String url = dataSourceConfig.getUrl();
+        //jdbc:p6spy:mysql://liukewensc.mysql.rds.aliyuncs.com:3306/uucs
+        //jdbc:mysql://119.6.253.231:16102/emergency?useUnicode=true&useSSL=false&serverTimezone=Hongkong&characterEncoding=UTF-8
+        url = url.substring(url.indexOf("://")+3);
+        String tableSchema = url.substring(url.indexOf("/")+1,url.indexOf("?"));
+        //String tableSchema = Config.SCHEMA;
         List<String> tableNames = new ArrayList<>();
-        Connection connect = dataSourceConfigBuilder.build().getConn();
+        Connection connect = dataSourceConfig.getConn();
         Statement stmt = connect.createStatement();
         ResultSet rs = stmt.executeQuery("select table_name from information_schema.tables where table_schema='" + tableSchema + "'");
         while (rs.next()) {
