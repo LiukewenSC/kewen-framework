@@ -4,6 +4,7 @@ import com.kewen.framework.base.authority.model.Authority;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -27,7 +28,7 @@ public class SecurityUser implements UserDetails{
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities.stream()
-                .map(a -> (GrantedAuthority) a::getAuthority)
+                .map(a -> new SimpleGrantedAuthority(a.getAuthority()))
                 .collect(Collectors.toList());
     }
 
