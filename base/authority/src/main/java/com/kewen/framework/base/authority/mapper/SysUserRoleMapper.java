@@ -2,6 +2,9 @@ package com.kewen.framework.base.authority.mapper;
 
 import com.kewen.framework.base.authority.entity.SysUserRole;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.kewen.framework.base.common.model.Role;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface SysUserRoleMapper extends BaseMapper<SysUserRole> {
 
+    List<Role> listUserRole(Long userId);
 }

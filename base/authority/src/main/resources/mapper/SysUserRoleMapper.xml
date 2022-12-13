@@ -16,4 +16,9 @@
         id, user_id, role_id, create_time, update_time
     </sql>
 
+  <select id="listUserRole" resultType="com.kewen.framework.base.common.model.Role">
+    select r.id,r.name from sys_user_role ur inner join sys_role r on ur.role_id=r.id
+    where ur.user_id=#{userId}
+  </select>
+
 </mapper>
