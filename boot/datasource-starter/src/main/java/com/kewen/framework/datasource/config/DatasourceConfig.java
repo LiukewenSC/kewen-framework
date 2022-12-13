@@ -2,6 +2,7 @@ package com.kewen.framework.datasource.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
 /**
  * @descrpition 
@@ -9,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
  * @since 2022-12-05 16:09
  */
 @Configuration
-@ConfigurationProperties("application-datasource.properties")
+@PropertySource("classpath:application-datasource.properties")
 public class DatasourceConfig {
 
 }
