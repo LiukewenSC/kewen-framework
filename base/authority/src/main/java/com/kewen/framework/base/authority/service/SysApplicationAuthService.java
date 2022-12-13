@@ -3,6 +3,7 @@ package com.kewen.framework.base.authority.service;
 import com.kewen.framework.base.authority.entity.SysApplicationAuth;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.kewen.framework.base.authority.model.AuthorityObject;
 
 
 import java.util.Collection;
@@ -39,4 +40,5 @@ public interface SysApplicationAuthService extends IService<SysApplicationAuth> 
      */
     List<SysApplicationAuth> findList(SysApplicationAuth queryModel);
 
+    void editBusinessAuthority(Long businessId, String module, String operate, AuthorityObject authority);
 }
