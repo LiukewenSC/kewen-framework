@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
@@ -36,26 +37,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .usernameParameter("username")
                 .passwordParameter("password")
                 .loginProcessingUrl("/login")
-                .failureHandler(
-                        (httpServletRequest, httpServletResponse, e) -> {
+                .failureHandler((httpServletRequest, httpServletResponse, e) -> {
                             httpServletResponse.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
                             httpServletResponse.getWriter().write(
-                                    BeanUtil.toJsonString(
-                                            Result.failed(e.getMessage())
-                                    )
+                                    BeanUtil.toJsonString(Result.failed(e.getMessage()))
                             );
                         }
                 )
-                .successHandler(
-                        (httpServletRequest, httpServletResponse, authentication) -> {
+                .successHandler((httpServletRequest, httpServletResponse, authentication) -> {
                             httpServletResponse.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
                             httpServletResponse.getWriter().write(
                                     BeanUtil.toJsonString(Result.success(authentication))
                             );
                         }
-                )
-        .and().csrf().disable()
-                .cors().disable()
+                ).and()
+            .exceptionHandling()
+                .authenticationEntryPoint((request, response, authException) -> {
+                    response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+                    response.getWriter().write(
+                            BeanUtil.toJsonString(Result.failed(authException.getMessage()))
+                    );
+                }).and()
+            .csrf().disable()
+            .cors().disable()
         ;
         //super.configure(http);
     }
