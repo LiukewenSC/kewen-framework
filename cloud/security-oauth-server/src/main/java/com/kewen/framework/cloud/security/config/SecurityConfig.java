@@ -50,7 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         (httpServletRequest, httpServletResponse, authentication) -> {
                             httpServletResponse.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
                             httpServletResponse.getWriter().write(
-                                    BeanUtil.toJsonString(Result.success())
+                                    BeanUtil.toJsonString(Result.success(authentication))
                             );
                         }
                 )

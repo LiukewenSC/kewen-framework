@@ -17,7 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  */
 @Configuration
 @ComponentScan("com.kewen.framework.base.authority")
-public class BeanLoadConfig {
+public class SecurityBeanLoadConfig {
 
     @Bean
     public UserDetailsService userDetailService(SysUserInfoService sysUserInfoService, SysUserRoleService sysUserRoleService){
