@@ -18,7 +18,7 @@
   <select id="listUserPosition" resultType="com.kewen.framework.base.common.model.Position">
     select p.id,p.name from sys_user_position up
     inner join sys_position p on up.position_id=p.id
-    where up.user_id=#{userId,jdbcType=INTEGER}
+    where up.user_id=#{userId}
   </select>
 
 </mapper>
