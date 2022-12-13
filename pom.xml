@@ -110,6 +110,11 @@
                 <artifactId>mybatis-plus-generator</artifactId>
                 <version>3.5.2</version>
             </dependency>
+            <dependency>
+                <groupId>p6spy</groupId>
+                <artifactId>p6spy</artifactId>
+                <version>3.9.1</version>
+            </dependency>
 
             <dependency>
                 <groupId>com.alibaba</groupId>

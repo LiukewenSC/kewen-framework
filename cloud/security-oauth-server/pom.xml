@@ -33,6 +33,10 @@
             <artifactId>datasource-starter</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.kewen.framework.cloud</groupId>
+            <artifactId>eureka-client-starter</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>

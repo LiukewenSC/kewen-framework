@@ -1,5 +1,6 @@
 package com.kewen.framework.cloud.security.model;
 
+import com.kewen.framework.base.authority.model.Authority;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
@@ -7,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author kewen
@@ -20,11 +22,13 @@ public class SecurityUser implements UserDetails{
     protected String name;
     private String username;
     private String password;
-    private List<SecurityAuthority> authorities;
+    private Collection<Authority> authorities;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
+        return authorities.stream()
+                .map(a -> (GrantedAuthority) a::getAuthority)
+                .collect(Collectors.toList());
     }
 
     @Override

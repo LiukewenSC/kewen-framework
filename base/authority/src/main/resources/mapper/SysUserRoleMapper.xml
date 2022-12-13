@@ -17,8 +17,8 @@
     </sql>
 
   <select id="listUserRole" resultType="com.kewen.framework.base.common.model.Role">
-    select r.id,r.name from sys_user_role ur inner join sys_role r on ur.role_id=r.id
-    where ur.user_id=#{userId}
+    select r.id,r.name from sys_user_role sur inner join sys_role r on sur.role_id=r.id
+    where sur.user_id=#{userId}
   </select>
 
 </mapper>
