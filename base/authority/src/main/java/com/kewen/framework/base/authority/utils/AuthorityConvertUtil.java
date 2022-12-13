@@ -9,7 +9,7 @@ import com.kewen.framework.base.common.model.UserDetail;
 import com.kewen.framework.base.authority.model.Authority;
 import com.kewen.framework.base.authority.model.AuthorityObject;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -40,6 +40,32 @@ public class AuthorityConvertUtil {
         Optional.ofNullable(userDetail.getRoles()).ifPresent(d-> d.forEach(r -> set.add(to(r))));
         Optional.ofNullable(userDetail.getPermissions()).ifPresent(d-> d.forEach(r -> set.add(to(r))));
         return set;
+    }
+
+    /**
+     * 将权限对象转换为权限字符串列表
+     * @param authorityObject
+     * @return
+     */
+    public static List<Authority> to(AuthorityObject authorityObject){
+        ArrayList<Authority> authorities = new ArrayList<>();
+        Collection<User> users = authorityObject.getUsers();
+        if (!org.springframework.util.CollectionUtils.isEmpty(users)){
+            authorities.addAll(users.stream().map(AuthorityConvertUtil::to).collect(Collectors.toList()));
+        }
+        Collection<Dept> depts = authorityObject.getDepts();
+        if (!org.springframework.util.CollectionUtils.isEmpty(users)){
+            authorities.addAll(depts.stream().map(AuthorityConvertUtil::to).collect(Collectors.toList()));
+        }
+        Collection<Role> roles = authorityObject.getRoles();
+        if (!org.springframework.util.CollectionUtils.isEmpty(roles)){
+            authorities.addAll(roles.stream().map(AuthorityConvertUtil::to).collect(Collectors.toList()));
+        }
+        Collection<Position> positions = authorityObject.getPositions();
+        if (!org.springframework.util.CollectionUtils.isEmpty(positions)){
+            authorities.addAll(positions.stream().map(AuthorityConvertUtil::to).collect(Collectors.toList()));
+        }
+        return authorities;
     }
 
 
@@ -82,76 +108,42 @@ public class AuthorityConvertUtil {
         Collection<Permission> permissions=new ArrayList<>();
         for (Authority auth : auths) {
             String authority = auth.getAuthority();
+            String description = auth.getDescription();
             String[] split = authority.split(SPLIT);
+            String[] splitDescription = description.split(SPLIT);
             String type = split[0];
             switch (type){
                 case USER_CODE:
-                    users.add(new User(Long.valueOf(split[1]),split[2]));
+                    users.add(new User(Long.valueOf(split[1]),splitDescription[1]));
                     break;
                 case DEPT_CODE:
-                    depts.add(new Dept(Long.valueOf(split[1]),split[2]));
+                    depts.add(new Dept(Long.valueOf(split[1]),splitDescription[1]));
+                    break;
                 case POSITION_CODE:
-                    positions.add( new Position(Long.valueOf(split[1]),split[2]));
+                    positions.add(new Position(Long.valueOf(split[1]),splitDescription[1]));
+                    break;
                 case ROLE_CODE:
-                    roles.add(new Role(Long.valueOf(split[1]),split[2]));
+                    roles.add(new Role(Long.valueOf(split[1]),splitDescription[1]));
+                    break;
                 case PERMISSION_CODE:
-                    permissions.add(new Permission(Long.valueOf(split[1]),split[2]));
+                    permissions.add(new Permission(Long.valueOf(split[1]),splitDescription[1]));
+                    break;
             }
         }
         AuthorityObject object = new AuthorityObject();
-        if (!CollectionUtils.isEmpty(users)){
+        if (!org.springframework.util.CollectionUtils.isEmpty(users)){
             object.setUsers(users);
         }
-        if (!CollectionUtils.isEmpty(depts)){
+        if (!org.springframework.util.CollectionUtils.isEmpty(depts)){
             object.setDepts(depts);
         }
-        if (!CollectionUtils.isEmpty(positions)){
+        if (!org.springframework.util.CollectionUtils.isEmpty(positions)){
             object.setPositions(positions);
         }
         if (!CollectionUtils.isEmpty(roles)){
             object.setRoles(roles);
         }
-        if (!CollectionUtils.isEmpty(permissions)){
-            object.setPermissions(permissions);
-        }
         return object;
     }
-
-    /**
-     * 转换为实体对象
-     * @param auth
-     * @param tClass
-     * @param <T>
-     * @return
-     */
-    private static <T> T parse(Authority auth,Class<T> tClass){
-        String authority = auth.getAuthority();
-        String[] split = authority.split(SPLIT);
-        String type = split[0];
-        try {
-            if (User.class.isAssignableFrom(tClass) && USER_CODE.equals(type)){
-                return (T) new User(Long.valueOf(split[1]),split[2]);
-            } else if (Dept.class.isAssignableFrom(tClass) && DEPT_CODE.equals(type)){
-                return (T) new Dept(Long.valueOf(split[1]),split[2]);
-            } else if (Position.class.isAssignableFrom(tClass) && POSITION_CODE.equals(type)){
-                return (T) new Position(Long.valueOf(split[1]),split[2]);
-            }else if (Role.class.isAssignableFrom(tClass) && ROLE_CODE.equals(type)){
-                return (T) new Role(Long.valueOf(split[1]),split[2]);
-            }else if (Permission.class.isAssignableFrom(tClass) && PERMISSION_CODE.equals(type)){
-                return (T) new Permission(Long.valueOf(split[1]),split[2]);
-            }
-            throw new ClassCastException();
-        } catch (Exception e) {
-            String message = String.format("对象装换异常，auth: %s ，Class：%s ", auth, tClass.getName());
-            log.error(message,e);
-            throw new ClassCastException(message);
-        }
-
-    }
-
-
-
-
-
 
 }

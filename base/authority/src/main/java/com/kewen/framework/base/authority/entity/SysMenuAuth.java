@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -23,6 +25,7 @@ import lombok.experimental.Accessors;
 @Setter
 @Accessors(chain = true)
 @TableName("sys_menu_auth")
+@Builder
 public class SysMenuAuth extends Model<SysMenuAuth> {
 
     private static final long serialVersionUID = 1L;

@@ -19,7 +19,7 @@ public class MenuResp extends MenuRespBase implements TreeUtil.TreeBase<MenuResp
 
     private MenuRespBase parent;
 
-    private List<SysMenuAuth> auths;
+    private AuthorityObject authority;
 
     private List<MenuResp> subs;
 
