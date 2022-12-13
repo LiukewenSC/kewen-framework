@@ -53,22 +53,4 @@ public class SysUserRoleController {
         SysUserRole entity = sysUserRoleService.getById(id);
         return Result.success(entity);
     }
-
-    @GetMapping(value = "/pageQuery")
-    public Result pageQuery(
-            @RequestParam(defaultValue = "1") Integer pageNo,
-            @RequestParam(defaultValue = "10") Integer pageSize,
-            @ModelAttribute SysUserRole queryModel) {
-        Page<SysUserRole> page = sysUserRoleService.pageQuery(pageNo, pageSize, queryModel);
-        return Result.success(page);
-    }
-
-    @GetMapping(value = "/findList")
-    public Result findList(@ModelAttribute SysUserRole queryModel) {
-
-        List<SysUserRole> list = sysUserRoleService.findList(queryModel);
-
-        return Result.success(list);
-    }
-
 }

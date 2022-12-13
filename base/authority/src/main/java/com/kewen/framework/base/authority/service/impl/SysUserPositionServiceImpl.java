@@ -7,9 +7,11 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.kewen.framework.base.common.model.Position;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 /**
  * <p>
@@ -23,19 +25,10 @@ import java.util.List;
 @Transactional(rollbackFor = Exception.class)
 public class SysUserPositionServiceImpl extends ServiceImpl<SysUserPositionMapper, SysUserPosition> implements SysUserPositionService {
 
-    @Override
-    public Page<SysUserPosition> pageQuery(Integer pageNo, Integer pageSize, SysUserPosition queryModel) {
-        Page<SysUserPosition> page = new Page<>();
-        Wrapper<SysUserPosition> wrapper = new LambdaQueryWrapper<SysUserPosition>()
-                .orderByDesc(SysUserPosition::getUpdateTime);
-        return this.page(page,wrapper);
-    }
 
     @Override
-    public List<SysUserPosition> findList(SysUserPosition queryModel) {
-        Wrapper<SysUserPosition> wrapper = new LambdaQueryWrapper<SysUserPosition>()
-                .orderByDesc(SysUserPosition::getUpdateTime);
-        return this.list(wrapper);
+    public List<Position> listUserPosition(Long userId) {
+        List<Position> positions = baseMapper.listUserPosition(userId);
+        return positions==null? Collections.emptyList():positions;
     }
-
 }

@@ -3,6 +3,7 @@ package com.kewen.framework.base.authority.service;
 import com.kewen.framework.base.authority.entity.SysUserPosition;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.kewen.framework.base.common.model.Position;
 
 
 import java.util.List;
@@ -18,19 +19,5 @@ import java.util.List;
  */
 public interface SysUserPositionService extends IService<SysUserPosition> {
 
-        /**
-         * 分页查询
-         * @param pageNo 页数
-         * @param pageSize 页面大小
-         * @param queryModel 查询参数
-         * @return Page<SysUserPosition>
-         */
-        Page<SysUserPosition> pageQuery(Integer pageNo, Integer pageSize, SysUserPosition queryModel);
-
-        /**
-         * 列表查询
-         * @param queryModel 查询参数
-         * @return List<SysUserPosition>
-         */
-        List<SysUserPosition> findList(SysUserPosition queryModel);
+    List<Position> listUserPosition(Long userId);
 }

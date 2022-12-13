@@ -54,21 +54,6 @@ public class SysUserPositionController {
         return Result.success(entity);
     }
 
-    @GetMapping(value = "/pageQuery")
-    public Result pageQuery(
-            @RequestParam(defaultValue = "1") Integer pageNo,
-            @RequestParam(defaultValue = "10") Integer pageSize,
-            @ModelAttribute SysUserPosition queryModel) {
-        Page<SysUserPosition> page = sysUserPositionService.pageQuery(pageNo, pageSize, queryModel);
-        return Result.success(page);
-    }
 
-    @GetMapping(value = "/findList")
-    public Result findList(@ModelAttribute SysUserPosition queryModel) {
-
-        List<SysUserPosition> list = sysUserPositionService.findList(queryModel);
-
-        return Result.success(list);
-    }
 
 }

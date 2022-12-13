@@ -7,9 +7,11 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.kewen.framework.base.common.model.Role;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 /**
  * <p>
@@ -24,18 +26,8 @@ import java.util.List;
 public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUserRole> implements SysUserRoleService {
 
     @Override
-    public Page<SysUserRole> pageQuery(Integer pageNo, Integer pageSize, SysUserRole queryModel) {
-        Page<SysUserRole> page = new Page<>();
-        Wrapper<SysUserRole> wrapper = new LambdaQueryWrapper<SysUserRole>()
-                .orderByDesc(SysUserRole::getUpdateTime);
-        return this.page(page,wrapper);
+    public List<Role> listUserRole(Long userId) {
+        List<Role> roles = baseMapper.listUserRole(userId);
+        return roles==null? Collections.emptyList():roles;
     }
-
-    @Override
-    public List<SysUserRole> findList(SysUserRole queryModel) {
-        Wrapper<SysUserRole> wrapper = new LambdaQueryWrapper<SysUserRole>()
-                .orderByDesc(SysUserRole::getUpdateTime);
-        return this.list(wrapper);
-    }
-
 }
