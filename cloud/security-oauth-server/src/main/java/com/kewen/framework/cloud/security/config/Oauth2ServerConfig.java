@@ -102,8 +102,7 @@ public class Oauth2ServerConfig implements AuthorizationServerConfigurer {
                 .secret(passwordEncoder.encode("456"))
                 .and()
                 .withClient("client1")
-                //.secret(passwordEncoder.encode("secret1"))
-                .secret("secret1")
+                .secret(passwordEncoder.encode("secret1"))
                 //自动允许
                 .autoApprove(true)
                 .authorizedGrantTypes("authorization_code", "refresh_token")
