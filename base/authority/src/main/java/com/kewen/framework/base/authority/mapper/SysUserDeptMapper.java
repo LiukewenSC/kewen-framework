@@ -16,5 +16,5 @@ import java.util.List;
  */
 public interface SysUserDeptMapper extends BaseMapper<SysUserDept> {
 
-    List<DeptPrimary> listUserDept(Long userId);
+    List<DeptPrimary> listUserDept(Integer userId);
 }

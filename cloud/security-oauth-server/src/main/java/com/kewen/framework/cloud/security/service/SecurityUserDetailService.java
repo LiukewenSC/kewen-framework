@@ -57,7 +57,7 @@ public class SecurityUserDetailService implements UserDetailsService {
                 .authorities(AuthorityConvertUtil.parseCurrentUser(userDetail))
                 .build();
     }
-    private UserDetail fetchUserDetail( Long userId,String userName) {
+    private UserDetail fetchUserDetail( Integer userId,String userName) {
         //查询机构
         UserDept userDept = userDeptService.getUserDept(userId);
 
@@ -68,7 +68,7 @@ public class SecurityUserDetailService implements UserDetailsService {
         List<Role> roles = userRoleService.listUserRole(userId);
 
         //查询权限
-        List<Long> roleIds = roles.stream().map(Role::getId).collect(Collectors.toList());
+        List<Integer> roleIds = roles.stream().map(Role::getId).collect(Collectors.toList());
         List<Permission> permissions = null;
         if (!CollectionUtils.isEmpty(roleIds)) {
             //permissions = rolePermissionService.listRolePosition(roleIds);

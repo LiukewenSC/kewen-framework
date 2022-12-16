@@ -27,7 +27,7 @@ public class SysUserPositionServiceImpl extends ServiceImpl<SysUserPositionMappe
 
 
     @Override
-    public List<Position> listUserPosition(Long userId) {
+    public List<Position> listUserPosition(Integer userId) {
         List<Position> positions = baseMapper.listUserPosition(userId);
         return positions==null? Collections.emptyList():positions;
     }

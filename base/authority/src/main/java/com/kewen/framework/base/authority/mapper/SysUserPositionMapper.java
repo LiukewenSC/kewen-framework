@@ -21,5 +21,5 @@ public interface SysUserPositionMapper extends BaseMapper<SysUserPosition> {
      * @param userId
      * @return
      */
-    List<Position> listUserPosition(@Param("userId") Long userId);
+    List<Position> listUserPosition(@Param("userId") Integer userId);
 }
