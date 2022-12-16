@@ -106,13 +106,13 @@ public class LoginServiceImpl implements LoginService {
         //查询角色
         List<Role> roles = null;
 
-        List<SysUserRole> roleids = userRoleService.list(
+        List<SysUserRole> userRoles = userRoleService.list(
                 new LambdaQueryWrapper<SysUserRole>()
                         .eq(SysUserRole::getUserId, userId)
         );
-        if (CollectionUtils.isNotEmpty(roleids)){
+        if (CollectionUtils.isNotEmpty(userRoles)){
             List<SysRole> list = roleService.list(
-                    new LambdaQueryWrapper<SysRole>().in(SysRole::getId, roleids)
+                    new LambdaQueryWrapper<SysRole>().in(SysRole::getId, userRoles.stream().map(SysUserRole::getRoleId).collect(Collectors.toList()))
             );
             if (CollectionUtils.isNotEmpty(list)){
                 roles=list.stream().map(r->new Role(r.getId(),r.getName())).collect(Collectors.toList());
