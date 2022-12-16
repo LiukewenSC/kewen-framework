@@ -2,6 +2,7 @@ package com.kewen.framework.cloud.security.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -9,6 +10,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 /**
  * @author kewen
  * @descrpition
@@ -16,10 +19,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  */
 @Configuration
 @EnableWebSecurity
+@Order(1)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     UserDetailsService userDetailsService;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -30,12 +37,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
                 .withUser("sang")
-                .password(new BCryptPasswordEncoder().encode("123"))
+                .password(passwordEncoder.encode("123"))
                 .roles("admin")
                 .authorities("s1","s2")
                 .and()
                 .withUser("javaboy")
-                .password(new BCryptPasswordEncoder().encode("123"))
+                .password(passwordEncoder.encode("123"))
                 .roles("user");
     }
 
