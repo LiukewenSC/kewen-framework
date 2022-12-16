@@ -1,76 +1,51 @@
 package com.kewen.framework.cloud.security.config;
 
-import com.kewen.framework.base.common.model.Result;
-import com.kewen.framework.base.common.utils.BeanUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 /**
  * @author kewen
  * @descrpition
  * @since 2022-12-07 15:58
  */
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     UserDetailsService userDetailsService;
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.formLogin()
-                .usernameParameter("username")
-                .passwordParameter("password")
-                .loginProcessingUrl("/login")
-                .failureHandler((httpServletRequest, httpServletResponse, e) -> {
-                            httpServletResponse.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-                            httpServletResponse.getWriter().write(
-                                    BeanUtil.toJsonString(Result.failed(e.getMessage()))
-                            );
-                        }
-                )
-                .successHandler((httpServletRequest, httpServletResponse, authentication) -> {
-                            httpServletResponse.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-                            httpServletResponse.getWriter().write(
-                                    BeanUtil.toJsonString(Result.success(authentication))
-                            );
-                        }
-                ).and()
-            .exceptionHandling()
-                .authenticationEntryPoint((request, response, authException) -> {
-                    response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-                    response.getWriter().write(
-                            BeanUtil.toJsonString(Result.failed(authException.getMessage()))
-                    );
-                }).and()
-            .csrf().disable()
-            .cors().disable()
-        ;
-        //super.configure(http);
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/login.html", "/css/**", "/js/**", "/images/**");
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        super.configure(auth);
+        auth.inMemoryAuthentication()
+                .withUser("sang")
+                .password(new BCryptPasswordEncoder().encode("123"))
+                .roles("admin")
+                .authorities("s1","s2")
+                .and()
+                .withUser("javaboy")
+                .password(new BCryptPasswordEncoder().encode("123"))
+                .roles("user");
     }
 
     @Override
-    protected UserDetailsService userDetailsService() {
-        return userDetailsService;
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+                .requestMatchers()
+                .antMatchers("/login").antMatchers("/oauth/authorize").and()
+                .authorizeRequests().anyRequest().authenticated().and()
+                //.formLogin().loginProcessingUrl("/login").loginPage("/login.html").and()
+                .formLogin().and().csrf().disable();
     }
 }
