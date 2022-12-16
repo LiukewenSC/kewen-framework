@@ -2,6 +2,7 @@ package com.kewen.framework.sample.controller;
 
 import com.kewen.framework.base.common.model.Result;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class TestController {
 
+    @Value("${kewen.framework.cloud.eureka.server.port}")
+    String a;
     @RequestMapping("/test")
     public Result<String> test(){
         log.info("测试 hello world ");
