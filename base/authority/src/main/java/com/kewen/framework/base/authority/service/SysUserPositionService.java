@@ -19,5 +19,5 @@ import java.util.List;
  */
 public interface SysUserPositionService extends IService<SysUserPosition> {
 
-    List<Position> listUserPosition(Long userId);
+    List<Position> listUserPosition(Integer userId);
 }

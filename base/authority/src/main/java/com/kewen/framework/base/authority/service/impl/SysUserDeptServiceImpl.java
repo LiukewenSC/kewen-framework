@@ -45,7 +45,7 @@ public class SysUserDeptServiceImpl extends ServiceImpl<SysUserDeptMapper, SysUs
     }
 
     @Override
-    public UserDept getUserDept(Long userId) {
+    public UserDept getUserDept(Integer userId) {
         List<DeptPrimary> depts = baseMapper.listUserDept(userId);
 
         if (depts==null){

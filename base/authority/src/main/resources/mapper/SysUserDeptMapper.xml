@@ -18,7 +18,7 @@
     </sql>
     <select id="listUserDept" resultType="com.kewen.framework.base.common.model.DeptPrimary">
         select d.id,d.name,ud.is_primary from sys_user_dept ud inner join sys_dept d on ud.dept_id= d.id
-        where ud.user_id=#{userId,jdbcType=INTEGER}
+        where ud.user_id=#{userId}
   </select>
 
 </mapper>

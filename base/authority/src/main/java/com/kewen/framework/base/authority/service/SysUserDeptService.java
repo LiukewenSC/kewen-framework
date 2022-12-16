@@ -35,5 +35,5 @@ public interface SysUserDeptService extends IService<SysUserDept> {
      */
     List<SysUserDept> findList(SysUserDept queryModel);
 
-    UserDept getUserDept(Long userId);
+    UserDept getUserDept(Integer userId);
 }

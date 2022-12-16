@@ -26,7 +26,7 @@ import java.util.List;
 public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUserRole> implements SysUserRoleService {
 
     @Override
-    public List<Role> listUserRole(Long userId) {
+    public List<Role> listUserRole(Integer userId) {
         List<Role> roles = baseMapper.listUserRole(userId);
         return roles==null? Collections.emptyList():roles;
     }
