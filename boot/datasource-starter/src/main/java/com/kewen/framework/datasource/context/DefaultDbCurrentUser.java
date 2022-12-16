@@ -13,7 +13,7 @@ import com.kewen.framework.base.common.model.IUser;
 public class DefaultDbCurrentUser implements DbCurrentUser {
 
     @Override
-    public Long getUserId() {
+    public Integer getUserId() {
         IUser iUser = UserContext.get();
         return iUser == null ? null : iUser.getUserId();
     }
