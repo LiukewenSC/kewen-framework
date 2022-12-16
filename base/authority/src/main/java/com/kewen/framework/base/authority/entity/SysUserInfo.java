@@ -31,13 +31,13 @@ public class SysUserInfo extends Model<SysUserInfo> {
      * 主键id
      */
       @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+    private Integer id;
 
     /**
      * 用户id
      */
     @TableField("user_id")
-    private Long userId;
+    private Integer userId;
 
     /**
      * 用户昵称

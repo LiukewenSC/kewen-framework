@@ -31,19 +31,19 @@ public class SysGroupRole extends Model<SysGroupRole> {
      * 主键id
      */
       @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+    private Integer id;
 
     /**
      * 角色组id
      */
     @TableField("group_id")
-    private Long groupId;
+    private Integer groupId;
 
     /**
      * 角色id
      */
     @TableField("role_id")
-    private Long roleId;
+    private Integer roleId;
 
     /**
      * 创建时间

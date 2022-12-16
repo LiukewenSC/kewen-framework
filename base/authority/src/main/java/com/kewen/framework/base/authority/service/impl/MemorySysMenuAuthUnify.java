@@ -68,7 +68,7 @@ public class MemorySysMenuAuthUnify implements SysMenuAuthUnify {
     @Override
     public List<MenuResp> getMenuTree() {
         List<SysMenu> sysMenus = getSysMenus();
-        Map<Long, List<SysMenuAuth>> authByMenuMap = getSysMenuAuths().stream()
+        Map<Integer, List<SysMenuAuth>> authByMenuMap = getSysMenuAuths().stream()
                 .collect(Collectors.groupingBy(SysMenuAuth::getMenuId));
         List<MenuResp> collect = sysMenus.stream()
                 .map(l -> BeanUtil.toBean(l, MenuResp.class))
@@ -108,12 +108,12 @@ public class MemorySysMenuAuthUnify implements SysMenuAuthUnify {
     }
 
     @Override
-    public void editMenuAuthorities(Long menuId, AuthorityObject authority) {
+    public void editMenuAuthorities(Integer menuId, AuthorityObject authority) {
         menuAuthService.editMenuAuthorities(menuId, authority);
     }
 
     @Override
-    public void editBusinessAuthority(Long businessId,String module,String operate, AuthorityObject authority) {
+    public void editBusinessAuthority(Integer businessId,String module,String operate, AuthorityObject authority) {
         applicationAuthService.editBusinessAuthority(businessId,module,operate,authority);
     }
 
@@ -162,13 +162,13 @@ public class MemorySysMenuAuthUnify implements SysMenuAuthUnify {
     private boolean hasMenuAuth(Collection<String> authorities, SysMenu sysMenu){
         //基于自己的权限
         if (MenuAuthType.SELF==sysMenu.getAuthType()){
-            Long menuId = sysMenu.getId();
+            Integer menuId = sysMenu.getId();
             return getSysMenuAuths().stream()
                     .filter(a -> a.getMenuId().equals(menuId))
                     .anyMatch(a -> authorities.contains(a.getAuthority()));
         } else {
             //基于父菜单的权限
-            Long parentId = sysMenu.getParentId();
+            Integer parentId = sysMenu.getParentId();
             Optional<SysMenu> first = getSysMenus().stream().filter(m -> m.getId().equals(parentId)).findFirst();
             if (!first.isPresent()){
                 //已经到顶了，找不到 top对应的parent的菜单

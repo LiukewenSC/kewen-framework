@@ -34,13 +34,13 @@ public class SysMenuAuth extends Model<SysMenuAuth> {
      * 主键id
      */
       @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+    private Integer id;
 
     /**
      * 菜单id
      */
     @TableField("menu_id")
-    private Long menuId;
+    private Integer menuId;
 
     /**
      * 权限字符串

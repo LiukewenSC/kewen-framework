@@ -31,25 +31,25 @@ public class SysUserDept extends Model<SysUserDept> {
      * 主键
      */
       @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+    private Integer id;
 
     /**
      * 用户id
      */
     @TableField("user_id")
-    private Long userId;
+    private Integer userId;
 
     /**
      * 部门id
      */
     @TableField("dept_id")
-    private Long deptId;
+    private Integer deptId;
 
     /**
      * 是否主要归属部门 0-非主要部门 1-主要部门
      */
     @TableField("is_primary")
-    private Integer isPrimary;
+    private Boolean isPrimary;
 
     /**
      * 创建时间

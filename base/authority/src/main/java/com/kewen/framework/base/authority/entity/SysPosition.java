@@ -31,7 +31,7 @@ public class SysPosition extends Model<SysPosition> {
      * 岗位id
      */
       @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+    private Integer id;
 
     /**
      * 岗位名

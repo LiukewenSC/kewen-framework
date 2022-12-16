@@ -84,7 +84,7 @@ public class LoginServiceImpl implements LoginService {
         return loginResp;
     }
 
-    private UserDetail fetchUserDetail( Long userId,String userName) {
+    private UserDetail fetchUserDetail( Integer userId,String userName) {
         //查询机构
         SysUserDept sysUserDept = userDeptService.getOne(
                 new LambdaQueryWrapper<SysUserDept>()

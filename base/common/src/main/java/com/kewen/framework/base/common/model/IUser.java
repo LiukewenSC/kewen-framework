@@ -6,6 +6,6 @@ package com.kewen.framework.base.common.model;
  * @since 2022-12-05 16:26
  */
 public interface IUser {
-    Long getUserId();
+    Integer getUserId();
     String getUserName();
 }

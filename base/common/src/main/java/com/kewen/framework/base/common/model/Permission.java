@@ -17,7 +17,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Permission {
-    protected Long id;
+    protected Integer id;
     protected String name;
 
     @Override

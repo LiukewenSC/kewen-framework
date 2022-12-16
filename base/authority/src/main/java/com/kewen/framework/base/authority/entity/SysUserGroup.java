@@ -31,19 +31,19 @@ public class SysUserGroup extends Model<SysUserGroup> {
      * 主键id
      */
       @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+    private Integer id;
 
     /**
      * 用户id
      */
     @TableField("user_id")
-    private Long userId;
+    private Integer userId;
 
     /**
      * 角色组id
      */
     @TableField("group_id")
-    private Long groupId;
+    private Integer groupId;
 
     /**
      * 创建时间

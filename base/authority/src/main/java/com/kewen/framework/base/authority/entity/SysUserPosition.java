@@ -31,19 +31,19 @@ public class SysUserPosition extends Model<SysUserPosition> {
      * 主键
      */
       @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+    private Integer id;
 
     /**
      * 用户id
      */
     @TableField("user_id")
-    private Long userId;
+    private Integer userId;
 
     /**
      * 岗位id
      */
     @TableField("position_id")
-    private Long positionId;
+    private Integer positionId;
 
     /**
      * 创建时间

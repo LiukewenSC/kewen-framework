@@ -1,8 +1,10 @@
 package com.kewen.framework.base.common.model;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
@@ -17,6 +19,8 @@ import java.util.List;
  */
 @Builder
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserDetail {
     protected User user;
     protected UserDept dept;
