@@ -31,7 +31,7 @@ public class SysRole extends Model<SysRole> {
      * 角色id
      */
       @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+    private Integer id;
 
     /**
      * 角色名

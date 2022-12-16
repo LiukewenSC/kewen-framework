@@ -31,19 +31,19 @@ public class SysRolePermission extends Model<SysRolePermission> {
      * 主键id
      */
       @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+    private Integer id;
 
     /**
      * 角色id
      */
     @TableField("role_id")
-    private Long roleId;
+    private Integer roleId;
 
     /**
      * 权限id
      */
     @TableField("permission_id")
-    private Long permissionId;
+    private Integer permissionId;
 
     /**
      * 创建时间

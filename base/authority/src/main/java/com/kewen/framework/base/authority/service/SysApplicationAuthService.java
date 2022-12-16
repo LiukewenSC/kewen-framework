@@ -40,5 +40,5 @@ public interface SysApplicationAuthService extends IService<SysApplicationAuth> 
      */
     List<SysApplicationAuth> findList(SysApplicationAuth queryModel);
 
-    void editBusinessAuthority(Long businessId, String module, String operate, AuthorityObject authority);
+    void editBusinessAuthority(Integer businessId, String module, String operate, AuthorityObject authority);
 }

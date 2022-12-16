@@ -17,7 +17,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 public class User implements IUser {
-    protected Long id;
+    protected Integer id;
     protected String name;
 
     @Override
@@ -34,7 +34,7 @@ public class User implements IUser {
     }
 
     @Override
-    public Long getUserId() {
+    public Integer getUserId() {
         return id;
     }
 

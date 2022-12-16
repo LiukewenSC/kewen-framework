@@ -52,7 +52,7 @@ public class SysApplicationAuthServiceImpl extends ServiceImpl<SysApplicationAut
     }
 
     @Override
-    public void editBusinessAuthority(Long businessId, String module, String operate, AuthorityObject authority) {
+    public void editBusinessAuthority(Integer businessId, String module, String operate, AuthorityObject authority) {
         List<Authority> to = AuthorityConvertUtil.to(authority);
         //移除原有的
         remove(

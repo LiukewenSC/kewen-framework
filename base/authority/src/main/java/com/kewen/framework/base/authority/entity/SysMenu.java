@@ -34,7 +34,7 @@ public class SysMenu extends Model<SysMenu> {
      * 主键id
      */
       @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+    private Integer id;
 
     /**
      * 菜单名
@@ -46,7 +46,7 @@ public class SysMenu extends Model<SysMenu> {
      * 父id
      */
     @TableField("parent_id")
-    private Long parentId;
+    private Integer parentId;
 
     /**
      * 链接或路径

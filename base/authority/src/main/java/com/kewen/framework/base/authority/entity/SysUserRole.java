@@ -31,19 +31,19 @@ public class SysUserRole extends Model<SysUserRole> {
      * 主键id
      */
       @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+    private Integer id;
 
     /**
      * 用户id
      */
     @TableField("user_id")
-    private Long userId;
+    private Integer userId;
 
     /**
      * 角色id
      */
     @TableField("role_id")
-    private Long roleId;
+    private Integer roleId;
 
     /**
      * 创建时间

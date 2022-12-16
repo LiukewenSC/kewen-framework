@@ -34,7 +34,7 @@ public class SysApplicationAuth extends Model<SysApplicationAuth> {
      * 主键ID
      */
       @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+    private Integer id;
 
     /**
      * 模块
@@ -46,7 +46,7 @@ public class SysApplicationAuth extends Model<SysApplicationAuth> {
      * 业务ID 应用中业务的主键ID
      */
     @TableField("business_id")
-    private Long businessId;
+    private Integer businessId;
 
     /**
      * 操作类型 unified modify delete 等,应用可以自定义操作名称

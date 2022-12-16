@@ -45,7 +45,7 @@ public class SysMenuAuthServiceImpl extends ServiceImpl<SysMenuAuthMapper, SysMe
     }
 
     @Override
-    public void editMenuAuthorities(Long menuId, AuthorityObject authorityObject) {
+    public void editMenuAuthorities(Integer menuId, AuthorityObject authorityObject) {
         List<Authority> to = AuthorityConvertUtil.to(authorityObject);
         //移除原有的
         remove(

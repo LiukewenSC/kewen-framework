@@ -40,5 +40,5 @@ public interface SysMenuAuthService extends IService<SysMenuAuth> {
      * @param menuId 菜单id
      * @param authorityObject 权限对象
      */
-    void editMenuAuthorities(Long menuId, AuthorityObject authorityObject);
+    void editMenuAuthorities(Integer menuId, AuthorityObject authorityObject);
 }

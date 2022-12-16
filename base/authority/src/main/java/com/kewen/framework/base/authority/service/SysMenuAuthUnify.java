@@ -43,7 +43,7 @@ public interface SysMenuAuthUnify {
      * @param menuId 菜单id
      * @param authority 权限结构
      */
-    void editMenuAuthorities(Long menuId, AuthorityObject authority);
+    void editMenuAuthorities(Integer menuId, AuthorityObject authority);
 
     /**
      * 编辑业务数据权限
@@ -52,5 +52,5 @@ public interface SysMenuAuthUnify {
      * @param operate 操作
      * @param authority 权限结构
      */
-    void editBusinessAuthority(Long businessId,String module,String operate, AuthorityObject authority);
+    void editBusinessAuthority(Integer businessId,String module,String operate, AuthorityObject authority);
 }

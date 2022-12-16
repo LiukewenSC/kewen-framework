@@ -31,7 +31,7 @@ public class SysDept extends Model<SysDept> {
      * 部门id
      */
       @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+    private Integer id;
 
     /**
      * 部门名
@@ -43,7 +43,7 @@ public class SysDept extends Model<SysDept> {
      * 部门，如果部门为0 则代表根部门
      */
     @TableField("parent_id")
-    private Long parentId;
+    private Integer parentId;
 
     /**
      * 创建时间

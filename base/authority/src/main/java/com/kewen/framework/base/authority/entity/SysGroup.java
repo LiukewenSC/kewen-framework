@@ -31,7 +31,7 @@ public class SysGroup extends Model<SysGroup> {
      * 用户组id
      */
       @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+    private Integer id;
 
     /**
      * 用户组名
