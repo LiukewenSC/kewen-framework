@@ -16,7 +16,7 @@
         <module>eureka-server</module>
         <module>eureka-client-starter</module>
         <module>gateway</module>
-        <module>security-oauth-server</module>
+        <module>security-oauth-sso-server</module>
         <module>security-oauth-client-starter</module>
     </modules>
 
