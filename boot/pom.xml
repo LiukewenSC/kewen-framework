@@ -16,6 +16,8 @@
         <module>web-boot-starter</module>
         <module>authority-web-boot-starter</module>
         <module>datasource-starter</module>
+        <module>security-oauth-sso-server</module>
+        <module>security-oauth-sso-client-starter</module>
     </modules>
 
 </project>
