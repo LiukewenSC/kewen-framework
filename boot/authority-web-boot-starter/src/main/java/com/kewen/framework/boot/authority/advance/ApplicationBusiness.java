@@ -1,4 +1,4 @@
-package com.kewen.framework.boot.authority.advance.authcheck;
+package com.kewen.framework.boot.authority.advance;
 
 /**
  * @descrpition 关联的信息

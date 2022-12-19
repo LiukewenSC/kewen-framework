@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class MemorySysMenuAuthUnify implements SysMenuAuthUnify {
 
-    private final SysMenuService menuService;
+    private final SysMenuService sysMenuService;
     private final SysMenuAuthService menuAuthService;
     private final SysApplicationAuthService applicationAuthService;
 
@@ -48,8 +48,8 @@ public class MemorySysMenuAuthUnify implements SysMenuAuthUnify {
      */
     private List<SysMenu> sysMenus ;
 
-    public MemorySysMenuAuthUnify(SysMenuService menuService, SysMenuAuthService menuAuthService, SysApplicationAuthService applicationAuthService) {
-        this.menuService = menuService;
+    public MemorySysMenuAuthUnify(SysMenuService sysMenuService, SysMenuAuthService menuAuthService, SysApplicationAuthService applicationAuthService) {
+        this.sysMenuService = sysMenuService;
         this.menuAuthService = menuAuthService;
         this.applicationAuthService = applicationAuthService;
     }
@@ -104,7 +104,7 @@ public class MemorySysMenuAuthUnify implements SysMenuAuthUnify {
 
     @Override
     public void updateMenu(SysMenu sysMenu) {
-        menuService.updateById(sysMenu);
+        sysMenuService.updateById(sysMenu);
     }
 
     @Override
@@ -187,7 +187,7 @@ public class MemorySysMenuAuthUnify implements SysMenuAuthUnify {
         if (this.sysMenus !=null){
             return this.sysMenus;
         }
-        List<SysMenu> sysMenus = menuService.list();
+        List<SysMenu> sysMenus = sysMenuService.list();
         if (sysMenus==null){
             this.sysMenus=Collections.emptyList();
         }

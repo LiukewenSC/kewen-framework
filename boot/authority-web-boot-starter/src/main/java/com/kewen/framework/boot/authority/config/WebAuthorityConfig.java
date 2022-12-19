@@ -45,22 +45,6 @@ public class WebAuthorityConfig implements WebMvcConfigurer {
 
 
 
-    /**
-     * 菜单Service，当菜单的表不是sys_menu时可以自行实现
-     * @return
-     */
-    @Bean
-    @ConditionalOnMissingBean(SysMenuService.class)
-    public SysMenuService sysMenuService(){
-        return new SysMenuServiceImpl();
-    }
-
-    @Bean
-    @ConditionalOnMissingBean(SysApplicationAuthService.class)
-    public SysApplicationAuthService sysApplicationAuthService(){
-        return new SysApplicationAuthServiceImpl();
-    }
-
 
 
 }
