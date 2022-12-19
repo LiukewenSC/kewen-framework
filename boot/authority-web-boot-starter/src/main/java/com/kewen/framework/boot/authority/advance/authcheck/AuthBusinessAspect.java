@@ -3,6 +3,7 @@ package com.kewen.framework.boot.authority.advance.authcheck;
 import com.kewen.framework.base.authority.context.CurrentUserContext;
 import com.kewen.framework.base.authority.service.SysApplicationAuthService;
 import com.kewen.framework.base.common.exception.AuthorizationException;
+import com.kewen.framework.boot.authority.advance.ApplicationBusiness;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
