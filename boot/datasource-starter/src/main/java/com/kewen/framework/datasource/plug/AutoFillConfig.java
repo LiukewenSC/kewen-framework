@@ -8,17 +8,19 @@ import org.apache.ibatis.reflection.MetaObject;
 import java.time.LocalDateTime;
 
 /**
- * 全局填充插件
- *
+ * 全局自动填充插件
+ *      自动填充插件必须在entity上配置对应的 填充申明，如
+ *      @TableField(value = "create_time",fill = FieldFill.INSERT)
+ *      private LocalDateTime createTime;
  * @author liukewen
  * @since 2022/9/1
  */
 @Slf4j
-public class GlobalFillConfig implements MetaObjectHandler {
+public class AutoFillConfig implements MetaObjectHandler {
 
     private final DbCurrentUser dbCurrentUser;
 
-    public GlobalFillConfig(DbCurrentUser dbCurrentUser) {
+    public AutoFillConfig(DbCurrentUser dbCurrentUser) {
         this.dbCurrentUser = dbCurrentUser;
     }
 
