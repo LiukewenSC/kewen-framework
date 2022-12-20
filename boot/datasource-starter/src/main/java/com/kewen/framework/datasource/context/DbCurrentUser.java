@@ -1,8 +1,10 @@
 package com.kewen.framework.datasource.context;
 
+import com.kewen.framework.datasource.plug.AutoFillConfig;
+
 /**
  * 当前登录人上下文  保存数据时自动填充createUserId和createUserName
- * {@link com.kewen.framework.datasource.plug.GlobalFillConfig #insertFill}
+ * {@link AutoFillConfig #insertFill}
  * @author liukewen
  * @since 2022/9/1
  */

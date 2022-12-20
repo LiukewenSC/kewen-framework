@@ -4,7 +4,7 @@ import com.kewen.framework.datasource.context.DbCurrentUser;
 import com.kewen.framework.datasource.context.DbTenant;
 import com.kewen.framework.datasource.context.DefaultDbCurrentUser;
 import com.kewen.framework.datasource.context.DefaultDbTenant;
-import com.kewen.framework.datasource.plug.GlobalFillConfig;
+import com.kewen.framework.datasource.plug.AutoFillConfig;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,8 +28,9 @@ public class DatasourceBeanLoadConfig {
     }
 
     //todo @Bean 自动填充插件待测试，目前会与druid冲突
-    public GlobalFillConfig globalFillConfig(DbCurrentUser dbCurrentUser){
-        return new GlobalFillConfig(dbCurrentUser);
+    @Bean
+    public AutoFillConfig globalFillConfig(DbCurrentUser dbCurrentUser){
+        return new AutoFillConfig(dbCurrentUser);
     }
     @Bean
     @ConditionalOnMissingBean(DbCurrentUser.class)
