@@ -46,9 +46,6 @@ public class CurrentUserContext  {
      */
     public static Collection<Authority> getCurrentUserAuthorities() {
         UserDetail currentUser = USER_CONTEXT.get();
-        if (currentUser==null){
-            return Collections.emptyList();
-        }
         return AuthorityConvertUtil.parseCurrentUser(currentUser);
     }
 

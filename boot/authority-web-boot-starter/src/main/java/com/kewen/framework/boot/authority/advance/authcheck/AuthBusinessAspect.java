@@ -46,9 +46,6 @@ public class AuthBusinessAspect {
         }
         ApplicationBusiness business = (ApplicationBusiness) first.get();
         Collection<String> auths = CurrentUserContext.getCurrentUserAuths();
-        if (CollectionUtils.isEmpty(auths)){
-            throw new AuthorizationException("用户没有权限");
-        }
         boolean hasAuth = applicationAuthService.hasAuth(auths, authAnn.module(), authAnn.operate(), business.getBusinessId());
         if (!hasAuth){
             throw new AuthorizationException("权限校验不通过");

@@ -31,12 +31,6 @@ public class AuthRangeAspect {
     public Object around(ProceedingJoinPoint proceedingJoinPoint, AuthRange authRange) throws Throwable {
 
         Collection<String> auths = CurrentUserContext.getCurrentUserAuths();
-        //从@AuthRange来的请求，但是用户没有权限，没有权限不进行验证
-        if (CollectionUtils.isEmpty(auths)){
-            //没有权限就设置一个默认权限NONE
-            auths= Collections.singletonList(NONE_AUTH);
-            //throw new AuthorizationException("用户没有权限，范围查询为空值");
-        }
         AuthRangeContext.AuthRange selectAuth = new AuthRangeContext.AuthRange()
                 .setModule(authRange.module())
                 .setOperate(authRange.operate())

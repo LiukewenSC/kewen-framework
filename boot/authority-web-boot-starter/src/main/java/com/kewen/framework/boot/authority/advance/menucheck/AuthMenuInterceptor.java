@@ -46,9 +46,6 @@ public class AuthMenuInterceptor implements HandlerInterceptor {
             url= authMenu.url();
         }
         Collection<String> userAuthorities = CurrentUserContext.getCurrentUserAuths();
-        if (CollectionUtils.isEmpty(userAuthorities)){
-            throw new AuthorizationException("验证失败，权限为空");
-        }
         boolean yjt = menuService.hasAuth(
                 userAuthorities,
                 url
