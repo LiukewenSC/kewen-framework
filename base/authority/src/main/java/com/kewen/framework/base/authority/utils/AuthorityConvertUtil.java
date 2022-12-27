@@ -13,6 +13,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
@@ -33,12 +34,28 @@ public class AuthorityConvertUtil {
     private static final String ROLE_PREFIX=ROLE_CODE+SPLIT;
     private static final String PERMISSION_CODE="Pe";
     private static final String PERMISSION_PREFIX=PERMISSION_CODE+SPLIT;
+    private static final String NONE="N"+SPLIT+"NONE";
+    private static final String NONE_DESCRIPTION="N"+SPLIT+"无权限";
+    /**
+     * 无权限的返回对象格式
+     * @return
+     */
+    private static Authority noneAuthority(){
+        return new Authority(NONE,NONE_DESCRIPTION);
+    }
 
+    /**
+     * 解析当前用户的权限
+     * @param userDetail
+     * @return
+     */
     public static Collection<Authority> parseCurrentUser(UserDetail userDetail){
+        if (userDetail ==null){
+            return Collections.singletonList(noneAuthority());
+        }
         HashSet<Authority> set = new HashSet<>();
         Optional.ofNullable(userDetail.getDepts()).ifPresent(d-> d.forEach(r -> set.add(to(r))));
         Optional.ofNullable(userDetail.getRoles()).ifPresent(d-> d.forEach(r -> set.add(to(r))));
-        Optional.ofNullable(userDetail.getPermissions()).ifPresent(d-> d.forEach(r -> set.add(to(r))));
         return set;
     }
 
