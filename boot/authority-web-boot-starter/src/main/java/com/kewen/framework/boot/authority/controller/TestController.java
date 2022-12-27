@@ -1,9 +1,9 @@
 package com.kewen.framework.boot.authority.controller;
 
-import com.kewen.framework.boot.authority.advance.authcheck.AuthBusinessOperate;
-import com.kewen.framework.boot.authority.advance.authcheck.DefaultApplicationBusiness;
-import com.kewen.framework.boot.authority.advance.authedit.AuthEdit;
-import com.kewen.framework.boot.authority.advance.authedit.DefaultAuthEditApplicationBusiness;
+import com.kewen.framework.boot.authority.advance.datacheck.DataCheck;
+import com.kewen.framework.boot.authority.advance.datacheck.DefaultApplicationBusiness;
+import com.kewen.framework.boot.authority.advance.authedit.AuthDataEdit;
+import com.kewen.framework.boot.authority.advance.authedit.DefaultAuthDataEditBusiness;
 import com.kewen.framework.boot.authority.advance.menucheck.AuthMenu;
 import com.kewen.framework.base.common.model.Result;
 import lombok.extern.slf4j.Slf4j;
@@ -46,7 +46,7 @@ public class TestController {
      * @param applicationBusiness
      */
     @RequestMapping("/testBusinessEdit")
-    @AuthBusinessOperate(module = "test")
+    @DataCheck(module = "test")
     public Result testBusinessEdit(@RequestBody DefaultApplicationBusiness applicationBusiness){
         log.info("测试 单条数据的编辑权限");
 
@@ -58,8 +58,8 @@ public class TestController {
      * @param applicationBusiness
      */
     @RequestMapping("/testAuthEdit")
-    @AuthEdit(module = "test")
-    public Result testEditAuthEdit(@RequestBody DefaultAuthEditApplicationBusiness applicationBusiness){
+    @AuthDataEdit(module = "test")
+    public Result testEditAuthEdit(@RequestBody DefaultAuthDataEditBusiness applicationBusiness){
         log.info("测试 权限的编辑");
 
         return Result.success();

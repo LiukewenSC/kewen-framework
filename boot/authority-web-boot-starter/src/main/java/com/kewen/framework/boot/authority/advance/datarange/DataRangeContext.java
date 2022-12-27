@@ -1,4 +1,4 @@
-package com.kewen.framework.boot.authority.advance.authrange;
+package com.kewen.framework.boot.authority.advance.datarange;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -10,7 +10,7 @@ import java.util.Collection;
  * @author kewen
  * @since 2022-11-23 17:10
  */
-public class AuthRangeContext {
+public class DataRangeContext {
 
     private static ThreadLocal<AuthRange> local = new ThreadLocal<>();
 

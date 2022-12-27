@@ -1,4 +1,4 @@
-package com.kewen.framework.boot.authority.advance.authrange;
+package com.kewen.framework.boot.authority.advance.datarange;
 
 
 import com.alibaba.druid.sql.ast.SQLExpr;
@@ -44,7 +44,7 @@ import java.util.Properties;
 @Slf4j
 @Component
 @Intercepts({@Signature(type = StatementHandler.class, method = "prepare", args = {Connection.class, Integer.class})})
-public class AuthRangeInterceptor implements Interceptor {
+public class DataRangeInterceptor implements Interceptor {
 
     @Value("${sys.auth.tableName:sys_application_auth}")
     private String authTableName;
@@ -55,7 +55,7 @@ public class AuthRangeInterceptor implements Interceptor {
 
     /**
      * 所有的sql都会进入此拦截器，需要只校验AuthRangeContext中有数据的，没有数据的说明不是@AuthRange 所拦截的，应当原样输出
-     * AuthRangeContext.get()有数据说明一定是从{@link AuthRange}拦截的，并在{@link AuthRangeAspect}中加入上下文数据且不为空
+     * AuthRangeContext.get()有数据说明一定是从{@link DataRange}拦截的，并在{@link DataRangeAspect}中加入上下文数据且不为空
      * @param invocation
      * @return
      * @throws Throwable
@@ -63,7 +63,7 @@ public class AuthRangeInterceptor implements Interceptor {
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
 
-        AuthRangeContext.AuthRange authRangeContext = AuthRangeContext.get();
+        DataRangeContext.AuthRange authRangeContext = DataRangeContext.get();
         if (authRangeContext==null){
             log.debug("authRangeContext is empty , do not advance sql ");
             return invocation.proceed();
@@ -114,7 +114,7 @@ public class AuthRangeInterceptor implements Interceptor {
         }
         return invocation.proceed();
     }
-    private String parseAuthWhereConditionSQL(AuthRangeContext.AuthRange authContext) {
+    private String parseAuthWhereConditionSQL(DataRangeContext.AuthRange authContext) {
         StringBuilder builder = new StringBuilder();
         for (String authority : authContext.getAuthorities()) {
             builder.append("'").append(authority).append("'").append(",");

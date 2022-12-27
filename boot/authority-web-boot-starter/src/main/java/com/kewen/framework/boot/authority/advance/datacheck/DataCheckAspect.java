@@ -1,9 +1,8 @@
-package com.kewen.framework.boot.authority.advance.authcheck;
+package com.kewen.framework.boot.authority.advance.datacheck;
 
 import com.kewen.framework.base.authority.context.CurrentUserContext;
 import com.kewen.framework.base.authority.service.SysApplicationAuthService;
 import com.kewen.framework.base.common.exception.AuthorizationException;
-import com.kewen.framework.boot.authority.advance.ApplicationBusiness;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
@@ -11,7 +10,6 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -25,16 +23,16 @@ import java.util.Optional;
 @Component
 @Slf4j
 @Aspect
-public class AuthBusinessAspect {
+public class DataCheckAspect {
 
     @Autowired
     private SysApplicationAuthService applicationAuthService;
 
-    @Pointcut("@annotation(com.kewen.framework.boot.authority.advance.authcheck.AuthBusinessOperate)")
+    @Pointcut("@annotation(com.kewen.framework.boot.authority.advance.datacheck.DataCheck)")
     public void pointcut(){}
 
     @Before(value = "pointcut() && @annotation(authAnn)", argNames = "joinPoint,authAnn")
-    public void before(JoinPoint joinPoint, AuthBusinessOperate authAnn){
+    public void before(JoinPoint joinPoint, DataCheck authAnn){
         log.info("校验用户权限，拦截方法:{}",joinPoint.toString());
         Object[] args = joinPoint.getArgs();
         if (args==null){

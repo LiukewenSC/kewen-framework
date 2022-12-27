@@ -7,7 +7,7 @@ import com.kewen.framework.base.authority.model.AuthorityObject;
  * @author kewen
  * @since 2022-12-19 14:40
  */
-public interface AuthEditApplicationBusiness {
+public interface AuthDataEditBusiness {
 
     /**
      * 获取业务ID

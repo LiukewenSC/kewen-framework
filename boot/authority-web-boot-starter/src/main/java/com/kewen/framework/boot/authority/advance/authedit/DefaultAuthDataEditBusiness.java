@@ -9,7 +9,7 @@ import lombok.Data;
  * @since 2022-12-19 14:41
  */
 @Data
-public class DefaultAuthEditApplicationBusiness  implements AuthEditApplicationBusiness {
+public class DefaultAuthDataEditBusiness implements AuthDataEditBusiness {
 
     private Integer id;
     private AuthorityObject authority;
