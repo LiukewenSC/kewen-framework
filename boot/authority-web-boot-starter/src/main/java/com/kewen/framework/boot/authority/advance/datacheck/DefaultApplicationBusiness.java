@@ -1,6 +1,5 @@
-package com.kewen.framework.boot.authority.advance.authcheck;
+package com.kewen.framework.boot.authority.advance.datacheck;
 
-import com.kewen.framework.boot.authority.advance.ApplicationBusiness;
 import lombok.Data;
 
 /**

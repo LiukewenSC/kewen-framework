@@ -23,34 +23,34 @@ import java.util.Optional;
 @Slf4j
 @Component
 @Aspect
-public class AuthEditAspect {
+public class AuthDataEditAspect {
 
     @Autowired
     private SysMenuAuthUnify sysMenuAuthUnify;
 
-    @Pointcut("@annotation(com.kewen.framework.boot.authority.advance.authedit.AuthEdit)")
+    @Pointcut("@annotation(com.kewen.framework.boot.authority.advance.authedit.AuthDataEdit)")
     public void pointcut(){
 
     }
 
-    @Around(value = "pointcut() && @annotation(authEdit)",argNames = "joinPoint,authEdit")
+    @Around(value = "pointcut() && @annotation(authDataEdit)",argNames = "joinPoint,authDataEdit")
     @Transactional
-    public Object around(ProceedingJoinPoint joinPoint,AuthEdit authEdit){
+    public Object around(ProceedingJoinPoint joinPoint, AuthDataEdit authDataEdit){
         log.info("编辑业务权限，拦截方法:{}",joinPoint.toString());
         Object[] args = joinPoint.getArgs();
         if (args==null){
             throw new AuthorizationException("参数不能为空");
         }
-        Optional<Object> first = Arrays.stream(args).filter(a -> a instanceof AuthEditApplicationBusiness).findFirst();
+        Optional<Object> first = Arrays.stream(args).filter(a -> a instanceof AuthDataEditBusiness).findFirst();
         if (!first.isPresent()){
             throw new AuthorizationException("参数没有找到接口 AuthEditApplicationBusiness 实现类");
         }
-        AuthEditApplicationBusiness authEditApplicationBusiness = (AuthEditApplicationBusiness) first.get();
+        AuthDataEditBusiness authDataEditBusiness = (AuthDataEditBusiness) first.get();
 
-        Integer businessId = authEditApplicationBusiness.getBusinessId();
-        AuthorityObject authorityObject = authEditApplicationBusiness.getAuthorityObject();
-        String module = authEdit.module();
-        String operate = authEdit.operate();
+        Integer businessId = authDataEditBusiness.getBusinessId();
+        AuthorityObject authorityObject = authDataEditBusiness.getAuthorityObject();
+        String module = authDataEdit.module();
+        String operate = authDataEdit.operate();
 
         sysMenuAuthUnify.editBusinessAuthority(businessId,module,operate,authorityObject);
 

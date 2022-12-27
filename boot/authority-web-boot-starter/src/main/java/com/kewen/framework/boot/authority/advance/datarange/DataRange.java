@@ -1,4 +1,4 @@
-package com.kewen.framework.boot.authority.advance.authrange;
+package com.kewen.framework.boot.authority.advance.datarange;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -24,7 +24,7 @@ import java.lang.annotation.Target;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface AuthRange {
+public @interface DataRange {
 
     /**
      * 模块

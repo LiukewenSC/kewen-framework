@@ -1,4 +1,4 @@
-package com.kewen.framework.boot.authority.advance.authrange;
+package com.kewen.framework.boot.authority.advance.datarange;
 
 /**
  * 权限匹配方式
