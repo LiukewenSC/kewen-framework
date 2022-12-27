@@ -43,7 +43,7 @@ public class AuthDataEditAspect {
         }
         Optional<Object> first = Arrays.stream(args).filter(a -> a instanceof AuthDataEditBusiness).findFirst();
         if (!first.isPresent()){
-            throw new AuthorizationException("参数没有找到接口 AuthEditApplicationBusiness 实现类");
+            throw new AuthorizationException("参数没有找到接口 AuthDataEditBusiness 实现类");
         }
         AuthDataEditBusiness authDataEditBusiness = (AuthDataEditBusiness) first.get();
 
