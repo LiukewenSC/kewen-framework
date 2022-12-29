@@ -19,7 +19,7 @@ import java.util.Map;
  * @since 2022/9/3
  */
 @Slf4j
-public class RequestLogInterceptor extends OncePerRequestFilter {
+public class RequestLogFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

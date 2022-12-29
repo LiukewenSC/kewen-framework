@@ -1,6 +1,6 @@
 package com.kewen.framework.boot.web.config;
 
-import com.kewen.framework.boot.web.filter.RequestLogInterceptor;
+import com.kewen.framework.boot.web.filter.RequestLogFilter;
 import com.kewen.framework.boot.web.interceptor.tenant.DefaultTenantInterceptor;
 import com.kewen.framework.boot.web.interceptor.trace.TraceInterceptor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -39,7 +39,7 @@ public class WebBeanLoadConfig {
      * @return
      */
     @Bean
-    RequestLogInterceptor requestLogInterceptor(){
-        return new RequestLogInterceptor();
+    RequestLogFilter requestLogFilter(){
+        return new RequestLogFilter();
     }
 }
