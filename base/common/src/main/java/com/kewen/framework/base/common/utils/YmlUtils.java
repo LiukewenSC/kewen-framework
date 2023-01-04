@@ -6,6 +6,7 @@ import org.yaml.snakeyaml.Yaml;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
@@ -29,8 +30,9 @@ public class YmlUtils {
         String[] keys = name.split("\\.");
         InputStream in = null;
         try {
-            File file = ResourceUtils.getFile(filePath);
-            in = new BufferedInputStream(new FileInputStream(file));
+
+            in = getInputStream(filePath);
+
             Yaml props = new Yaml();
             Map map = props.loadAs(in, Map.class);
 
@@ -47,5 +49,18 @@ public class YmlUtils {
                 }
             }
         }
+    }
+    private static InputStream getInputStream(String filePath) throws FileNotFoundException {
+        /*
+        //jdk方式
+        if (filePath.startsWith("classpath:")){
+            filePath=filePath.substring("classpath:".length());
+        }
+        return Thread.currentThread().getContextClassLoader().getResourceAsStream(filePath);
+        */
+
+        //spring方式
+        File file = ResourceUtils.getFile(filePath);
+        return new BufferedInputStream(new FileInputStream(file));
     }
 }

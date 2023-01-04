@@ -1,0 +1,5 @@
+spring:
+  datasource:
+    url: www.baidu.com
+    username: uname
+    password: pword
