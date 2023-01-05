@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "auth.store.type",
+      "description": "权限存储的类型，session、token.",
+      "type": "java.lang.String"
+    }
+  ]
+}
