@@ -15,7 +15,7 @@ public class TestFactoryBean implements FactoryBean<TestService> {
 
     @Override
     public TestService getObject() throws Exception {
-        return null;
+        return new TestService();
     }
 
     @Override

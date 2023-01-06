@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @descrpition 
@@ -21,6 +22,7 @@ public class Test2Service implements InitializingBean {
 
     public Test2Service(ObjectProvider<TestService> testServices) {
         //TestService ifAvailable = testServices.getIfAvailable();
+        List<TestService> collect = testServices.stream().collect(Collectors.toList());
         TestService testServices1 = testServices.orderedStream().findFirst().get();
     }
 
