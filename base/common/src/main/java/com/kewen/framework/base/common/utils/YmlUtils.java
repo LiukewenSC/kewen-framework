@@ -1,8 +1,13 @@
 package com.kewen.framework.base.common.utils;
 
+import com.kewen.framework.base.common.factory.YmlPropertySourceFactory;
+import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.util.ResourceUtils;
 import org.yaml.snakeyaml.Yaml;
 
+import javax.annotation.Resources;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,6 +15,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * @descrpition 
@@ -62,5 +68,27 @@ public class YmlUtils {
         //spring方式
         File file = ResourceUtils.getFile(filePath);
         return new BufferedInputStream(new FileInputStream(file));
+    }
+
+    /**
+     * 将yml文件转换为Properties
+     * @param paths classpath路径
+     * @return
+     */
+    public static Properties parse2Properties(String... paths){
+        Resource[] resources = new Resource[paths.length];
+        for (int i = 0; i < paths.length; i++) {
+            String path=paths[i];
+            if (path.startsWith("classpath:")){
+                path=path.substring("classpath:".length());
+            }
+            resources[i]=new ClassPathResource(path);
+        }
+        return parse2Properties(resources);
+    }
+    public static Properties parse2Properties(Resource... resources){
+        YamlPropertiesFactoryBean bean = new YamlPropertiesFactoryBean();
+        bean.setResources(resources);
+        return bean.getObject();
     }
 }
