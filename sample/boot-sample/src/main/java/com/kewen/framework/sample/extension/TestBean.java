@@ -18,7 +18,7 @@ import javax.annotation.PostConstruct;
  * @since 2023-01-06 9:53
  */
 @Component
-public class TestExtension implements BeanFactoryAware, ApplicationContextAware, InitializingBean, DisposableBean {
+public class TestBean implements BeanFactoryAware, ApplicationContextAware, InitializingBean, DisposableBean {
 
     BeanFactory beanFactory;
 
