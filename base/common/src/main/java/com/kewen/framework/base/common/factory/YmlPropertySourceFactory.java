@@ -1,5 +1,6 @@
 package com.kewen.framework.base.common.factory;
 
+import com.kewen.framework.base.common.utils.YmlUtils;
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
 import org.springframework.core.env.PropertiesPropertySource;
 import org.springframework.core.env.PropertySource;
@@ -21,7 +22,7 @@ public class YmlPropertySourceFactory  extends DefaultPropertySourceFactory {
         if (!resource.getResource().exists()) {
             return new PropertiesPropertySource(sourceName, new Properties());
         } else if (sourceName.endsWith(".yml") || sourceName.endsWith(".yaml")) {
-            Properties propertiesFromYaml = loadYml(resource);
+            Properties propertiesFromYaml = YmlUtils.parse2Properties(resource.getResource());
             return new PropertiesPropertySource(sourceName, propertiesFromYaml);
             // 返回 yaml 属性资源 springboot 方式
             //return new YamlPropertySourceLoader ()
@@ -30,11 +31,5 @@ public class YmlPropertySourceFactory  extends DefaultPropertySourceFactory {
         } else {
             return super.createPropertySource(name, resource);
         }
-    }
-    private Properties loadYml(EncodedResource resource) throws IOException {
-        YamlPropertiesFactoryBean factory = new YamlPropertiesFactoryBean();
-        factory.setResources(resource.getResource());
-        factory.afterPropertiesSet();
-        return factory.getObject();
     }
 }
