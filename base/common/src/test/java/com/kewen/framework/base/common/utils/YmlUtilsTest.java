@@ -12,8 +12,8 @@ public class YmlUtilsTest {
 
     @Test
     public void parse() {
-        Map parse = YmlUtils.parse("classpath:application.yml", "spring.datasource", Map.class);
-        System.out.println(parse);
+        Map map = YmlUtils.parse("classpath:application.yml", "spring.datasource", Map.class);
+        Assert.assertEquals("pword",map.get("password"));
     }
     @Test
     public void parse2Properties(){
