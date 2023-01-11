@@ -1,7 +1,9 @@
 package com.kewen.framework.base.common.utils;
 
 import com.kewen.framework.base.common.factory.YmlPropertySourceFactory;
+import org.springframework.beans.factory.config.YamlProcessor;
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
+import org.springframework.core.CollectionFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.util.ResourceUtils;
@@ -86,9 +88,33 @@ public class YmlUtils {
         }
         return parse2Properties(resources);
     }
-    public static Properties parse2Properties(Resource... resources){
+    public static Properties parse2PropertiesBak(Resource... resources){
         YamlPropertiesFactoryBean bean = new YamlPropertiesFactoryBean();
         bean.setResources(resources);
         return bean.getObject();
+    }
+    public static Properties parse2Properties(Resource... resources){
+        return YamlUtilProcessor.process(resources);
+    }
+
+    private static class YamlUtilProcessor extends YamlProcessor {
+
+        public static Properties process(Resource... resources){
+            return new YamlUtilProcessor(resources).createProperties();
+        }
+        private YamlUtilProcessor(Resource... resources) {
+            this.setResources(resources);
+        }
+        protected Properties createProperties() {
+            Properties result = CollectionFactory.createStringAdaptingProperties();
+            process(new MatchCallback() {
+                @Override
+                public void process(Properties properties, Map<String, Object> map) {
+                    result.putAll(properties);
+                     map.get("key");
+                }
+            });
+            return result;
+        }
     }
 }
