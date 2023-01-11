@@ -1,6 +1,5 @@
 package com.kewen.framework.base.common.utils;
 
-import com.kewen.framework.base.common.factory.YmlPropertySourceFactory;
 import org.springframework.beans.factory.config.YamlProcessor;
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
 import org.springframework.core.CollectionFactory;
@@ -9,13 +8,13 @@ import org.springframework.core.io.Resource;
 import org.springframework.util.ResourceUtils;
 import org.yaml.snakeyaml.Yaml;
 
-import javax.annotation.Resources;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
@@ -35,10 +34,13 @@ public class YmlUtils {
      * @return
      */
     public static <T> T parse(String filePath,String name,Class<T> clazz){
-        String[] keys = name.split("\\.");
+        Map<String, Object> map = YamlUtilProcessor.process(filePath).getMap();
+        return MapUtil.getValue(map, name, clazz);
+    }
+    @Deprecated
+    public static <T> T parseBak(String filePath,String name,Class<T> clazz){
         InputStream in = null;
         try {
-
             in = getInputStream(filePath);
 
             Yaml props = new Yaml();
@@ -58,6 +60,7 @@ public class YmlUtils {
             }
         }
     }
+
     private static InputStream getInputStream(String filePath) throws FileNotFoundException {
         /*
         //jdk方式
@@ -78,15 +81,7 @@ public class YmlUtils {
      * @return
      */
     public static Properties parse2Properties(String... paths){
-        Resource[] resources = new Resource[paths.length];
-        for (int i = 0; i < paths.length; i++) {
-            String path=paths[i];
-            if (path.startsWith("classpath:")){
-                path=path.substring("classpath:".length());
-            }
-            resources[i]=new ClassPathResource(path);
-        }
-        return parse2Properties(resources);
+        return YamlUtilProcessor.process(paths).getProperties() ;
     }
     public static Properties parse2PropertiesBak(Resource... resources){
         YamlPropertiesFactoryBean bean = new YamlPropertiesFactoryBean();
@@ -94,27 +89,72 @@ public class YmlUtils {
         return bean.getObject();
     }
     public static Properties parse2Properties(Resource... resources){
-        return YamlUtilProcessor.process(resources);
+        return YamlUtilProcessor.process(resources).getProperties() ;
     }
 
-    private static class YamlUtilProcessor extends YamlProcessor {
+    /**
+     * Yaml接收对象
+     */
+    public static class YamlUtilProcessor extends YamlProcessor {
 
-        public static Properties process(Resource... resources){
-            return new YamlUtilProcessor(resources).createProperties();
+        /**
+         * 解析后的Properties数据
+         */
+        private final Properties properties ;
+        /**
+         * 解析后的Map数据，
+         */
+        private final Map<String,Object> map;
+
+        /**
+         * 解析文件路径的到对象
+         * @param paths  文件路径
+         * @return
+         */
+        public static YamlUtilProcessor process(String... paths){
+            Resource[] resources = new Resource[paths.length];
+            for (int i = 0; i < paths.length; i++) {
+                String path=paths[i];
+                if (path.startsWith("classpath:")){
+                    path=path.substring("classpath:".length());
+                }
+                resources[i]=new ClassPathResource(path);
+            }
+            return process(resources);
+        }
+
+        /**
+         * 解析资源的到对象
+         * @param resources 资源
+         * @return
+         */
+        public static YamlUtilProcessor process(Resource... resources){
+            return new YamlUtilProcessor(resources).init();
         }
         private YamlUtilProcessor(Resource... resources) {
             this.setResources(resources);
+            this.properties=CollectionFactory.createStringAdaptingProperties();
+            this.map =new HashMap<>();
         }
-        protected Properties createProperties() {
-            Properties result = CollectionFactory.createStringAdaptingProperties();
-            process(new MatchCallback() {
-                @Override
-                public void process(Properties properties, Map<String, Object> map) {
-                    result.putAll(properties);
-                     map.get("key");
-                }
+
+        /**
+         * 根据 resources 解析成 properties 和 map 并填充
+         * @return 加载完成的对象
+         */
+        protected YamlUtilProcessor init() {
+            process((resultProperties, resultMap) -> {
+                properties.putAll(resultProperties);
+                map.putAll(resultMap);
             });
-            return result;
+            return this;
+        }
+
+        public Properties getProperties() {
+            return properties;
+        }
+
+        public Map<String, Object> getMap() {
+            return map;
         }
     }
 }
