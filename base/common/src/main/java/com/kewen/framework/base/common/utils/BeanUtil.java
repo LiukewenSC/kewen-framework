@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -58,6 +60,19 @@ public class BeanUtil {
 
     public static String toJsonString(Object bean){
         return JSONObject.toJSONString(bean);
+    }
+
+    /**
+     * 设置 常量的值，有点剑走偏锋，尽量不要使用，否则程序里你可能看不懂
+     */
+    public static void setFinalField(Object source,String fieldName,Object value) throws NoSuchFieldException, IllegalAccessException {
+        Field field = source.getClass().getDeclaredField(fieldName);
+        field.setAccessible(true);
+        int nonFinal = field.getModifiers() & (~Modifier.FINAL); // 位操作去掉 final
+        Field modifiers = Field.class.getDeclaredField("modifiers"); // 用反射拿到变量的修饰符
+        modifiers.setAccessible(true);
+        modifiers.setInt(field, nonFinal);
+        field.set(source,value);
     }
 
 
