@@ -18,6 +18,7 @@
         <module>datasource-starter</module>
         <module>security-oauth-sso-server</module>
         <module>security-oauth-sso-client-starter</module>
+        <module>quartz-starter</module>
     </modules>
 
 </project>
