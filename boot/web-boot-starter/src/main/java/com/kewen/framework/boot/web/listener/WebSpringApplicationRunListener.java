@@ -59,25 +59,25 @@ public class WebSpringApplicationRunListener implements SpringApplicationRunList
 
     @Override
     public void environmentPrepared(ConfigurableEnvironment environment) {
-        System.out.println("environment");
+        System.out.println("environmentPrepared");
 
     }
 
     @Override
     public void contextPrepared(ConfigurableApplicationContext context) {
-        System.out.println("context");
+        System.out.println("contextPrepared");
 
     }
 
     @Override
     public void contextLoaded(ConfigurableApplicationContext context) {
-        System.out.println("context");
+        System.out.println("contextLoaded");
 
     }
 
     @Override
     public void started(ConfigurableApplicationContext context) {
-        System.out.println("context");
+        System.out.println("started");
 
     }
 
@@ -89,8 +89,7 @@ public class WebSpringApplicationRunListener implements SpringApplicationRunList
 
     @Override
     public void failed(ConfigurableApplicationContext context, Throwable exception) {
-        System.out.println("context");
-        System.out.println("exception");
+        System.out.println("failed");
 
     }
 }

@@ -1,0 +1,7 @@
+spring:
+  datasource:
+    username: uucs
+    password: UUCSuucs
+    url: "jdbc:p6spy:mysql://liukewensc.mysql.rds.aliyuncs.com:3306/uucs"
+    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+    type: com.alibaba.druid.pool.DruidDataSource
