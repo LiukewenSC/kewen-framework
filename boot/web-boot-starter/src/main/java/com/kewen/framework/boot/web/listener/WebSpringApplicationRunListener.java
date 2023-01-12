@@ -33,28 +33,10 @@ public class WebSpringApplicationRunListener implements SpringApplicationRunList
 
     @Override
     public void starting() {
-        //修改ConfigurationClassParser的默认xml解析器
-        modifyConfigurationClassParser();
         System.out.println("starting");
     }
 
-    /**
-     * 修改ConfigurationClassParser的默认xml解析器
-     */
-    private void modifyConfigurationClassParser(){
-        try {
-            Class<?> aClass = Class.forName(SpringConstant.configurationClassParserName);
-            Constructor<?> constructor = aClass.getDeclaredConstructor(
-                    MetadataReaderFactory.class, ProblemReporter.class, Environment.class,
-                    ResourceLoader.class, BeanNameGenerator.class, BeanDefinitionRegistry.class
-            );
-            constructor.setAccessible(true);
-            Object configurationClassParser = constructor.newInstance(null, null, null, null, null, null);
-            BeanUtil.setFinalField(configurationClassParser,"DEFAULT_PROPERTY_SOURCE_FACTORY",new YmlPropertySourceFactory());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
+
 
 
     @Override
@@ -83,7 +65,7 @@ public class WebSpringApplicationRunListener implements SpringApplicationRunList
 
     @Override
     public void running(ConfigurableApplicationContext context) {
-        System.out.println("context");
+        System.out.println("running");
 
     }
 
