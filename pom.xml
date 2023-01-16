@@ -20,6 +20,7 @@
         <module>boot</module>
         <module>other</module>
         <module>sample</module>
+        <module>cloud-alibaba</module>
     </modules>
 
 
@@ -59,13 +60,29 @@
                 <version>${framework-version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.kewen.framework.cloud.alibaba</groupId>
+                <artifactId>nacos-client-starter</artifactId>
+                <version>${framework-version}</version>
+            </dependency>
+
 
             <!--************spring-cloud相关************-->
 
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
-                <version>Hoxton.SR7</version>
+                <version>Hoxton.SR9</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!--************spring-cloud相关************-->
+            <!--整合spring cloud alibaba-->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>2.2.6.RELEASE</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -75,7 +92,7 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
-                <version>2.3.5.RELEASE</version>
+                <version>2.3.2.RELEASE</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

@@ -1,6 +1,6 @@
 package com.kewen.framework.sample.config;
 
-import com.kewen.framework.sample.service.TestService;
+import com.kewen.framework.sample.controller.TestService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

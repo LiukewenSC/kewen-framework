@@ -1,6 +1,6 @@
 package com.kewen.framework.sample.extension;
 
-import com.kewen.framework.sample.service.TestService;
+import com.kewen.framework.sample.controller.TestService;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.stereotype.Component;
 

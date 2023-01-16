@@ -1,9 +1,7 @@
-package com.kewen.framework.sample.service;
+package com.kewen.framework.sample.controller;
 
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;

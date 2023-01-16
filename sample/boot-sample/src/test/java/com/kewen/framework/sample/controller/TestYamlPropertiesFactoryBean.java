@@ -1,4 +1,4 @@
-package com.kewen.framework.sample.service;
+package com.kewen.framework.sample.controller;
 
 import org.junit.Test;
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
