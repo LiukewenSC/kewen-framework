@@ -9,14 +9,13 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>sample</artifactId>
+    <groupId>com.kewen.framework.cloud.alibaba</groupId>
+    <artifactId>cloud-alibaba</artifactId>
     <packaging>pom</packaging>
-
     <modules>
-        <module>boot-sample</module>
-        <module>cloud-sample</module>
-        <module>secutiry-sso-sample</module>
-        <module>cloud-alibaba-sample</module>
+        <module>nacos</module>
+        <module>nacos-client-starter</module>
     </modules>
+
 
 </project>

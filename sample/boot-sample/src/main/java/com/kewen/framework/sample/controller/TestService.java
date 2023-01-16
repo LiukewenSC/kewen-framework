@@ -1,4 +1,4 @@
-package com.kewen.framework.sample.service;
+package com.kewen.framework.sample.controller;
 
 import com.kewen.framework.boot.web.interceptor.tenant.TenantInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
