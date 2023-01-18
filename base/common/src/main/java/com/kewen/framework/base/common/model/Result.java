@@ -9,6 +9,7 @@ package com.kewen.framework.base.common.model;
  */
 public class Result<T> {
     private Integer code;
+    private Boolean success ;
     private String message;
     private T data;
 
@@ -18,6 +19,7 @@ public class Result<T> {
     public static Result<Void> success(){
         Result<Void> result = new Result<>();
         result.code=200;
+        result.success=true;
         result.message="成功";
         return result;
     }
@@ -25,12 +27,14 @@ public class Result<T> {
         Result<T> result = new Result<>();
         result.code=200;
         result.message="成功";
+        result.success=true;
         result.data=data;
         return result;
     }
     public static Result<Void> failed(String message){
         Result<Void> result = new Result<>();
         result.code=500;
+        result.success=false;
         result.message=message;
         return result;
     }

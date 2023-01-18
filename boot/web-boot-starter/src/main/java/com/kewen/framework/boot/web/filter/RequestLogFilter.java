@@ -26,9 +26,16 @@ public class RequestLogFilter extends OncePerRequestFilter {
         String requestURI = request.getRequestURI();
         String remoteAddr = request.getRemoteAddr();
         Map<String, String[]> parameterMap = request.getParameterMap();
+
         CacheRequestWrapper cacheRequestWrapper = new CacheRequestWrapper(request);
         byte[] bodyOnce = cacheRequestWrapper.getBodyOnce();
-        log.info("请求路径url为：{}，远程ip地址为{},param参数：{}，body参数：{}", requestURI, parameterMap,remoteAddr, JSONObject.parseObject(bodyOnce));
+        //log.info("请求路径url为：{}，远程ip地址为{},param参数：{}，body参数：{}",
+        log.info("请求路径url为：{}，param参数：{}，body参数：{}",
+                requestURI,
+                //remoteAddr,
+                parameterMap,
+                JSONObject.parseObject(bodyOnce)
+        );
         filterChain.doFilter(cacheRequestWrapper, response);
     }
 }
