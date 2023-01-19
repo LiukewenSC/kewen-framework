@@ -1,10 +1,6 @@
 package com.kewen.framework.sample.controller;
 
-import com.alibaba.csp.sentinel.annotation.SentinelResource;
-import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.kewen.framework.base.common.model.Result;
-import com.kewen.framework.sample.config.ExceptionUtil;
-import com.kewen.framework.sample.feign.HelloFeign;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +24,12 @@ public class HelloController {
 
 
 
+    @RequestMapping("/testValue")
+    public Result<String> testValue() throws InterruptedException {
+        return Result.success(
+                helloService.testValue()
+        );
+    }
     @RequestMapping("/hello")
     public Result<String> hello() throws InterruptedException {
         return Result.success(
