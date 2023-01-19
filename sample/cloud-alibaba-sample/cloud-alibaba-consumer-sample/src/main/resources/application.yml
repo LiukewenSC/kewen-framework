@@ -3,6 +3,6 @@ server:
 
 spring:
   application:
-    name: nocos-consumer-sample
+    name: nacos-consumer-sample
   profiles:
     active: dev
