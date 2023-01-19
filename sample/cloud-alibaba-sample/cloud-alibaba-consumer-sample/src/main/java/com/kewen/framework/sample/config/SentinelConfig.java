@@ -25,10 +25,8 @@ public class SentinelConfig implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-
         initFlowRule();
         initDegradeRule();
-
     }
     private void initDegradeRule() {
         List<DegradeRule> rules = new ArrayList<>();
@@ -49,11 +47,9 @@ public class SentinelConfig implements CommandLineRunner {
                 .setSlowRatioThreshold(1)
                 ;
         rules.add(rule);
-
         DegradeRuleManager.loadRules(rules);
         System.out.println("Degrade rule loaded: " + rules);
     }
-
     private void initFlowRule() {
         List<FlowRule> rules = new ArrayList<FlowRule>();
         FlowRule rule = new FlowRule();
@@ -62,15 +58,6 @@ public class SentinelConfig implements CommandLineRunner {
         rule.setCount(3);
         //rule.setLimitApp("default");
         rules.add(rule);
-
-
-        /*FlowRule feignRule = new FlowRule();
-
-        feignRule.setResource("GET:http://nocos-provider-sample/hello/hello");
-        feignRule.setGrade(RuleConstant.FLOW_GRADE_QPS);
-        feignRule.setCount(1);
-        rules.add(feignRule);*/
-
         FlowRuleManager.loadRules(rules);
     }
 }
