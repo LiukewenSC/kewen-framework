@@ -6,6 +6,7 @@ import com.alibaba.nacos.api.config.annotation.NacosValue;
 import com.kewen.framework.base.common.model.Result;
 import com.kewen.framework.sample.config.ExceptionUtil;
 import com.kewen.framework.sample.feign.HelloFeign;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -13,16 +14,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Service
+@Slf4j
 @RefreshScope
 public class HelloService {
 
     @Autowired
     private HelloFeign helloFeign;
 
-    @Value(value = "${testvalue:false}")
+    @Value(value = "${testvalue}")
     private String testValue;
 
     public String testValue() {
+        log.info("testValue is "+testValue);
         return testValue;
     }
 

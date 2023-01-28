@@ -19,6 +19,8 @@ public class HelloController {
 
     @Autowired
     HelloService helloService;
+    @Autowired
+    HelloService2 helloService2;
 
     ExecutorService executorService = Executors.newFixedThreadPool(5);
 
@@ -28,6 +30,12 @@ public class HelloController {
     public Result<String> testValue() throws InterruptedException {
         return Result.success(
                 helloService.testValue()
+        );
+    }
+    @RequestMapping("/testValue2")
+    public Result<String> testValue2() throws InterruptedException {
+        return Result.success(
+                helloService2.getTestKewenValue()
         );
     }
     @RequestMapping("/hello")
