@@ -7,7 +7,7 @@ kewen框架
 
 ## 关系图
 
-![avatar](docs/依赖关系.png)
+![avatar](docs/项目Maven依赖关系.png)
 
 ## 关系说明
 
