@@ -1,7 +1,14 @@
+kewen:
+  base:
+    datasource:
+      db-url: "liukewensc.mysql.rds.aliyuncs.com:3306/uucs"
+      username: uucs
+      password: UUCSuucs
+
 spring:
   datasource:
-    username: uucs
-    password: UUCSuucs
-    url: "jdbc:p6spy:mysql://liukewensc.mysql.rds.aliyuncs.com:3306/uucs"
+    username: ${kewen.base.datasource.username}
+    password: ${kewen.base.datasource.password}
+    url: jdbc:p6spy:mysql://${kewen.base.datasource.db-url}
     driver-class-name: com.p6spy.engine.spy.P6SpyDriver
     type: com.alibaba.druid.pool.DruidDataSource
