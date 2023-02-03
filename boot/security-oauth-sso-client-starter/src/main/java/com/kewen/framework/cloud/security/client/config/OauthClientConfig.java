@@ -12,7 +12,6 @@ import org.springframework.context.annotation.PropertySource;
  */
 @Configuration
 @PropertySource(name = "oAuthClientConfigPropertySource",value = "classpath:application-securityclient.properties")
-
 public class OauthClientConfig {
 
 }
