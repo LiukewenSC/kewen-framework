@@ -23,10 +23,9 @@ public class Test2Service implements InitializingBean {
         List<TestService> collect = testServices.stream().collect(Collectors.toList());
         TestService testServices1 = testServices.orderedStream().findFirst().get();
     }
-
-    @PostConstruct
-    public void hello(){
+    public String hello(){
         System.out.println("Test2Service hello");
+        return "Test2Service hello";
     }
 
     @Override
