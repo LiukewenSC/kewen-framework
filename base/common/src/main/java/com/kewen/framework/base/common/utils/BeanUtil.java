@@ -1,11 +1,13 @@
 package com.kewen.framework.base.common.utils;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson2.JSONArray;
-import com.alibaba.fastjson2.JSONObject;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
+import com.kewen.framework.base.common.model.Result;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -24,7 +26,7 @@ public class BeanUtil {
      * @param <T> 返回泛型
      * @return
      */
-    public static <T> T toBean(Object source,Class<T> clazz){
+    public static <T> T convert(Object source, Class<T> clazz){
         String s = JSONObject.toJSONString(source);
         return JSONObject.parseObject(s, clazz);
     }
@@ -33,6 +35,13 @@ public class BeanUtil {
         return JSON.parseArray(s, clazz);
     }
 
+    public static <T> T parseObject(String json, TypeReference<T> typeReference){
+        return JSONObject.parseObject(json,typeReference);
+    }
+
+    public static String toJsonString(Object bean){
+        return JSONObject.toJSONString(bean);
+    }
 
     /**
      * 克隆Bean，复制Bean中的值，深度复制
@@ -41,7 +50,7 @@ public class BeanUtil {
      * @return
      */
     public static <T> T copy(T source){
-        return (T)toBean(source, source.getClass());
+        return (T) convert(source, source.getClass());
     }
 
     /**
@@ -58,9 +67,7 @@ public class BeanUtil {
         return lists;
     }
 
-    public static String toJsonString(Object bean){
-        return JSONObject.toJSONString(bean);
-    }
+
 
     /**
      * 设置 常量的值，有点剑走偏锋，尽量不要使用，否则程序里你可能看不懂

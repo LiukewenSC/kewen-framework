@@ -71,7 +71,7 @@ public class MemorySysMenuAuthUnify implements SysMenuAuthUnify {
         Map<Integer, List<SysMenuAuth>> authByMenuMap = getSysMenuAuths().stream()
                 .collect(Collectors.groupingBy(SysMenuAuth::getMenuId));
         List<MenuResp> collect = sysMenus.stream()
-                .map(l -> BeanUtil.toBean(l, MenuResp.class))
+                .map(l -> BeanUtil.convert(l, MenuResp.class))
                 .peek(m-> {
                     List<SysMenuAuth> sysMenuAuths = authByMenuMap.get(m.getId());
                     if (sysMenuAuths!=null){
@@ -128,7 +128,7 @@ public class MemorySysMenuAuthUnify implements SysMenuAuthUnify {
 
         if (CollectionUtils.isEmpty(subs)){
             //已经到了最底层，判断自己是否需要移除
-            boolean hasAuth = hasMenuAuth(authorities, BeanUtil.toBean(menuResp, SysMenu.class));
+            boolean hasAuth = hasMenuAuth(authorities, BeanUtil.convert(menuResp, SysMenu.class));
             //无权限则移除
             return !hasAuth;
         } else {
@@ -143,7 +143,7 @@ public class MemorySysMenuAuthUnify implements SysMenuAuthUnify {
             }
             //子菜单已经移除完了，则需要校验自己是否需要移除
             if (CollectionUtils.isEmpty(subs)){
-                boolean hasAuth = hasMenuAuth(authorities, BeanUtil.toBean(menuResp, SysMenu.class));
+                boolean hasAuth = hasMenuAuth(authorities, BeanUtil.convert(menuResp, SysMenu.class));
                 //无权限则移除
                 return !hasAuth;
             } else {
