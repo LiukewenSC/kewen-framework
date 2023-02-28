@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>authority-web-boot-starter</artifactId>
+    <artifactId>web-auth-starter</artifactId>
 
     <dependencies>
         <dependency>

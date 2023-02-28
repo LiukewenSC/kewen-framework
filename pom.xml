@@ -56,6 +56,11 @@
             </dependency>
             <dependency>
                 <groupId>com.kewen.framework</groupId>
+                <artifactId>web-security-starter</artifactId>
+                <version>${framework-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.kewen.framework</groupId>
                 <artifactId>security-oauth-client-starter</artifactId>
                 <version>${framework-version}</version>
             </dependency>
