@@ -6,9 +6,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-
-import javax.servlet.ServletException;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,6 +21,7 @@ import java.util.Map;
 public class RequestBodyUsernamePasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     public RequestBodyUsernamePasswordAuthenticationFilter() {
         super();
+
     }
 
     @Override
@@ -48,7 +46,5 @@ public class RequestBodyUsernamePasswordAuthenticationFilter extends UsernamePas
         } else {
             throw new RuntimeException();
         }
-
-
     }
 }
