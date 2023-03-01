@@ -5,26 +5,18 @@ import com.kewen.framework.base.common.model.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.access.AccessDeniedException;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
@@ -41,11 +33,32 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return NoOpPasswordEncoder.getInstance();
     }
 
+    /**
+     * 登录过滤器
+     * @return
+     * @throws Exception
+     */
     @Bean
-    LoginFilter loginFilter() throws Exception {
-        LoginFilter loginFilter = new LoginFilter();
-        loginFilter.setAuthenticationManager(authenticationManager());
-        return loginFilter;
+    RequestBodyUsernamePasswordAuthenticationProcessingFilter loginFilter() throws Exception {
+        RequestBodyUsernamePasswordAuthenticationProcessingFilter processingFilter = new RequestBodyUsernamePasswordAuthenticationProcessingFilter();
+        processingFilter.setAuthenticationManager(authenticationManager());
+        processingFilter.setAuthenticationSuccessHandler((request, response, authentication) -> {
+            response.setContentType("application/json;charset=utf-8");
+            PrintWriter out = response.getWriter();
+            Result result =Result.success(authentication);
+            out.write(new ObjectMapper().writeValueAsString(result));
+            out.flush();
+            out.close();
+        });
+        processingFilter.setAuthenticationFailureHandler((request, response, exception) -> {
+            response.setContentType("application/json;charset=utf-8");
+            PrintWriter out = response.getWriter();
+            Result result =Result.failed(exception.getMessage());
+            out.write(new ObjectMapper().writeValueAsString(result));
+            out.flush();
+            out.close();
+        });
+        return processingFilter;
     }
 
     @Override
@@ -67,8 +80,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.authorizeRequests().anyRequest().authenticated().and()
-                .formLogin().and()
+        http
+                .authorizeRequests().antMatchers(HttpMethod.GET,"/login").permitAll()
+                    .anyRequest().authenticated().and()
                 .addFilterAt(loginFilter(),UsernamePasswordAuthenticationFilter.class)
                 .cors().disable()
                 .csrf().disable()
@@ -76,11 +90,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint((request, response, e) -> {   //操作异常返回
                     log.error(" security error :"+e.getMessage(),e);
                     response.setContentType("application/json;charset=utf-8");
-                    Result result ;
+                    Result result =null;
                     PrintWriter out = response.getWriter();
                     if (e instanceof InsufficientAuthenticationException){
-                        result = Result.failed("请先进行认证");
-                    } else {
+                        //result = Result.failed("请先进行认证");
+                    }
+                    if (result ==null){
                         result = Result.failed(e.getMessage());
                     }
                     out.write(new ObjectMapper().writeValueAsString(result));
