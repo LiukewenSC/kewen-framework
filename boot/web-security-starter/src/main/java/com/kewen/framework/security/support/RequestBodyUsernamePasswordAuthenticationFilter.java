@@ -35,8 +35,8 @@ public class RequestBodyUsernamePasswordAuthenticationFilter extends UsernamePas
                 throw new RuntimeException(e);
             }
 
-            String username = map.get("username");
-            String password = map.get("password");
+            String username = map.get(getUsernameParameter());
+            String password = map.get(getPasswordParameter());
 
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
             Authentication authenticate = getAuthenticationManager().authenticate(authenticationToken);
@@ -44,7 +44,7 @@ public class RequestBodyUsernamePasswordAuthenticationFilter extends UsernamePas
             return authenticate;
 
         } else {
-            throw new RuntimeException();
+            return super.attemptAuthentication(request, response);
         }
     }
 }
