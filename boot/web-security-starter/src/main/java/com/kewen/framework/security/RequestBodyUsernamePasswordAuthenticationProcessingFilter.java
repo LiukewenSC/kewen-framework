@@ -1,16 +1,12 @@
 package com.kewen.framework.security;
 
 import com.alibaba.fastjson2.JSON;
-import com.alibaba.fastjson2.JSONObject;
-import com.alibaba.fastjson2.util.IOUtils;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletInputStream;
@@ -24,9 +20,9 @@ import java.util.Map;
  * @descrpition
  * @since 2023-02-28
  */
-public class LoginFilter extends AbstractAuthenticationProcessingFilter {
+public class RequestBodyUsernamePasswordAuthenticationProcessingFilter extends AbstractAuthenticationProcessingFilter {
 
-    public LoginFilter() {
+    public RequestBodyUsernamePasswordAuthenticationProcessingFilter() {
         super(new AntPathRequestMatcher("/login", "POST"));
     }
 
