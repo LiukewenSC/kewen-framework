@@ -2,6 +2,7 @@ package com.kewen.framework.security.support;
 
 import org.springframework.security.config.annotation.web.HttpSecurityBuilder;
 import org.springframework.security.config.annotation.web.configurers.AbstractAuthenticationFilterConfigurer;
+import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
@@ -24,5 +25,13 @@ public class JsonLoginAuthenticationFilterConfigurer<H extends HttpSecurityBuild
     @Override
     protected JsonLoginAuthenticationFilterConfigurer<H> loginPage(String loginPage) {
         throw new RuntimeException("启动失败，不支持配置loginPage");
+    }
+    public JsonLoginAuthenticationFilterConfigurer<H> usernameParameter(String usernameParameter) {
+        getAuthenticationFilter().setUsernameParameter(usernameParameter);
+        return this;
+    }
+    public JsonLoginAuthenticationFilterConfigurer<H> passwordParameter(String passwordParameter) {
+        getAuthenticationFilter().setPasswordParameter(passwordParameter);
+        return this;
     }
 }

@@ -74,6 +74,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //.formLogin().and()
                 .apply(new JsonLoginAuthenticationFilterConfigurer<>())  //采用新建配置类的方式可以使得原来config中配置的对象依然有效
                     .loginProcessingUrl("/login")
+                    .usernameParameter("username")
+                    .passwordParameter("password")
                     .successHandler((request, response, authentication) -> {
                         response.setContentType("application/json;charset=utf-8");
                         PrintWriter out = response.getWriter();
