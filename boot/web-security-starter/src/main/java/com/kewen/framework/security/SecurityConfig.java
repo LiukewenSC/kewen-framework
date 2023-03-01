@@ -3,7 +3,6 @@ package com.kewen.framework.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kewen.framework.base.common.model.Result;
 import com.kewen.framework.security.support.JsonLoginAuthenticationFilterConfigurer;
-import com.kewen.framework.security.support.RequestBodyUsernamePasswordAuthenticationFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,15 +13,8 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.session.SessionRegistry;
-import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.session.ChangeSessionIdAuthenticationStrategy;
-import org.springframework.security.web.authentication.session.CompositeSessionAuthenticationStrategy;
-import org.springframework.security.web.authentication.session.ConcurrentSessionControlAuthenticationStrategy;
-import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy;
-import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -45,59 +37,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return NoOpPasswordEncoder.getInstance();
     }
 
-    /**
-     * 登录过滤器
-     * @return
-     * @throws Exception
-     */
-    @Bean
-    RequestBodyUsernamePasswordAuthenticationFilter loginFilter() throws Exception {
-        RequestBodyUsernamePasswordAuthenticationFilter processingFilter = new RequestBodyUsernamePasswordAuthenticationFilter();
-        processingFilter.setAuthenticationManager(authenticationManager());
-        processingFilter.setAuthenticationSuccessHandler((request, response, authentication) -> {
-            response.setContentType("application/json;charset=utf-8");
-            PrintWriter out = response.getWriter();
-            Result result =Result.success(authentication);
-            out.write(new ObjectMapper().writeValueAsString(result));
-            out.flush();
-            out.close();
-        });
-        processingFilter.setAuthenticationFailureHandler((request, response, exception) -> {
-            response.setContentType("application/json;charset=utf-8");
-            PrintWriter out = response.getWriter();
-            Result result =Result.failed(exception.getMessage());
-            out.write(new ObjectMapper().writeValueAsString(result));
-            out.flush();
-            out.close();
-        });
-        processingFilter.setSessionAuthenticationStrategy(sessionAuthenticationStrategy());
-        return processingFilter;
-    }
-    @Bean
-    SessionRegistry sessionRegistry(){
-        return new SessionRegistryImpl();
-    }
-    @Bean
-    SessionAuthenticationStrategy sessionAuthenticationStrategy(){
-        //设置并发校验的SessionAuthenticationStrategy，用于校验session的个数等
-        ConcurrentSessionControlAuthenticationStrategy controlAuthenticationStrategy =
-                new ConcurrentSessionControlAuthenticationStrategy(sessionRegistry());
-        //session最大值
-        controlAuthenticationStrategy.setMaximumSessions(3);
-        //true 阻止新的session登入
-        controlAuthenticationStrategy.setExceptionIfMaximumExceeded(true);
-
-        //设置sessionId改变的 SessionAuthenticationStrategy，
-        ChangeSessionIdAuthenticationStrategy sessionIdAuthenticationStrategy = new ChangeSessionIdAuthenticationStrategy();
-
-        //设置注册session的SessionAuthenticationStrategy，用于注册新的session，否则新的session不会注册
-        RegisterSessionAuthenticationStrategy registerSessionAuthenticationStrategy = new RegisterSessionAuthenticationStrategy(sessionRegistry());
-
-        //返回组合的SessionAuthenticationStrategy，会根据列表循环校验
-        return new CompositeSessionAuthenticationStrategy(Arrays.asList(
-                controlAuthenticationStrategy, sessionIdAuthenticationStrategy,registerSessionAuthenticationStrategy
-        ));
-    }
     /**
      * 加入监听器，session销毁时才会触发 spring容器的感知，否则 security监听不到销毁
      * @return
@@ -133,23 +72,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .and()
                 //.addFilterAt(loginFilter(),UsernamePasswordAuthenticationFilter.class)
                 //.formLogin().and()
-                .apply(new JsonLoginAuthenticationFilterConfigurer<>())
+                .apply(new JsonLoginAuthenticationFilterConfigurer<>())  //采用新建配置类的方式可以使得原来config中配置的对象依然有效
                     .loginProcessingUrl("/login")
                     .successHandler((request, response, authentication) -> {
                         response.setContentType("application/json;charset=utf-8");
                         PrintWriter out = response.getWriter();
                         Result result =Result.success(authentication);
-                        out.write(new ObjectMapper().writeValueAsString(result));
-                        out.flush();
-                        out.close();
+                        writeResponseBody(response,result);
                     })
                     .failureHandler((request, response, exception) -> {
                         response.setContentType("application/json;charset=utf-8");
                         PrintWriter out = response.getWriter();
                         Result result =Result.failed(exception.getMessage());
-                        out.write(new ObjectMapper().writeValueAsString(result));
-                        out.flush();
-                        out.close();
+                        writeResponseBody(response,result);
                     })
                     .and()
                 .exceptionHandling()
