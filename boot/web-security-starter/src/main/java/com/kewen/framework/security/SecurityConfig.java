@@ -3,7 +3,7 @@ package com.kewen.framework.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kewen.framework.base.common.model.Result;
 import com.kewen.framework.security.support.JsonLoginAuthenticationFilterConfigurer;
-import com.kewen.framework.security.support.RequestBodyUsernamePasswordAuthenticationProcessingFilter;
+import com.kewen.framework.security.support.RequestBodyUsernamePasswordAuthenticationFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +18,6 @@ import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.session.ChangeSessionIdAuthenticationStrategy;
 import org.springframework.security.web.authentication.session.CompositeSessionAuthenticationStrategy;
 import org.springframework.security.web.authentication.session.ConcurrentSessionControlAuthenticationStrategy;
@@ -52,8 +51,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * @throws Exception
      */
     @Bean
-    RequestBodyUsernamePasswordAuthenticationProcessingFilter loginFilter() throws Exception {
-        RequestBodyUsernamePasswordAuthenticationProcessingFilter processingFilter = new RequestBodyUsernamePasswordAuthenticationProcessingFilter();
+    RequestBodyUsernamePasswordAuthenticationFilter loginFilter() throws Exception {
+        RequestBodyUsernamePasswordAuthenticationFilter processingFilter = new RequestBodyUsernamePasswordAuthenticationFilter();
         processingFilter.setAuthenticationManager(authenticationManager());
         processingFilter.setAuthenticationSuccessHandler((request, response, authentication) -> {
             response.setContentType("application/json;charset=utf-8");
@@ -132,7 +131,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests().antMatchers(HttpMethod.GET,"/login").permitAll()
                     .anyRequest().authenticated()
                     .and()
-                .addFilterAt(loginFilter(), UsernamePasswordAuthenticationFilter.class)
+                //.addFilterAt(loginFilter(),UsernamePasswordAuthenticationFilter.class)
+                //.formLogin().and()
+                .apply(new JsonLoginAuthenticationFilterConfigurer<>())
+                    .loginProcessingUrl("/login")
+                    .successHandler((request, response, authentication) -> {
+                        response.setContentType("application/json;charset=utf-8");
+                        PrintWriter out = response.getWriter();
+                        Result result =Result.success(authentication);
+                        out.write(new ObjectMapper().writeValueAsString(result));
+                        out.flush();
+                        out.close();
+                    })
+                    .failureHandler((request, response, exception) -> {
+                        response.setContentType("application/json;charset=utf-8");
+                        PrintWriter out = response.getWriter();
+                        Result result =Result.failed(exception.getMessage());
+                        out.write(new ObjectMapper().writeValueAsString(result));
+                        out.flush();
+                        out.close();
+                    })
                     .and()
                 .exceptionHandling()
                     .authenticationEntryPoint((request, response, e) -> {   //操作异常返回
@@ -152,9 +170,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         writeResponseBody(response,result);
                     }).and()
                 .sessionManagement()
-                    .sessionAuthenticationStrategy(sessionAuthenticationStrategy())
+                    //.sessionAuthenticationStrategy(sessionAuthenticationStrategy())
                     .maximumSessions(1)
-                        .sessionRegistry(sessionRegistry())
+                        //.sessionRegistry(sessionRegistry())
                         .maxSessionsPreventsLogin(true)
                         .expiredSessionStrategy(event -> {
                             HttpServletResponse response = event.getResponse();
