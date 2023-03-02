@@ -15,6 +15,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.rememberme.InMemoryTokenRepositoryImpl;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -115,6 +116,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                             HttpServletResponse response = event.getResponse();
                             writeResponseBody(response,Result.failed("session已过期"));
                         }).and()
+                    .and()
+                .rememberMe()
+                    .useSecureCookie(true)
+                    .key("rememberMe")
+                    .tokenRepository(new InMemoryTokenRepositoryImpl())  //此处可以替换成基于数据库的，不加默认用户数据都在cookie中，（类似于jwt，是不是就可以实现分布式了呢？）
+                    .tokenValiditySeconds(2*7*24*60*60) //默认保存两周时间
                     .and()
                 .logout()
                     .logoutRequestMatcher(new AntPathRequestMatcher("/logout","POST"))
