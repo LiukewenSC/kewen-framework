@@ -1,19 +1,22 @@
 package com.kewen.framework.base.common.model;
 
 import lombok.Data;
-import javax.validation.constraints.NotNull;
 
+/**
+ * @author kewen
+ * @descrpition 分页返回
+ * @since 2023-03-29
+ */
 @Data
-public class PageReq {
+public class PageResult {
     /**
      * 页码
      */
-
-    @NotNull
     protected Integer page;
     /**
      * 每页条数
      */
-    @NotNull
     protected Integer size;
+
+    protected Integer total;
 }

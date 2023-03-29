@@ -4,6 +4,8 @@ kewen:
       db-url: "liukewensc.mysql.rds.aliyuncs.com:3306/uucs"
       username: uucs
       password: UUCSuucs
+    tenant:
+      open: false
 
 spring:
   datasource:

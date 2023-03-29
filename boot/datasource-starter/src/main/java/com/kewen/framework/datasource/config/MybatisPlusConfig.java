@@ -9,6 +9,7 @@ import com.kewen.framework.datasource.context.DbTenant;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.LongValue;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,9 +26,15 @@ import java.util.List;
 @MapperScan(basePackages = "com.kewen.**.mapper")
 public class MybatisPlusConfig {
 
-    @Autowired
+
     private DbTenant dbTenant;
 
+    public MybatisPlusConfig(ObjectProvider<DbTenant> dbTenantObjectProvider) {
+        DbTenant ifAvailable = dbTenantObjectProvider.getIfAvailable();
+        if (ifAvailable !=null){
+            dbTenant = ifAvailable;
+        }
+    }
 
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor(){
@@ -36,28 +43,31 @@ public class MybatisPlusConfig {
         interceptor.addInnerInterceptor(new OptimisticLockerInnerInterceptor());
         //分页插件
         interceptor.addInnerInterceptor(new PaginationInnerInterceptor());
+
         //租户插件
-        interceptor.addInnerInterceptor(new TenantLineInnerInterceptor(new TenantLineHandler() {
-            @Override
-            public Expression getTenantId() {
-                Long tenantId = dbTenant.getTenantId();
-                return tenantId==null?new LongValue(100001):new LongValue(tenantId);
-            }
-
-            @Override
-            public String getTenantIdColumn() {
-                return dbTenant.getTenantIdColumn();
-            }
-
-            @Override
-            public boolean ignoreTable(String tableName) {
-                List<String> ignorePrefixTables = dbTenant.ignorePrefixTables();
-                if (CollectionUtils.isEmpty(ignorePrefixTables)){
-                    return false;
+        if (dbTenant !=null){
+            interceptor.addInnerInterceptor(new TenantLineInnerInterceptor(new TenantLineHandler() {
+                @Override
+                public Expression getTenantId() {
+                    Long tenantId = dbTenant.getTenantId();
+                    return tenantId==null?new LongValue(100001):new LongValue(tenantId);
                 }
-                return ignorePrefixTables.stream().anyMatch(tableName::startsWith);
-            }
-        }));
+
+                @Override
+                public String getTenantIdColumn() {
+                    return dbTenant.getTenantIdColumn();
+                }
+
+                @Override
+                public boolean ignoreTable(String tableName) {
+                    List<String> ignorePrefixTables = dbTenant.ignorePrefixTables();
+                    if (CollectionUtils.isEmpty(ignorePrefixTables)){
+                        return false;
+                    }
+                    return ignorePrefixTables.stream().anyMatch(tableName::startsWith);
+                }
+            }));
+        }
         return interceptor;
     }
 }
