@@ -1,6 +1,8 @@
 package com.kewen.framework.boot.web.filter;
 
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -30,11 +32,17 @@ public class RequestLogFilter extends OncePerRequestFilter {
         CacheRequestWrapper cacheRequestWrapper = new CacheRequestWrapper(request);
         byte[] bodyOnce = cacheRequestWrapper.getBodyOnce();
         //log.info("请求路径url为：{}，远程ip地址为{},param参数：{}，body参数：{}",
+        JSON jsonObject = null;
+        try {
+            jsonObject = JSONObject.parseObject(bodyOnce);
+        } catch (Exception e) {
+            jsonObject = JSONObject.parseArray(new String(bodyOnce));
+        }
         log.info("请求路径url为：{}，param参数：{}，body参数：{}",
                 requestURI,
                 //remoteAddr,
                 parameterMap,
-                JSONObject.parseObject(bodyOnce)
+                jsonObject
         );
         filterChain.doFilter(cacheRequestWrapper, response);
     }
