@@ -21,6 +21,7 @@
         <module>other</module>
         <module>sample</module>
         <module>cloud-alibaba</module>
+        <module>base/oos</module>
     </modules>
 
 
