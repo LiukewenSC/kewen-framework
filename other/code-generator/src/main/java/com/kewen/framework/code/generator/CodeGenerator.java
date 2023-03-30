@@ -86,7 +86,7 @@ public class CodeGenerator {
                             .serviceImpl("service.impl")
                             //.mapper("mapper")
                             .entity("entity")
-                            .pathInfo(Collections.singletonMap(OutputFile.xml, projectPath + "/src/main/resources/mapper/" + Config.MODULE_NAME))
+                            .pathInfo(Collections.singletonMap(OutputFile.xml, projectPath + "/src/main/resources/mapper/" ))
                     //.other("output")
                     ;
 
@@ -161,7 +161,6 @@ public class CodeGenerator {
             pro.load(stream);
             //pro.load(new FileInputStream("classpath:" + APPLICATION_CONFIG_FILE + ".properties"));
             String url = pro.getProperty("spring.datasource.url").trim();
-            String driveClassName = pro.getProperty("spring.datasource.driver-class-name").trim();
             String username = pro.getProperty("spring.datasource.username").trim();
             String password = pro.getProperty("spring.datasource.password").trim();
             return new DataSourceConfig.Builder(url,username,password);
@@ -194,7 +193,12 @@ public class CodeGenerator {
         //jdbc:p6spy:mysql://liukewensc.mysql.rds.aliyuncs.com:3306/uucs
         //jdbc:mysql://119.6.253.231:16102/emergency?useUnicode=true&useSSL=false&serverTimezone=Hongkong&characterEncoding=UTF-8
         url = url.substring(url.indexOf("://")+3);
-        String tableSchema = url.substring(url.indexOf("/")+1,url.indexOf("?"));
+        String tableSchema;
+        if (url.contains("?")){
+            tableSchema = url.substring(url.indexOf("/")+1,url.indexOf("?"));
+        } else {
+            tableSchema = url.substring(url.indexOf("/")+1);
+        }
         //String tableSchema = Config.SCHEMA;
         List<String> tableNames = new ArrayList<>();
         Connection connect = dataSourceConfig.getConn();

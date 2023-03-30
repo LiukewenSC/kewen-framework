@@ -21,20 +21,5 @@ interface ${table.serviceName} : ${superServiceClass}<${entity}>
 #else
 public interface ${table.serviceName} extends ${superServiceClass}<${entity}> {
 
-        /**
-         * 分页查询
-         * @param pageNo 页数
-         * @param pageSize 页面大小
-         * @param queryModel 查询参数
-         * @return Page<${entity}>
-         */
-        Page<${entity}> pageQuery(Integer pageNo, Integer pageSize, ${entity} queryModel);
-
-        /**
-         * 列表查询
-         * @param queryModel 查询参数
-         * @return List<${entity}>
-         */
-        List<${entity}> findList(${entity} queryModel);
 }
 #end

@@ -28,20 +28,5 @@ open class ${table.serviceImplName} : ${superServiceImplClass}<${table.mapperNam
 #else
 public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.mapperName}, ${entity}> implements ${table.serviceName} {
 
-    @Override
-    public Page<${entity}> pageQuery(Integer pageNo, Integer pageSize, ${entity} queryModel) {
-        Page<${entity}> page = new Page<>();
-        Wrapper<${entity}> wrapper = new LambdaQueryWrapper<${entity}>()
-                .orderByDesc(${entity}::getUpdateTime);
-        return this.page(page,wrapper);
-    }
-
-    @Override
-    public List<${entity}> findList(${entity} queryModel) {
-        Wrapper<${entity}> wrapper = new LambdaQueryWrapper<${entity}>()
-                .orderByDesc(${entity}::getUpdateTime);
-        return this.list(wrapper);
-    }
-
 }
 #end
