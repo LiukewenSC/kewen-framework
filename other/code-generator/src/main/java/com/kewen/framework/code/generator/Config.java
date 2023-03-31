@@ -33,9 +33,9 @@ public class Config {
      * 是否开启swagger
      */
     public static final boolean ENABLE_SWAGGER = false;
-    public static final List<String> IGNORE_TABLE_PREFIX = Arrays.asList("bak_","blog_spider");
+    public static final List<String> IGNORE_TABLE_PREFIX = Arrays.asList("bak_","blog_spider","blog_category");
     //public static final List<String> CONTAINS_TABLE_PREFIX = Arrays.asList("sys_");
-    public static final List<String> CONTAINS_TABLE_PREFIX =Arrays.asList("blog");;
+    public static final List<String> CONTAINS_TABLE_PREFIX =Arrays.asList("blog");
 
     /**
      * 作者
