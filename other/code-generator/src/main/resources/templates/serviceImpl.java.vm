@@ -20,7 +20,6 @@ import java.util.List;
  * @since ${date}
  */
 @Service
-@Transactional(rollbackFor = Exception.class)
 #if(${kotlin})
 open class ${table.serviceImplName} : ${superServiceImplClass}<${table.mapperName}, ${entity}>(), ${table.serviceName} {
 

@@ -14,6 +14,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @since 2022-12-05 9:36
  */
 @Configuration
+@ComponentScan("com.kewen.framework.boot.web")
 public class WebConfig implements WebMvcConfigurer {
 
     @Autowired(required = false)
