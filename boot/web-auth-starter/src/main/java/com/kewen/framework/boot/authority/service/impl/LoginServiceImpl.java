@@ -97,7 +97,7 @@ public class LoginServiceImpl implements LoginService {
         SysDept sysDept = sysDepts.remove(0);
         UserDept userDept = new UserDept(
                 new DeptPrimary(sysDept.getId(),sysDept.getName(),true),
-                BeanUtil.toList(sysDepts, Dept.class)
+                BeanUtil.convert(sysDepts, Dept.class)
                 );
 
         //查询岗位
