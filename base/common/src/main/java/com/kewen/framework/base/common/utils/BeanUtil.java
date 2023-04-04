@@ -4,13 +4,16 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.kewen.framework.base.common.model.Result;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * @author kewen
@@ -30,9 +33,20 @@ public class BeanUtil {
         String s = JSONObject.toJSONString(source);
         return JSONObject.parseObject(s, clazz);
     }
-    public static <T> List<T> toList(List source,Class<T> clazz){
+    public static <T> List<T> convert(List source,Class<T> clazz){
         String s = JSON.toJSONString(source);
-        return JSON.parseArray(s, clazz);
+        List<T> array = JSON.parseArray(s, clazz);
+        if (CollectionUtils.isEmpty(array)){
+            return Collections.emptyList();
+        }
+        return array;
+    }
+    public static <T> List<T> convert(List source, Class<T> clazz, Consumer<T> consumer){
+        List<T> convert = convert(source, clazz);
+        for (T t : convert) {
+            consumer.accept(t);
+        }
+        return convert;
     }
 
     public static <T> T parseObject(String json, TypeReference<T> typeReference){
