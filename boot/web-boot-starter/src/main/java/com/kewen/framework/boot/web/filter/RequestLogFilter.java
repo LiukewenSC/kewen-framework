@@ -41,7 +41,7 @@ public class RequestLogFilter extends OncePerRequestFilter {
         log.info("请求路径url为：{}，param参数：{}，body参数：{}",
                 requestURI,
                 //remoteAddr,
-                parameterMap,
+                JSON.toJSONString(parameterMap),
                 jsonObject
         );
         filterChain.doFilter(cacheRequestWrapper, response);
