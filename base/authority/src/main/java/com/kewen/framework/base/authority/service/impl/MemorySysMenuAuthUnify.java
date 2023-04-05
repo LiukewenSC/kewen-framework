@@ -124,7 +124,7 @@ public class MemorySysMenuAuthUnify implements SysMenuAuthUnify {
      * @return
      */
     private boolean needRemove(MenuResp menuResp,Collection<String> authorities){
-        List<MenuResp> subs = menuResp.getSubs();
+        List<MenuResp> subs = menuResp.getChildren();
 
         if (CollectionUtils.isEmpty(subs)){
             //已经到了最底层，判断自己是否需要移除
