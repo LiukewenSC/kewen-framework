@@ -43,7 +43,7 @@ public class MenuRespBase {
      */
     protected MenuType type;
     /**
-     * 权限类型 1-基于父菜单权限 2-基于本身权限
+     * 权限类型 1-基于父菜单权限 2-基于自身权限
      */
     protected MenuAuthType authType;
 

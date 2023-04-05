@@ -26,7 +26,7 @@ public class TreeUtil {
      * @return 分层之后的列表
      */
     public static <P,T extends TreeBase<T,P>> List<T> transfer(List<T> source,P topParentId){
-        ArrayList<T> ts = new ArrayList<>(source);
+        List<T> ts = new ArrayList<>(source);
         Iterator<T> iterator = ts.iterator();
 
         List<T> root = new ArrayList<>();
@@ -38,7 +38,7 @@ public class TreeUtil {
                 iterator.remove();
             }
         }
-        /* todo 检测环路 貌似不需要检测环路
+        /* 检测环路 貌似不需要检测环路
         List<String> combine = ts.stream().map(
                 t -> t.getParentId() == null ? t.getId().toString() : t.getId().toString().concat(t.getParentId().toString())
         ).collect(Collectors.toList());
@@ -54,9 +54,9 @@ public class TreeUtil {
                 .collect(Collectors.groupingBy(T::getParentId));
         for (T t : ts) {
             //设置子菜单（引用，因此会将相关数据加入其中，但是不得有循环，否则栈溢出）
-            t.setSubs(parentMap.get(t.getId()));
+            t.setChildren(parentMap.get(t.getId()));
         }
-        return root.stream().peek(r -> r.setSubs(parentMap.get(r.getId()))).collect(Collectors.toList());
+        return root.stream().peek(r -> r.setChildren(parentMap.get(r.getId()))).collect(Collectors.toList());
     }
 
     /**
@@ -84,9 +84,23 @@ public class TreeUtil {
          * @return
          */
         default boolean isTop(ID p) {
-            return p == this.getParentId();
+            ID parentId = this.getParentId();
+            //默认父菜单id为空则此菜单id为顶层菜单
+            if (parentId == null){
+                return true;
+            }
+            //如果id属于int类型，父菜单为0则为顶层菜单
+            if (parentId instanceof Integer && (Integer) parentId ==0){
+                return true;
+            }
+            //如果id属于Long类型，父菜单为0L则为顶层菜单
+            if (parentId instanceof Long && (Long) parentId == 0L ){
+                return true;
+            }
+            //否则父菜单等于本id，则为顶层菜单
+            return p == parentId;
         }
 
-        void setSubs(List<T> subs);
+        void setChildren(List<T> children);
     }
 }

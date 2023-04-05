@@ -17,14 +17,13 @@ import java.util.List;
 @Data
 public class MenuResp extends MenuRespBase implements TreeUtil.TreeBase<MenuResp,Integer>{
 
-    private MenuRespBase parent;
-
     private AuthorityObject authority;
 
-    private List<MenuResp> subs;
+    private List<MenuResp> children;
+
 
     @Override
-    public void setSubs(List<MenuResp> subs) {
-        this.subs = subs;
+    public void setChildren(List<MenuResp> children) {
+        this.children = children;
     }
 }
