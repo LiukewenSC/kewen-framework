@@ -67,9 +67,9 @@ public class CodeGenerator {
          * 是否开启swagger
          */
         public static final boolean ENABLE_SWAGGER = false;
-        public static final List<String> IGNORE_TABLE_PREFIX = Arrays.asList("bak_","blog_spider","blog_category");
-        //public static final List<String> CONTAINS_TABLE_PREFIX = Arrays.asList("sys_");
-        public static final List<String> CONTAINS_TABLE_PREFIX =Arrays.asList("blog_tag");
+        public static final List<String> IGNORE_TABLE_PREFIX = Arrays.asList("bak_","blog_spider");
+        public static final List<String> CONTAINS_TABLE_PREFIX = Arrays.asList("blog","sys_dict");
+        //public static final List<String> CONTAINS_TABLE_PREFIX =null;
 
         /**
          * 作者
@@ -118,14 +118,14 @@ public class CodeGenerator {
                     }
                 }).packageConfig(builder -> {
                     //包配置
-                    builder.parent(Config.BASE_PACKAGE)
+                    builder.parent(Config.BASE_PACKAGE+".mp")
                             .moduleName(Config.MODULE_NAME)
                             .controller("controller")
                             .service("service")
                             .serviceImpl("service.impl")
                             //.mapper("mapper")
                             .entity("entity")
-                            .pathInfo(Collections.singletonMap(OutputFile.xml, projectPath + "/src/main/resources/mapper/" ))
+                            .pathInfo(Collections.singletonMap(OutputFile.xml, projectPath + "/src/main/resources/mapper/mp" ))
                     //.other("output")
                     ;
 
@@ -152,7 +152,7 @@ public class CodeGenerator {
                                 .build()
                             .mapperBuilder()//mapper文件策略
                                 .fileOverride()
-                                //.enableMapperAnnotation()//开启mapper注解
+                                .enableMapperAnnotation()//开启mapper注解
                                 .enableBaseResultMap()//启用xml文件中的BaseResultMap 生成
                                 .enableBaseColumnList()//启用xml文件中的BaseColumnList
                                 //.cache(缓存类.class)设置缓存实现类
@@ -161,14 +161,14 @@ public class CodeGenerator {
                                 .build()
                             .serviceBuilder()//service文件策略
                                 .fileOverride()
-                                .formatServiceFileName("%sService")//格式化 service 接口文件名称
-                                .formatServiceImplFileName("%sServiceImpl")//格式化 service 接口文件名称
+                                .formatServiceFileName("%sMpService")//格式化 service 接口文件名称
+                                .formatServiceImplFileName("%sMpServiceImpl")//格式化 service 接口文件名称
                                 .build()
                             .controllerBuilder()//控制层策略
                                 .fileOverride()
                                 //.enableHyphenStyle()开启驼峰转连字符，默认：false
                                 .enableRestStyle()//开启生成@RestController
-                                .formatFileName("%sController")//格式化文件名称
+                                .formatFileName("%sMpController")//格式化文件名称
                     ;
 
                 })

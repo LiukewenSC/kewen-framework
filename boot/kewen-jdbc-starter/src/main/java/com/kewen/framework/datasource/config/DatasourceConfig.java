@@ -9,7 +9,7 @@ import org.springframework.context.annotation.PropertySource;
  * @since 2022-12-05 16:09
  */
 @Configuration
-@PropertySource({"classpath:application-datasource.properties", "classpath:application-datasource-${spring.profiles.active}.yml"})
+@PropertySource({"classpath:application-datasource.yml", "classpath:application-datasource-${spring.profiles.active}.yml"})
 public class DatasourceConfig {
 
 }
