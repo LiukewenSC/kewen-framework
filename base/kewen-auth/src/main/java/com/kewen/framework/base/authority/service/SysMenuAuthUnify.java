@@ -2,9 +2,9 @@ package com.kewen.framework.base.authority.service;
 
 
 
-import com.kewen.framework.base.authority.entity.SysMenu;
 import com.kewen.framework.base.authority.model.AuthorityObject;
 import com.kewen.framework.base.authority.model.MenuResp;
+import com.kewen.framework.base.authority.mp.entity.SysMenu;
 
 import java.util.Collection;
 import java.util.List;
