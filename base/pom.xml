@@ -14,8 +14,9 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>common</module>
-        <module>authority</module>
+        <module>kewen-common</module>
+        <module>kewen-auth</module>
+        <module>kewen-storage</module>
     </modules>
 
 </project>

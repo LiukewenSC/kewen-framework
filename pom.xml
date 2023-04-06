@@ -15,13 +15,12 @@
     </properties>
 
     <modules>
-        <module>cloud</module>
         <module>base</module>
         <module>boot</module>
+        <module>cloud</module>
+        <module>cloud-alibaba</module>
         <module>other</module>
         <module>sample</module>
-        <module>cloud-alibaba</module>
-        <module>base/oos</module>
     </modules>
 
 

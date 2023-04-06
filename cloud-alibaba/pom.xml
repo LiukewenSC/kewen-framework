@@ -13,7 +13,7 @@
     <artifactId>cloud-alibaba</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>nacos-client-starter</module>
+        <module>kewen-nacos-alibaba-starter</module>
     </modules>
 
 

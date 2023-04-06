@@ -13,7 +13,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>code-generator</module>
+        <module>kewen-code-generator</module>
     </modules>
 
 </project>
