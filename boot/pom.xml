@@ -20,6 +20,7 @@
         <module>kewen-sso-starter</module>
         <module>kewen-sso-server</module>
         <module>kewen-task-starter</module>
+        <module>kewen-common-starter</module>
     </modules>
 
 </project>

@@ -36,6 +36,11 @@
             </dependency>
             <dependency>
                 <groupId>com.kewen.framework</groupId>
+                <artifactId>kewen-common-starter</artifactId>
+                <version>${framework-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.kewen.framework</groupId>
                 <artifactId>kewen-web-starter</artifactId>
                 <version>${framework-version}</version>
             </dependency>

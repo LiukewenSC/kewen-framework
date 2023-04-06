@@ -15,7 +15,7 @@
 
         <dependency>
             <groupId>com.kewen.framework</groupId>
-            <artifactId>kewen-common</artifactId>
+            <artifactId>kewen-common-starter</artifactId>
         </dependency>
 
         <dependency>

@@ -1,9 +1,8 @@
-package com.kewen.framework.boot.web.initializer;
+package com.kewen.framework.boot.common.initializer;
 
-import com.kewen.framework.base.common.factory.YmlPropertySourceFactory;
 import com.kewen.framework.base.common.model.SpringConstant;
 import com.kewen.framework.base.common.utils.BeanUtil;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import com.kewen.framework.boot.common.YmlPropertySourceFactory;
 import org.springframework.beans.factory.parsing.ProblemReporter;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanNameGenerator;
@@ -12,28 +11,24 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.type.classreading.MetadataReaderFactory;
-import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Constructor;
 
 /**
- * @descrpition 
+ * @descrpition 通用的 上下文初始化处理器，用于修改共有的上下文变化
  * @author kewen
- * @since 2023-01-03 16:41
+ * @since 2023-02-03
  */
-public class WebApplicationContextInitializer implements ApplicationContextInitializer {
+public class CommonContextInitializer implements ApplicationContextInitializer {
 
     @Override
     public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
 
         //修改ConfigurationClassParser的默认xml解析器
         modifyConfigurationClassParser();
-
-        ConfigurableListableBeanFactory beanFactory = configurableApplicationContext.getBeanFactory();
-
     }
     /**
-     * 修改ConfigurationClassParser的默认xml解析器
+     * 修改ConfigurationClassParser的默认xml解析器，兼容yml的
      */
     private void modifyConfigurationClassParser(){
         try {
