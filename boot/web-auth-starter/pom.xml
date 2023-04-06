@@ -9,21 +9,21 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>web-auth-starter</artifactId>
+    <artifactId>kewen-auth-web-starter</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>com.kewen.framework</groupId>
-            <artifactId>common</artifactId>
+            <artifactId>kewen-common</artifactId>
         </dependency>
         <dependency>
             <groupId>com.kewen.framework</groupId>
-            <artifactId>authority</artifactId>
+            <artifactId>kewen-auth</artifactId>
         </dependency>
 
         <dependency>
             <groupId>com.kewen.framework</groupId>
-            <artifactId>web-boot-starter</artifactId>
+            <artifactId>kewen-web-starter</artifactId>
         </dependency>
 
         <dependency>
@@ -34,7 +34,7 @@
 
         <dependency>
             <groupId>com.kewen.framework</groupId>
-            <artifactId>datasource-starter</artifactId>
+            <artifactId>kewen-jdbc-starter</artifactId>
         </dependency>
 
 

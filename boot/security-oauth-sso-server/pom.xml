@@ -9,16 +9,16 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>security-oauth-sso-server</artifactId>
+    <artifactId>kewen-sso-server</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>com.kewen.framework</groupId>
-            <artifactId>common</artifactId>
+            <artifactId>kewen-common</artifactId>
         </dependency>
         <dependency>
             <groupId>com.kewen.framework</groupId>
-            <artifactId>authority</artifactId>
+            <artifactId>kewen-auth</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -30,7 +30,7 @@
         </dependency>
         <dependency>
             <groupId>com.kewen.framework</groupId>
-            <artifactId>datasource-starter</artifactId>
+            <artifactId>kewen-jdbc-starter</artifactId>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

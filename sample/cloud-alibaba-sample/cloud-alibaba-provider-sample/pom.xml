@@ -14,11 +14,11 @@
     <dependencies>
         <dependency>
             <groupId>com.kewen.framework.cloud.alibaba</groupId>
-            <artifactId>nacos-client-starter</artifactId>
+            <artifactId>kewen-nacos-alibaba-starter</artifactId>
         </dependency>
         <dependency>
             <groupId>com.kewen.framework</groupId>
-            <artifactId>web-boot-starter</artifactId>
+            <artifactId>kewen-web-starter</artifactId>
         </dependency>
         <!--<dependency>
             <groupId>com.alibaba.cloud</groupId>

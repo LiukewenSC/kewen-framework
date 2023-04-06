@@ -32,43 +32,43 @@
 
             <dependency>
                 <groupId>com.kewen.framework</groupId>
-                <artifactId>common</artifactId>
+                <artifactId>kewen-common</artifactId>
                 <version>${framework-version}</version>
             </dependency>
             <dependency>
                 <groupId>com.kewen.framework</groupId>
-                <artifactId>web-boot-starter</artifactId>
+                <artifactId>kewen-web-starter</artifactId>
                 <version>${framework-version}</version>
             </dependency>
             <dependency>
                 <groupId>com.kewen.framework.cloud</groupId>
-                <artifactId>eureka-client-starter</artifactId>
+                <artifactId>kewen-eureka-cloud-starter</artifactId>
                 <version>${framework-version}</version>
             </dependency>
             <dependency>
                 <groupId>com.kewen.framework</groupId>
-                <artifactId>datasource-starter</artifactId>
+                <artifactId>kewen-jdbc-starter</artifactId>
                 <version>${framework-version}</version>
             </dependency>
             <dependency>
                 <groupId>com.kewen.framework</groupId>
-                <artifactId>authority</artifactId>
+                <artifactId>kewen-auth</artifactId>
                 <version>${framework-version}</version>
             </dependency>
             <dependency>
                 <groupId>com.kewen.framework</groupId>
-                <artifactId>web-security-starter</artifactId>
+                <artifactId>kewen-security-web-starter</artifactId>
                 <version>${framework-version}</version>
             </dependency>
             <dependency>
                 <groupId>com.kewen.framework</groupId>
-                <artifactId>security-oauth-client-starter</artifactId>
+                <artifactId>kewen-sso-starter</artifactId>
                 <version>${framework-version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.kewen.framework.cloud.alibaba</groupId>
-                <artifactId>nacos-client-starter</artifactId>
+                <artifactId>kewen-nacos-alibaba-starter</artifactId>
                 <version>${framework-version}</version>
             </dependency>
 

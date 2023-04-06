@@ -20,7 +20,7 @@
     <dependencies>
         <dependency>
             <groupId>com.kewen.framework</groupId>
-            <artifactId>web-security-starter</artifactId>
+            <artifactId>kewen-security-web-starter</artifactId>
         </dependency>
     </dependencies>
 
