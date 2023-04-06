@@ -9,13 +9,13 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>nacos-client-starter</artifactId>
+    <artifactId>kewen-nacos-alibaba-starter</artifactId>
 
     <dependencies>
 
         <dependency>
             <groupId>com.kewen.framework</groupId>
-            <artifactId>common</artifactId>
+            <artifactId>kewen-common</artifactId>
         </dependency>
 
         <dependency>
@@ -50,7 +50,7 @@
         </dependency>
         <dependency>
             <groupId>com.kewen.framework</groupId>
-            <artifactId>web-boot-starter</artifactId>
+            <artifactId>kewen-web-starter</artifactId>
         </dependency>
 
     </dependencies>

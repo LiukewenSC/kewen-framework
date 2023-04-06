@@ -14,7 +14,7 @@
     <dependencies>
         <dependency>
             <groupId>com.kewen.framework</groupId>
-            <artifactId>security-oauth-client-starter</artifactId>
+            <artifactId>kewen-sso-starter</artifactId>
         </dependency>
     </dependencies>
 

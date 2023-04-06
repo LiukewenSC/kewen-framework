@@ -14,7 +14,7 @@
     <dependencies>
         <dependency>
             <groupId>com.kewen.framework.cloud</groupId>
-            <artifactId>eureka-client-starter</artifactId>
+            <artifactId>kewen-eureka-cloud-starter</artifactId>
         </dependency>
     </dependencies>
 

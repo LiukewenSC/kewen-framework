@@ -21,7 +21,7 @@
     <dependencies>
         <dependency>
             <groupId>com.kewen.framework</groupId>
-            <artifactId>common</artifactId>
+            <artifactId>kewen-common</artifactId>
         </dependency>
         <dependency>
             <groupId>com.qiniu</groupId>

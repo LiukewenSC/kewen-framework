@@ -9,12 +9,12 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>code-generator</artifactId>
+    <artifactId>kewen-code-generator</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>com.kewen.framework</groupId>
-            <artifactId>common</artifactId>
+            <artifactId>kewen-common</artifactId>
         </dependency>
         <dependency>
             <groupId>com.baomidou</groupId>
