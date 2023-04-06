@@ -13,13 +13,13 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>web-boot-starter</module>
-        <module>web-auth-starter</module>
-        <module>datasource-starter</module>
-        <module>security-oauth-sso-server</module>
-        <module>security-oauth-sso-client-starter</module>
-        <module>quartz-starter</module>
-        <module>web-security-starter</module>
+        <module>kewen-jdbc-starter</module>
+        <module>kewen-web-starter</module>
+        <module>kewen-auth-web-starter</module>
+        <module>kewen-security-web-starter</module>
+        <module>kewen-sso-starter</module>
+        <module>kewen-sso-server</module>
+        <module>kewen-task-starter</module>
     </modules>
 
 </project>

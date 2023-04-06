@@ -13,9 +13,9 @@
     <artifactId>cloud</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>eureka-server</module>
-        <module>eureka-client-starter</module>
-        <module>gateway</module>
+        <module>kewen-eureka-cloud-starter</module>
+        <module>kewen-eureka-server</module>
+        <module>kewen-gateway-cloud-starter</module>
     </modules>
 
 </project>
