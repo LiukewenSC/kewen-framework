@@ -6,7 +6,7 @@ import org.springframework.context.annotation.PropertySource;
 /**
  * @descrpition 
  * @author kewen
- * @since 2022-12-05 16:09
+ * @since 2022-12-05
  */
 @Configuration
 @PropertySource({"classpath:application-datasource.yml", "classpath:application-datasource-${spring.profiles.active}.yml"})

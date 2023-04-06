@@ -4,4 +4,4 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 org.springframework.context.ApplicationContextInitializer=\
   com.kewen.framework.boot.web.initializer.WebApplicationContextInitializer
 
-org.springframework.boot.SpringApplicationRunListener=com.kewen.framework.boot.web.listener.WebSpringApplicationRunListener
+org.springframework.boot.SpringApplicationRunListener=com.kewen.framework.boot.common.initializer.WebSpringApplicationRunListener

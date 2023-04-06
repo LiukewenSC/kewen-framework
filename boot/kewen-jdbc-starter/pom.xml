@@ -17,6 +17,10 @@
             <groupId>com.kewen.framework</groupId>
             <artifactId>kewen-common</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.kewen.framework</groupId>
+            <artifactId>kewen-common-starter</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>com.baomidou</groupId>

@@ -1,4 +1,4 @@
-package com.kewen.framework.base.common.factory;
+package com.kewen.framework.boot.common;
 
 import com.kewen.framework.base.common.utils.YmlUtils;
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;

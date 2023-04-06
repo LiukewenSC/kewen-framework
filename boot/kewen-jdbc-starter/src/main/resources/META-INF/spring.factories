@@ -2,5 +2,3 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   com.kewen.framework.datasource.config.DatasourceBeanLoadConfig,\
   com.kewen.framework.datasource.config.MybatisPlusConfig,\
   com.kewen.framework.datasource.config.DatasourceConfig
-
-org.springframework.context.ApplicationContextInitializer=com.kewen.framework.datasource.boot.DatasourceInitializer
