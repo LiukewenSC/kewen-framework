@@ -1,8 +1,9 @@
-package com.kewen.framework.boot.authority.advance.authedit;
+package com.kewen.framework.boot.authority.annotation.authedit;
 
 import com.kewen.framework.base.authority.model.AuthorityObject;
 import com.kewen.framework.base.authority.support.SysMenuAuthComposite;
 import com.kewen.framework.base.common.exception.AuthorizationException;
+import com.kewen.framework.boot.authority.annotation.CheckDataAuthEdit;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -28,14 +29,14 @@ public class AuthDataEditAspect {
     @Autowired
     private SysMenuAuthComposite sysMenuAuthComposite;
 
-    @Pointcut("@annotation(com.kewen.framework.boot.authority.advance.authedit.AuthDataEdit)")
+    @Pointcut("@annotation(com.kewen.framework.boot.authority.annotation.CheckDataAuthEdit)")
     public void pointcut(){
 
     }
 
-    @Around(value = "pointcut() && @annotation(authDataEdit)",argNames = "joinPoint,authDataEdit")
+    @Around(value = "pointcut() && @annotation(checkDataAuthEdit)",argNames = "joinPoint,authDataEdit")
     @Transactional
-    public Object around(ProceedingJoinPoint joinPoint, AuthDataEdit authDataEdit){
+    public Object around(ProceedingJoinPoint joinPoint, CheckDataAuthEdit checkDataAuthEdit){
         log.info("编辑业务权限，拦截方法:{}",joinPoint.toString());
         Object[] args = joinPoint.getArgs();
         if (args==null){
@@ -49,8 +50,8 @@ public class AuthDataEditAspect {
 
         Long businessId = authDataEditBusiness.getBusinessId();
         AuthorityObject authorityObject = authDataEditBusiness.getAuthorityObject();
-        String module = authDataEdit.module();
-        String operate = authDataEdit.operate();
+        String module = checkDataAuthEdit.module();
+        String operate = checkDataAuthEdit.operate();
 
         sysMenuAuthComposite.editBusinessAuthority(businessId,module,operate,authorityObject);
 

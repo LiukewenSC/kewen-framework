@@ -1,8 +1,9 @@
-package com.kewen.framework.boot.authority.advance.datacheck;
+package com.kewen.framework.boot.authority.annotation.dataedit;
 
 import com.kewen.framework.base.authority.context.CurrentUserContext;
 import com.kewen.framework.base.authority.support.SysUserComposite;
 import com.kewen.framework.base.common.exception.AuthorizationException;
+import com.kewen.framework.boot.authority.annotation.CheckDataEdit;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
@@ -28,11 +29,11 @@ public class DataCheckAspect {
     @Autowired
     private SysUserComposite sysUserComposite;
 
-    @Pointcut("@annotation(com.kewen.framework.boot.authority.advance.datacheck.DataCheck)")
+    @Pointcut("@annotation(com.kewen.framework.boot.authority.annotation.CheckDataEdit)")
     public void pointcut(){}
 
     @Before(value = "pointcut() && @annotation(authAnn)", argNames = "joinPoint,authAnn")
-    public void before(JoinPoint joinPoint, DataCheck authAnn){
+    public void before(JoinPoint joinPoint, CheckDataEdit authAnn){
         log.info("校验用户权限，拦截方法:{}",joinPoint.toString());
         Object[] args = joinPoint.getArgs();
         if (args==null){

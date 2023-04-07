@@ -1,4 +1,4 @@
-package com.kewen.framework.boot.authority.advance.datarange;
+package com.kewen.framework.boot.authority.annotation.datarange;
 
 
 import com.alibaba.druid.sql.ast.SQLExpr;
@@ -13,6 +13,7 @@ import com.alibaba.druid.sql.parser.SQLParserUtils;
 import com.alibaba.druid.sql.parser.SQLStatementParser;
 import com.alibaba.druid.util.JdbcConstants;
 import com.alibaba.druid.util.JdbcUtils;
+import com.kewen.framework.boot.authority.annotation.CheckDataRange;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.BoundSql;
@@ -55,7 +56,7 @@ public class DataRangeInterceptor implements Interceptor {
 
     /**
      * 所有的sql都会进入此拦截器，需要只校验AuthRangeContext中有数据的，没有数据的说明不是@AuthRange 所拦截的，应当原样输出
-     * AuthRangeContext.get()有数据说明一定是从{@link DataRange}拦截的，并在{@link DataRangeAspect}中加入上下文数据且不为空
+     * AuthRangeContext.get()有数据说明一定是从{@link CheckDataRange}拦截的，并在{@link DataRangeAspect}中加入上下文数据且不为空
      * @param invocation
      * @return
      * @throws Throwable

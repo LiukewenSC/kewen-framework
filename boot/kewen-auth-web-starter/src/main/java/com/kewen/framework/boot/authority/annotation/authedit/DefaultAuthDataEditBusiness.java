@@ -1,4 +1,4 @@
-package com.kewen.framework.boot.authority.advance.authedit;
+package com.kewen.framework.boot.authority.annotation.authedit;
 
 import com.kewen.framework.base.authority.model.AuthorityObject;
 import lombok.Data;

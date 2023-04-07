@@ -1,4 +1,4 @@
-package com.kewen.framework.boot.authority.advance.menucheck;
+package com.kewen.framework.boot.authority.annotation;
 
 import org.springframework.core.annotation.AliasFor;
 
@@ -12,7 +12,7 @@ import java.lang.annotation.*;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface AuthMenu {
+public @interface CheckEndpoint {
 
     /**
      * 路径，为空则以输入Controller的RequestMapping为准

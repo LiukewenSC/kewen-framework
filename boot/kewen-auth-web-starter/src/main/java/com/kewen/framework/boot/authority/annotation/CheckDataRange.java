@@ -1,4 +1,6 @@
-package com.kewen.framework.boot.authority.advance.datarange;
+package com.kewen.framework.boot.authority.annotation;
+
+import com.kewen.framework.boot.authority.annotation.datarange.MatchMethod;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -24,7 +26,7 @@ import java.lang.annotation.Target;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface DataRange {
+public @interface CheckDataRange {
 
     /**
      * 模块

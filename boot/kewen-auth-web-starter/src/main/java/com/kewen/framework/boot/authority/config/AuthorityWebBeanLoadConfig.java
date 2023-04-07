@@ -2,7 +2,7 @@ package com.kewen.framework.boot.authority.config;
 
 import com.kewen.framework.base.authority.support.SysMenuAuthComposite;
 import com.kewen.framework.base.authority.support.impl.MemorySysMenuAuthComposite;
-import com.kewen.framework.boot.authority.advance.menucheck.AuthMenuInterceptor;
+import com.kewen.framework.boot.authority.annotation.endpoint.AuthMenuInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
