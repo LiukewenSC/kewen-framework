@@ -1,6 +1,6 @@
 package com.kewen.framework.boot.common.initializer;
 
-import com.kewen.framework.base.common.model.SpringConstant;
+import com.kewen.framework.boot.common.SpringConstant;
 import com.kewen.framework.base.common.utils.BeanUtil;
 import com.kewen.framework.boot.common.YmlPropertySourceFactory;
 import org.springframework.beans.factory.parsing.ProblemReporter;
@@ -28,11 +28,12 @@ public class CommonContextInitializer implements ApplicationContextInitializer {
         modifyConfigurationClassParser();
     }
     /**
-     * 修改ConfigurationClassParser的默认xml解析器，兼容yml的
+     * 修改ConfigurationClassParser的默认xml解析器，兼容yml的，
+     * 这种修改改了字节码 ， 没办法，谁叫它class都没给 public权限，而且还是final的静态变量
      */
     private void modifyConfigurationClassParser(){
         try {
-            Class<?> aClass = Class.forName(SpringConstant.configurationClassParserName);
+            Class<?> aClass = Class.forName(SpringConstant.CONFIGURATION_CLASS_PARSER_NAME);
             Constructor<?> constructor = aClass.getDeclaredConstructor(
                     MetadataReaderFactory.class, ProblemReporter.class, Environment.class,
                     ResourceLoader.class, BeanNameGenerator.class, BeanDefinitionRegistry.class
