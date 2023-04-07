@@ -4,7 +4,6 @@ import com.kewen.framework.base.authority.mp.service.SysApplicationAuthMpService
 import com.kewen.framework.base.authority.mp.service.SysMenuAuthMpService;
 import com.kewen.framework.base.authority.mp.service.SysMenuMpService;
 import com.kewen.framework.base.authority.mp.service.SysUserDeptMpService;
-import com.kewen.framework.base.authority.mp.service.SysUserInfoMpService;
 import com.kewen.framework.base.authority.mp.service.SysUserPositionMpService;
 import com.kewen.framework.base.authority.mp.service.SysUserRoleMpService;
 import com.kewen.framework.base.authority.support.SysMenuAuthComposite;
@@ -28,21 +27,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @ComponentScan("com.kewen.framework.base.authority")
 @Profile({"test","prod"})
 public class SecurityBeanLoadConfig {
-
-    @Autowired
-    SysMenuMpService menuService;
-    @Autowired
-    SysMenuAuthMpService menuAuthService;
-    @Autowired
-    SysApplicationAuthMpService applicationAuthService;
-    @Autowired
-    SysUserInfoMpService sysUserInfoService;
-    @Autowired
-    SysUserRoleMpService sysUserRoleService;
-    @Autowired
-    SysUserDeptMpService sysUserDeptService;
-    @Autowired
-    SysUserPositionMpService sysUserPositionService;
 
     @Bean
     public UserDetailsService userDetailService(){

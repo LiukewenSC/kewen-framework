@@ -28,16 +28,46 @@ public class SysUser extends Model<SysUser> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 用户id
+     * 主键id
      */
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
-     * 用户姓名
+     * 姓名
      */
     @TableField("name")
     private String name;
+
+    /**
+     * 用户昵称
+     */
+    @TableField("nick_name")
+    private String nickName;
+
+    /**
+     * 用户名
+     */
+    @TableField("username")
+    private String username;
+
+    /**
+     * 手机号
+     */
+    @TableField("phone")
+    private String phone;
+
+    /**
+     * 邮箱
+     */
+    @TableField("email")
+    private String email;
+
+    /**
+     * 1-男 2-女 3-..
+     */
+    @TableField("gender")
+    private Integer gender;
 
     /**
      * 创建时间

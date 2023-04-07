@@ -4,6 +4,7 @@ import com.kewen.framework.base.authority.model.AuthorityObject;
 import com.kewen.framework.base.common.model.Position;
 import com.kewen.framework.base.common.model.Role;
 import com.kewen.framework.base.common.model.UserDept;
+import com.kewen.framework.base.common.model.UserDetail;
 
 import java.util.Collection;
 import java.util.List;
@@ -35,22 +36,10 @@ public interface SysUserComposite {
      */
     List<Position> listUserPosition(Long userId);
 
-    /**
-     * 查询用户手有某个业务操作的权限
-     * @param auths 用户权限
-     * @param module 模块
-     * @param operate 操作
-     * @param businessId 业务id
-     * @return 是否有权限
-     */
-    boolean hasAuth(Collection<String> auths, String module, String operate, Long businessId);
 
 
-    /**
-     * 编辑菜单权限
-     * @param menuId 菜单id
-     * @param authorityObject 权限对象
-     */
-    void editMenuAuthorities(Long menuId, AuthorityObject authorityObject);
+
+    UserDetail getUserDetail(String loginInfo);
+    UserDetail getUserDetailWithCredentials(String loginInfo);
 
 }

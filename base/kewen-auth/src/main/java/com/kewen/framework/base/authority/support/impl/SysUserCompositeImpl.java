@@ -1,6 +1,10 @@
 package com.kewen.framework.base.authority.support.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.kewen.framework.base.authority.mp.entity.SysUser;
+import com.kewen.framework.base.authority.mp.entity.SysUserCredentials;
+import com.kewen.framework.base.authority.mp.service.SysUserCredentialsMpService;
+import com.kewen.framework.base.authority.mp.service.SysUserMpService;
 import com.kewen.framework.base.authority.support.mapper.SysUserCompositeMapper;
 import com.kewen.framework.base.authority.model.Authority;
 import com.kewen.framework.base.authority.model.AuthorityObject;
@@ -8,11 +12,14 @@ import com.kewen.framework.base.authority.mp.entity.SysMenuAuth;
 import com.kewen.framework.base.authority.mp.service.SysMenuAuthMpService;
 import com.kewen.framework.base.authority.support.SysUserComposite;
 import com.kewen.framework.base.authority.utils.AuthorityConvertUtil;
+import com.kewen.framework.base.common.exception.AuthenticationException;
 import com.kewen.framework.base.common.model.Dept;
 import com.kewen.framework.base.common.model.DeptPrimary;
 import com.kewen.framework.base.common.model.Position;
 import com.kewen.framework.base.common.model.Role;
+import com.kewen.framework.base.common.model.User;
 import com.kewen.framework.base.common.model.UserDept;
+import com.kewen.framework.base.common.model.UserDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -34,13 +41,17 @@ public class SysUserCompositeImpl implements SysUserComposite {
 
     @Autowired
     SysUserCompositeMapper userCompositeMapper;
-
     @Autowired
     SysMenuAuthMpService sysMenuAuthMpService;
+    @Autowired
+    SysUserMpService userMpService;
+    @Autowired
+    SysUserCredentialsMpService userCredentialsMpService;
 
 
     @Override
     public UserDept getUserDept(Long userId) {
+
         List<DeptPrimary> depts = userCompositeMapper.listUserDept(userId);
 
         if (depts==null){
@@ -92,31 +103,52 @@ public class SysUserCompositeImpl implements SysUserComposite {
         return positions==null? Collections.emptyList():positions;
     }
 
+
+
+
     @Override
-    public boolean hasAuth(Collection<String> auths, String module, String operate, Long businessId) {
-        Integer integer = userCompositeMapper.hasAuth(auths, module, operate, businessId);
-        return integer > 0;
+    public UserDetail getUserDetail(String loginInfo) {
+        SysUser sysUser = userMpService.getOne(
+                new LambdaQueryWrapper<SysUser>()
+                        .eq(SysUser::getUsername, loginInfo)
+                        .or()
+                        .eq(SysUser::getPhone, loginInfo)
+        );
+        if (sysUser == null) {
+            throw new AuthenticationException("用户不存在");
+        }
+        Long userId = sysUser.getId();
+
+        //查询机构
+        UserDept userDept = getUserDept(userId);
+
+        //查询岗位
+        List<Position> positions = listUserPosition(userId);
+
+        //查询角色
+        List<Role> roles = listUserRole(userId);
+
+
+        return UserDetail.builder()
+                .user(new User(sysUser.getId(),sysUser.getName()))
+                .dept(userDept)
+                .positions(positions)
+                .roles(roles)
+                .build()
+                ;
     }
 
     @Override
-    public void editMenuAuthorities(Long menuId, AuthorityObject authorityObject) {
-        List<Authority> to = AuthorityConvertUtil.to(authorityObject);
-        //移除原有的
-        sysMenuAuthMpService.remove(
-                new LambdaQueryWrapper<SysMenuAuth>().eq(SysMenuAuth::getMenuId,menuId)
+    public UserDetail getUserDetailWithCredentials(String loginInfo) {
+
+        UserDetail userDetail = getUserDetail(loginInfo);
+
+        SysUserCredentials credentials = userCredentialsMpService.getOne(
+                new LambdaQueryWrapper<SysUserCredentials>()
+                        .eq(SysUserCredentials::getUserId, userId)
         );
-        //批量插入新的
-        if (!CollectionUtils.isEmpty(to)){
-            sysMenuAuthMpService.saveBatch(
-                    to.stream()
-                            .map(a->
-                                    new SysMenuAuth()
-                                            .setMenuId(menuId)
-                                            .setAuthority(a.getAuthority())
-                                            .setDescription(a.getDescription())
-                            ).collect(Collectors.toList())
-            );
-        }
+
+
     }
 
 }

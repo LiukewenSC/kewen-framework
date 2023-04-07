@@ -1,0 +1,11 @@
+spring:
+  profiles:
+    active: dev
+
+auth:
+  store:
+    type: session
+
+logging:
+  level:
+    org.springframework.security: trace

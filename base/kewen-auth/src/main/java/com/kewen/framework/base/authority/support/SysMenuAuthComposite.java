@@ -53,4 +53,15 @@ public interface SysMenuAuthComposite {
      * @param authority 权限结构
      */
     void editBusinessAuthority(Long businessId,String module,String operate, AuthorityObject authority);
+
+
+    /**
+     * 查询用户手有某个业务操作的权限
+     * @param auths 用户权限
+     * @param module 模块
+     * @param operate 操作
+     * @param businessId 业务id
+     * @return 是否有权限
+     */
+    boolean hasAuth(Collection<String> auths, String module, String operate, Long businessId);
 }

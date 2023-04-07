@@ -18,6 +18,7 @@
         <module>secutiry-sso-sample</module>
         <module>cloud-alibaba-sample</module>
         <module>security-sample</module>
+        <module>auth-boot-sample</module>
     </modules>
 
     <properties>

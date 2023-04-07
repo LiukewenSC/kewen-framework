@@ -27,12 +27,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjweaver</artifactId>
-        </dependency>
-
-
-        <dependency>
             <groupId>com.kewen.framework</groupId>
             <artifactId>kewen-jdbc-starter</artifactId>
         </dependency>
@@ -44,6 +38,16 @@
             <artifactId>spring-boot-configuration-processor</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+        </dependency>
         <!--为了使用sql改写的相关类-->
         <!--<dependency>
             <groupId>com.alibaba</groupId>
