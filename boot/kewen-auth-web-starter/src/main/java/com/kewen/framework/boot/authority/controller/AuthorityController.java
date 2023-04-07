@@ -6,7 +6,7 @@ import com.kewen.framework.base.authority.model.MenuResp;
 import com.kewen.framework.base.authority.mp.entity.SysMenu;
 import com.kewen.framework.base.authority.support.SysMenuAuthComposite;
 import com.kewen.framework.base.common.model.Result;
-import com.kewen.framework.boot.authority.advance.menucheck.AuthMenu;
+import com.kewen.framework.boot.authority.annotation.CheckEndpoint;
 import com.kewen.framework.boot.authority.model.BusinessAuthorityEditReq;
 import com.kewen.framework.boot.authority.model.MenuAuthorityEditReq;
 import io.swagger.annotations.Api;
@@ -45,28 +45,28 @@ public class AuthorityController {
 	}
 	@ApiOperation("查询所有菜单(树形结构返回)")
 	@GetMapping("/getMenuTree")
-	@AuthMenu
+	@CheckEndpoint
 	public Result<List<MenuResp>> getMenuTree(){
 		List<MenuResp> menuTree = sysMenuAuthComposite.getMenuTree();
 		return Result.success(menuTree);
 	}
 	@ApiOperation("修改菜单信息")
 	@PostMapping("/updateMenu")
-	@AuthMenu
+	@CheckEndpoint
 	public Result<Void> updateMenu(@RequestBody SysMenu sysMenu){
 		sysMenuAuthComposite.updateMenu(sysMenu);
 		return Result.success();
 	}
 	@ApiOperation("编辑菜单权限")
 	@PostMapping("/editMenuAuthorities")
-	@AuthMenu
+	@CheckEndpoint
 	public Result<Void> editMenuAuthorities(@RequestBody MenuAuthorityEditReq req){
 		sysMenuAuthComposite.editMenuAuthorities(req.getMenuId(),req.getAuthority());
 		return Result.success();
 	}
 	@ApiOperation("编辑业务权限")
 	@PostMapping("/editBusinessAuthority")
-	@AuthMenu
+	@CheckEndpoint
 	public Result<Void> editBusinessAuthority(@RequestBody @Validated BusinessAuthorityEditReq req){
 		sysMenuAuthComposite.editBusinessAuthority(req.getBusinessId(),req.getModule(),req.getOperate(),req.getAuthority());
 		return Result.success();

@@ -1,4 +1,5 @@
-package com.kewen.framework.boot.authority.advance.authedit;
+package com.kewen.framework.boot.authority.annotation;
+
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -7,15 +8,18 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * @descrpition 校验是否有编辑单条数据的权限
+ *  select business_id from sys_application_auth
+ *  where application=#{application} and operate=#{operate} and business_id=#{businessId} and authority in ( #{用户权限} )
+ *  limit 1
+ * businessId需要关联获取 {@link com.kewen.framework.boot.authority.annotation.dataedit.ApplicationBusiness}
  * @author kewen
- * @descrpition 权限编辑
- * @since 2022-12-19 11:36
+ * @since 2022-11-23 11:55
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface AuthDataEdit {
-
+public @interface CheckDataEdit {
     /**
      * 模块ID
      * @return 模块ID
@@ -30,5 +34,4 @@ public @interface AuthDataEdit {
      * @return 返回操作类型
      */
     String operate() default "unified";
-
 }

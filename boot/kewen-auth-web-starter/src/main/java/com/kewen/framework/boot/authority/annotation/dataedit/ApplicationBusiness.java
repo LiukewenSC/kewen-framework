@@ -1,4 +1,4 @@
-package com.kewen.framework.boot.authority.advance.datacheck;
+package com.kewen.framework.boot.authority.annotation.dataedit;
 
 /**
  * @descrpition 关联的信息

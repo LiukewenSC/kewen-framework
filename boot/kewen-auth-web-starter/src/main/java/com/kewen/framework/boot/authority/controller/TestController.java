@@ -1,10 +1,10 @@
 package com.kewen.framework.boot.authority.controller;
 
-import com.kewen.framework.boot.authority.advance.datacheck.DataCheck;
-import com.kewen.framework.boot.authority.advance.datacheck.DefaultApplicationBusiness;
-import com.kewen.framework.boot.authority.advance.authedit.AuthDataEdit;
-import com.kewen.framework.boot.authority.advance.authedit.DefaultAuthDataEditBusiness;
-import com.kewen.framework.boot.authority.advance.menucheck.AuthMenu;
+import com.kewen.framework.boot.authority.annotation.CheckDataEdit;
+import com.kewen.framework.boot.authority.annotation.dataedit.DefaultApplicationBusiness;
+import com.kewen.framework.boot.authority.annotation.CheckDataAuthEdit;
+import com.kewen.framework.boot.authority.annotation.authedit.DefaultAuthDataEditBusiness;
+import com.kewen.framework.boot.authority.annotation.CheckEndpoint;
 import com.kewen.framework.base.common.model.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,7 +27,7 @@ public class TestController {
      * @return
      */
     @RequestMapping("/testMenuAuth")
-    @AuthMenu
+    @CheckEndpoint
     public Result testMenuAuth(){
         log.info("测试 单个功能的编辑权限");
         return Result.success("测试编辑权限通过");
@@ -46,7 +46,7 @@ public class TestController {
      * @param applicationBusiness
      */
     @RequestMapping("/testBusinessEdit")
-    @DataCheck(module = "test")
+    @CheckDataEdit(module = "test")
     public Result testBusinessEdit(@RequestBody DefaultApplicationBusiness applicationBusiness){
         log.info("测试 单条数据的编辑权限");
 
@@ -58,7 +58,7 @@ public class TestController {
      * @param applicationBusiness
      */
     @RequestMapping("/testAuthEdit")
-    @AuthDataEdit(module = "test")
+    @CheckDataAuthEdit(module = "test")
     public Result testEditAuthEdit(@RequestBody DefaultAuthDataEditBusiness applicationBusiness){
         log.info("测试 权限的编辑");
 

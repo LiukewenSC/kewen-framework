@@ -1,20 +1,22 @@
-package com.kewen.framework.boot.authority.advance.datacheck;
+package com.kewen.framework.boot.authority.annotation;
 
-import java.lang.annotation.*;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * @descrpition 业务操作权限 加在controller切面
- *  select business_id from sys_application_auth
- *  where application=#{application} and operate=#{operate} and business_id=#{businessId} and authority in ( #{用户权限} )
- *  limit 1
- * businessId需要关联获取 {@link ApplicationBusiness}
+ * 校验是否有编辑某业务数据权限的权限，
+ * 即是否可以修改业务数据配置的权限信息
  * @author kewen
- * @since 2022-11-23 11:55
+ * @since 2022-12-19 11:36
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface DataCheck {
+public @interface CheckDataAuthEdit {
+
     /**
      * 模块ID
      * @return 模块ID
@@ -29,4 +31,5 @@ public @interface DataCheck {
      * @return 返回操作类型
      */
     String operate() default "unified";
+
 }

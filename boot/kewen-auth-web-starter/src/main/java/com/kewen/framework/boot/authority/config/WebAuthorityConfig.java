@@ -1,6 +1,6 @@
 package com.kewen.framework.boot.authority.config;
 
-import com.kewen.framework.boot.authority.advance.menucheck.AuthMenuInterceptor;
+import com.kewen.framework.boot.authority.annotation.endpoint.AuthMenuInterceptor;
 import com.kewen.framework.boot.authority.currentuser.AbstractCurrentUserContextManager;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +30,7 @@ public class WebAuthorityConfig implements WebMvcConfigurer {
 
         //用户当前用户拦截器，此拦截器一定要在最前面，保证当前用户设置到上下文中
         registry.addInterceptor(currentUserContextInterceptor).excludePathPatterns("/login/**");
+
 
         //此拦截器放在当前用户拦截器之后，里面内容会先从用户上下文中获取数据
         registry.addInterceptor(authMenuInterceptor);
