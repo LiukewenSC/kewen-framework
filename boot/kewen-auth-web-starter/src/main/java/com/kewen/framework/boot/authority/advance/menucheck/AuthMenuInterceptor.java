@@ -1,13 +1,9 @@
 package com.kewen.framework.boot.authority.advance.menucheck;
 
 import com.kewen.framework.base.authority.context.CurrentUserContext;
-import com.kewen.framework.base.authority.service.SysMenuAuthUnify;
-import com.kewen.framework.base.authority.service.SysMenuService;
+import com.kewen.framework.base.authority.support.SysMenuAuthComposite;
 import com.kewen.framework.base.common.exception.AuthorizationException;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -23,9 +19,9 @@ import java.util.Collection;
  */
 public class AuthMenuInterceptor implements HandlerInterceptor {
 
-    private final SysMenuAuthUnify menuService;
+    private final SysMenuAuthComposite menuService;
 
-    public AuthMenuInterceptor(SysMenuAuthUnify menuService) {
+    public AuthMenuInterceptor(SysMenuAuthComposite menuService) {
         this.menuService = menuService;
     }
 

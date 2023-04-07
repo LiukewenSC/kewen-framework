@@ -16,7 +16,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Position {
-    private Integer id;
+    private Long id;
     private String name;
     @Override
     public boolean equals(Object o) {

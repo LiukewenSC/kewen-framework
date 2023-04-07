@@ -1,7 +1,5 @@
 package com.kewen.framework.base.authority.model;
 
-import com.kewen.framework.base.authority.enums.MenuAuthType;
-import com.kewen.framework.base.authority.enums.MenuType;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -16,7 +14,7 @@ public class MenuRespBase {
     /**
      * 主键id
      */
-    protected Integer id;
+    protected Long id;
 
     /**
      * 菜单名
@@ -26,7 +24,7 @@ public class MenuRespBase {
     /**
      * 父id
      */
-    protected Integer parentId;
+    protected Long parentId;
 
     /**
      * 链接或路径
@@ -40,12 +38,14 @@ public class MenuRespBase {
 
     /**
      * 类型： 1-菜单 2-按钮 3-外部链接
+     * {@link com.kewen.framework.base.authority.constant.MenuTypeConstant.TYPE}
      */
-    protected MenuType type;
+    protected Integer type;
     /**
      * 权限类型 1-基于父菜单权限 2-基于自身权限
+     * {@link com.kewen.framework.base.authority.constant.MenuTypeConstant.AUTH_TYPE}
      */
-    protected MenuAuthType authType;
+    protected Integer authType;
 
     /**
      * 描述

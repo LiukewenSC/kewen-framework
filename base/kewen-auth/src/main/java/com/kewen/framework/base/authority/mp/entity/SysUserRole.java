@@ -17,7 +17,7 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author kewen
- * @since 2023-04-06
+ * @since 2023-04-07
  */
 @Getter
 @Setter
@@ -30,7 +30,7 @@ public class SysUserRole extends Model<SysUserRole> {
     /**
      * 主键id
      */
-      @TableId(value = "id", type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**

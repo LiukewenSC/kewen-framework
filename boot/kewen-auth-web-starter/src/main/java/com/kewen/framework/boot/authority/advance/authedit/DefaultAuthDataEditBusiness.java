@@ -11,12 +11,12 @@ import lombok.Data;
 @Data
 public class DefaultAuthDataEditBusiness implements AuthDataEditBusiness {
 
-    private Integer id;
+    private Long id;
     private AuthorityObject authority;
 
 
     @Override
-    public Integer getBusinessId() {
+    public Long getBusinessId() {
         return id;
     }
 

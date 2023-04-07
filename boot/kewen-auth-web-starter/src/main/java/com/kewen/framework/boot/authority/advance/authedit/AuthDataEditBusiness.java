@@ -13,7 +13,7 @@ public interface AuthDataEditBusiness {
      * 获取业务ID
      * @return
      */
-    Integer getBusinessId();
+    Long getBusinessId();
 
     /**
      * 获取权限对象

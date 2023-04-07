@@ -1,7 +1,7 @@
 package com.kewen.framework.base.authority.mp.service.impl;
 
 import com.kewen.framework.base.authority.mp.entity.SysMenu;
-import com.kewen.framework.base.authority.mp.mapper.SysMenuMapper;
+import com.kewen.framework.base.authority.mp.mapper.SysMenuMpMapper;
 import com.kewen.framework.base.authority.mp.service.SysMenuMpService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
@@ -18,10 +18,10 @@ import java.util.List;
  * </p>
  *
  * @author kewen
- * @since 2023-04-06
+ * @since 2023-04-07
  */
 @Service
 @Primary
-public class SysMenuMpServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> implements SysMenuMpService {
+public class SysMenuMpServiceImpl extends ServiceImpl<SysMenuMpMapper, SysMenu> implements SysMenuMpService {
 
 }

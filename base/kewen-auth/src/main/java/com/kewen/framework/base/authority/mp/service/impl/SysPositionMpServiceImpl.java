@@ -1,7 +1,7 @@
 package com.kewen.framework.base.authority.mp.service.impl;
 
 import com.kewen.framework.base.authority.mp.entity.SysPosition;
-import com.kewen.framework.base.authority.mp.mapper.SysPositionMapper;
+import com.kewen.framework.base.authority.mp.mapper.SysPositionMpMapper;
 import com.kewen.framework.base.authority.mp.service.SysPositionMpService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
@@ -18,10 +18,10 @@ import java.util.List;
  * </p>
  *
  * @author kewen
- * @since 2023-04-06
+ * @since 2023-04-07
  */
 @Service
 @Primary
-public class SysPositionMpServiceImpl extends ServiceImpl<SysPositionMapper, SysPosition> implements SysPositionMpService {
+public class SysPositionMpServiceImpl extends ServiceImpl<SysPositionMpMapper, SysPosition> implements SysPositionMpService {
 
 }

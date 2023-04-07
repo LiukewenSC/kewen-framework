@@ -2,9 +2,9 @@ package com.kewen.framework.boot.authority.controller;
 
 
 import com.kewen.framework.base.authority.context.CurrentUserContext;
-import com.kewen.framework.base.authority.entity.SysMenu;
 import com.kewen.framework.base.authority.model.MenuResp;
-import com.kewen.framework.base.authority.service.SysMenuAuthUnify;
+import com.kewen.framework.base.authority.mp.entity.SysMenu;
+import com.kewen.framework.base.authority.support.SysMenuAuthComposite;
 import com.kewen.framework.base.common.model.Result;
 import com.kewen.framework.boot.authority.advance.menucheck.AuthMenu;
 import com.kewen.framework.boot.authority.model.BusinessAuthorityEditReq;
@@ -33,13 +33,13 @@ import java.util.List;
 public class AuthorityController {
 
 	@Autowired
-	private SysMenuAuthUnify sysMenuAuthUnify;
+	private SysMenuAuthComposite sysMenuAuthComposite;
 
 	@ApiOperation("获取有权限菜单")
 	@GetMapping("/getVisibleMenus")
 	public Result<List<MenuResp>> getVisibleMenus() {
 		Collection<String> userAuthorities = CurrentUserContext.getCurrentUserAuths();
-		List<MenuResp> menuTree = sysMenuAuthUnify.getCurrentUserMenuTree(userAuthorities);
+		List<MenuResp> menuTree = sysMenuAuthComposite.getCurrentUserMenuTree(userAuthorities);
 
 		return Result.success(menuTree);
 	}
@@ -47,28 +47,28 @@ public class AuthorityController {
 	@GetMapping("/getMenuTree")
 	@AuthMenu
 	public Result<List<MenuResp>> getMenuTree(){
-		List<MenuResp> menuTree = sysMenuAuthUnify.getMenuTree();
+		List<MenuResp> menuTree = sysMenuAuthComposite.getMenuTree();
 		return Result.success(menuTree);
 	}
 	@ApiOperation("修改菜单信息")
 	@PostMapping("/updateMenu")
 	@AuthMenu
 	public Result<Void> updateMenu(@RequestBody SysMenu sysMenu){
-		sysMenuAuthUnify.updateMenu(sysMenu);
+		sysMenuAuthComposite.updateMenu(sysMenu);
 		return Result.success();
 	}
 	@ApiOperation("编辑菜单权限")
 	@PostMapping("/editMenuAuthorities")
 	@AuthMenu
 	public Result<Void> editMenuAuthorities(@RequestBody MenuAuthorityEditReq req){
-		sysMenuAuthUnify.editMenuAuthorities(req.getMenuId(),req.getAuthority());
+		sysMenuAuthComposite.editMenuAuthorities(req.getMenuId(),req.getAuthority());
 		return Result.success();
 	}
 	@ApiOperation("编辑业务权限")
 	@PostMapping("/editBusinessAuthority")
 	@AuthMenu
 	public Result<Void> editBusinessAuthority(@RequestBody @Validated BusinessAuthorityEditReq req){
-		sysMenuAuthUnify.editBusinessAuthority(req.getBusinessId(),req.getModule(),req.getOperate(),req.getAuthority());
+		sysMenuAuthComposite.editBusinessAuthority(req.getBusinessId(),req.getModule(),req.getOperate(),req.getAuthority());
 		return Result.success();
 	}
 

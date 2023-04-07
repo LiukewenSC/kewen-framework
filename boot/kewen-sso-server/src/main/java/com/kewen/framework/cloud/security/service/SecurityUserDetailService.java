@@ -1,40 +1,37 @@
 package com.kewen.framework.cloud.security.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.kewen.framework.base.authority.entity.SysUserInfo;
-import com.kewen.framework.base.authority.service.SysUserDeptService;
-import com.kewen.framework.base.authority.service.SysUserInfoService;
-import com.kewen.framework.base.authority.service.SysUserPositionService;
-import com.kewen.framework.base.authority.service.SysUserRoleService;
+import com.kewen.framework.base.authority.mp.entity.SysUserInfo;
+import com.kewen.framework.base.authority.mp.service.SysUserInfoMpService;
+import com.kewen.framework.base.authority.support.SysUserComposite;
 import com.kewen.framework.base.authority.utils.AuthorityConvertUtil;
-import com.kewen.framework.base.common.model.Permission;
 import com.kewen.framework.base.common.model.Position;
 import com.kewen.framework.base.common.model.Role;
 import com.kewen.framework.base.common.model.User;
 import com.kewen.framework.base.common.model.UserDept;
 import com.kewen.framework.base.common.model.UserDetail;
 import com.kewen.framework.cloud.security.model.SecurityUser;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.util.CollectionUtils;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author kewen
  * @descrpition 系统用户userDetail实现
  * @since 2022-12-07 17:10
  */
-@AllArgsConstructor
+@Component
 public class SecurityUserDetailService implements UserDetailsService {
 
-    private final SysUserInfoService sysUserInfoService;
-    private final SysUserDeptService userDeptService;
-    private final SysUserPositionService userPositionService;
-    private final SysUserRoleService userRoleService;
+    @Autowired
+    SysUserComposite sysUserComposite;
+
+    @Autowired
+    SysUserInfoMpService sysUserInfoService;
 
 
     @Override
@@ -57,29 +54,21 @@ public class SecurityUserDetailService implements UserDetailsService {
                 .authorities(AuthorityConvertUtil.parseCurrentUser(userDetail))
                 .build();
     }
-    private UserDetail fetchUserDetail( Integer userId,String userName) {
+    private UserDetail fetchUserDetail( Long userId,String userName) {
         //查询机构
-        UserDept userDept = userDeptService.getUserDept(userId);
+        UserDept userDept = sysUserComposite.getUserDept(userId);
 
         //查询岗位
-        List<Position> positions = userPositionService.listUserPosition(userId);
+        List<Position> positions = sysUserComposite.listUserPosition(userId);
 
         //查询角色
-        List<Role> roles = userRoleService.listUserRole(userId);
-
-        //查询权限
-        List<Integer> roleIds = roles.stream().map(Role::getId).collect(Collectors.toList());
-        List<Permission> permissions = null;
-        if (!CollectionUtils.isEmpty(roleIds)) {
-            //permissions = rolePermissionService.listRolePosition(roleIds);
-        }
+        List<Role> roles = sysUserComposite.listUserRole(userId);
 
         return  UserDetail.builder()
                 .user(new User(userId, userName))
                 .dept(userDept)
                 .positions(positions)
                 .roles(roles)
-                .permissions(permissions)
                 .build();
     }
 

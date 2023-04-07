@@ -1,7 +1,7 @@
 package com.kewen.framework.base.authority.mp.service.impl;
 
 import com.kewen.framework.base.authority.mp.entity.SysUserDept;
-import com.kewen.framework.base.authority.mp.mapper.SysUserDeptMapper;
+import com.kewen.framework.base.authority.mp.mapper.SysUserDeptMpMapper;
 import com.kewen.framework.base.authority.mp.service.SysUserDeptMpService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
@@ -18,10 +18,10 @@ import java.util.List;
  * </p>
  *
  * @author kewen
- * @since 2023-04-06
+ * @since 2023-04-07
  */
 @Service
 @Primary
-public class SysUserDeptMpServiceImpl extends ServiceImpl<SysUserDeptMapper, SysUserDept> implements SysUserDeptMpService {
+public class SysUserDeptMpServiceImpl extends ServiceImpl<SysUserDeptMpMapper, SysUserDept> implements SysUserDeptMpService {
 
 }

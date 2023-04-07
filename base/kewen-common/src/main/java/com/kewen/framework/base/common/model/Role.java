@@ -16,7 +16,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Role {
-    protected Integer id;
+    protected Long id;
     protected String name;
 
     @Override
