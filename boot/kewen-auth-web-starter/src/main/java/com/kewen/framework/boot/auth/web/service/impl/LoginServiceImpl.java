@@ -1,37 +1,18 @@
 package com.kewen.framework.boot.auth.web.service.impl;
 
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.kewen.framework.base.authority.mp.entity.SysDept;
-import com.kewen.framework.base.authority.mp.entity.SysRole;
-import com.kewen.framework.base.authority.mp.entity.SysUserDept;
-import com.kewen.framework.base.authority.mp.entity.SysUserInfo;
-import com.kewen.framework.base.authority.mp.entity.SysUserRole;
-import com.kewen.framework.base.authority.mp.service.SysDeptMpService;
-import com.kewen.framework.base.authority.mp.service.SysRoleMpService;
-import com.kewen.framework.base.authority.mp.service.SysUserDeptMpService;
-import com.kewen.framework.base.authority.mp.service.SysUserInfoMpService;
-import com.kewen.framework.base.authority.mp.service.SysUserPositionMpService;
-import com.kewen.framework.base.authority.mp.service.SysUserRoleMpService;
+
+import com.kewen.framework.base.authority.model.UserCredential;
 import com.kewen.framework.base.authority.support.SysUserComposite;
-import com.kewen.framework.base.common.model.Dept;
-import com.kewen.framework.base.common.model.DeptPrimary;
-import com.kewen.framework.base.common.utils.BeanUtil;
+import com.kewen.framework.base.common.exception.AuthorizationException;
 import com.kewen.framework.boot.auth.bussiness.model.LoginReq;
 import com.kewen.framework.boot.auth.bussiness.model.LoginResp;
+import com.kewen.framework.boot.auth.web.support.UserDetailStore;
 import com.kewen.framework.boot.auth.web.service.LoginService;
-import com.kewen.framework.boot.auth.web.currentuser.UserDetailStore;
-import com.kewen.framework.base.common.model.Role;
-import com.kewen.framework.base.common.model.User;
-import com.kewen.framework.base.common.model.UserDept;
-import com.kewen.framework.base.common.model.UserDetail;
-import com.kewen.framework.base.common.exception.AuthenticationException;
-import org.apache.commons.collections4.CollectionUtils;
+import com.kewen.framework.base.authority.model.UserDetail;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author kewen
@@ -44,23 +25,40 @@ public class LoginServiceImpl implements LoginService {
     SysUserComposite sysUserComposite;
 
 
+    @Autowired
+    UserDetailStore userDetailStore;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
 
 
     @Override
     public LoginResp login(LoginReq loginReq) {
-        String loginInfo = loginReq.getLoginInfo();
 
         //查询用户
+        UserDetail userDetail = sysUserComposite.getUserDetail(loginReq.getUsername());
+        UserCredential userCredential = sysUserComposite.getUserCredential(userDetail.getUser().getUserId());
 
+        checkAccount(userCredential);
 
-        UserDetail userDetail = fetchUserDetail(userInfo.getUserId(), userInfo.getNickName());
+        passwordEncoder.matches(loginReq.getPassword(),userCredential.getPassword());
 
+        // 保存
         LoginResp loginResp = userDetailStore.saveUserDetail(userDetail);
 
         return loginResp;
     }
-
-    private UserDetail fetchUserDetail(Long userId, String userName) {
-
+    private void checkAccount(UserCredential credential){
+        if (!credential.isEnabled()){
+            throw new AuthorizationException("账号未启用");
+        }
+        if (!credential.isNonLocked()){
+            throw new AuthorizationException("账号已锁定");
+        }
+        if (credential.isNonExpired()){
+            throw new AuthorizationException("账号已过期");
+        }
     }
+
 }

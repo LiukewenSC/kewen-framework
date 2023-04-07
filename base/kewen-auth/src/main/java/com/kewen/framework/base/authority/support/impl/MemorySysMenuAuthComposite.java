@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.kewen.framework.base.authority.constant.MenuTypeConstant;
 import com.kewen.framework.base.authority.model.Authority;
 import com.kewen.framework.base.authority.model.AuthorityObject;
-import com.kewen.framework.base.authority.model.MenuResp;
+import com.kewen.framework.base.authority.model.resp.MenuResp;
 import com.kewen.framework.base.authority.mp.entity.SysApplicationAuth;
 import com.kewen.framework.base.authority.mp.entity.SysMenu;
 import com.kewen.framework.base.authority.mp.entity.SysMenuAuth;
@@ -21,7 +21,6 @@ import com.kewen.framework.base.common.utils.BeanUtil;
 import com.kewen.framework.base.common.utils.TreeUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Collection;

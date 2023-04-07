@@ -1,8 +1,7 @@
 package com.kewen.framework.datasource.config;
 
-import com.kewen.framework.datasource.context.DbCurrentUser;
+import com.kewen.framework.boot.common.context.UserContext;
 import com.kewen.framework.datasource.context.DbTenant;
-import com.kewen.framework.datasource.context.DefaultDbCurrentUser;
 import com.kewen.framework.datasource.context.DefaultDbTenant;
 import com.kewen.framework.datasource.plug.AutoFillConfig;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
@@ -29,14 +28,13 @@ public class DatasourceBeanLoadConfig {
         return new DefaultDbTenant();
     }
 
-    //自动填充插件
+
+    /**
+     * 自动填充插件
+     * @return
+     */
     @Bean
-    public AutoFillConfig globalFillConfig(DbCurrentUser dbCurrentUser){
-        return new AutoFillConfig(dbCurrentUser);
-    }
-    @Bean
-    @ConditionalOnMissingBean(DbCurrentUser.class)
-    public DbCurrentUser dbCurrentUser(){
-        return new DefaultDbCurrentUser();
+    public AutoFillConfig globalFillConfig(){
+        return new AutoFillConfig(UserContext.support());
     }
 }

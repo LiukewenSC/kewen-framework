@@ -1,8 +1,8 @@
 package com.kewen.framework.base.authority.support.mapper;
 
-import com.kewen.framework.base.common.model.DeptPrimary;
-import com.kewen.framework.base.common.model.Position;
-import com.kewen.framework.base.common.model.Role;
+import com.kewen.framework.base.authority.model.DeptPrimary;
+import com.kewen.framework.base.authority.model.Position;
+import com.kewen.framework.base.authority.model.Role;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

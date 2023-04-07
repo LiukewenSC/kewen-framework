@@ -1,12 +1,7 @@
 package com.kewen.framework.base.authority.support;
 
-import com.kewen.framework.base.authority.model.AuthorityObject;
-import com.kewen.framework.base.common.model.Position;
-import com.kewen.framework.base.common.model.Role;
-import com.kewen.framework.base.common.model.UserDept;
-import com.kewen.framework.base.common.model.UserDetail;
+import com.kewen.framework.base.authority.model.*;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -36,10 +31,13 @@ public interface SysUserComposite {
      */
     List<Position> listUserPosition(Long userId);
 
-
-
-
     UserDetail getUserDetail(String loginInfo);
-    UserDetail getUserDetailWithCredentials(String loginInfo);
+
+    /**
+     * 获取账号凭证信息
+     * @param userId 用户id
+     * @return
+     */
+    UserCredential getUserCredential(Long userId);
 
 }

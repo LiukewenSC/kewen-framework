@@ -1,8 +1,5 @@
 package com.kewen.framework.base.authority.model;
 
-import com.kewen.framework.base.common.model.Dept;
-import com.kewen.framework.base.common.model.Position;
-import com.kewen.framework.base.common.model.Role;
 import com.kewen.framework.base.common.model.User;
 import lombok.Data;
 import lombok.experimental.Accessors;

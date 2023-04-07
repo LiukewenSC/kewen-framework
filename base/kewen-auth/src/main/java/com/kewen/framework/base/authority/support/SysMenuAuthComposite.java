@@ -3,7 +3,7 @@ package com.kewen.framework.base.authority.support;
 
 
 import com.kewen.framework.base.authority.model.AuthorityObject;
-import com.kewen.framework.base.authority.model.MenuResp;
+import com.kewen.framework.base.authority.model.resp.MenuResp;
 import com.kewen.framework.base.authority.mp.entity.SysMenu;
 
 import java.util.Collection;

@@ -1,20 +1,15 @@
 package com.kewen.framework.cloud.security.service;
 
+import com.kewen.framework.base.authority.model.UserCredential;
 import com.kewen.framework.base.authority.support.SysUserComposite;
 import com.kewen.framework.base.authority.utils.AuthorityConvertUtil;
-import com.kewen.framework.base.common.model.Position;
-import com.kewen.framework.base.common.model.Role;
-import com.kewen.framework.base.common.model.User;
-import com.kewen.framework.base.common.model.UserDept;
-import com.kewen.framework.base.common.model.UserDetail;
+import com.kewen.framework.base.authority.model.UserDetail;
 import com.kewen.framework.cloud.security.model.SecurityUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 /**
  * @author kewen
@@ -34,10 +29,12 @@ public class SecurityUserDetailService implements UserDetailsService {
 
         UserDetail userDetail = sysUserComposite.getUserDetail(username);
 
+        UserCredential userCredential = sysUserComposite.getUserCredential(userDetail.getUser().getUserId());
+
         return SecurityUser.builder()
                 .id(userDetail.getUser().getId())
                 .name(userDetail.getUser().getName())
-                .password(userInfo.getPassword())
+                .password(userCredential.getPassword())
                 .authorities(AuthorityConvertUtil.parseCurrentUser(userDetail))
                 .build();
     }

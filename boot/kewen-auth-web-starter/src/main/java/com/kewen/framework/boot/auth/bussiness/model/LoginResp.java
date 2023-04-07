@@ -1,6 +1,6 @@
 package com.kewen.framework.boot.auth.bussiness.model;
 
-import com.kewen.framework.base.common.model.UserDetail;
+import com.kewen.framework.base.authority.model.UserDetail;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
