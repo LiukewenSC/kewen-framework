@@ -22,7 +22,6 @@ public class LoginResp extends UserDetail {
         resp.setUser(userDetail.getUser());
         resp.setDept(userDetail.getDept());
         resp.setRoles(userDetail.getRoles());
-        resp.setPermissions(userDetail.getPermissions());
         return resp;
     }
 }

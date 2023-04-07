@@ -1,7 +1,6 @@
 package com.kewen.framework.base.authority.model;
 
 import com.kewen.framework.base.common.model.Dept;
-import com.kewen.framework.base.common.model.Permission;
 import com.kewen.framework.base.common.model.Position;
 import com.kewen.framework.base.common.model.Role;
 import com.kewen.framework.base.common.model.User;
@@ -23,7 +22,6 @@ public class AuthorityObject {
     private Collection<Dept> depts;
     private Collection<Position> positions;
     private Collection<Role> roles;
-    private Collection<Permission> permissions;
 
 
 }

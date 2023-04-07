@@ -1,7 +1,7 @@
 package com.kewen.framework.boot.authority.advance.authedit;
 
 import com.kewen.framework.base.authority.model.AuthorityObject;
-import com.kewen.framework.base.authority.service.SysMenuAuthUnify;
+import com.kewen.framework.base.authority.support.SysMenuAuthComposite;
 import com.kewen.framework.base.common.exception.AuthorizationException;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -26,7 +26,7 @@ import java.util.Optional;
 public class AuthDataEditAspect {
 
     @Autowired
-    private SysMenuAuthUnify sysMenuAuthUnify;
+    private SysMenuAuthComposite sysMenuAuthComposite;
 
     @Pointcut("@annotation(com.kewen.framework.boot.authority.advance.authedit.AuthDataEdit)")
     public void pointcut(){
@@ -47,12 +47,12 @@ public class AuthDataEditAspect {
         }
         AuthDataEditBusiness authDataEditBusiness = (AuthDataEditBusiness) first.get();
 
-        Integer businessId = authDataEditBusiness.getBusinessId();
+        Long businessId = authDataEditBusiness.getBusinessId();
         AuthorityObject authorityObject = authDataEditBusiness.getAuthorityObject();
         String module = authDataEdit.module();
         String operate = authDataEdit.operate();
 
-        sysMenuAuthUnify.editBusinessAuthority(businessId,module,operate,authorityObject);
+        sysMenuAuthComposite.editBusinessAuthority(businessId,module,operate,authorityObject);
 
         try {
             return joinPoint.proceed();

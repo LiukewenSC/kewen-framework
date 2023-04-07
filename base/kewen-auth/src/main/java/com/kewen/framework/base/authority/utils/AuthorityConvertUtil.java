@@ -1,7 +1,6 @@
 package com.kewen.framework.base.authority.utils;
 
 import com.kewen.framework.base.common.model.Dept;
-import com.kewen.framework.base.common.model.Permission;
 import com.kewen.framework.base.common.model.Position;
 import com.kewen.framework.base.common.model.Role;
 import com.kewen.framework.base.common.model.User;
@@ -101,9 +100,6 @@ public class AuthorityConvertUtil {
     private static Authority to(Role role){
         return new Authority(ROLE_PREFIX + role.getId(), ROLE_PREFIX + role.getName());
     }
-    private static Authority to(Permission permission){
-        return new Authority(PERMISSION_PREFIX + permission.getId(), PERMISSION_PREFIX + permission.getName());
-    }
 
 
     /**
@@ -122,7 +118,6 @@ public class AuthorityConvertUtil {
         Collection<Dept> depts=new ArrayList<>();
         Collection<Position> positions=new ArrayList<>();
         Collection<Role> roles=new ArrayList<>();
-        Collection<Permission> permissions=new ArrayList<>();
         for (Authority auth : auths) {
             String authority = auth.getAuthority();
             String description = auth.getDescription();
@@ -131,20 +126,18 @@ public class AuthorityConvertUtil {
             String type = split[0];
             switch (type){
                 case USER_CODE:
-                    users.add(new User(Integer.valueOf(split[1]),splitDescription[1]));
+                    users.add(new User(Long.valueOf(split[1]),splitDescription[1]));
                     break;
                 case DEPT_CODE:
-                    depts.add(new Dept(Integer.valueOf(split[1]),splitDescription[1]));
+                    depts.add(new Dept(Long.valueOf(split[1]),splitDescription[1]));
                     break;
                 case POSITION_CODE:
-                    positions.add(new Position(Integer.valueOf(split[1]),splitDescription[1]));
+                    positions.add(new Position(Long.valueOf(split[1]),splitDescription[1]));
                     break;
                 case ROLE_CODE:
-                    roles.add(new Role(Integer.valueOf(split[1]),splitDescription[1]));
+                    roles.add(new Role(Long.valueOf(split[1]),splitDescription[1]));
                     break;
-                case PERMISSION_CODE:
-                    permissions.add(new Permission(Integer.valueOf(split[1]),splitDescription[1]));
-                    break;
+                default:
             }
         }
         AuthorityObject object = new AuthorityObject();

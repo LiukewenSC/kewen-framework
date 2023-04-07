@@ -1,7 +1,6 @@
 package com.kewen.framework.base.authority.model;
 
 
-import com.kewen.framework.base.authority.entity.SysMenuAuth;
 import com.kewen.framework.base.common.utils.TreeUtil;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,7 +14,7 @@ import java.util.List;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class MenuResp extends MenuRespBase implements TreeUtil.TreeBase<MenuResp,Integer>{
+public class MenuResp extends MenuRespBase implements TreeUtil.TreeBase<MenuResp,Long>{
 
     private AuthorityObject authority;
 

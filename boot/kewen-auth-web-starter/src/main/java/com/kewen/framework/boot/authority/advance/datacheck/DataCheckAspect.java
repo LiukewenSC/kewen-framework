@@ -1,7 +1,7 @@
 package com.kewen.framework.boot.authority.advance.datacheck;
 
 import com.kewen.framework.base.authority.context.CurrentUserContext;
-import com.kewen.framework.base.authority.service.SysApplicationAuthService;
+import com.kewen.framework.base.authority.support.SysUserComposite;
 import com.kewen.framework.base.common.exception.AuthorizationException;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
@@ -26,7 +26,7 @@ import java.util.Optional;
 public class DataCheckAspect {
 
     @Autowired
-    private SysApplicationAuthService applicationAuthService;
+    private SysUserComposite sysUserComposite;
 
     @Pointcut("@annotation(com.kewen.framework.boot.authority.advance.datacheck.DataCheck)")
     public void pointcut(){}
@@ -44,7 +44,7 @@ public class DataCheckAspect {
         }
         ApplicationBusiness business = (ApplicationBusiness) first.get();
         Collection<String> auths = CurrentUserContext.getCurrentUserAuths();
-        boolean hasAuth = applicationAuthService.hasAuth(auths, authAnn.module(), authAnn.operate(), business.getBusinessId());
+        boolean hasAuth = sysUserComposite.hasAuth(auths, authAnn.module(), authAnn.operate(), business.getBusinessId());
         if (!hasAuth){
             throw new AuthorizationException("权限校验不通过");
         }

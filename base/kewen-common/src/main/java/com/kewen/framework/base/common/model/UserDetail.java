@@ -26,7 +26,7 @@ public class UserDetail {
     protected UserDept dept;
     protected Collection<Position> positions;
     protected Collection<Role> roles;
-    protected Collection<Permission> permissions;
+
     public List<Dept> getDepts(){
         if (dept==null) {
             return Collections.emptyList();

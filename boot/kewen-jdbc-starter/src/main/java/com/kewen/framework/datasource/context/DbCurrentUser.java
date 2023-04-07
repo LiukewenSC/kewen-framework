@@ -14,7 +14,7 @@ public interface DbCurrentUser {
      * 用户id
      * @return
      */
-    Integer getUserId();
+    Long getUserId();
 
     /**
      * 用户名

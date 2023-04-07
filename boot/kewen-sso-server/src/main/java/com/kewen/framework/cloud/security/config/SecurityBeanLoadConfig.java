@@ -1,14 +1,14 @@
 package com.kewen.framework.cloud.security.config;
 
-import com.kewen.framework.base.authority.service.SysApplicationAuthService;
-import com.kewen.framework.base.authority.service.SysMenuAuthService;
-import com.kewen.framework.base.authority.service.SysMenuAuthUnify;
-import com.kewen.framework.base.authority.service.SysMenuService;
-import com.kewen.framework.base.authority.service.SysUserDeptService;
-import com.kewen.framework.base.authority.service.SysUserInfoService;
-import com.kewen.framework.base.authority.service.SysUserPositionService;
-import com.kewen.framework.base.authority.service.SysUserRoleService;
-import com.kewen.framework.base.authority.service.impl.MemorySysMenuAuthUnify;
+import com.kewen.framework.base.authority.mp.service.SysApplicationAuthMpService;
+import com.kewen.framework.base.authority.mp.service.SysMenuAuthMpService;
+import com.kewen.framework.base.authority.mp.service.SysMenuMpService;
+import com.kewen.framework.base.authority.mp.service.SysUserDeptMpService;
+import com.kewen.framework.base.authority.mp.service.SysUserInfoMpService;
+import com.kewen.framework.base.authority.mp.service.SysUserPositionMpService;
+import com.kewen.framework.base.authority.mp.service.SysUserRoleMpService;
+import com.kewen.framework.base.authority.support.SysMenuAuthComposite;
+import com.kewen.framework.base.authority.support.impl.MemorySysMenuAuthComposite;
 import com.kewen.framework.cloud.security.service.SecurityUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -30,31 +30,31 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SecurityBeanLoadConfig {
 
     @Autowired
-    SysMenuService menuService;
+    SysMenuMpService menuService;
     @Autowired
-    SysMenuAuthService menuAuthService;
+    SysMenuAuthMpService menuAuthService;
     @Autowired
-    SysApplicationAuthService applicationAuthService;
+    SysApplicationAuthMpService applicationAuthService;
     @Autowired
-    SysUserInfoService sysUserInfoService;
+    SysUserInfoMpService sysUserInfoService;
     @Autowired
-    SysUserRoleService sysUserRoleService;
+    SysUserRoleMpService sysUserRoleService;
     @Autowired
-    SysUserDeptService sysUserDeptService;
+    SysUserDeptMpService sysUserDeptService;
     @Autowired
-    SysUserPositionService sysUserPositionService;
+    SysUserPositionMpService sysUserPositionService;
 
     @Bean
     public UserDetailsService userDetailService(){
-        return new SecurityUserDetailService(sysUserInfoService,sysUserDeptService,sysUserPositionService,sysUserRoleService);
+        return new SecurityUserDetailService();
     }
     @Bean
     PasswordEncoder passwordEncoder(){
         return NoOpPasswordEncoder.getInstance();
     }
     @Bean
-    SysMenuAuthUnify sysMenuAuthUnify(){
-        return new MemorySysMenuAuthUnify(menuService,menuAuthService,applicationAuthService);
+    SysMenuAuthComposite sysMenuAuthUnify(){
+        return new MemorySysMenuAuthComposite();
     }
 
 }

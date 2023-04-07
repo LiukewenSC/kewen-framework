@@ -1,6 +1,10 @@
 package com.kewen.framework.base.common.model;
 
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
@@ -13,6 +17,8 @@ import java.util.List;
  * @author kewen
  * @since 2022-11-29 9:07
  */
+@Data
+@Accessors(chain = true)
 public class UserDept {
     /**
      * 主要部门
@@ -22,30 +28,6 @@ public class UserDept {
      * 额外的部门
      */
     private Collection<Dept> extras;
-
-    public UserDept() {
-    }
-
-    public UserDept(Dept primary, Collection<Dept> extras) {
-        this.primary = primary;
-        this.extras = extras;
-    }
-
-    public Dept getPrimary() {
-        return primary;
-    }
-
-    public void setPrimary(Dept primary) {
-        this.primary = primary;
-    }
-
-    public Collection<Dept> getExtras() {
-        return extras;
-    }
-
-    public void setExtras(Collection<Dept> extras) {
-        this.extras = extras;
-    }
     public Collection<Dept> getDepts(){
         List<Dept> depts = new ArrayList<>();
         if (primary !=null){

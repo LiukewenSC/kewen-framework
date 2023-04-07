@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 public class MenuAuthorityEditReq {
 
     @NotNull
-    private Integer menuId;
+    private Long menuId;
 
     @NotNull
     private AuthorityObject authority;

@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @Data
 @Builder
 public class SecurityUser implements UserDetails{
-    protected Integer id;
+    protected Long id;
     protected String name;
     private String username;
     private String password;

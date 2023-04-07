@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 public class BusinessAuthorityEditReq {
 
     @NotNull
-    private Integer businessId;
+    private Long businessId;
 
     @NotBlank
     private String module ;

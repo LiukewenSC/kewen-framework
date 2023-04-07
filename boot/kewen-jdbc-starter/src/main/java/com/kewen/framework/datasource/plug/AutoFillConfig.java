@@ -28,7 +28,7 @@ public class AutoFillConfig implements MetaObjectHandler {
     public void insertFill(MetaObject metaObject) {
 
         this.strictInsertFill(metaObject, "createTime", LocalDateTime.class, LocalDateTime.now());
-        this.strictInsertFill(metaObject, "createUserId", Integer.class, dbCurrentUser.getUserId());
+        this.strictInsertFill(metaObject, "createUserId", Long.class, dbCurrentUser.getUserId());
         this.strictInsertFill(metaObject, "createUserName", String.class, dbCurrentUser.getUserName());
 
     }

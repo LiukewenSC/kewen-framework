@@ -1,18 +1,18 @@
 package com.kewen.framework.boot.authority.service.impl;
 
+
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.kewen.framework.base.authority.entity.SysDept;
-import com.kewen.framework.base.authority.entity.SysRole;
-import com.kewen.framework.base.authority.entity.SysUserDept;
-import com.kewen.framework.base.authority.entity.SysUserInfo;
-import com.kewen.framework.base.authority.entity.SysUserRole;
-import com.kewen.framework.base.authority.service.SysDeptService;
-import com.kewen.framework.base.authority.service.SysRolePermissionService;
-import com.kewen.framework.base.authority.service.SysRoleService;
-import com.kewen.framework.base.authority.service.SysUserDeptService;
-import com.kewen.framework.base.authority.service.SysUserInfoService;
-import com.kewen.framework.base.authority.service.SysUserPositionService;
-import com.kewen.framework.base.authority.service.SysUserRoleService;
+import com.kewen.framework.base.authority.mp.entity.SysDept;
+import com.kewen.framework.base.authority.mp.entity.SysRole;
+import com.kewen.framework.base.authority.mp.entity.SysUserDept;
+import com.kewen.framework.base.authority.mp.entity.SysUserInfo;
+import com.kewen.framework.base.authority.mp.entity.SysUserRole;
+import com.kewen.framework.base.authority.mp.service.SysDeptMpService;
+import com.kewen.framework.base.authority.mp.service.SysRoleMpService;
+import com.kewen.framework.base.authority.mp.service.SysUserDeptMpService;
+import com.kewen.framework.base.authority.mp.service.SysUserInfoMpService;
+import com.kewen.framework.base.authority.mp.service.SysUserPositionMpService;
+import com.kewen.framework.base.authority.mp.service.SysUserRoleMpService;
 import com.kewen.framework.base.common.model.Dept;
 import com.kewen.framework.base.common.model.DeptPrimary;
 import com.kewen.framework.base.common.utils.BeanUtil;
@@ -40,22 +40,21 @@ import java.util.stream.Collectors;
 @Service
 public class LoginServiceImpl implements LoginService {
     @Autowired
-    private SysUserInfoService userInfoService;
+    private SysUserInfoMpService userInfoService;
     @Autowired
     private UserDetailStore userDetailStore;
 
     @Autowired
-    private SysUserDeptService userDeptService;
+    private SysUserDeptMpService userDeptService;
     @Autowired
-    private SysDeptService deptService;
+    private SysDeptMpService deptService;
     @Autowired
-    private SysUserPositionService userPositionService;
+    private SysUserPositionMpService userPositionService;
     @Autowired
-    private SysUserRoleService userRoleService;
+    private SysUserRoleMpService userRoleService;
     @Autowired
-    private SysRoleService roleService;
-    @Autowired
-    private SysRolePermissionService rolePermissionService;
+    private SysRoleMpService roleService;
+
 
     @Override
     public LoginResp login(LoginReq loginReq) {
@@ -77,14 +76,14 @@ public class LoginServiceImpl implements LoginService {
             throw new AuthenticationException("密码不匹配");
         }
 
-        UserDetail userDetail = fetchUserDetail( userInfo.getUserId(),userInfo.getNickName());
+        UserDetail userDetail = fetchUserDetail(userInfo.getUserId(), userInfo.getNickName());
 
         LoginResp loginResp = userDetailStore.saveUserDetail(userDetail);
 
         return loginResp;
     }
 
-    private UserDetail fetchUserDetail( Integer userId,String userName) {
+    private UserDetail fetchUserDetail(Long userId, String userName) {
         //查询机构
         SysUserDept sysUserDept = userDeptService.getOne(
                 new LambdaQueryWrapper<SysUserDept>()
@@ -95,13 +94,12 @@ public class LoginServiceImpl implements LoginService {
                         .in(SysDept::getId, sysUserDept.getDeptId())
         );
         SysDept sysDept = sysDepts.remove(0);
-        UserDept userDept = new UserDept(
-                new DeptPrimary(sysDept.getId(),sysDept.getName(),true),
-                BeanUtil.convert(sysDepts, Dept.class)
-                );
+        UserDept userDept = new UserDept()
+                .setPrimary(new DeptPrimary(sysDept.getId(), sysDept.getName(), true))
+                .setExtras(BeanUtil.convert(sysDepts, Dept.class));
 
         //查询岗位
-       //List<Position> positions = userPositionService.listUserPosition(userId);
+        //List<Position> positions = userPositionService.listUserPosition(userId);
 
         //查询角色
         List<Role> roles = null;
@@ -110,12 +108,12 @@ public class LoginServiceImpl implements LoginService {
                 new LambdaQueryWrapper<SysUserRole>()
                         .eq(SysUserRole::getUserId, userId)
         );
-        if (CollectionUtils.isNotEmpty(userRoles)){
+        if (CollectionUtils.isNotEmpty(userRoles)) {
             List<SysRole> list = roleService.list(
                     new LambdaQueryWrapper<SysRole>().in(SysRole::getId, userRoles.stream().map(SysUserRole::getRoleId).collect(Collectors.toList()))
             );
-            if (CollectionUtils.isNotEmpty(list)){
-                roles=list.stream().map(r->new Role(r.getId(),r.getName())).collect(Collectors.toList());
+            if (CollectionUtils.isNotEmpty(list)) {
+                roles = list.stream().map(r -> new Role(r.getId(), r.getName())).collect(Collectors.toList());
             }
         }
 
@@ -126,7 +124,7 @@ public class LoginServiceImpl implements LoginService {
         //    permissions = rolePermissionService.listRolePosition(roleIds);
         //}
 
-        return  UserDetail.builder()
+        return UserDetail.builder()
                 .user(new User(userId, userName))
                 .dept(userDept)
                 .roles(roles)

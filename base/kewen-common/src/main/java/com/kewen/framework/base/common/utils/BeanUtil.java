@@ -3,12 +3,10 @@ package com.kewen.framework.base.common.utils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
-import com.kewen.framework.base.common.model.Result;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
