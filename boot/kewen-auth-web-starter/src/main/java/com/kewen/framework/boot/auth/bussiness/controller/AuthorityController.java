@@ -1,8 +1,8 @@
 package com.kewen.framework.boot.auth.bussiness.controller;
 
 
-import com.kewen.framework.base.authority.context.CurrentUserContext;
-import com.kewen.framework.base.authority.model.MenuResp;
+import com.kewen.framework.boot.auth.context.CurrentUserContext;
+import com.kewen.framework.base.authority.model.resp.MenuResp;
 import com.kewen.framework.base.authority.mp.entity.SysMenu;
 import com.kewen.framework.base.authority.support.SysMenuAuthComposite;
 import com.kewen.framework.base.common.model.Result;

@@ -1,7 +1,7 @@
 package com.kewen.framework.datasource.plug;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
-import com.kewen.framework.datasource.context.DbCurrentUser;
+import com.kewen.framework.boot.common.context.UserContext;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.reflection.MetaObject;
 
@@ -18,18 +18,22 @@ import java.time.LocalDateTime;
 @Slf4j
 public class AutoFillConfig implements MetaObjectHandler {
 
-    private final DbCurrentUser dbCurrentUser;
+    /**
+     * 是否支持填充用户
+     */
+    private final boolean isSupportFillUser;
 
-    public AutoFillConfig(DbCurrentUser dbCurrentUser) {
-        this.dbCurrentUser = dbCurrentUser;
+    public AutoFillConfig(boolean isSupportFillUser) {
+        this.isSupportFillUser = isSupportFillUser;
     }
 
     @Override
     public void insertFill(MetaObject metaObject) {
-
         this.strictInsertFill(metaObject, "createTime", LocalDateTime.class, LocalDateTime.now());
-        this.strictInsertFill(metaObject, "createUserId", Long.class, dbCurrentUser.getUserId());
-        this.strictInsertFill(metaObject, "createUserName", String.class, dbCurrentUser.getUserName());
+        if (isSupportFillUser){
+            this.strictInsertFill(metaObject, "createUserId", Long.class, UserContext.get().getUserId());
+            this.strictInsertFill(metaObject, "createUserName", String.class, UserContext.get().getUserName());
+        }
 
     }
 

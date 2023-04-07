@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
  */
 @Data
 @Builder
-public class SecurityUser implements UserDetails{
+public class SecurityUser implements UserDetails {
     protected Long id;
     protected String name;
     private String username;

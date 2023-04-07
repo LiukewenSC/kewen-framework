@@ -2,7 +2,7 @@ package com.kewen.framework.boot.auth.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kewen.framework.base.common.model.Result;
-import com.kewen.framework.boot.auth.security.AuthSecurityUserDetailService;
+import com.kewen.framework.boot.auth.security.AuthUserDetailService;
 import com.kewen.framework.boot.auth.security.JsonLoginAuthenticationFilterConfigurer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -39,8 +39,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public AuthSecurityUserDetailService authUserDetailService(){
-        return new AuthSecurityUserDetailService();
+    public AuthUserDetailService authUserDetailService(){
+        return new AuthUserDetailService();
     }
 
     /**

@@ -1,6 +1,6 @@
 package com.kewen.framework.boot.auth.annotation.dataedit;
 
-import com.kewen.framework.base.authority.context.CurrentUserContext;
+import com.kewen.framework.boot.auth.context.CurrentUserContext;
 import com.kewen.framework.base.authority.support.SysMenuAuthComposite;
 import com.kewen.framework.base.common.exception.AuthorizationException;
 import com.kewen.framework.boot.auth.annotation.CheckDataEdit;

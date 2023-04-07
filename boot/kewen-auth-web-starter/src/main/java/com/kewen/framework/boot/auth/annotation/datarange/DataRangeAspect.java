@@ -1,6 +1,6 @@
 package com.kewen.framework.boot.auth.annotation.datarange;
 
-import com.kewen.framework.base.authority.context.CurrentUserContext;
+import com.kewen.framework.boot.auth.context.CurrentUserContext;
 import com.kewen.framework.boot.auth.annotation.CheckDataRange;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;

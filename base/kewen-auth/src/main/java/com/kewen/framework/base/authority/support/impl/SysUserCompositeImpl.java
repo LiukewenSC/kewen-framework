@@ -1,35 +1,25 @@
 package com.kewen.framework.base.authority.support.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.kewen.framework.base.authority.model.*;
 import com.kewen.framework.base.authority.mp.entity.SysUser;
-import com.kewen.framework.base.authority.mp.entity.SysUserCredentials;
-import com.kewen.framework.base.authority.mp.service.SysUserCredentialsMpService;
+import com.kewen.framework.base.authority.mp.entity.SysUserCredential;
+import com.kewen.framework.base.authority.mp.service.SysUserCredentialMpService;
 import com.kewen.framework.base.authority.mp.service.SysUserMpService;
 import com.kewen.framework.base.authority.support.mapper.SysUserCompositeMapper;
-import com.kewen.framework.base.authority.model.Authority;
-import com.kewen.framework.base.authority.model.AuthorityObject;
-import com.kewen.framework.base.authority.mp.entity.SysMenuAuth;
 import com.kewen.framework.base.authority.mp.service.SysMenuAuthMpService;
 import com.kewen.framework.base.authority.support.SysUserComposite;
-import com.kewen.framework.base.authority.utils.AuthorityConvertUtil;
 import com.kewen.framework.base.common.exception.AuthenticationException;
-import com.kewen.framework.base.common.model.Dept;
-import com.kewen.framework.base.common.model.DeptPrimary;
-import com.kewen.framework.base.common.model.Position;
-import com.kewen.framework.base.common.model.Role;
 import com.kewen.framework.base.common.model.User;
-import com.kewen.framework.base.common.model.UserDept;
-import com.kewen.framework.base.common.model.UserDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @descrpition 系统用户相关联合查询
@@ -46,7 +36,7 @@ public class SysUserCompositeImpl implements SysUserComposite {
     @Autowired
     SysUserMpService userMpService;
     @Autowired
-    SysUserCredentialsMpService userCredentialsMpService;
+    SysUserCredentialMpService userCredentialsMpService;
 
 
     @Override
@@ -139,16 +129,38 @@ public class SysUserCompositeImpl implements SysUserComposite {
     }
 
     @Override
-    public UserDetail getUserDetailWithCredentials(String loginInfo) {
+    public UserCredential getUserCredential(Long userId){
 
-        UserDetail userDetail = getUserDetail(loginInfo);
-
-        SysUserCredentials credentials = userCredentialsMpService.getOne(
-                new LambdaQueryWrapper<SysUserCredentials>()
-                        .eq(SysUserCredentials::getUserId, userId)
+        SysUserCredential credential = userCredentialsMpService.getOne(
+                new LambdaQueryWrapper<SysUserCredential>()
+                        .eq(SysUserCredential::getUserId, userId)
         );
+        return new UserCredential() {
 
+            @Override
+            public String getPassword() {
+                return credential.getPassword();
+            }
 
+            @Override
+            public boolean isNonExpired() {
+                LocalDateTime expiredTime = credential.getPasswordExpiredTime();
+                // expiredTime == null 表示系统未设定过期时间，永久有效
+                return expiredTime == null || LocalDateTime.now().isAfter(expiredTime);
+            }
+
+            @Override
+            public boolean isNonLocked() {
+                LocalDateTime lockedDeadline = credential.getAccountLockedDeadline();
+
+                return lockedDeadline == null || LocalDateTime.now().isAfter(lockedDeadline);
+            }
+
+            @Override
+            public boolean isEnabled() {
+                return false;
+            }
+        };
     }
 
 }
