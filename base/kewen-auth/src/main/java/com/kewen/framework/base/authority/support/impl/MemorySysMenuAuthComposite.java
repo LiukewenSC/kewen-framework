@@ -14,6 +14,7 @@ import com.kewen.framework.base.authority.mp.service.SysApplicationAuthMpService
 import com.kewen.framework.base.authority.mp.service.SysMenuAuthMpService;
 import com.kewen.framework.base.authority.mp.service.SysMenuMpService;
 import com.kewen.framework.base.authority.support.SysMenuAuthComposite;
+import com.kewen.framework.base.authority.support.mapper.SysUserCompositeMapper;
 import com.kewen.framework.base.authority.utils.AuthorityConvertUtil;
 import com.kewen.framework.base.common.exception.BizException;
 import com.kewen.framework.base.common.utils.BeanUtil;
@@ -38,9 +39,9 @@ import java.util.stream.Collectors;
  * @since 2022-12-01 10:21
  */
 @Slf4j
-@Component
 public class MemorySysMenuAuthComposite implements SysMenuAuthComposite {
-
+    @Autowired
+    SysUserCompositeMapper userCompositeMapper;
     @Autowired
     private SysMenuMpService sysMenuService;
     @Autowired
@@ -111,6 +112,8 @@ public class MemorySysMenuAuthComposite implements SysMenuAuthComposite {
         sysMenuService.updateById(sysMenu);
     }
 
+
+
     @Override
     public void editMenuAuthorities(Long menuId, AuthorityObject authority) {
         List<Authority> to = AuthorityConvertUtil.to(authority);
@@ -153,6 +156,12 @@ public class MemorySysMenuAuthComposite implements SysMenuAuthComposite {
                             ).collect(Collectors.toList())
             );
         }
+    }
+
+    @Override
+    public boolean hasAuth(Collection<String> auths, String module, String operate, Long businessId) {
+        Integer integer = userCompositeMapper.hasAuth(auths, module, operate, businessId);
+        return integer > 0;
     }
 
     /**
