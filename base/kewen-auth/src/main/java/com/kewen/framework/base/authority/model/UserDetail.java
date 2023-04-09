@@ -1,6 +1,7 @@
 package com.kewen.framework.base.authority.model;
 
 
+import com.kewen.framework.base.authority.utils.AuthorityConvertUtil;
 import com.kewen.framework.base.common.model.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @descrpition 用户详情，包含岗位权限等
@@ -29,6 +31,9 @@ public class UserDetail implements IUser {
     protected Collection<Position> positions;
     protected Collection<Role> roles;
 
+    public List<String> authorities(){
+        return AuthorityConvertUtil.parseCurrentUser(this).stream().map(a->a.getAuthority()).collect(Collectors.toList());
+    }
 
     public List<Dept> getDepts(){
         if (dept==null) {

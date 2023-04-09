@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/login")
 @Slf4j
-public class LoginEndpoint {
+public class LoginController {
 
     @Autowired
     private LoginService loginService;
