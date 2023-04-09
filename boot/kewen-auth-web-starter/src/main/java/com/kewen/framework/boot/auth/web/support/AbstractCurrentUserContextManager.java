@@ -2,6 +2,8 @@ package com.kewen.framework.boot.auth.web.support;
 
 import com.kewen.framework.base.common.model.IUser;
 import com.kewen.framework.base.authority.model.UserDetail;
+import com.kewen.framework.boot.auth.context.UserDetailContextContainer;
+import com.kewen.framework.base.authority.model.UserDetail;
 import com.kewen.framework.boot.common.context.UserContextContainer;
 import org.springframework.lang.Nullable;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -14,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author kewen
  * @since 2022-11-25 17:06
  */
-public abstract class AbstractCurrentUserContextManager implements HandlerInterceptor,UserDetailStore, UserContextContainer {
+public abstract class AbstractCurrentUserContextManager implements HandlerInterceptor,UserDetailStore, UserContextContainer, UserDetailContextContainer {
 
     private ThreadLocal<UserDetail> userContainer = new ThreadLocal<>();
 
@@ -37,6 +39,11 @@ public abstract class AbstractCurrentUserContextManager implements HandlerInterc
 
     @Override
     public IUser getUser() {
+        return userContainer.get();
+    }
+
+    @Override
+    public UserDetail getUserDetail() {
         return userContainer.get();
     }
 }
