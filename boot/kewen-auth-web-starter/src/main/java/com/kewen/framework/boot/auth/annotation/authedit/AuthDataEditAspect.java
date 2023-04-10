@@ -1,6 +1,6 @@
 package com.kewen.framework.boot.auth.annotation.authedit;
 
-import com.kewen.framework.base.authority.model.AuthorityObject;
+import com.kewen.framework.base.authority.model.SysAuthorityObject;
 import com.kewen.framework.base.authority.support.SysMenuAuthComposite;
 import com.kewen.framework.base.common.exception.AuthorizationException;
 import com.kewen.framework.boot.auth.annotation.CheckDataAuthEdit;
@@ -49,11 +49,11 @@ public class AuthDataEditAspect {
         AuthDataEditBusiness authDataEditBusiness = (AuthDataEditBusiness) first.get();
 
         Long businessId = authDataEditBusiness.getBusinessId();
-        AuthorityObject authorityObject = authDataEditBusiness.getAuthorityObject();
+        SysAuthorityObject sysAuthorityObject = authDataEditBusiness.getAuthorityObject();
         String module = checkDataAuthEdit.module();
         String operate = checkDataAuthEdit.operate();
 
-        sysMenuAuthComposite.editBusinessAuthority(businessId,module,operate,authorityObject);
+        sysMenuAuthComposite.editBusinessAuthority(businessId,module,operate, sysAuthorityObject);
 
         try {
             return joinPoint.proceed();

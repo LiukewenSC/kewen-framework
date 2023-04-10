@@ -1,12 +1,10 @@
-package com.kewen.framework.base.authority.model;
-
+package com.kewen.framework.boot.auth;
 /**
- * 用户凭证信息
+ *  凭证信息
  * @author kewen
- * @since 2023-04-07 21:06
+ * @since 2023-04-10
  */
-public interface UserCredential {
-
+public interface AuthUserCredential {
 
     String getPassword();
 

@@ -1,4 +1,4 @@
-package com.kewen.framework.boot.auth.web.support.token;
+package com.kewen.framework.boot.auth.web.token;
 
 /**
  * @descrpition 用户tokenkey生成器

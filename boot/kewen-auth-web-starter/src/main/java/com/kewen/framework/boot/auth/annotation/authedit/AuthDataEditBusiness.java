@@ -1,6 +1,6 @@
 package com.kewen.framework.boot.auth.annotation.authedit;
 
-import com.kewen.framework.base.authority.model.AuthorityObject;
+import com.kewen.framework.base.authority.model.SysAuthorityObject;
 
 /**
  * @descrpition 编辑权限
@@ -19,6 +19,6 @@ public interface AuthDataEditBusiness {
      * 获取权限对象
      * @return
      */
-    AuthorityObject getAuthorityObject();
+    SysAuthorityObject getAuthorityObject();
 
 }

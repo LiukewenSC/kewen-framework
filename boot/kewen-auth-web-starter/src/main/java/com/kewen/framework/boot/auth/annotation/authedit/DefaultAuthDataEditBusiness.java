@@ -1,6 +1,6 @@
 package com.kewen.framework.boot.auth.annotation.authedit;
 
-import com.kewen.framework.base.authority.model.AuthorityObject;
+import com.kewen.framework.base.authority.model.SysAuthorityObject;
 import lombok.Data;
 
 /**
@@ -12,7 +12,7 @@ import lombok.Data;
 public class DefaultAuthDataEditBusiness implements AuthDataEditBusiness {
 
     private Long id;
-    private AuthorityObject authority;
+    private SysAuthorityObject authority;
 
 
     @Override
@@ -21,7 +21,7 @@ public class DefaultAuthDataEditBusiness implements AuthDataEditBusiness {
     }
 
     @Override
-    public AuthorityObject getAuthorityObject() {
+    public SysAuthorityObject getAuthorityObject() {
         return authority;
     }
 }

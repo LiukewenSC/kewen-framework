@@ -2,7 +2,7 @@ package com.kewen.framework.base.authority.support;
 
 
 
-import com.kewen.framework.base.authority.model.AuthorityObject;
+import com.kewen.framework.base.authority.model.SysAuthorityObject;
 import com.kewen.framework.base.authority.model.resp.MenuResp;
 import com.kewen.framework.base.authority.mp.entity.SysMenu;
 
@@ -43,7 +43,7 @@ public interface SysMenuAuthComposite {
      * @param menuId 菜单id
      * @param authority 权限结构
      */
-    void editMenuAuthorities(Long menuId, AuthorityObject authority);
+    void editMenuAuthorities(Long menuId, SysAuthorityObject authority);
 
     /**
      * 编辑业务数据权限
@@ -52,7 +52,7 @@ public interface SysMenuAuthComposite {
      * @param operate 操作
      * @param authority 权限结构
      */
-    void editBusinessAuthority(Long businessId,String module,String operate, AuthorityObject authority);
+    void editBusinessAuthority(Long businessId,String module,String operate, SysAuthorityObject authority);
 
 
     /**

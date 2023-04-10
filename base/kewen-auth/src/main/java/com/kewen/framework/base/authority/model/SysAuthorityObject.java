@@ -13,7 +13,7 @@ import java.util.Collection;
  */
 @Data
 @Accessors(chain = true)
-public class AuthorityObject {
+public class SysAuthorityObject {
 
     private Collection<User> users;
     private Collection<Dept> depts;

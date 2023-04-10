@@ -1,7 +1,7 @@
 package com.kewen.framework.boot.auth.annotation.datarange;
 
 
-import com.kewen.framework.boot.auth.context.UserDetailContext;
+import com.kewen.framework.boot.auth.context.AuthUserContext;
 import com.kewen.framework.boot.auth.annotation.CheckDataRange;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -30,7 +30,7 @@ public class DataRangeAspect {
     @Around("jointPoint() && @annotation(checkDataRange)")
     public Object around(ProceedingJoinPoint proceedingJoinPoint, CheckDataRange checkDataRange) throws Throwable {
 
-        Collection<String> auths = UserDetailContext.get().authorities();
+        Collection<String> auths = AuthUserContext.getAuthorities();
         DataRangeContext.AuthRange selectAuth = new DataRangeContext.AuthRange()
                 .setModule(checkDataRange.module())
                 .setOperate(checkDataRange.operate())

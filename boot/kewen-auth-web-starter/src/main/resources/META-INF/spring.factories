@@ -1,7 +1,5 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.kewen.framework.boot.auth.context.UserDetailContext,\
-  com.kewen.framework.boot.auth.config.AuthAnnotationSupportConfig,\
+  com.kewen.framework.boot.auth.context.AuthUserContext,\
+  com.kewen.framework.boot.auth.config.AuthConfig,\
   com.kewen.framework.boot.auth.config.AuthWebConfig,\
-  com.kewen.framework.boot.auth.config.AuthWebConfig.SessionWebConfig,\
-  com.kewen.framework.boot.auth.config.AuthWebConfig.TokenWebConfig,\
-  com.kewen.framework.boot.auth.config.SecurityConfig
+  com.kewen.framework.boot.auth.config.AuthSecurityConfig

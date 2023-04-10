@@ -1,7 +1,7 @@
 package com.kewen.framework.base.authority.model.resp;
 
 
-import com.kewen.framework.base.authority.model.AuthorityObject;
+import com.kewen.framework.base.authority.model.SysAuthorityObject;
 import com.kewen.framework.base.common.utils.TreeUtil;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -17,7 +17,7 @@ import java.util.List;
 @Data
 public class MenuResp extends MenuRespBase implements TreeUtil.TreeBase<MenuResp,Long>{
 
-    private AuthorityObject authority;
+    private SysAuthorityObject authority;
 
     private List<MenuResp> children;
 

@@ -1,37 +1,36 @@
 package com.kewen.framework.boot.auth.security.model;
 
-import com.kewen.framework.base.authority.model.UserDetail;
 import com.kewen.framework.base.common.model.IUser;
+import com.kewen.framework.boot.auth.AuthUserInfo;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.Set;
 
 /**
  * @descrpition
  * @author kewen
  * @since 2023-04-07
  */
-public class SecurityUser implements UserDetails, IUser {
+public class SecurityUser<T extends AuthUserInfo>  implements UserDetails, IUser {
 
-    private final UserDetail UserDetail;
+    private final T authUserInfo;
     private final String password;
     private final String username;
     private final boolean isNonExpired;
     private final boolean isNonLocked;
     private final boolean enabled;
 
-    public SecurityUser(UserDetail userDetail,String password, String username, boolean isNonExpired, boolean isNonLocked, boolean enabled) {
-        this.UserDetail = userDetail;
+    public SecurityUser(T authUserInfo, String password, String username, boolean isNonExpired, boolean isNonLocked, boolean enabled) {
+        this.authUserInfo = authUserInfo;
         this.password = password;
         this.username = username;
         this.isNonExpired = isNonExpired;
         this.isNonLocked = isNonLocked;
         this.enabled = enabled;
     }
-    public UserDetail getUserDetail() {
-        return UserDetail;
+    public AuthUserInfo getAuthUserInfo() {
+        return authUserInfo;
     }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -71,11 +70,11 @@ public class SecurityUser implements UserDetails, IUser {
 
     @Override
     public Long getUserId() {
-        return getUserDetail().getUser().getUserId();
+        return getAuthUserInfo().getUserId();
     }
 
     @Override
     public String getUserName() {
-        return getUserDetail().getUser().getUserName();
+        return getAuthUserInfo().getUserName();
     }
 }

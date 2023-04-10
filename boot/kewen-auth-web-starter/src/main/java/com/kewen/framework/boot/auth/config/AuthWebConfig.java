@@ -3,18 +3,23 @@ package com.kewen.framework.boot.auth.config;
 import com.kewen.framework.base.authority.support.SysMenuAuthComposite;
 import com.kewen.framework.base.authority.support.impl.MemorySysMenuAuthComposite;
 import com.kewen.framework.boot.auth.annotation.endpoint.AuthMenuInterceptor;
-import com.kewen.framework.boot.auth.web.support.AbstractCurrentUserContextManager;
-import com.kewen.framework.boot.auth.web.support.session.SessionCurrentUserContextManager;
-import com.kewen.framework.boot.auth.web.support.token.DefaultTokenKeyGenerator;
-import com.kewen.framework.boot.auth.web.support.token.MemoryTokenUserDetailSore;
-import com.kewen.framework.boot.auth.web.support.token.TokenCurrentUserContextManager;
-import com.kewen.framework.boot.auth.web.support.token.TokenKeyGenerator;
-import com.kewen.framework.boot.auth.web.support.token.TokenUserDetailStore;
+import com.kewen.framework.boot.auth.web.WebAuthUserInfoContextContainer;
+import com.kewen.framework.boot.auth.web.session.SessionCurrentUserInfoContextContainer;
+import com.kewen.framework.boot.auth.web.token.DefaultTokenKeyGenerator;
+import com.kewen.framework.boot.auth.web.token.MemoryTokenUserDetailSore;
+import com.kewen.framework.boot.auth.web.token.TokenCurrentUserInfoContextContainer;
+import com.kewen.framework.boot.auth.web.token.TokenKeyGenerator;
+import com.kewen.framework.boot.auth.web.token.TokenUserDetailStore;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -26,22 +31,20 @@ import javax.servlet.http.HttpSession;
  * @since 2022-11-23 9:20
  */
 @Configuration
+@ConditionalOnProperty(name = "kewen.auth.type",havingValue = "web")
+@Import({AuthWebConfig.SessionWebConfig.class,AuthWebConfig.TokenWebConfig.class})
+@ComponentScan("com.kewen.framework.boot.auth.web")
 public class AuthWebConfig implements WebMvcConfigurer {
 
-    @Bean
-    public SysMenuAuthComposite sysMenuAuthComposite(){
-        return new MemorySysMenuAuthComposite();
-    }
+
+
+    @Value("kewen.auth.login-endpoint")
+    private String loginEndpoint;
 
     @Autowired
     private AuthMenuInterceptor authMenuInterceptor;
-    @Autowired
-    AbstractCurrentUserContextManager currentUserContextInterceptor;
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-
-        //用户当前用户拦截器，此拦截器一定要在最前面，保证当前用户设置到上下文中
-        registry.addInterceptor(currentUserContextInterceptor).excludePathPatterns("/login/**");
 
         //此拦截器放在当前用户拦截器之后，里面内容会先从用户上下文中获取数据
         registry.addInterceptor(authMenuInterceptor);
@@ -55,7 +58,7 @@ public class AuthWebConfig implements WebMvcConfigurer {
      * @since 2022-11-29 11:33
      */
     @Configuration
-    @ConditionalOnProperty(name = "auth.store.type",havingValue = "session")
+    @ConditionalOnProperty(name = "kewen.auth.web.store.type",havingValue = "session")
     public static class SessionWebConfig {
 
         @Autowired
@@ -65,9 +68,9 @@ public class AuthWebConfig implements WebMvcConfigurer {
          * @return
          */
         @Bean
-        @ConditionalOnMissingBean(AbstractCurrentUserContextManager.class)
-        public AbstractCurrentUserContextManager sessionCurrentUserContextInterceptor(){
-            return new SessionCurrentUserContextManager(httpSession);
+        @ConditionalOnMissingBean(WebAuthUserInfoContextContainer.class)
+        public WebAuthUserInfoContextContainer sessionCurrentUserContextInterceptor(){
+            return new SessionCurrentUserInfoContextContainer(httpSession);
         }
     }
 
@@ -77,7 +80,7 @@ public class AuthWebConfig implements WebMvcConfigurer {
      * @since 2022-11-29 11:35
      */
     @Configuration
-    @ConditionalOnProperty(name = "auth.store.type",havingValue = "token")
+    @ConditionalOnProperty(name = "kewen.auth.web.store.type",havingValue = "token")
     public static class TokenWebConfig {
 
         /**
@@ -85,9 +88,9 @@ public class AuthWebConfig implements WebMvcConfigurer {
          * @return
          */
         @Bean
-        @ConditionalOnMissingBean(TokenCurrentUserContextManager.class)
-        public TokenCurrentUserContextManager tokenCurrentUser(){
-            return new TokenCurrentUserContextManager(tokenUserDetailStore(),tokenKeyGenerator());
+        @ConditionalOnMissingBean(TokenCurrentUserInfoContextContainer.class)
+        public TokenCurrentUserInfoContextContainer tokenCurrentUser(){
+            return new TokenCurrentUserInfoContextContainer();
         }
         @Bean
         @ConditionalOnMissingBean(TokenKeyGenerator.class)

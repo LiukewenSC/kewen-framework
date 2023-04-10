@@ -1,6 +1,6 @@
 package com.kewen.framework.boot.auth.bussiness.model;
 
-import com.kewen.framework.base.authority.model.AuthorityObject;
+import com.kewen.framework.base.authority.model.SysAuthorityObject;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -23,5 +23,5 @@ public class BusinessAuthorityEditReq {
     private String operate ="unified";
 
     @NotNull
-    private AuthorityObject authority;
+    private SysAuthorityObject authority;
 }

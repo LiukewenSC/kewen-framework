@@ -14,7 +14,7 @@ import java.util.Objects;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Authority {
+public class SysAuthority {
     /**
      * 权限字符串
      */
@@ -28,8 +28,8 @@ public class Authority {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Authority authority1 = (Authority) o;
-        return Objects.equals(authority, authority1.authority);
+        SysAuthority sysAuthority1 = (SysAuthority) o;
+        return Objects.equals(authority, sysAuthority1.authority);
     }
 
     @Override

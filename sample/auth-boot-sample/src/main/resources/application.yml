@@ -1,11 +1,17 @@
 spring:
   profiles:
     active: dev
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
 
-auth:
-  store:
-    type: session
 
 logging:
   level:
-    org.springframework.security: trace
+    org.springframework: debug
+kewen:
+  auth:
+    login-endpoint: /login
+    type: web   # security/web
+    web:
+      store:
+        type: session # session/token

@@ -1,0 +1,12 @@
+logging:
+  level:
+    org.springframework.security: trace
+
+
+kewen:
+  auth:
+    login-endpoint: /login
+    type: security   # security/web
+    web:
+      store:
+        type: # session/token
