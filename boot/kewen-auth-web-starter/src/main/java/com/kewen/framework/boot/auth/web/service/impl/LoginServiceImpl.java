@@ -8,6 +8,7 @@ import com.kewen.framework.boot.auth.bussiness.model.LoginResp;
 import com.kewen.framework.boot.auth.AuthHandler;
 import com.kewen.framework.boot.auth.AuthUserCredential;
 import com.kewen.framework.boot.auth.AuthUserInfo;
+import com.kewen.framework.boot.auth.context.AuthUserContext;
 import com.kewen.framework.boot.auth.web.service.LoginService;
 import com.kewen.framework.boot.auth.web.WebAuthUserInfoContextContainer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +50,8 @@ public class LoginServiceImpl implements LoginService {
         String token = webAuthUserInfoContextContainer.saveAuthUserInfo(authUser);
 
         LoginResp loginResp = new LoginResp();
-
+        loginResp.setToken(token);
+        loginResp.setUserInfo(authUser);
         return loginResp;
     }
     private void checkAccount(AuthUserCredential credential){
@@ -59,7 +61,7 @@ public class LoginServiceImpl implements LoginService {
         if (!credential.isNonLocked()){
             throw new AuthorizationException("账号已锁定");
         }
-        if (credential.isNonExpired()){
+        if (!credential.isNonExpired()){
             throw new AuthorizationException("账号已过期");
         }
     }

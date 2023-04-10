@@ -6,6 +6,7 @@ import com.kewen.framework.base.authority.model.resp.MenuResp;
 import com.kewen.framework.base.authority.mp.entity.SysMenu;
 import com.kewen.framework.base.authority.support.SysMenuAuthComposite;
 import com.kewen.framework.base.common.model.Result;
+import com.kewen.framework.boot.auth.AuthUserInfo;
 import com.kewen.framework.boot.auth.annotation.CheckEndpoint;
 import com.kewen.framework.boot.auth.bussiness.model.BusinessAuthorityEditReq;
 import com.kewen.framework.boot.auth.bussiness.model.MenuAuthorityEditReq;
@@ -30,11 +31,17 @@ import java.util.List;
  */
 @Api(tags = "权限")
 @RestController
-@RequestMapping("/authority")
-public class AuthorityController {
+@RequestMapping("/auth")
+public class AuthController {
 
 	@Autowired
 	private SysMenuAuthComposite sysMenuAuthComposite;
+
+	@PostMapping("/currentUser")
+	public Result currentUser(){
+		AuthUserInfo authUserInfo = AuthUserContext.get();
+		return Result.success(authUserInfo);
+	}
 
 	@ApiOperation("获取有权限菜单")
 	@GetMapping("/getVisibleMenus")

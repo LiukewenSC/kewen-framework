@@ -30,7 +30,7 @@ public class SysUserDetail implements IUser {
     protected Collection<Position> positions;
     protected Collection<Role> roles;
 
-    public List<SysAuthority> authorities(){
+    public List<SysAuthority> sysAuthorities(){
         return new ArrayList<>(AuthorityConvertUtil.parseCurrentUser(this));
     }
 

@@ -1,5 +1,6 @@
 package com.kewen.framework.boot.auth.bussiness.model;
 
+import com.kewen.framework.boot.auth.AuthUserInfo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,4 +17,6 @@ public class LoginResp  {
 
 
     private String token;
+
+    private AuthUserInfo userInfo;
 }
