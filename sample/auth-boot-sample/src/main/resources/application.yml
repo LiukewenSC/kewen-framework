@@ -14,4 +14,4 @@ kewen:
     type: web   # security/web
     web:
       store:
-        type: session # session/token
+        type: token # session/token
