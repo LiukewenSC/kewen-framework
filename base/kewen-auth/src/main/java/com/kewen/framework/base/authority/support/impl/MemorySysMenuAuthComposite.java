@@ -4,8 +4,8 @@ package com.kewen.framework.base.authority.support.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.kewen.framework.base.authority.constant.MenuTypeConstant;
-import com.kewen.framework.base.authority.model.Authority;
-import com.kewen.framework.base.authority.model.AuthorityObject;
+import com.kewen.framework.base.authority.model.SysAuthority;
+import com.kewen.framework.base.authority.model.SysAuthorityObject;
 import com.kewen.framework.base.authority.model.resp.MenuResp;
 import com.kewen.framework.base.authority.mp.entity.SysApplicationAuth;
 import com.kewen.framework.base.authority.mp.entity.SysMenu;
@@ -21,6 +21,8 @@ import com.kewen.framework.base.common.utils.BeanUtil;
 import com.kewen.framework.base.common.utils.TreeUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Collection;
@@ -38,6 +40,7 @@ import java.util.stream.Collectors;
  * @since 2022-12-01 10:21
  */
 @Slf4j
+@Component
 public class MemorySysMenuAuthComposite implements SysMenuAuthComposite {
     @Autowired
     SysUserCompositeMapper userCompositeMapper;
@@ -80,7 +83,7 @@ public class MemorySysMenuAuthComposite implements SysMenuAuthComposite {
                     List<SysMenuAuth> sysMenuAuths = authByMenuMap.get(m.getId());
                     if (sysMenuAuths!=null){
                         m.setAuthority(AuthorityConvertUtil.parse(
-                                sysMenuAuths.stream().map(a-> new Authority(a.getAuthority(),a.getDescription())).collect(Collectors.toList())
+                                sysMenuAuths.stream().map(a-> new SysAuthority(a.getAuthority(),a.getDescription())).collect(Collectors.toList())
                         ));
                     }
                 })
@@ -114,8 +117,8 @@ public class MemorySysMenuAuthComposite implements SysMenuAuthComposite {
 
 
     @Override
-    public void editMenuAuthorities(Long menuId, AuthorityObject authority) {
-        List<Authority> to = AuthorityConvertUtil.to(authority);
+    public void editMenuAuthorities(Long menuId, SysAuthorityObject authority) {
+        List<SysAuthority> to = AuthorityConvertUtil.to(authority);
         //移除原有的
         menuAuthService.remove(
                 new LambdaQueryWrapper<SysMenuAuth>().eq(SysMenuAuth::getMenuId,menuId)
@@ -135,8 +138,8 @@ public class MemorySysMenuAuthComposite implements SysMenuAuthComposite {
     }
 
     @Override
-    public void editBusinessAuthority(Long businessId,String module,String operate, AuthorityObject authority) {
-        List<Authority> to = AuthorityConvertUtil.to(authority);
+    public void editBusinessAuthority(Long businessId,String module,String operate, SysAuthorityObject authority) {
+        List<SysAuthority> to = AuthorityConvertUtil.to(authority);
         //移除原有的
         applicationAuthService.remove(
                 new LambdaQueryWrapper<SysApplicationAuth>().eq(SysApplicationAuth::getBusinessId,businessId)

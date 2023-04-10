@@ -2,14 +2,14 @@ package com.kewen.framework.boot.auth.web.service.impl;
 
 
 
-import com.kewen.framework.base.authority.model.UserCredential;
-import com.kewen.framework.base.authority.support.SysUserComposite;
 import com.kewen.framework.base.common.exception.AuthorizationException;
 import com.kewen.framework.boot.auth.bussiness.model.LoginReq;
 import com.kewen.framework.boot.auth.bussiness.model.LoginResp;
-import com.kewen.framework.boot.auth.web.support.UserDetailStore;
+import com.kewen.framework.boot.auth.AuthHandler;
+import com.kewen.framework.boot.auth.AuthUserCredential;
+import com.kewen.framework.boot.auth.AuthUserInfo;
 import com.kewen.framework.boot.auth.web.service.LoginService;
-import com.kewen.framework.base.authority.model.UserDetail;
+import com.kewen.framework.boot.auth.web.WebAuthUserInfoContextContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,11 +22,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class LoginServiceImpl implements LoginService {
     @Autowired
-    SysUserComposite sysUserComposite;
+    AuthHandler authHandler;
 
 
     @Autowired
-    UserDetailStore userDetailStore;
+    WebAuthUserInfoContextContainer webAuthUserInfoContextContainer;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -37,19 +37,22 @@ public class LoginServiceImpl implements LoginService {
     public LoginResp login(LoginReq loginReq) {
 
         //查询用户
-        UserDetail userDetail = sysUserComposite.getUserDetail(loginReq.getUsername());
-        UserCredential userCredential = sysUserComposite.getUserCredential(userDetail.getUser().getUserId());
+        Long userId = authHandler.getUserId(loginReq.getUsername());
+        AuthUserInfo authUser = authHandler.getAuthUser(userId);
+        AuthUserCredential userCredential = authHandler.getCredential(userId);
 
         checkAccount(userCredential);
 
         passwordEncoder.matches(loginReq.getPassword(),userCredential.getPassword());
 
         // 保存
-        LoginResp loginResp = userDetailStore.saveUserDetail(userDetail);
+        String token = webAuthUserInfoContextContainer.saveAuthUserInfo(authUser);
+
+        LoginResp loginResp = new LoginResp();
 
         return loginResp;
     }
-    private void checkAccount(UserCredential credential){
+    private void checkAccount(AuthUserCredential credential){
         if (!credential.isEnabled()){
             throw new AuthorizationException("账号未启用");
         }

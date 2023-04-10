@@ -9,7 +9,7 @@ import com.kewen.framework.base.common.model.Result;
 import com.kewen.framework.boot.auth.annotation.CheckEndpoint;
 import com.kewen.framework.boot.auth.bussiness.model.BusinessAuthorityEditReq;
 import com.kewen.framework.boot.auth.bussiness.model.MenuAuthorityEditReq;
-import com.kewen.framework.boot.auth.context.UserDetailContext;
+import com.kewen.framework.boot.auth.context.AuthUserContext;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +39,7 @@ public class AuthorityController {
 	@ApiOperation("获取有权限菜单")
 	@GetMapping("/getVisibleMenus")
 	public Result<List<MenuResp>> getVisibleMenus() {
-		Collection<String> userAuthorities = UserDetailContext.get().authorities();
+		Collection<String> userAuthorities = AuthUserContext.getAuthorities();
 		List<MenuResp> menuTree = sysMenuAuthComposite.getCurrentUserMenuTree(userAuthorities);
 
 		return Result.success(menuTree);

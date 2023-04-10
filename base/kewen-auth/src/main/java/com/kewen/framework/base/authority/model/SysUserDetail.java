@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @descrpition 用户详情，包含岗位权限等
@@ -24,15 +23,15 @@ import java.util.stream.Collectors;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDetail implements IUser {
+public class SysUserDetail implements IUser {
     protected User user;
 
     protected UserDept dept;
     protected Collection<Position> positions;
     protected Collection<Role> roles;
 
-    public List<String> authorities(){
-        return AuthorityConvertUtil.parseCurrentUser(this).stream().map(a->a.getAuthority()).collect(Collectors.toList());
+    public List<SysAuthority> authorities(){
+        return new ArrayList<>(AuthorityConvertUtil.parseCurrentUser(this));
     }
 
     public List<Dept> getDepts(){

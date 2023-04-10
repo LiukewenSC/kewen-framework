@@ -10,12 +10,13 @@ import com.kewen.framework.base.authority.support.mapper.SysUserCompositeMapper;
 import com.kewen.framework.base.authority.mp.service.SysMenuAuthMpService;
 import com.kewen.framework.base.authority.support.SysUserComposite;
 import com.kewen.framework.base.common.exception.AuthenticationException;
+import com.kewen.framework.base.common.exception.BizException;
 import com.kewen.framework.base.common.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -26,7 +27,7 @@ import java.util.List;
  * @author kewen
  * @since 2023-04-07
  */
-@Service
+@Component
 public class SysUserCompositeImpl implements SysUserComposite {
 
     @Autowired
@@ -93,21 +94,30 @@ public class SysUserCompositeImpl implements SysUserComposite {
         return positions==null? Collections.emptyList():positions;
     }
 
-
-
-
     @Override
-    public UserDetail getUserDetail(String loginInfo) {
+    public Long getUserId(String username) {
         SysUser sysUser = userMpService.getOne(
                 new LambdaQueryWrapper<SysUser>()
-                        .eq(SysUser::getUsername, loginInfo)
-                        .or()
-                        .eq(SysUser::getPhone, loginInfo)
+                        .eq(SysUser::getUsername, username)
+                        .or().eq(SysUser::getPhone,username)
+                        .or().eq(SysUser::getEmail,username)
+                        .select(SysUser::getId)
+        );
+        if (sysUser ==null){
+            throw new BizException("未查询到用户");
+        }
+        return sysUser.getId();
+    }
+
+    @Override
+    public SysUserDetail getUserDetail(Long userId) {
+        SysUser sysUser = userMpService.getOne(
+                new LambdaQueryWrapper<SysUser>()
+                        .eq(SysUser::getId, userId)
         );
         if (sysUser == null) {
             throw new AuthenticationException("用户不存在");
         }
-        Long userId = sysUser.getId();
 
         //查询机构
         UserDept userDept = getUserDept(userId);
@@ -119,7 +129,7 @@ public class SysUserCompositeImpl implements SysUserComposite {
         List<Role> roles = listUserRole(userId);
 
 
-        return UserDetail.builder()
+        return SysUserDetail.builder()
                 .user(new User(sysUser.getId(),sysUser.getName()))
                 .dept(userDept)
                 .positions(positions)
@@ -129,38 +139,13 @@ public class SysUserCompositeImpl implements SysUserComposite {
     }
 
     @Override
-    public UserCredential getUserCredential(Long userId){
+    public SysUserCredential getUserCredential(Long userId){
 
-        SysUserCredential credential = userCredentialsMpService.getOne(
+        return userCredentialsMpService.getOne(
                 new LambdaQueryWrapper<SysUserCredential>()
                         .eq(SysUserCredential::getUserId, userId)
         );
-        return new UserCredential() {
 
-            @Override
-            public String getPassword() {
-                return credential.getPassword();
-            }
-
-            @Override
-            public boolean isNonExpired() {
-                LocalDateTime expiredTime = credential.getPasswordExpiredTime();
-                // expiredTime == null 表示系统未设定过期时间，永久有效
-                return expiredTime == null || LocalDateTime.now().isAfter(expiredTime);
-            }
-
-            @Override
-            public boolean isNonLocked() {
-                LocalDateTime lockedDeadline = credential.getAccountLockedDeadline();
-
-                return lockedDeadline == null || LocalDateTime.now().isAfter(lockedDeadline);
-            }
-
-            @Override
-            public boolean isEnabled() {
-                return false;
-            }
-        };
     }
 
 }

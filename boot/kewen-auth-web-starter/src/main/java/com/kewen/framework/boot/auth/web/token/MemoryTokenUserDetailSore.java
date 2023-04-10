@@ -1,6 +1,6 @@
-package com.kewen.framework.boot.auth.web.support.token;
+package com.kewen.framework.boot.auth.web.token;
 
-import com.kewen.framework.base.authority.model.UserDetail;
+import com.kewen.framework.boot.auth.AuthUserInfo;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -12,16 +12,16 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class MemoryTokenUserDetailSore implements TokenUserDetailStore {
 
-    private final Map<String, UserDetail> store = new ConcurrentHashMap<>();
+    private final Map<String, AuthUserInfo> store = new ConcurrentHashMap<>();
 
 
     @Override
-    public UserDetail getUserDetail(String token) {
+    public AuthUserInfo getAuthUserInfo(String token) {
         return store.get(token);
     }
 
     @Override
-    public void setUserDetail(String token, UserDetail userDetail) {
+    public void setUserDetail(String token, AuthUserInfo userDetail) {
         store.put(token,userDetail);
     }
 }

@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2022-11-25 21:26
  */
 @RestController
-@RequestMapping("/login")
 @Slf4j
 public class LoginController {
 
@@ -25,9 +24,7 @@ public class LoginController {
     private LoginService loginService;
 
 
-
-
-    @PostMapping("/login")
+    @PostMapping("${kewen.auth.login-endpoint}")
     public Result<LoginResp> login(@RequestBody LoginReq loginReq){
 
         LoginResp login = loginService.login(loginReq);

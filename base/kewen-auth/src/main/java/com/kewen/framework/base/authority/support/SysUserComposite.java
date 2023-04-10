@@ -1,6 +1,7 @@
 package com.kewen.framework.base.authority.support;
 
 import com.kewen.framework.base.authority.model.*;
+import com.kewen.framework.base.authority.mp.entity.SysUserCredential;
 
 import java.util.List;
 
@@ -31,13 +32,14 @@ public interface SysUserComposite {
      */
     List<Position> listUserPosition(Long userId);
 
-    UserDetail getUserDetail(String loginInfo);
+    Long getUserId(String username);
+    SysUserDetail getUserDetail(Long userId);
 
     /**
      * 获取账号凭证信息
      * @param userId 用户id
      * @return
      */
-    UserCredential getUserCredential(Long userId);
+    SysUserCredential getUserCredential(Long userId);
 
 }

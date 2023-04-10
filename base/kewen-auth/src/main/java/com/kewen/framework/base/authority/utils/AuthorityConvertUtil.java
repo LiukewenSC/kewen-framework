@@ -3,10 +3,10 @@ package com.kewen.framework.base.authority.utils;
 import com.kewen.framework.base.authority.model.Dept;
 import com.kewen.framework.base.authority.model.Position;
 import com.kewen.framework.base.authority.model.Role;
+import com.kewen.framework.base.authority.model.SysAuthority;
 import com.kewen.framework.base.common.model.User;
-import com.kewen.framework.base.authority.model.UserDetail;
-import com.kewen.framework.base.authority.model.Authority;
-import com.kewen.framework.base.authority.model.AuthorityObject;
+import com.kewen.framework.base.authority.model.SysUserDetail;
+import com.kewen.framework.base.authority.model.SysAuthorityObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.CollectionUtils;
 
@@ -39,45 +39,45 @@ public class AuthorityConvertUtil {
      * 无权限的返回对象格式
      * @return
      */
-    private static Authority noneAuthority(){
-        return new Authority(NONE,NONE_DESCRIPTION);
+    private static SysAuthority noneAuthority(){
+        return new SysAuthority(NONE,NONE_DESCRIPTION);
     }
 
     /**
      * 解析当前用户的权限
-     * @param userDetail
+     * @param sysUserDetail
      * @return
      */
-    public static Collection<Authority> parseCurrentUser(UserDetail userDetail){
-        if (userDetail ==null){
+    public static Collection<SysAuthority> parseCurrentUser(SysUserDetail sysUserDetail){
+        if (sysUserDetail ==null){
             return Collections.singletonList(noneAuthority());
         }
-        HashSet<Authority> set = new HashSet<>();
-        Optional.ofNullable(userDetail.getDepts()).ifPresent(d-> d.forEach(r -> set.add(to(r))));
-        Optional.ofNullable(userDetail.getRoles()).ifPresent(d-> d.forEach(r -> set.add(to(r))));
+        HashSet<SysAuthority> set = new HashSet<>();
+        Optional.ofNullable(sysUserDetail.getDepts()).ifPresent(d-> d.forEach(r -> set.add(to(r))));
+        Optional.ofNullable(sysUserDetail.getRoles()).ifPresent(d-> d.forEach(r -> set.add(to(r))));
         return set;
     }
 
     /**
      * 将权限对象转换为权限字符串列表
-     * @param authorityObject
+     * @param sysAuthorityObject
      * @return
      */
-    public static List<Authority> to(AuthorityObject authorityObject){
-        ArrayList<Authority> authorities = new ArrayList<>();
-        Collection<User> users = authorityObject.getUsers();
+    public static List<SysAuthority> to(SysAuthorityObject sysAuthorityObject){
+        ArrayList<SysAuthority> authorities = new ArrayList<>();
+        Collection<User> users = sysAuthorityObject.getUsers();
         if (!org.springframework.util.CollectionUtils.isEmpty(users)){
             authorities.addAll(users.stream().map(AuthorityConvertUtil::to).collect(Collectors.toList()));
         }
-        Collection<Dept> depts = authorityObject.getDepts();
+        Collection<Dept> depts = sysAuthorityObject.getDepts();
         if (!org.springframework.util.CollectionUtils.isEmpty(users)){
             authorities.addAll(depts.stream().map(AuthorityConvertUtil::to).collect(Collectors.toList()));
         }
-        Collection<Role> roles = authorityObject.getRoles();
+        Collection<Role> roles = sysAuthorityObject.getRoles();
         if (!org.springframework.util.CollectionUtils.isEmpty(roles)){
             authorities.addAll(roles.stream().map(AuthorityConvertUtil::to).collect(Collectors.toList()));
         }
-        Collection<Position> positions = authorityObject.getPositions();
+        Collection<Position> positions = sysAuthorityObject.getPositions();
         if (!org.springframework.util.CollectionUtils.isEmpty(positions)){
             authorities.addAll(positions.stream().map(AuthorityConvertUtil::to).collect(Collectors.toList()));
         }
@@ -88,17 +88,17 @@ public class AuthorityConvertUtil {
     /**
      * entity 转换为 Authority
      */
-    private static Authority to(User user){
-        return new Authority(USER_PREFIX + user.getId(), USER_PREFIX + user.getName());
+    private static SysAuthority to(User user){
+        return new SysAuthority(USER_PREFIX + user.getId(), USER_PREFIX + user.getName());
     }
-    private static Authority to(Dept dept){
-        return new Authority(DEPT_PREFIX + dept.getId(), DEPT_PREFIX + dept.getName());
+    private static SysAuthority to(Dept dept){
+        return new SysAuthority(DEPT_PREFIX + dept.getId(), DEPT_PREFIX + dept.getName());
     }
-    private static Authority to(Position position){
-        return new Authority(POSITION_PREFIX + position.getId(), POSITION_PREFIX + position.getName());
+    private static SysAuthority to(Position position){
+        return new SysAuthority(POSITION_PREFIX + position.getId(), POSITION_PREFIX + position.getName());
     }
-    private static Authority to(Role role){
-        return new Authority(ROLE_PREFIX + role.getId(), ROLE_PREFIX + role.getName());
+    private static SysAuthority to(Role role){
+        return new SysAuthority(ROLE_PREFIX + role.getId(), ROLE_PREFIX + role.getName());
     }
 
 
@@ -107,18 +107,18 @@ public class AuthorityConvertUtil {
      * @param originals
      * @return
      */
-    public static AuthorityObject parse(Collection<Authority> originals){
+    public static SysAuthorityObject parse(Collection<SysAuthority> originals){
 
         //按照顺序排序，保证最后返回的数据是按照id顺序排列的
-        List<Authority> auths = originals.stream()
-                .sorted(Comparator.comparing(Authority::getAuthority))
+        List<SysAuthority> auths = originals.stream()
+                .sorted(Comparator.comparing(SysAuthority::getAuthority))
                 .collect(Collectors.toList());
 
         Collection<User> users= new ArrayList<>();
         Collection<Dept> depts=new ArrayList<>();
         Collection<Position> positions=new ArrayList<>();
         Collection<Role> roles=new ArrayList<>();
-        for (Authority auth : auths) {
+        for (SysAuthority auth : auths) {
             String authority = auth.getAuthority();
             String description = auth.getDescription();
             String[] split = authority.split(SPLIT);
@@ -140,7 +140,7 @@ public class AuthorityConvertUtil {
                 default:
             }
         }
-        AuthorityObject object = new AuthorityObject();
+        SysAuthorityObject object = new SysAuthorityObject();
         if (!org.springframework.util.CollectionUtils.isEmpty(users)){
             object.setUsers(users);
         }

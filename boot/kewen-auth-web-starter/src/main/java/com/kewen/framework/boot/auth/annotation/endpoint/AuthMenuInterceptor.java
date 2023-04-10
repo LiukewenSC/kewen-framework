@@ -1,10 +1,11 @@
 package com.kewen.framework.boot.auth.annotation.endpoint;
 
-import com.kewen.framework.base.authority.support.SysMenuAuthComposite;
 import com.kewen.framework.base.common.exception.AuthorizationException;
 import com.kewen.framework.boot.auth.annotation.CheckEndpoint;
-import com.kewen.framework.boot.auth.context.UserDetailContext;
+import com.kewen.framework.boot.auth.context.AuthUserContext;
+import com.kewen.framework.boot.auth.AuthHandler;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -20,11 +21,8 @@ import java.util.Collection;
  */
 public class AuthMenuInterceptor implements HandlerInterceptor {
 
-    private final SysMenuAuthComposite menuService;
-
-    public AuthMenuInterceptor(SysMenuAuthComposite menuService) {
-        this.menuService = menuService;
-    }
+    @Autowired
+    private AuthHandler authHandler;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
@@ -42,8 +40,8 @@ public class AuthMenuInterceptor implements HandlerInterceptor {
         } else {
             url= checkEndpoint.url();
         }
-        Collection<String> userAuthorities = UserDetailContext.get().authorities();
-        boolean yjt = menuService.hasAuth(
+        Collection<String> userAuthorities = AuthUserContext.getAuthorities();
+        boolean yjt = authHandler.hasAuth(
                 userAuthorities,
                 url
         );

@@ -4,7 +4,7 @@ package com.kewen.framework.boot.auth.annotation.dataedit;
 import com.kewen.framework.base.authority.support.SysMenuAuthComposite;
 import com.kewen.framework.base.common.exception.AuthorizationException;
 import com.kewen.framework.boot.auth.annotation.CheckDataEdit;
-import com.kewen.framework.boot.auth.context.UserDetailContext;
+import com.kewen.framework.boot.auth.context.AuthUserContext;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
@@ -47,7 +47,7 @@ public class DataCheckAspect {
             throw new AuthorizationException("参数没有找到接口ApplicationBusiness实现类");
         }
         ApplicationBusiness business = (ApplicationBusiness) first.get();
-        Collection<String> auths = UserDetailContext.get().authorities();
+        Collection<String> auths = AuthUserContext.getAuthorities();
         boolean hasAuth = menuAuthComposite.hasAuth(auths, authAnn.module(), authAnn.operate(), business.getBusinessId());
         if (!hasAuth){
             throw new AuthorizationException("权限校验不通过");

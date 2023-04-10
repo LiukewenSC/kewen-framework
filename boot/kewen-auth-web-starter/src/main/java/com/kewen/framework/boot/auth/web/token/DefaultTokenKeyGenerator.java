@@ -1,4 +1,4 @@
-package com.kewen.framework.boot.auth.web.support.token;
+package com.kewen.framework.boot.auth.web.token;
 
 import java.util.UUID;
 

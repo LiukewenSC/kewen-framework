@@ -4,7 +4,7 @@ package com.kewen.framework.boot.common.context;
 import com.kewen.framework.base.common.model.IUser;
 
 /**
- *  用户上下文容器，设定从哪里取出User
+ *  用户上下文容器，定义用户的容器
  * @author kewen
  * @since 2023-04-07
  */

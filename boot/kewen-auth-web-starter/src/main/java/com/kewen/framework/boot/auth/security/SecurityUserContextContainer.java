@@ -1,10 +1,8 @@
 package com.kewen.framework.boot.auth.security;
 
-import com.kewen.framework.base.authority.model.UserDetail;
-import com.kewen.framework.base.common.model.IUser;
-import com.kewen.framework.boot.auth.context.UserDetailContextContainer;
 import com.kewen.framework.boot.auth.security.model.SecurityUser;
-import com.kewen.framework.boot.common.context.UserContextContainer;
+import com.kewen.framework.boot.auth.AuthUserInfo;
+import com.kewen.framework.boot.auth.context.AuthUserInfoContextContainer;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
@@ -12,17 +10,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
  * @author kewen
  * @since 2023-04-07
  */
-public class SecurityUserContextContainer implements UserContextContainer, UserDetailContextContainer {
-
-
-    @Override
-    public IUser getUser() {
-        return (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    }
+public class SecurityUserContextContainer implements AuthUserInfoContextContainer {
 
     @Override
-    public UserDetail getUserDetail() {
+    public AuthUserInfo getAuthUserInfo() {
         SecurityUser principal = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return principal.getUserDetail();
+        return principal.getAuthUserInfo();
     }
 }

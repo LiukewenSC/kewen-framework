@@ -2,9 +2,12 @@ package com.kewen.framework.boot.auth.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kewen.framework.base.common.model.Result;
-import com.kewen.framework.boot.auth.security.AuthUserDetailService;
+import com.kewen.framework.boot.auth.security.SecurityUserContextContainer;
+import com.kewen.framework.boot.auth.security.SecurityUserDetailService;
 import com.kewen.framework.boot.auth.security.JsonLoginAuthenticationFilterConfigurer;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -14,8 +17,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.InMemoryTokenRepositoryImpl;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -31,16 +32,15 @@ import java.io.PrintWriter;
  */
 @Slf4j
 @Configuration
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+@ConditionalOnProperty(name = "kewen.auth.type",havingValue = "security")
+public class AuthSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Value("${kewen.auth.login-endpoint}")
+    private String loginEndpoint;
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
-        return NoOpPasswordEncoder.getInstance();
-    }
-
-    @Bean
-    public AuthUserDetailService authUserDetailService(){
-        return new AuthUserDetailService();
+    public SecurityUserDetailService authUserDetailService(){
+        return new SecurityUserDetailService();
     }
 
     /**
@@ -50,6 +50,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     HttpSessionEventPublisher httpSessionEventPublisher() {
         return new HttpSessionEventPublisher();
+    }
+
+
+    @Bean
+    SecurityUserContextContainer securityUserContextContainer(){
+        return new SecurityUserContextContainer();
     }
 
 
@@ -80,7 +86,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //.addFilterAt(loginFilter(),UsernamePasswordAuthenticationFilter.class)
                 //.formLogin().and()
                 .apply(new JsonLoginAuthenticationFilterConfigurer<>())  //采用新建配置类的方式可以使得原来config中配置的对象依然有效
-                    .loginProcessingUrl("/login")
+                    .loginProcessingUrl(loginEndpoint)
                     .usernameParameter("username")
                     .passwordParameter("password")
                     .successHandler((request, response, authentication) -> {
