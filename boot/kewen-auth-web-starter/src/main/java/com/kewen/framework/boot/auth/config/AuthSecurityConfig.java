@@ -5,6 +5,7 @@ import com.kewen.framework.base.common.model.Result;
 import com.kewen.framework.boot.auth.security.SecurityUserContextContainer;
 import com.kewen.framework.boot.auth.security.SecurityUserDetailService;
 import com.kewen.framework.boot.auth.security.JsonLoginAuthenticationFilterConfigurer;
+import com.kewen.framework.boot.auth.security.model.SecurityUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -90,7 +91,8 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter {
                     .usernameParameter("username")
                     .passwordParameter("password")
                     .successHandler((request, response, authentication) -> {
-                        Result result =Result.success(authentication);
+                        SecurityUser principal = (SecurityUser)authentication.getPrincipal();
+                        Result result =Result.success(principal.getAuthUserInfo());
                         writeResponseBody(response,result);
                     })
                     .failureHandler((request, response, exception) -> {

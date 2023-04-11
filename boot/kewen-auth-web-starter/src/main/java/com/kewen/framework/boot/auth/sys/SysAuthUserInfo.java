@@ -25,7 +25,7 @@ public class SysAuthUserInfo extends SysUserDetail implements AuthUserInfo {
     }
 
     @Override
-    public List<AuthEntity> authEntities() {
+    public List<AuthEntity> getAuthorities() {
         List<SysAuthority> authorities = sysAuthorities();
         return authorities.stream().map(SysAuthEntityAdaptor::new).collect(Collectors.toList());
     }
