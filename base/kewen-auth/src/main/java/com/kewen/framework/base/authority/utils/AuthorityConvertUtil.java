@@ -53,7 +53,7 @@ public class AuthorityConvertUtil {
             return Collections.singletonList(noneAuthority());
         }
         HashSet<SysAuthority> set = new HashSet<>();
-        Optional.ofNullable(sysUserDetail.getDepts()).ifPresent(d-> d.forEach(r -> set.add(to(r))));
+        Optional.ofNullable(sysUserDetail.allDepts()).ifPresent(d-> d.forEach(r -> set.add(to(r))));
         Optional.ofNullable(sysUserDetail.getRoles()).ifPresent(d-> d.forEach(r -> set.add(to(r))));
         return set;
     }

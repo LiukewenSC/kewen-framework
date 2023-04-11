@@ -35,7 +35,7 @@ public class AuthUserContext implements ApplicationContextAware {
      * @return
      */
     public static List<String> getAuthorities(){
-        return get().authorities();
+        return get().getStrAuthorities();
     }
 
     /**
@@ -43,7 +43,7 @@ public class AuthUserContext implements ApplicationContextAware {
      * @return
      */
     public static List<AuthEntity> getEntities(){
-        return get().authEntities();
+        return get().getAuthorities();
     }
 
 

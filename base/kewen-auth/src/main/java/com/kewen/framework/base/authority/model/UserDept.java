@@ -26,7 +26,7 @@ public class UserDept {
      * 额外的部门
      */
     private Collection<Dept> extras;
-    public Collection<Dept> getDepts(){
+    public List<Dept> allDepts(){
         List<Dept> depts = new ArrayList<>();
         if (primary !=null){
             depts.add(primary);

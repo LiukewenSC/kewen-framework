@@ -34,18 +34,8 @@ public class SysUserDetail implements IUser {
         return new ArrayList<>(AuthorityConvertUtil.parseCurrentUser(this));
     }
 
-    public List<Dept> getDepts(){
-        if (dept==null) {
-            return Collections.emptyList();
-        }
-        Dept primary = dept.getPrimary();
-        Collection<Dept> extras = dept.getExtras();
-        ArrayList<Dept> depts = new ArrayList<>();
-        depts.add(primary);
-        if (!CollectionUtils.isEmpty(extras)){
-            depts.addAll(extras);
-        }
-        return depts;
+    public List<Dept> allDepts(){
+        return dept.allDepts();
     }
 
     @Override
