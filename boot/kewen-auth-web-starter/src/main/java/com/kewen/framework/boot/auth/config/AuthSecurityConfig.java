@@ -20,6 +20,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.web.authentication.rememberme.InMemoryTokenRepositoryImpl;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -79,10 +82,7 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http
-                .authorizeRequests().antMatchers(HttpMethod.GET,"/login").permitAll()
-                    .anyRequest().authenticated()
-                    .and()
+        http.authorizeRequests().anyRequest().authenticated().and()
                 //.addFilterAt(loginFilter(),UsernamePasswordAuthenticationFilter.class)
                 //.formLogin().and()
                 .apply(new JsonLoginAuthenticationFilterConfigurer<>())  //采用新建配置类的方式可以使得原来config中配置的对象依然有效
@@ -103,11 +103,12 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter {
                         log.error(" security error :"+e.getMessage(),e);
                         Result result =null;
                         if (e instanceof InsufficientAuthenticationException){
-                            //result = Result.failed("请先进行认证");
+                            result = Result.failed(Result.LOGIN_FAILED,"请先进行认证");
                         }
                         if (result ==null){
                             result = Result.failed(e.getMessage());
                         }
+                        response.setStatus(401);
                         writeResponseBody(response,result);
                     }).accessDeniedHandler((request, response, e) -> {
                         log.error(" security error :"+e.getMessage(),e);
@@ -141,13 +142,25 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter {
                     .invalidateHttpSession(true) // 清除 HttpSession，默认就会清除。
                     .permitAll()
                     .and()
+                .cors().configurationSource(configurationSource())
+                //.disable()
+                .and()
                 .csrf().disable()
-                .cors().disable()
         ;
 
 
     }
+    CorsConfigurationSource configurationSource(){
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.setAllowCredentials(true);
+        corsConfiguration.addAllowedOrigin("*");
+        corsConfiguration.addAllowedHeader("*");
+        corsConfiguration.addAllowedMethod("*");
 
+        UrlBasedCorsConfigurationSource corsConfigurationSource = new UrlBasedCorsConfigurationSource();
+        corsConfigurationSource.registerCorsConfiguration("/**",corsConfiguration);
+        return corsConfigurationSource;
+    }
     private void writeResponseBody(HttpServletResponse response,Result result) throws IOException {
         response.setContentType("application/json;charset=utf-8");
         PrintWriter out = response.getWriter();

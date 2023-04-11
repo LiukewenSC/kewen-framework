@@ -1,13 +1,19 @@
 package com.kewen.framework.base.common.model;
 
 
+import lombok.Data;
+import lombok.Getter;
 
 /**
  * @descrpition 返回类
  * @author kewen
  * @since 2022-11-25 13:48
  */
+@Getter
 public class Result<T> {
+
+    public static final Integer LOGIN_FAILED=10001;
+
     private Integer code;
     private Boolean success ;
     private String message;
@@ -31,35 +37,18 @@ public class Result<T> {
         result.data=data;
         return result;
     }
+    public static Result<Void> failed(Integer code,String message){
+        Result<Void> result = new Result<>();
+        result.code=code;
+        result.success=false;
+        result.message=message;
+        return result;
+    }
     public static Result<Void> failed(String message){
         Result<Void> result = new Result<>();
         result.code=500;
         result.success=false;
         result.message=message;
         return result;
-    }
-
-    public Integer getCode() {
-        return code;
-    }
-
-    public void setCode(Integer code) {
-        this.code = code;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public T getData() {
-        return data;
-    }
-
-    public void setData(T data) {
-        this.data = data;
     }
 }

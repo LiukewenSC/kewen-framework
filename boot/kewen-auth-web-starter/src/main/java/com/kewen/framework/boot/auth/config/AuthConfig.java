@@ -18,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  */
 @Configuration
 @PropertySource("classpath:application-auth-web.properties")
+@ComponentScan("com.kewen.framework.boot.auth.bussiness")
 public class AuthConfig {
 
     @Bean

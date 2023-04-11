@@ -3,12 +3,16 @@ spring:
     active: dev
 
 
+server:
+  port: 8608
+  servlet:
+    context-path: /admin
 logging:
   level:
     org.springframework: debug
 kewen:
   auth:
-    login-endpoint: /login
+    login-endpoint: /auth/login
     type: security   # security/web
     web:
       store:

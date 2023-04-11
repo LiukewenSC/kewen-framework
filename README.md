@@ -28,4 +28,10 @@ kewen:
       password: UUCSuucs
     tenant:
       open: true
+  auth:
+    login-endpoint: /login
+    type: security   # security/web
+    web:
+      store:
+        type: token # session/token
 ```
