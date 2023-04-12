@@ -32,8 +32,8 @@ public class SecurityUserDetailService implements UserDetailsService {
         SysUserCredential userCredential = sysUserComposite.getUserCredential(userId);
 
         return SecurityUser.builder()
-                .id(sysUserDetail.getUser().getId())
-                .name(sysUserDetail.getUser().getName())
+                .id(sysUserDetail.getId())
+                .name(sysUserDetail.getName())
                 .password(userCredential.getPassword())
                 .authorities(AuthorityConvertUtil.parseCurrentUser(sysUserDetail))
                 .build();

@@ -18,7 +18,8 @@ public class SysAuthUserInfo extends SysUserDetail implements AuthUserInfo {
 
 
     public SysAuthUserInfo(SysUserDetail wrapper) {
-        this.user=wrapper.getUser();
+        this.id=wrapper.getId();
+        this.name=wrapper.getName();
         this.dept=wrapper.getDept();
         this.roles=wrapper.getRoles();
         this.positions=wrapper.getPositions();
