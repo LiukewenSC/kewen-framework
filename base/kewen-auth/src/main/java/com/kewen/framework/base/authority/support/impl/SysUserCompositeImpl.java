@@ -129,12 +129,11 @@ public class SysUserCompositeImpl implements SysUserComposite {
         List<Role> roles = listUserRole(userId);
 
 
-        return SysUserDetail.builder()
-                .user(new User(sysUser.getId(),sysUser.getName()))
-                .dept(userDept)
-                .positions(positions)
-                .roles(roles)
-                .build()
+        return new SysUserDetail()
+                .setUser(new User(sysUser.getId(),sysUser.getName()))
+                .setDept(userDept)
+                .setPositions(positions)
+                .setRoles(roles)
                 ;
     }
 

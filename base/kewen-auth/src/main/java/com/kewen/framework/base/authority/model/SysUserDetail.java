@@ -6,7 +6,9 @@ import com.kewen.framework.base.common.model.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
@@ -19,32 +21,25 @@ import java.util.List;
  * @author kewen
  * @since 2022-11-25 15:17
  */
-@Builder
+@EqualsAndHashCode(callSuper = true)
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class SysUserDetail implements IUser {
-    protected User user;
+@Accessors(chain = true)
+public class SysUserDetail extends User {
 
     protected UserDept dept;
     protected Collection<Position> positions;
     protected Collection<Role> roles;
 
+    public SysUserDetail setUser(User user){
+        this.id=user.getId();
+        this.name=user.getName();
+        return this;
+    }
     public List<SysAuthority> sysAuthorities(){
         return new ArrayList<>(AuthorityConvertUtil.parseCurrentUser(this));
     }
 
     public List<Dept> allDepts(){
         return dept.allDepts();
-    }
-
-    @Override
-    public Long getUserId() {
-        return user.getUserId();
-    }
-
-    @Override
-    public String getUserName() {
-        return user.getUserName();
     }
 }
