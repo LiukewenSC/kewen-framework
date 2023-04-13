@@ -108,9 +108,9 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter {
                             result = Result.failed(Result.LOGIN_FAILED,"请先进行认证");
                         }
                         if (result ==null){
-                            result = Result.failed(e.getMessage());
+                            result = Result.failed(Result.NO_LOGIN,e.getMessage());
                         }
-                        response.setStatus(401);
+                        response.setStatus(Result.NO_LOGIN);
                         writeResponseBody(response,result);
                     }).accessDeniedHandler((request, response, e) -> {
                         log.error(" security error :"+e.getMessage(),e);
