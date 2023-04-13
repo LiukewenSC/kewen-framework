@@ -3,9 +3,12 @@ package com.kewen.framework.boot.auth.security.model;
 import com.kewen.framework.base.common.model.IUser;
 import com.kewen.framework.boot.auth.AuthUserInfo;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @descrpition
@@ -34,7 +37,8 @@ public class SecurityUser<T extends AuthUserInfo>  implements UserDetails, IUser
     }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        List<String> strAuthorities = authUserInfo.getStrAuthorities();
+        return strAuthorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
     }
 
     @Override
