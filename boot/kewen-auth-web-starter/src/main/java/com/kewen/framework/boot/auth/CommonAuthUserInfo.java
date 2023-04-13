@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * @author kewen
  * @since 2023-04-10
  */
-public class CommonAuthUserInfo extends HashMap<String,List<AuthEntity>> implements IUser {
+public class CommonAuthUserInfo extends HashMap<String,List<AuthEntity>> implements IUser , AuthUserInfo {
 
     /**
      * 用户id
@@ -42,10 +42,6 @@ public class CommonAuthUserInfo extends HashMap<String,List<AuthEntity>> impleme
         return this.get(propertyName);
     }
 
-    public List<AuthEntity> allAuths(){
-        return this.values().stream().flatMap(Collection::stream).collect(Collectors.toList());
-    }
-
 
 
     public List<String> getPropertyNames() {
@@ -55,6 +51,13 @@ public class CommonAuthUserInfo extends HashMap<String,List<AuthEntity>> impleme
     public void setPropertyNames(List<String> propertyNames) {
         this.propertyNames = propertyNames;
     }
+
+
+    @Override
+    public List<AuthEntity> getAuthorities() {
+        return this.values().stream().flatMap(Collection::stream).collect(Collectors.toList());
+    }
+
 
     @Override
     public Long getUserId() {
@@ -122,4 +125,6 @@ public class CommonAuthUserInfo extends HashMap<String,List<AuthEntity>> impleme
         validProperty(key);
         return super.compute(key, remappingFunction);
     }
+
+
 }
