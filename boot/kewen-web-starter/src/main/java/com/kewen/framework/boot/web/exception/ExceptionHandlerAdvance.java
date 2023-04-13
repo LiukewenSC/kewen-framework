@@ -4,6 +4,7 @@ import com.kewen.framework.base.common.exception.BizException;
 import com.kewen.framework.base.common.model.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
@@ -16,16 +17,19 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ExceptionHandlerAdvance {
 
     @ExceptionHandler(BizException.class)
+    @ResponseStatus
     public Result<Void> bizException(BizException e){
         log.error("bizException >> ",e);
         return Result.failed(e.getMessage());
     }
     @ExceptionHandler(Exception.class)
+    @ResponseStatus
     public Result<Void> exception(Exception e){
         log.error("exception >> ",e);
         return Result.failed(e.getMessage());
     }
     @ExceptionHandler(Throwable.class)
+    @ResponseStatus
     public Result<Void> throwable(Throwable e){
         log.error("throwable >> ",e);
         return Result.failed(e.getMessage());
