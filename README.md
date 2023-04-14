@@ -30,6 +30,8 @@ kewen:
       open: true
   auth:
     login-endpoint: /login
+    logout-endpoint: /logout
+    permit-url: /auth/getWebSiteName
     type: security   # security/web
     web:
       store:

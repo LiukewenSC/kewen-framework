@@ -7,11 +7,11 @@ import com.kewen.framework.boot.auth.security.SecurityUserDetailService;
 import com.kewen.framework.boot.auth.security.JsonLoginAuthenticationFilterConfigurer;
 import com.kewen.framework.boot.auth.security.model.SecurityUser;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -37,10 +37,11 @@ import java.io.PrintWriter;
 @Slf4j
 @Configuration
 @ConditionalOnProperty(name = "kewen.auth.type",havingValue = "security")
+@EnableConfigurationProperties(AuthSecurityProperties.class)
 public class AuthSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Value("${kewen.auth.login-endpoint}")
-    private String loginEndpoint;
+    @Autowired
+    AuthSecurityProperties  authSecurityProperties;
 
     @Bean
     public SecurityUserDetailService authUserDetailService(){
@@ -83,11 +84,11 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.authorizeRequests().anyRequest().authenticated().and()
+        http.authorizeRequests().antMatchers(authSecurityProperties.getPermitUrls()).permitAll().anyRequest().authenticated().and()
                 //.addFilterAt(loginFilter(),UsernamePasswordAuthenticationFilter.class)
                 //.formLogin().and()
                 .apply(new JsonLoginAuthenticationFilterConfigurer<>())  //采用新建配置类的方式可以使得原来config中配置的对象依然有效
-                    .loginProcessingUrl(loginEndpoint)
+                    .loginProcessingUrl(authSecurityProperties.getLoginEndpoint())
                     .usernameParameter("username")
                     .passwordParameter("password")
                     .successHandler((request, response, authentication) -> {
@@ -105,12 +106,11 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter {
                         log.error(" security error :"+e.getMessage(),e);
                         Result result =null;
                         if (e instanceof InsufficientAuthenticationException){
-                            result = Result.failed(Result.LOGIN_FAILED,"请先进行认证");
+                            result = Result.failed(Result.NO_LOGIN,"请先进行认证");
                         }
                         if (result ==null){
                             result = Result.failed(Result.NO_LOGIN,e.getMessage());
                         }
-                        response.setStatus(Result.NO_LOGIN);
                         writeResponseBody(response,result);
                     }).accessDeniedHandler((request, response, e) -> {
                         log.error(" security error :"+e.getMessage(),e);
@@ -135,7 +135,7 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter {
                     .tokenValiditySeconds(2*7*24*60*60) //默认保存两周时间
                     .and()
                 .logout()
-                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout","POST"))
+                    .logoutRequestMatcher(new AntPathRequestMatcher(authSecurityProperties.getLogoutEndpoint(),"POST"))
                     .logoutSuccessHandler((request, response, authentication) -> {
                         writeResponseBody(response,Result.success("注销成功"));
                     })

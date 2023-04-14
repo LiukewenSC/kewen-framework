@@ -11,8 +11,6 @@ import lombok.Getter;
  */
 @Getter
 public class Result<T> {
-
-    public static final Integer LOGIN_FAILED=10001;
     public static final Integer NO_LOGIN=401;
 
     private Integer code;
