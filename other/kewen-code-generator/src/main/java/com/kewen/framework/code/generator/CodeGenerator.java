@@ -48,12 +48,13 @@ public class CodeGenerator {
          * 工程绝对路径地址，指定到src上面一层;
          * 为空则表示用代码生成器在的路径
          */
-        public static final String ABSOLUTE_PATH="D:\\Projects\\kewen-framework\\base\\kewen-auth";
+        // public static final String ABSOLUTE_PATH="D:\\Projects\\kewen-framework\\base\\kewen-auth";
+        public static final String ABSOLUTE_PATH="D:\\Projects\\kewen-blog-backend\\blog-service";
 
         /**
          * 基础包名
          */
-        public static final String BASE_PACKAGE = "com.kewen.framework.base.authority";
+        public static final String BASE_PACKAGE = "com.kewen.blog.service";
         /**
          * 模块名
          */
@@ -68,7 +69,7 @@ public class CodeGenerator {
          */
         public static final boolean ENABLE_SWAGGER = false;
         public static final List<String> IGNORE_TABLE_PREFIX = Arrays.asList("bak_","sys_log");
-        public static final List<String> CONTAINS_TABLE_PREFIX = Arrays.asList("sys_");
+        public static final List<String> CONTAINS_TABLE_PREFIX = Arrays.asList("sys_config");
         //public static final List<String> CONTAINS_TABLE_PREFIX =null;
 
         /**
@@ -138,7 +139,7 @@ public class CodeGenerator {
                             .addInclude(tableNames)
                             .entityBuilder() //实体策略配置
                                 //.disableSerialVersionUID()禁用生成SerialVersionUID：默认true
-                                .fileOverride()
+                                //.fileOverride()
                                 .enableChainModel()//开启链式模型
                                 .enableActiveRecord() //开启 ActiveRecord 模式
                                 .enableLombok()//开启lombok
@@ -151,7 +152,7 @@ public class CodeGenerator {
                                 //.formatFileName("%s")//格式化实体名称，%s取消首字母I
                                 .build()
                             .mapperBuilder()//mapper文件策略
-                                .fileOverride()
+                                //.fileOverride()
                                 .enableMapperAnnotation()//开启mapper注解
                                 .enableBaseResultMap()//启用xml文件中的BaseResultMap 生成
                                 .enableBaseColumnList()//启用xml文件中的BaseColumnList
@@ -160,12 +161,12 @@ public class CodeGenerator {
                                 .formatXmlFileName("%sMpMapper")//格式化xml文件名称
                                 .build()
                             .serviceBuilder()//service文件策略
-                                .fileOverride()
+                                //.fileOverride()
                                 .formatServiceFileName("%sMpService")//格式化 service 接口文件名称
                                 .formatServiceImplFileName("%sMpServiceImpl")//格式化 service 接口文件名称
                                 .build()
                             .controllerBuilder()//控制层策略
-                                .fileOverride()
+                                //.fileOverride()
                                 //.enableHyphenStyle()开启驼峰转连字符，默认：false
                                 .enableRestStyle()//开启生成@RestController
                                 .formatFileName("%sMpController")//格式化文件名称
