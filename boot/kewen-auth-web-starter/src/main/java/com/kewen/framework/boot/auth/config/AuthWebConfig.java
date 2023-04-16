@@ -1,8 +1,6 @@
 package com.kewen.framework.boot.auth.config;
 
-import com.kewen.framework.base.authority.support.SysMenuAuthComposite;
-import com.kewen.framework.base.authority.support.impl.MemorySysMenuAuthComposite;
-import com.kewen.framework.boot.auth.annotation.endpoint.AuthMenuInterceptor;
+import com.kewen.framework.base.auth.annotation.endpoint.AuthMenuInterceptor;
 import com.kewen.framework.boot.auth.web.WebAuthUserInfoContextContainer;
 import com.kewen.framework.boot.auth.web.session.SessionCurrentUserInfoContextContainer;
 import com.kewen.framework.boot.auth.web.token.DefaultTokenKeyGenerator;
@@ -12,10 +10,8 @@ import com.kewen.framework.boot.auth.web.token.TokenKeyGenerator;
 import com.kewen.framework.boot.auth.web.token.TokenUserDetailStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

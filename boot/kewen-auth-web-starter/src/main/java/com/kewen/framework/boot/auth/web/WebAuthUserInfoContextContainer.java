@@ -1,7 +1,7 @@
 package com.kewen.framework.boot.auth.web;
 
 import com.kewen.framework.boot.auth.AuthUserInfo;
-import com.kewen.framework.boot.auth.context.AuthUserInfoContextContainer;
+import com.kewen.framework.base.auth.context.AuthUserInfoContextContainer;
 
 /**
  * @descrpition 用户上下文管理器，负责加载存储和获取上下文数据
