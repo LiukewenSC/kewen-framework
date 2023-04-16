@@ -14,7 +14,7 @@
     <dependencies>
         <dependency>
             <groupId>com.kewen.framework</groupId>
-            <artifactId>kewen-common-starter</artifactId>
+            <artifactId>kewen-common-context</artifactId>
         </dependency>
         <dependency>
             <groupId>com.kewen.framework</groupId>
@@ -44,10 +44,6 @@
         </dependency>
 
 
-        <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjweaver</artifactId>
-        </dependency>
         <!--为了使用sql改写的相关类-->
         <!--<dependency>
             <groupId>com.alibaba</groupId>

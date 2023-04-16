@@ -2,7 +2,6 @@ package com.kewen.framework.boot.auth.sys;
 
 import com.kewen.framework.base.authority.model.SysAuthority;
 import com.kewen.framework.base.authority.model.SysUserDetail;
-import com.kewen.framework.base.common.utils.BeanUtil;
 import com.kewen.framework.boot.auth.AuthEntity;
 import com.kewen.framework.boot.auth.AuthUserInfo;
 

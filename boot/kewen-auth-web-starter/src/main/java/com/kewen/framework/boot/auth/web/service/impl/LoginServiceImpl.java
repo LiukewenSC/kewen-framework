@@ -3,12 +3,11 @@ package com.kewen.framework.boot.auth.web.service.impl;
 
 
 import com.kewen.framework.base.common.exception.AuthorizationException;
-import com.kewen.framework.boot.auth.bussiness.model.LoginReq;
-import com.kewen.framework.boot.auth.bussiness.model.LoginResp;
+import com.kewen.framework.base.authority.model.resp.LoginReq;
+import com.kewen.framework.base.authority.model.resp.LoginResp;
 import com.kewen.framework.boot.auth.AuthHandler;
 import com.kewen.framework.boot.auth.AuthUserCredential;
 import com.kewen.framework.boot.auth.AuthUserInfo;
-import com.kewen.framework.boot.auth.context.AuthUserContext;
 import com.kewen.framework.boot.auth.web.service.LoginService;
 import com.kewen.framework.boot.auth.web.WebAuthUserInfoContextContainer;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,7 @@
 package com.kewen.framework.boot.auth.web.service;
 
-import com.kewen.framework.boot.auth.bussiness.model.LoginReq;
-import com.kewen.framework.boot.auth.bussiness.model.LoginResp;
+import com.kewen.framework.base.authority.model.resp.LoginReq;
+import com.kewen.framework.base.authority.model.resp.LoginResp;
 
 /**
  * @descrpition 登录Service

@@ -14,8 +14,10 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>kewen-common</module>
-        <module>kewen-auth</module>
+        <module>kewen-common-core</module>
+        <module>kewen-common-context</module>
+        <module>kewen-auth-core</module>
+        <module>kewen-auth-sys-support</module>
         <module>kewen-storage</module>
     </modules>
 

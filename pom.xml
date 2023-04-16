@@ -33,12 +33,18 @@
 
             <dependency>
                 <groupId>com.kewen.framework</groupId>
-                <artifactId>kewen-common</artifactId>
+                <artifactId>kewen-common-core</artifactId>
+                <version>${framework-version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.kewen.framework</groupId>
+                <artifactId>kewen-auth-core</artifactId>
                 <version>${framework-version}</version>
             </dependency>
             <dependency>
                 <groupId>com.kewen.framework</groupId>
-                <artifactId>kewen-common-starter</artifactId>
+                <artifactId>kewen-common-context</artifactId>
                 <version>${framework-version}</version>
             </dependency>
             <dependency>

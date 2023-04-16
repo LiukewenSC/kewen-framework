@@ -1,10 +1,10 @@
 package com.kewen.framework.boot.auth.sys;
 
+import com.kewen.framework.base.auth.AuthHandler;
 import com.kewen.framework.base.authority.model.SysUserDetail;
 import com.kewen.framework.base.authority.mp.entity.SysUserCredential;
 import com.kewen.framework.base.authority.support.SysMenuAuthComposite;
 import com.kewen.framework.base.authority.support.SysUserComposite;
-import com.kewen.framework.boot.auth.AuthHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;
