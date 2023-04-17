@@ -1,3 +1,0 @@
-org.springframework.context.ApplicationContextInitializer=com.kewen.framework.common.context.initializer.CommonContextInitializer
-
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.kewen.framework.common.context.context.UserContext

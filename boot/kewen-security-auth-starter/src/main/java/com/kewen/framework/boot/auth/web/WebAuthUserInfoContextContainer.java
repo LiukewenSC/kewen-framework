@@ -1,6 +1,6 @@
 package com.kewen.framework.boot.auth.web;
 
-import com.kewen.framework.auth.core.context.AuthUserInfoContextContainer;
+import com.kewen.framework.auth.context.AuthUserInfoContextContainer;
 import com.kewen.framework.auth.core.model.AuthUserInfo;
 
 /**

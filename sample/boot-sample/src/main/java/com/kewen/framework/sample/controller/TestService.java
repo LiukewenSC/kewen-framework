@@ -1,6 +1,6 @@
 package com.kewen.framework.sample.controller;
 
-import com.kewen.framework.boot.web.interceptor.tenant.TenantInterceptor;
+import com.kewen.framework.common.web.interceptor.TenantInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

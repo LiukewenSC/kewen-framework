@@ -14,16 +14,12 @@
     <dependencies>
         <dependency>
             <groupId>com.kewen.framework</groupId>
-            <artifactId>kewen-common-context</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.kewen.framework</groupId>
             <artifactId>kewen-auth-sys-support</artifactId>
         </dependency>
 
         <dependency>
             <groupId>com.kewen.framework</groupId>
-            <artifactId>kewen-web-starter</artifactId>
+            <artifactId>kewen-common-starter</artifactId>
         </dependency>
 
         <dependency>
@@ -32,22 +28,23 @@
         </dependency>
 
 
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-        </dependency>
-
+        <!--密码验证器-->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-crypto</artifactId>
         </dependency>
+        <!--子模块中引用了spring-boot-starter-security才启用spring-security的验证方式-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
             <optional>true</optional>
         </dependency>
 
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+        </dependency>
 
         <!--为了使用sql改写的相关类-->
         <!--<dependency>

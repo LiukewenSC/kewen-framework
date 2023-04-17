@@ -1,7 +1,7 @@
 package com.kewen.framework.common.context.initializer;
 
 import com.kewen.framework.common.context.SpringConstant;
-import com.kewen.framework.common.context.YmlPropertySourceFactory;
+import com.kewen.framework.common.context.factory.YmlPropertySourceFactory;
 import com.kewen.framework.common.core.utils.BeanUtil;
 import org.springframework.beans.factory.parsing.ProblemReporter;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
