@@ -1,6 +1,6 @@
 package com.kewen.framework.cloud.security.model;
 
-import com.kewen.framework.base.authority.model.SysAuthority;
+import com.kewen.framework.auth.sys.model.SysAuthority;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;

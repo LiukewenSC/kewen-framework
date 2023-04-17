@@ -1,15 +1,8 @@
 package com.kewen.framework.cloud.security.config;
 
-import com.kewen.framework.base.authority.mp.service.SysApplicationAuthMpService;
-import com.kewen.framework.base.authority.mp.service.SysMenuAuthMpService;
-import com.kewen.framework.base.authority.mp.service.SysMenuMpService;
-import com.kewen.framework.base.authority.mp.service.SysUserDeptMpService;
-import com.kewen.framework.base.authority.mp.service.SysUserPositionMpService;
-import com.kewen.framework.base.authority.mp.service.SysUserRoleMpService;
-import com.kewen.framework.base.authority.support.SysMenuAuthComposite;
-import com.kewen.framework.base.authority.support.impl.MemorySysMenuAuthComposite;
+import com.kewen.framework.auth.sys.composite.SysMenuAuthComposite;
+import com.kewen.framework.auth.sys.composite.impl.MemorySysMenuAuthComposite;
 import com.kewen.framework.cloud.security.service.SecurityUserDetailService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

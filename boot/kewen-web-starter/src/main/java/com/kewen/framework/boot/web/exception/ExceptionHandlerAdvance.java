@@ -1,7 +1,7 @@
 package com.kewen.framework.boot.web.exception;
 
-import com.kewen.framework.base.common.exception.BizException;
-import com.kewen.framework.base.common.model.Result;
+import com.kewen.framework.common.core.exception.BizException;
+import com.kewen.framework.common.core.model.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;

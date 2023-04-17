@@ -2,13 +2,12 @@ package com.kewen.framework.datasource.utils;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.kewen.framework.base.common.model.PageReq;
-import com.kewen.framework.base.common.model.PageResult;
-import com.kewen.framework.base.common.utils.BeanUtil;
+import com.kewen.framework.common.core.model.PageReq;
+import com.kewen.framework.common.core.model.PageResult;
+import com.kewen.framework.common.core.utils.BeanUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author kewen

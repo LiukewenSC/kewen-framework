@@ -1,9 +1,9 @@
 package com.kewen.framework.cloud.security.service;
 
-import com.kewen.framework.base.authority.mp.entity.SysUserCredential;
-import com.kewen.framework.base.authority.support.SysUserComposite;
-import com.kewen.framework.base.authority.utils.AuthorityConvertUtil;
-import com.kewen.framework.base.authority.model.SysUserDetail;
+import com.kewen.framework.auth.sys.mp.entity.SysUserCredential;
+import com.kewen.framework.auth.sys.composite.SysUserComposite;
+import com.kewen.framework.auth.sys.utils.AuthorityConvertUtil;
+import com.kewen.framework.auth.sys.model.SysUserInfo;
 import com.kewen.framework.cloud.security.model.SecurityUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,15 +27,15 @@ public class SecurityUserDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Long userId = sysUserComposite.getUserId(username);
-        SysUserDetail sysUserDetail = sysUserComposite.getUserDetail(userId);
+        SysUserInfo sysAuthUserInfo = sysUserComposite.getSysUserInfo(userId);
 
         SysUserCredential userCredential = sysUserComposite.getUserCredential(userId);
 
         return SecurityUser.builder()
-                .id(sysUserDetail.getId())
-                .name(sysUserDetail.getName())
+                .id(sysAuthUserInfo.getId())
+                .name(sysAuthUserInfo.getName())
                 .password(userCredential.getPassword())
-                .authorities(AuthorityConvertUtil.parseCurrentUser(sysUserDetail))
+                .authorities(AuthorityConvertUtil.parseCurrentUser(sysAuthUserInfo))
                 .build();
     }
 

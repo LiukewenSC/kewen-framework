@@ -1,6 +1,6 @@
 package com.kewen.framework.sample.cloud.alibaba.controller;
 
-import com.kewen.framework.base.common.model.Result;
+import com.kewen.framework.common.core.model.Result;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

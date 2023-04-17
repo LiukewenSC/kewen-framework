@@ -1,6 +1,6 @@
 package com.kewen.framework.quartz;
 
-import com.kewen.framework.base.common.exception.BizException;
+import com.kewen.framework.common.core.exception.BizException;
 import com.kewen.framework.quartz.job.QuartzJobFactory;
 import com.kewen.framework.quartz.mapper.QuartzJobMapper;
 import com.kewen.framework.quartz.model.JobStatus;

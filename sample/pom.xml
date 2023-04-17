@@ -14,11 +14,10 @@
 
     <modules>
         <module>boot-sample</module>
+        <module>security-auth-sample</module>
+        <module>security-sso-sample</module>
         <module>cloud-sample</module>
-        <module>secutiry-sso-sample</module>
         <module>cloud-alibaba-sample</module>
-        <module>security-sample</module>
-        <module>auth-boot-sample</module>
     </modules>
 
     <properties>

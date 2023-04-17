@@ -1,7 +1,7 @@
 package com.kewen.framework.datasource.plug;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
-import com.kewen.framework.boot.common.context.UserContext;
+import com.kewen.framework.common.context.context.UserContext;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.reflection.MetaObject;
 

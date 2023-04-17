@@ -1,6 +1,6 @@
 package com.kewen.framework.datasource.config;
 
-import com.kewen.framework.boot.common.context.UserContext;
+import com.kewen.framework.common.context.context.UserContext;
 import com.kewen.framework.datasource.context.DbTenant;
 import com.kewen.framework.datasource.context.DefaultDbTenant;
 import com.kewen.framework.datasource.plug.AutoFillConfig;

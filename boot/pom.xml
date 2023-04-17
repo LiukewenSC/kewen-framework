@@ -15,8 +15,7 @@
     <modules>
         <module>kewen-jdbc-starter</module>
         <module>kewen-web-starter</module>
-        <module>kewen-auth-web-starter</module>
-        <module>kewen-security-web-starter</module>
+        <module>kewen-security-auth-starter</module>
         <module>kewen-sso-starter</module>
         <module>kewen-sso-server</module>
         <module>kewen-task-starter</module>

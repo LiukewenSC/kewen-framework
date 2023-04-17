@@ -2,7 +2,7 @@ package com.kewen.framework.cloud.alibaba.nacos.client.exception;
 
 import com.alibaba.csp.sentinel.slots.block.degrade.DegradeException;
 import com.alibaba.csp.sentinel.slots.block.flow.FlowException;
-import com.kewen.framework.base.common.model.Result;
+import com.kewen.framework.common.core.model.Result;
 import com.netflix.client.ClientException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
