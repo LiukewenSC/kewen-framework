@@ -7,9 +7,12 @@ package com.kewen.framework.common.context;
  */
 public class TenantContext {
 
-    private static final ThreadLocal<Long> context = new ThreadLocal<>();
+    private static final ThreadLocal<Long> context = new InheritableThreadLocal<>();
 
 
+    public static boolean support(){
+        return context.get() !=null;
+    }
     /**
      * 获取租户id
      * @return

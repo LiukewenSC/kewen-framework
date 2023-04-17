@@ -1,11 +1,11 @@
-package com.kewen.framework.jdbc.config;
+package com.kewen.framework.boot.jdbc.config;
 
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.handler.TenantLineHandler;
 import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.TenantLineInnerInterceptor;
-import com.kewen.framework.jdbc.context.DbTenant;
+import com.kewen.framework.common.context.TenantContext;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.LongValue;
 import org.springframework.beans.factory.ObjectProvider;
@@ -16,20 +16,20 @@ import org.springframework.util.CollectionUtils;
 import java.util.List;
 
 /**
- * @descrpition 
+ *  mybatis plus 的扩展配置
  * @author kewen
- * @since 2022-12-05 16:00
+ * @since 2022-12-05
  */
 @Configuration
 public class MybatisPlusConfig {
 
+    private DbTenantProperties dbTenantProperties;
 
-    private DbTenant dbTenant;
 
-    public MybatisPlusConfig(ObjectProvider<DbTenant> dbTenantObjectProvider) {
-        DbTenant ifAvailable = dbTenantObjectProvider.getIfAvailable();
+    public MybatisPlusConfig(ObjectProvider<DbTenantProperties> dbTenantObjectProvider) {
+        DbTenantProperties ifAvailable = dbTenantObjectProvider.getIfAvailable();
         if (ifAvailable !=null){
-            dbTenant = ifAvailable;
+            dbTenantProperties = ifAvailable;
         }
     }
 
@@ -42,22 +42,22 @@ public class MybatisPlusConfig {
         interceptor.addInnerInterceptor(new PaginationInnerInterceptor());
 
         //租户插件
-        if (dbTenant !=null){
+        if (TenantContext.support()){
             interceptor.addInnerInterceptor(new TenantLineInnerInterceptor(new TenantLineHandler() {
                 @Override
                 public Expression getTenantId() {
-                    Long tenantId = dbTenant.getTenantId();
+                    Long tenantId = TenantContext.get();
                     return tenantId==null?new LongValue(100001):new LongValue(tenantId);
                 }
 
                 @Override
                 public String getTenantIdColumn() {
-                    return dbTenant.getTenantIdColumn();
+                    return dbTenantProperties.getTenantIdColumn();
                 }
 
                 @Override
                 public boolean ignoreTable(String tableName) {
-                    List<String> ignorePrefixTables = dbTenant.ignorePrefixTables();
+                    List<String> ignorePrefixTables = dbTenantProperties.getIgnorePrefixTables();
                     if (CollectionUtils.isEmpty(ignorePrefixTables)){
                         return false;
                     }
