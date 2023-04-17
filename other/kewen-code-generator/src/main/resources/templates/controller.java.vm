@@ -1,6 +1,5 @@
 package ${package.Controller};
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import ${package.Service}.${table.serviceName};
 import ${package.Entity}.${entity};
     #if(${restControllerStyle})
@@ -20,19 +19,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.validation.annotation.Validated;
 
-import com.kewen.framework.base.common.model.Result;
-import com.kewen.framework.base.common.model.PageResult;
 import com.kewen.framework.datasource.utils.PageUtils;
-import com.kewen.framework.base.common.model.IdReq;
-import com.kewen.framework.base.common.model.IdsReq;
-import com.kewen.framework.base.common.model.PageReq;
 
-#if(${swagger})
+    #if(${swagger})
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 #end
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 
 /**

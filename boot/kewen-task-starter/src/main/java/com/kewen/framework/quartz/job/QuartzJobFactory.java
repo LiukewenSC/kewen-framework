@@ -1,7 +1,7 @@
 package com.kewen.framework.quartz.job;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.kewen.framework.base.common.exception.BizException;
+import com.kewen.framework.common.core.exception.BizException;
 import com.kewen.framework.quartz.mapper.QuartzJobMapper;
 import com.kewen.framework.quartz.model.QuartzJob;
 import lombok.extern.slf4j.Slf4j;
