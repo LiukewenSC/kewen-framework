@@ -16,6 +16,7 @@
     <modules>
         <module>kewen-common-core</module>
         <module>kewen-common-context</module>
+        <module>kewen-common-web</module>
         <module>kewen-auth-core</module>
         <module>kewen-auth-sys-support</module>
         <module>kewen-storage</module>

@@ -2,7 +2,7 @@ package com.kewen.framework.boot.auth.security;
 
 import com.kewen.framework.auth.core.model.AuthUserInfo;
 import com.kewen.framework.boot.auth.security.model.SecurityUser;
-import com.kewen.framework.auth.core.context.AuthUserInfoContextContainer;
+import com.kewen.framework.auth.context.AuthUserInfoContextContainer;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 /**

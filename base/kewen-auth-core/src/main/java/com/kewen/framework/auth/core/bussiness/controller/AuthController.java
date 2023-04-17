@@ -1,7 +1,7 @@
 package com.kewen.framework.auth.core.bussiness.controller;
 
 import com.kewen.framework.auth.core.model.AuthUserInfo;
-import com.kewen.framework.auth.core.context.AuthUserContext;
+import com.kewen.framework.auth.context.AuthUserContext;
 import com.kewen.framework.common.core.model.Result;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

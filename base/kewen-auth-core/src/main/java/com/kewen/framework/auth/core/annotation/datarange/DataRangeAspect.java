@@ -2,7 +2,7 @@ package com.kewen.framework.auth.core.annotation.datarange;
 
 
 import com.kewen.framework.auth.core.annotation.CheckDataRange;
-import com.kewen.framework.auth.core.context.AuthUserContext;
+import com.kewen.framework.auth.context.AuthUserContext;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;

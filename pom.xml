@@ -37,6 +37,16 @@
                 <artifactId>kewen-common-core</artifactId>
                 <version>${framework-version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.kewen.framework</groupId>
+                <artifactId>kewen-common-context</artifactId>
+                <version>${framework-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.kewen.framework</groupId>
+                <artifactId>kewen-common-web</artifactId>
+                <version>${framework-version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>com.kewen.framework</groupId>
@@ -45,22 +55,15 @@
             </dependency>
             <dependency>
                 <groupId>com.kewen.framework</groupId>
-                <artifactId>kewen-common-context</artifactId>
+                <artifactId>kewen-auth-sys-support</artifactId>
                 <version>${framework-version}</version>
             </dependency>
+
+
+            <!-- boot模块 -->
             <dependency>
                 <groupId>com.kewen.framework</groupId>
-                <artifactId>kewen-web-starter</artifactId>
-                <version>${framework-version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.kewen.framework</groupId>
-                <artifactId>kewen-security-auth-starter</artifactId>
-                <version>${framework-version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.kewen.framework.cloud</groupId>
-                <artifactId>kewen-eureka-cloud-starter</artifactId>
+                <artifactId>kewen-common-starter</artifactId>
                 <version>${framework-version}</version>
             </dependency>
             <dependency>
@@ -70,7 +73,7 @@
             </dependency>
             <dependency>
                 <groupId>com.kewen.framework</groupId>
-                <artifactId>kewen-auth-sys-support</artifactId>
+                <artifactId>kewen-security-auth-starter</artifactId>
                 <version>${framework-version}</version>
             </dependency>
             <dependency>
@@ -79,11 +82,21 @@
                 <version>${framework-version}</version>
             </dependency>
 
+
+            <!-- cloud模块 -->
+            <dependency>
+                <groupId>com.kewen.framework.cloud</groupId>
+                <artifactId>kewen-eureka-cloud-starter</artifactId>
+                <version>${framework-version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>com.kewen.framework.cloud.alibaba</groupId>
                 <artifactId>kewen-nacos-alibaba-starter</artifactId>
                 <version>${framework-version}</version>
             </dependency>
+
+
 
 
             <!--************spring-cloud相关************-->

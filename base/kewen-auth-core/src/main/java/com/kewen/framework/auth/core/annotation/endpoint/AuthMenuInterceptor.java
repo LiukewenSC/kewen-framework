@@ -3,7 +3,7 @@ package com.kewen.framework.auth.core.annotation.endpoint;
 import com.kewen.framework.auth.core.AuthHandler;
 import com.kewen.framework.auth.core.annotation.CheckEndpoint;
 import com.kewen.framework.common.core.exception.AuthorizationException;
-import com.kewen.framework.auth.core.context.AuthUserContext;
+import com.kewen.framework.auth.context.AuthUserContext;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;

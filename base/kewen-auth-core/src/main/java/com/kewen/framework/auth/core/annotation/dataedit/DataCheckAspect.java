@@ -4,7 +4,7 @@ package com.kewen.framework.auth.core.annotation.dataedit;
 import com.kewen.framework.auth.core.annotation.CheckDataEdit;
 import com.kewen.framework.auth.core.AuthHandler;
 import com.kewen.framework.common.core.exception.AuthorizationException;
-import com.kewen.framework.auth.core.context.AuthUserContext;
+import com.kewen.framework.auth.context.AuthUserContext;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;

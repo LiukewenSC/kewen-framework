@@ -14,7 +14,7 @@
     <dependencies>
         <dependency>
             <groupId>com.kewen.framework</groupId>
-            <artifactId>kewen-web-starter</artifactId>
+            <artifactId>kewen-common-starter</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

@@ -10,7 +10,7 @@ import com.kewen.framework.common.core.model.Result;
 import com.kewen.framework.auth.core.annotation.CheckEndpoint;
 import com.kewen.framework.auth.sys.model.req.BusinessAuthorityEditReq;
 import com.kewen.framework.auth.sys.model.req.MenuAuthorityEditReq;
-import com.kewen.framework.auth.core.context.AuthUserContext;
+import com.kewen.framework.auth.context.AuthUserContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -50,7 +50,7 @@
         </dependency>
         <dependency>
             <groupId>com.kewen.framework</groupId>
-            <artifactId>kewen-web-starter</artifactId>
+            <artifactId>kewen-common-starter</artifactId>
         </dependency>
 
     </dependencies>

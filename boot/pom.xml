@@ -13,8 +13,8 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>kewen-common-starter</module>
         <module>kewen-jdbc-starter</module>
-        <module>kewen-web-starter</module>
         <module>kewen-security-auth-starter</module>
         <module>kewen-sso-starter</module>
         <module>kewen-sso-server</module>
