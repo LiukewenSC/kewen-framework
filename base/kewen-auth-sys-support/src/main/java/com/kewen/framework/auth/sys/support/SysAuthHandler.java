@@ -18,7 +18,6 @@ import java.util.List;
  * @author kewen
  * @since 2023-04-10
  */
-@Component
 public class SysAuthHandler implements AuthHandler<SysAuthority> {
 
     @Autowired

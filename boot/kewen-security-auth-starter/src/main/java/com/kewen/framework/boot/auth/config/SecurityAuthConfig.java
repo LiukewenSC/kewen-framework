@@ -1,11 +1,8 @@
 package com.kewen.framework.boot.auth.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kewen.framework.boot.auth.security.SecurityAuthProperties;
+import com.kewen.framework.boot.auth.security.*;
 import com.kewen.framework.common.core.model.Result;
-import com.kewen.framework.boot.auth.security.SecurityUserContextContainer;
-import com.kewen.framework.boot.auth.security.SecurityUserDetailService;
-import com.kewen.framework.boot.auth.security.JsonLoginAuthenticationFilterConfigurer;
 import com.kewen.framework.boot.auth.security.model.SecurityUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +18,9 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.rememberme.InMemoryTokenRepositoryImpl;
+import org.springframework.security.web.context.NullSecurityContextRepository;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
+import org.springframework.security.web.session.SessionManagementFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -44,6 +43,8 @@ public class SecurityAuthConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     SecurityAuthProperties securityAuthProperties;
+
+    boolean isSession= false;
 
     public SecurityAuthConfig() {
         log.info("使用SpringSecurity作为安全框架");
@@ -124,22 +125,7 @@ public class SecurityAuthConfig extends WebSecurityConfigurerAdapter {
                         result = Result.failed(e.getMessage());
                         writeResponseBody(response,result);
                     }).and()
-                .sessionManagement()
-                    //.sessionAuthenticationStrategy(sessionAuthenticationStrategy())
-                    .maximumSessions(1)
-                        //.sessionRegistry(sessionRegistry())
-                        .maxSessionsPreventsLogin(true)
-                        .expiredSessionStrategy(event -> {
-                            HttpServletResponse response = event.getResponse();
-                            writeResponseBody(response,Result.failed("session已过期"));
-                        }).and()
-                    .and()
-                .rememberMe()
-                    .useSecureCookie(true)
-                    .key("rememberMe")
-                    .tokenRepository(new InMemoryTokenRepositoryImpl())  //此处可以替换成基于数据库的，不加默认用户数据都在cookie中，（类似于jwt，是不是就可以实现分布式了呢？）
-                    .tokenValiditySeconds(2*7*24*60*60) //默认保存两周时间
-                    .and()
+
                 .logout()
                     .logoutRequestMatcher(new AntPathRequestMatcher(securityAuthProperties.getLogoutEndpoint(),"POST"))
                     .logoutSuccessHandler((request, response, authentication) -> {
@@ -155,6 +141,26 @@ public class SecurityAuthConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .csrf().disable()
         ;
+        if (isSession){
+            http.sessionManagement()
+                    //.sessionAuthenticationStrategy(sessionAuthenticationStrategy())
+                    .maximumSessions(1)
+                    //.sessionRegistry(sessionRegistry())
+                    .maxSessionsPreventsLogin(true)
+                    .expiredSessionStrategy(event -> {
+                        HttpServletResponse response = event.getResponse();
+                        writeResponseBody(response,Result.failed("session已过期"));
+                    }).and()
+                    .and()
+                    .rememberMe()
+                    .useSecureCookie(true)
+                    .key("rememberMe")
+                    .tokenRepository(new InMemoryTokenRepositoryImpl())  //此处可以替换成基于数据库的，不加默认用户数据都在cookie中，（类似于jwt，是不是就可以实现分布式了呢？）
+                    .tokenValiditySeconds(2*7*24*60*60) //默认保存两周时间
+                    .and();
+        } else {
+            http.addFilterAt(new TokenFilter(new NullSecurityContextRepository()), SessionManagementFilter.class);
+        }
 
 
     }
