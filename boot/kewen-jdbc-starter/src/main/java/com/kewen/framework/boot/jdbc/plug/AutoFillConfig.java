@@ -1,4 +1,4 @@
-package com.kewen.framework.jdbc.plug;
+package com.kewen.framework.boot.jdbc.plug;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.kewen.framework.common.context.UserContext;
