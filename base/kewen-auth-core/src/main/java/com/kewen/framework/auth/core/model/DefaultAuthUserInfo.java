@@ -55,7 +55,7 @@ public class DefaultAuthUserInfo extends HashMap<String,List<AuthEntity>> implem
 
 
     @Override
-    public List<AuthEntity> getAuthorities() {
+    public List<AuthEntity> authorities() {
         return this.values().stream().flatMap(Collection::stream).collect(Collectors.toList());
     }
 

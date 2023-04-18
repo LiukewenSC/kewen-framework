@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
  */
 public class SecurityUser<E extends AuthEntity,T extends AuthUserInfo<E>>  implements UserDetails, IUser {
 
+    private String token;
     private final T authUserInfo;
     private final String password;
     private final String username;
@@ -38,8 +39,16 @@ public class SecurityUser<E extends AuthEntity,T extends AuthUserInfo<E>>  imple
     }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<String> strAuthorities = authUserInfo.getStrAuthorities();
-        return strAuthorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+        List<E> authorities = authUserInfo.authorities();
+        return authorities.stream().map(a->new SimpleGrantedAuthority(a.getAuth())).collect(Collectors.toList());
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getToken() {
+        return token;
     }
 
     @Override

@@ -8,6 +8,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 具有权限的用户上下文
@@ -37,7 +38,7 @@ public class AuthUserContext implements ApplicationContextAware {
      * @return
      */
     public static List<String> getAuthorities(){
-        return get().getStrAuthorities();
+        return getEntities().stream().map(a -> a.getAuth()).collect(Collectors.toList());
     }
 
     /**
@@ -45,7 +46,7 @@ public class AuthUserContext implements ApplicationContextAware {
      * @return
      */
     public static List<AuthEntity> getEntities(){
-        return get().getAuthorities();
+        return get().authorities();
     }
 
 
