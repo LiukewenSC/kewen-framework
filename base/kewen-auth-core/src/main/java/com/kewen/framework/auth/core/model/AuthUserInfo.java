@@ -15,9 +15,8 @@ public interface AuthUserInfo<E extends AuthEntity> extends IUser {
 
 
 
-     List<E> getAuthorities();
-     default List<String> getStrAuthorities(){
-          return getAuthorities().stream().map(AuthEntity::getAuth).collect(Collectors.toList());
-     }
+     List<E> authorities();
+
+
 
 }

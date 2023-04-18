@@ -37,7 +37,7 @@ public class SysUserInfo extends User implements AuthUserInfo<SysAuthority> {
     }
 
     @Override
-    public List<SysAuthority> getAuthorities() {
+    public List<SysAuthority> authorities() {
         return new ArrayList<>(AuthorityConvertUtil.parseCurrentUser(this));
     }
 }

@@ -18,9 +18,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.rememberme.InMemoryTokenRepositoryImpl;
-import org.springframework.security.web.context.NullSecurityContextRepository;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
-import org.springframework.security.web.session.SessionManagementFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -70,6 +68,11 @@ public class SecurityAuthConfig extends WebSecurityConfigurerAdapter {
         return new SecurityUserContextContainer();
     }
 
+    @Bean
+    AuthenticationSuccessFailureHandler authenticationSuccessFailHandler(){
+        return new AuthenticationSuccessFailureHandler();
+    }
+
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -98,15 +101,8 @@ public class SecurityAuthConfig extends WebSecurityConfigurerAdapter {
                     .loginProcessingUrl(securityAuthProperties.getLoginEndpoint())
                     .usernameParameter("username")
                     .passwordParameter("password")
-                    .successHandler((request, response, authentication) -> {
-                        SecurityUser principal = (SecurityUser)authentication.getPrincipal();
-                        Result result =Result.success(principal.getAuthUserInfo());
-                        writeResponseBody(response,result);
-                    })
-                    .failureHandler((request, response, exception) -> {
-                        Result result =Result.failed(exception.getMessage());
-                        writeResponseBody(response,result);
-                    })
+                    .successHandler(authenticationSuccessFailHandler())
+                    .failureHandler(authenticationSuccessFailHandler())
                     .and()
                 .exceptionHandling()
                     .authenticationEntryPoint((request, response, e) -> {   //操作异常返回
@@ -145,13 +141,13 @@ public class SecurityAuthConfig extends WebSecurityConfigurerAdapter {
             http.sessionManagement()
                     //.sessionAuthenticationStrategy(sessionAuthenticationStrategy())
                     .maximumSessions(1)
-                    //.sessionRegistry(sessionRegistry())
-                    .maxSessionsPreventsLogin(true)
-                    .expiredSessionStrategy(event -> {
-                        HttpServletResponse response = event.getResponse();
-                        writeResponseBody(response,Result.failed("session已过期"));
-                    }).and()
-                    .and()
+                        //.sessionRegistry(sessionRegistry())
+                        .maxSessionsPreventsLogin(true)
+                        .expiredSessionStrategy(event -> {
+                            HttpServletResponse response = event.getResponse();
+                            writeResponseBody(response,Result.failed("session已过期"));
+                        }).and()
+                .and()
                     .rememberMe()
                     .useSecureCookie(true)
                     .key("rememberMe")
@@ -159,7 +155,10 @@ public class SecurityAuthConfig extends WebSecurityConfigurerAdapter {
                     .tokenValiditySeconds(2*7*24*60*60) //默认保存两周时间
                     .and();
         } else {
-            http.addFilterAt(new TokenFilter(new NullSecurityContextRepository()), SessionManagementFilter.class);
+            http.apply(new TokenManagementConfigurer<>())
+                    .sessionAuthenticationStrategy()
+                    .authenticationFailureHandler(authenticationSuccessFailHandler())
+            ;
         }
 
 
