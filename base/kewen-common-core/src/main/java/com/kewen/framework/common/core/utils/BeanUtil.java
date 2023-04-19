@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.beans.BeanUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -61,9 +62,13 @@ public class BeanUtil {
      * @param <T>
      * @return
      */
-    public static <T> T copy(T source){
+    public static <S,T>  void copy(S source,T target){
+        BeanUtils.copyProperties(source,target);
+    }
+    public static <T> T clone(T source){
         return (T) convert(source, source.getClass());
     }
+
 
     /**
      * 克隆集合
@@ -71,10 +76,10 @@ public class BeanUtil {
      * @param <T>
      * @return
      */
-    public static <T> List<T> copyList(Collection<T> sources){
+    public static <T> List<T> cloneList(Collection<T> sources){
         ArrayList<T> lists = new ArrayList<>(sources.size());
         for (T source : sources) {
-            lists.add(copy(source));
+            lists.add(clone(source));
         }
         return lists;
     }
