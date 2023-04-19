@@ -3,19 +3,27 @@ package com.kewen.framework.auth.sys.composite.impl;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.kewen.framework.auth.core.model.AuthPasswordEncoder;
 import com.kewen.framework.auth.sys.composite.SysMenuAuthComposite;
 import com.kewen.framework.auth.sys.composite.mapper.SysUserCompositeMapper;
 import com.kewen.framework.auth.sys.constant.MenuTypeConstant;
 import com.kewen.framework.auth.sys.model.SysAuthority;
+import com.kewen.framework.auth.sys.model.req.UpdatePasswordReq;
 import com.kewen.framework.auth.sys.model.resp.MenuResp;
 import com.kewen.framework.auth.sys.mp.entity.SysApplicationAuth;
 import com.kewen.framework.auth.sys.mp.entity.SysMenu;
 import com.kewen.framework.auth.sys.mp.entity.SysMenuAuth;
+import com.kewen.framework.auth.sys.mp.entity.SysUser;
+import com.kewen.framework.auth.sys.mp.entity.SysUserCredential;
+import com.kewen.framework.auth.sys.mp.service.SysUserCredentialMpService;
+import com.kewen.framework.auth.sys.mp.service.SysUserMpService;
 import com.kewen.framework.auth.sys.utils.AuthorityConvertUtil;
 import com.kewen.framework.auth.sys.mp.service.SysApplicationAuthMpService;
 import com.kewen.framework.auth.sys.mp.service.SysMenuAuthMpService;
 import com.kewen.framework.auth.sys.mp.service.SysMenuMpService;
 import com.kewen.framework.common.core.exception.BizException;
+import com.kewen.framework.common.core.model.IdReq;
 import com.kewen.framework.common.core.utils.BeanUtil;
 import com.kewen.framework.common.core.utils.TreeUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -48,6 +56,13 @@ public class MemorySysMenuAuthComposite implements SysMenuAuthComposite {
     private SysMenuAuthMpService menuAuthService;
     @Autowired
     private SysApplicationAuthMpService applicationAuthService;
+    @Autowired
+    private SysUserCredentialMpService credentialMpService;
+    @Autowired
+    private SysUserMpService userMpService;
+    @Autowired
+    AuthPasswordEncoder authPasswordEncoder;
+
 
     /**
      * 接口为懒加载， 第一次调用 getSysMenuAuths() 方法生效，不要直接调用属性
@@ -259,5 +274,59 @@ public class MemorySysMenuAuthComposite implements SysMenuAuthComposite {
     }
 
 
+
+    @Override
+    public void updatePassword(UpdatePasswordReq req) {
+        SysUser byId = userMpService.getById(req.getId());
+        if (byId ==null){
+            throw new BizException("未查询到用户");
+        }
+        SysUserCredential credential = credentialMpService.getOne(
+                new LambdaQueryWrapper<SysUserCredential>()
+                        .eq(SysUserCredential::getUserId, req.getId())
+                        .select(SysUserCredential::getPassword)
+        );
+        if (credential==null) {
+            throw new BizException("未查询到用户凭证信息");
+        }
+        String encodePassword = credential.getPassword();
+        if (!authPasswordEncoder.matches(req.getOldPassword(),encodePassword)) {
+            throw new BizException("密码不匹配，无法修改");
+        }
+        String newPassword = authPasswordEncoder.encode(req.getNewPassword());
+        credentialMpService.update(
+                new LambdaUpdateWrapper<SysUserCredential>()
+                        .set(SysUserCredential::getPassword,newPassword)
+                        .set(SysUserCredential::getRemark, req.getRemark()==null?"":req.getRemark())
+                        .eq(SysUserCredential::getUserId,req.getId())
+        );
+    }
+
+    @Override
+    public void resetPassword(IdReq req) {
+        SysUser byId = userMpService.getById(req.getId());
+        if (byId ==null){
+            throw new BizException("未查询到用户");
+        }
+        SysUserCredential credential = credentialMpService.getOne(
+                new LambdaQueryWrapper<SysUserCredential>()
+                        .eq(SysUserCredential::getUserId, req.getId())
+                        .select(SysUserCredential::getPassword)
+        );
+        String initPassword = authPasswordEncoder.encode("123456");
+        if (credential ==null){
+            credentialMpService.save(
+                    new SysUserCredential()
+                            .setUserId(req.getId())
+                            .setPassword(initPassword)
+            );
+        } else {
+            credentialMpService.update(
+                    new LambdaUpdateWrapper<SysUserCredential>()
+                            .set(SysUserCredential::getPassword,initPassword)
+                            .eq(SysUserCredential::getUserId,req.getId())
+            );
+        }
+    }
 
 }

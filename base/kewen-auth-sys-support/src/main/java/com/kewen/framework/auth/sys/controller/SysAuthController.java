@@ -2,10 +2,12 @@ package com.kewen.framework.auth.sys.controller;
 
 
 
+import com.kewen.framework.auth.sys.model.req.UpdatePasswordReq;
 import com.kewen.framework.auth.sys.mp.entity.SysMenu;
 import com.kewen.framework.auth.sys.model.resp.MenuResp;
 import com.kewen.framework.auth.sys.composite.SysMenuAuthComposite;
 import com.kewen.framework.auth.sys.utils.AuthorityConvertUtil;
+import com.kewen.framework.common.core.model.IdReq;
 import com.kewen.framework.common.core.model.Result;
 import com.kewen.framework.auth.core.annotation.CheckEndpoint;
 import com.kewen.framework.auth.sys.model.req.BusinessAuthorityEditReq;
@@ -35,6 +37,16 @@ public class SysAuthController {
 	private SysMenuAuthComposite sysMenuAuthComposite;
 
 
+	@PostMapping("/resetPassword")
+	public Result resetPassword(@RequestBody IdReq req){
+		sysMenuAuthComposite.resetPassword(req);
+		return Result.success();
+	}
+	@PostMapping("/updatePassword")
+	public Result updatePassword(@RequestBody @Validated UpdatePasswordReq req){
+		sysMenuAuthComposite.updatePassword(req);
+		return Result.success();
+	}
 
 	@GetMapping("/getVisibleMenus")
 	public Result<List<MenuResp>> getVisibleMenus() {
