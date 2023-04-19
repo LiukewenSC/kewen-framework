@@ -2,9 +2,11 @@ package com.kewen.framework.auth.sys.composite;
 
 
 
+import com.kewen.framework.auth.sys.model.req.UpdatePasswordReq;
 import com.kewen.framework.auth.sys.mp.entity.SysMenu;
 import com.kewen.framework.auth.sys.model.SysAuthority;
 import com.kewen.framework.auth.sys.model.resp.MenuResp;
+import com.kewen.framework.common.core.model.IdReq;
 
 import java.util.Collection;
 import java.util.List;
@@ -64,4 +66,12 @@ public interface SysMenuAuthComposite {
      * @return 是否有权限
      */
     boolean hasBusinessAuth(Collection<String> auths, String module, String operate, Long businessId);
+
+    /**
+     * 修改密码
+     * @param req
+     */
+    void updatePassword(UpdatePasswordReq req);
+
+    void resetPassword(IdReq req);
 }

@@ -24,12 +24,13 @@ public class TokenAuthenticationStrategy implements SessionAuthenticationStrateg
     private TokenKeyGenerator keyGenerator;
     private TokenStore<Authentication> store;
 
-
     public Authentication getToken(HttpServletRequest httpServletRequest){
-        String token = httpServletRequest.getHeader("token");
+
+        String token = httpServletRequest.getHeader("Authorization");
         if (token ==null){
             return null;
         }
+        token = token.substring("Bearer ".length());
         return store.get(token);
     }
 

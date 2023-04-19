@@ -24,7 +24,7 @@ public class AuthenticationSuccessFailureHandler implements AuthenticationFailur
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-        Result result =Result.failed(exception.getMessage());
+        Result result =Result.failed(401,exception.getMessage());
         writeResponseBody(response,result);
     }
 

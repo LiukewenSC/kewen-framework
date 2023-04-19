@@ -24,7 +24,7 @@ public class MemoryTokenStore<T> implements TokenStore<T> {
         loadingCache(expireTime);
     }
     private void loadingCache(long expireTime){
-        this.store = CacheBuilder.newBuilder().expireAfterWrite(Duration.ofSeconds(expireTime)).build(new CacheLoader<String, T>() {
+        this.store = CacheBuilder.newBuilder().expireAfterAccess(Duration.ofSeconds(expireTime)).build(new CacheLoader<String, T>() {
             @Override
             public T load(String o) throws Exception {
                 return null;

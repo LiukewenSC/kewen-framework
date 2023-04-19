@@ -9,10 +9,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * @author kewen
@@ -33,10 +30,8 @@ public class AuthConfig {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        //todo 替换成 BCryptPasswordEncoder
-        return NoOpPasswordEncoder.getInstance();
-        //return new BCryptPasswordEncoder(16);
+    public AuthPasswordEncodeWrapper passwordEncoder() {
+        return new AuthPasswordEncodeWrapper(new BCryptPasswordEncoder());
     }
 
 

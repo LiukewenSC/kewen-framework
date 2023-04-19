@@ -44,6 +44,8 @@ public class SysUserCredential extends Model<SysUserCredential> {
      */
     @TableField("password")
     private String password;
+    @TableField("remark")
+    private String remark;
 
     /**
      * 凭证过期时间 每次修改密码应修改过期时间 ， 为空表示系统无过期时间设定
