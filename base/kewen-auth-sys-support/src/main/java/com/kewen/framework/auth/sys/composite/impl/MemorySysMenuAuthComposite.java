@@ -109,7 +109,7 @@ public class MemorySysMenuAuthComposite implements SysMenuAuthComposite {
         //得到全部树
         List<MenuResp> trees = getMenuTree();
         //克隆副本
-        List<MenuResp> menuTree = BeanUtil.copyList(trees);
+        List<MenuResp> menuTree = BeanUtil.cloneList(trees);
         //将不属于自己的移除
         Iterator<MenuResp> iterator = menuTree.iterator();
         while (iterator.hasNext()) {
