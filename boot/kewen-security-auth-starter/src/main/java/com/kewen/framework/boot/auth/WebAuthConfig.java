@@ -1,13 +1,14 @@
-package com.kewen.framework.boot.auth.config;
+package com.kewen.framework.boot.auth;
 
 import com.kewen.framework.auth.core.annotation.endpoint.AuthMenuInterceptor;
+import com.kewen.framework.auth.core.model.AuthUserInfo;
+import com.kewen.framework.boot.auth.token.MemoryTokenStore;
+import com.kewen.framework.boot.auth.token.TokenStore;
 import com.kewen.framework.boot.auth.web.WebAuthUserInfoContextContainer;
 import com.kewen.framework.boot.auth.web.session.SessionCurrentUserInfoContextContainer;
-import com.kewen.framework.boot.auth.web.token.DefaultTokenKeyGenerator;
-import com.kewen.framework.boot.auth.web.token.MemoryTokenUserDetailSore;
-import com.kewen.framework.boot.auth.web.token.TokenCurrentUserInfoContextContainer;
-import com.kewen.framework.boot.auth.web.token.TokenKeyGenerator;
-import com.kewen.framework.boot.auth.web.token.TokenUserDetailStore;
+import com.kewen.framework.boot.auth.token.DefaultTokenKeyGenerator;
+import com.kewen.framework.boot.auth.web.token.WebTokenUserInfoContextContainer;
+import com.kewen.framework.boot.auth.token.TokenKeyGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,17 +36,11 @@ import javax.servlet.http.HttpSession;
 @Slf4j
 public class WebAuthConfig implements WebMvcConfigurer {
 
-
-
-    @Value("kewen.auth.login-endpoint")
-    private String loginEndpoint;
-
     @Autowired
     private AuthMenuInterceptor authMenuInterceptor;
 
 
     public WebAuthConfig() {
-
         log.info("使用SpringWeb作为安全框架");
     }
 
@@ -64,7 +59,7 @@ public class WebAuthConfig implements WebMvcConfigurer {
      * @since 2022-11-29 11:33
      */
     @Configuration
-    @ConditionalOnProperty(name = "kewen.auth.web.store.type",havingValue = "session")
+    @ConditionalOnProperty(name = "kewen.auth.store.type",havingValue = "session")
     public static class SessionWebConfig {
 
         @Autowired
@@ -86,17 +81,20 @@ public class WebAuthConfig implements WebMvcConfigurer {
      * @since 2022-11-29 11:35
      */
     @Configuration
-    @ConditionalOnProperty(name = "kewen.auth.web.store.type",havingValue = "token")
+    @ConditionalOnProperty(name = "kewen.auth.store.type",havingValue = "token")
     public static class TokenWebConfig {
+
+        AuthProperties authProperties;
+
 
         /**
          * 默认的基于token的用户上下文配置器
          * @return
          */
         @Bean
-        @ConditionalOnMissingBean(TokenCurrentUserInfoContextContainer.class)
-        public TokenCurrentUserInfoContextContainer tokenCurrentUser(){
-            return new TokenCurrentUserInfoContextContainer();
+        @ConditionalOnMissingBean(WebTokenUserInfoContextContainer.class)
+        public WebTokenUserInfoContextContainer tokenCurrentUser(){
+            return new WebTokenUserInfoContextContainer();
         }
         @Bean
         @ConditionalOnMissingBean(TokenKeyGenerator.class)
@@ -104,8 +102,8 @@ public class WebAuthConfig implements WebMvcConfigurer {
             return new DefaultTokenKeyGenerator();
         }
         @Bean
-        public TokenUserDetailStore tokenUserDetailStore(){
-            return new MemoryTokenUserDetailSore();
+        public TokenStore<AuthUserInfo> tokenUserDetailStore(){
+            return new MemoryTokenStore<AuthUserInfo>(authProperties.getStore().getExpireTime());
         }
     }
 }

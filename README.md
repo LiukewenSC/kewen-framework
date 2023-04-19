@@ -34,8 +34,8 @@ kewen:
     login-endpoint: /login
     logout-endpoint: /logout
     permit-url: /auth/getWebSiteName
-    type: security   # security/web
-    web:
-      store:
-        type: token # session/token
+    store: 
+      type: token  # session/token
+      expire-time: 2000  #过期时间  秒
+      
 ```

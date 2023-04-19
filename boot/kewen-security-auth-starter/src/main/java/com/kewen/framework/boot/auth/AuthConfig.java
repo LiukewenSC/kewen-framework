@@ -1,4 +1,4 @@
-package com.kewen.framework.boot.auth.config;
+package com.kewen.framework.boot.auth;
 
 import com.kewen.framework.auth.context.AuthUserContext;
 import com.kewen.framework.auth.core.AuthHandler;
