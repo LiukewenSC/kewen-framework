@@ -1,9 +1,43 @@
 {
   "properties": [
     {
-      "name": "auth.store.type",
-      "description": "权限存储的类型，session、token.",
+      "name": "kewen.auth",
+      "description": "权限配置.",
+      "type": "com.kewen.framework.boot.auth.AuthProperties"
+    },
+    {
+      "name": "kewen.auth.login-endpoint",
+      "description": "登录的端点.",
+      "type": "java.lang.String",
+      "defaultValue": "/login"
+    },
+    {
+      "name": "kewen.auth.logout-endpoint",
+      "description": "登出的端点.",
+      "type": "java.lang.String",
+      "defaultValue": "/logout"
+    },
+    {
+      "name": "kewen.auth.permit-url",
+      "description": "允许不授权的链接，多个用 ;或, 分开.",
       "type": "java.lang.String"
+    },
+    {
+      "name": "kewen.auth.store",
+      "description": "登录凭证存储 .",
+      "type": "com.kewen.framework.boot.auth.AuthProperties.Store"
+    },
+    {
+      "name": "kewen.auth.store.type",
+      "description": "登录凭证存储类型 session/token .",
+      "type": "com.kewen.framework.boot.auth.AuthStoreType",
+      "defaultValue": "session"
+    },
+    {
+      "name": "kewen.auth.store.expire-time",
+      "description": "凭证超时时间 单位(秒 s).",
+      "type": "java.lang.Long",
+      "defaultValue": "2*60*60"
     }
   ]
 }

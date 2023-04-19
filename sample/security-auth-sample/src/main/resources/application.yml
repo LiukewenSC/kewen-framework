@@ -15,8 +15,6 @@ kewen:
     login-endpoint: /auth/login
     logout-endpoint: /auth/logout
     permit-url: /auth/getWebSiteName
-
-
-#    web:
-#      store:
-#        type: session
+    store:
+      type: token
+      expire-time: 1800

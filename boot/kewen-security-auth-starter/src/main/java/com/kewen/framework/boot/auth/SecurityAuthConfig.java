@@ -1,9 +1,11 @@
-package com.kewen.framework.boot.auth.config;
+package com.kewen.framework.boot.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kewen.framework.boot.auth.security.*;
+import com.kewen.framework.boot.auth.security.exception.AuthenticationSuccessFailureHandler;
+import com.kewen.framework.boot.auth.token.DefaultTokenKeyGenerator;
+import com.kewen.framework.boot.auth.token.MemoryTokenStore;
 import com.kewen.framework.common.core.model.Result;
-import com.kewen.framework.boot.auth.security.model.SecurityUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -36,13 +38,11 @@ import java.io.PrintWriter;
 @Slf4j
 @Configuration
 @ConditionalOnClass(EnableWebSecurity.class)
-@EnableConfigurationProperties(SecurityAuthProperties.class)
+@EnableConfigurationProperties(AuthProperties.class)
 public class SecurityAuthConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    SecurityAuthProperties securityAuthProperties;
-
-    boolean isSession= false;
+    AuthProperties authProperties;
 
     public SecurityAuthConfig() {
         log.info("使用SpringSecurity作为安全框架");
@@ -94,11 +94,11 @@ public class SecurityAuthConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.authorizeRequests().antMatchers(securityAuthProperties.getPermitUrls()).permitAll().anyRequest().authenticated().and()
+        http.authorizeRequests().antMatchers(authProperties.getPermitUrls()).permitAll().anyRequest().authenticated().and()
                 //.addFilterAt(loginFilter(),UsernamePasswordAuthenticationFilter.class)
                 //.formLogin().and()
                 .apply(new JsonLoginAuthenticationFilterConfigurer<>())  //采用新建配置类的方式可以使得原来config中配置的对象依然有效
-                    .loginProcessingUrl(securityAuthProperties.getLoginEndpoint())
+                    .loginProcessingUrl(authProperties.getLoginEndpoint())
                     .usernameParameter("username")
                     .passwordParameter("password")
                     .successHandler(authenticationSuccessFailHandler())
@@ -123,7 +123,7 @@ public class SecurityAuthConfig extends WebSecurityConfigurerAdapter {
                     }).and()
 
                 .logout()
-                    .logoutRequestMatcher(new AntPathRequestMatcher(securityAuthProperties.getLogoutEndpoint(),"POST"))
+                    .logoutRequestMatcher(new AntPathRequestMatcher(authProperties.getLogoutEndpoint(),"POST"))
                     .logoutSuccessHandler((request, response, authentication) -> {
                         writeResponseBody(response,Result.success("注销成功"));
                     })
@@ -137,7 +137,9 @@ public class SecurityAuthConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .csrf().disable()
         ;
-        if (isSession){
+        if (authProperties.getStore().getType() == AuthStoreType.SESSION){
+            // 基于session的用户信息存储
+            log.info("登录信息存储方式： session");
             http.sessionManagement()
                     //.sessionAuthenticationStrategy(sessionAuthenticationStrategy())
                     .maximumSessions(1)
@@ -154,11 +156,18 @@ public class SecurityAuthConfig extends WebSecurityConfigurerAdapter {
                     .tokenRepository(new InMemoryTokenRepositoryImpl())  //此处可以替换成基于数据库的，不加默认用户数据都在cookie中，（类似于jwt，是不是就可以实现分布式了呢？）
                     .tokenValiditySeconds(2*7*24*60*60) //默认保存两周时间
                     .and();
-        } else {
+        } else if (authProperties.getStore().getType() == AuthStoreType.TOKEN){
+            //基于token的用户信息存储
+            log.info("登录信息存储方式： token");
             http.apply(new TokenManagementConfigurer<>())
-                    .sessionAuthenticationStrategy()
+                    //.tokenAuthenticationStrategy()
+                    .removeSessionConfig()  //移除session的配置
+                    .tokenStore(new MemoryTokenStore<>(authProperties.getStore().getExpireTime()))
+                    .keyGenerator(new DefaultTokenKeyGenerator())
                     .authenticationFailureHandler(authenticationSuccessFailHandler())
             ;
+        } else {
+            throw new RuntimeException("未指定 登录信息存储类型 kewen.auth.store=session/token");
         }
 
 

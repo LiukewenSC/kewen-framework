@@ -1,4 +1,4 @@
-package com.kewen.framework.boot.auth.security;
+package com.kewen.framework.boot.auth.security.exception;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kewen.framework.boot.auth.security.model.SecurityUser;

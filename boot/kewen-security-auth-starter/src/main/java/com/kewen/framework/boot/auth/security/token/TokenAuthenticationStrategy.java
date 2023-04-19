@@ -1,9 +1,10 @@
 package com.kewen.framework.boot.auth.security.token;
 
-import com.kewen.framework.auth.sys.mp.entity.SysUser;
 import com.kewen.framework.boot.auth.security.model.SecurityUser;
+import com.kewen.framework.boot.auth.token.TokenKeyGenerator;
+import com.kewen.framework.boot.auth.token.TokenStore;
 import com.kewen.framework.common.core.utils.UUIDUtil;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.session.SessionAuthenticationException;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
@@ -20,7 +21,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class TokenAuthenticationStrategy implements SessionAuthenticationStrategy {
 
 
-    ConcurrentHashMap<String, Authentication> tokenCache = new ConcurrentHashMap<>();
+    private TokenKeyGenerator keyGenerator;
+    private TokenStore<Authentication> store;
 
 
     public Authentication getToken(HttpServletRequest httpServletRequest){
@@ -28,18 +30,24 @@ public class TokenAuthenticationStrategy implements SessionAuthenticationStrateg
         if (token ==null){
             return null;
         }
-        return tokenCache.get(token);
+        return store.get(token);
     }
 
     @Override
     public void onAuthentication(Authentication authentication, HttpServletRequest request, HttpServletResponse response) throws SessionAuthenticationException {
-
-        String token = UUIDUtil.generate();
-
+        String token = keyGenerator.generateKey();
         SecurityUser user = (SecurityUser) authentication.getPrincipal();
         user.setToken(token);
 
-        tokenCache.put(token,authentication);
+        store.set(token,authentication);
 
+    }
+
+    public void setKeyGenerator(TokenKeyGenerator keyGenerator) {
+        this.keyGenerator = keyGenerator;
+    }
+
+    public void setStore(TokenStore<Authentication> store) {
+        this.store = store;
     }
 }

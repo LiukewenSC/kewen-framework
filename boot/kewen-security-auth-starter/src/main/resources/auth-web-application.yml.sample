@@ -1,12 +1,8 @@
-logging:
-  level:
-    org.springframework.security: trace
-
-
 kewen:
   auth:
     login-endpoint: /login
-    type: security   # security/web
-    web:
-      store:
-        type: # session/token
+    logout-endpoint: /logout
+    permit-url: /auth/getWebSiteName
+    store:
+      type: token  # session/token
+      expire-time: 2000  #过期时间  秒

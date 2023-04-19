@@ -33,7 +33,7 @@ public class TokenFilter  extends GenericFilterBean {
     public void doFilter(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws IOException, ServletException {
         Authentication token = tokenAuthenticationStrategy.getToken(httpServletRequest);
         if (token ==null){
-            //failureHandler.onAuthenticationFailure(httpServletRequest,httpServletResponse,new SessionAuthenticationException("token为空，请登录"));
+            failureHandler.onAuthenticationFailure(httpServletRequest,httpServletResponse,new SessionAuthenticationException("token不存在或已过期，请重新登录"));
             return;
         } else {
             SecurityContextHolder.getContext().setAuthentication(token);
