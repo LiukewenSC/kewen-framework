@@ -20,6 +20,10 @@
             <groupId>com.kewen.framework</groupId>
             <artifactId>kewen-auth-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.kewen.framework</groupId>
+            <artifactId>kewen-jdbc-core</artifactId>
+        </dependency>
 
 
 
@@ -35,10 +39,7 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus</artifactId>
-        </dependency>
+
         <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>

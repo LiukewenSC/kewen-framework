@@ -26,4 +26,8 @@ public class MenuResp extends MenuRespBase implements TreeUtil.TreeBase<MenuResp
     public void setChildren(List<MenuResp> children) {
         this.children = children;
     }
+
+    public List<MenuResp> getChildren() {
+        return children;
+    }
 }

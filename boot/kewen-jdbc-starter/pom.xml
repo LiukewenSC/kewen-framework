@@ -13,9 +13,10 @@
 
     <dependencies>
 
+
         <dependency>
             <groupId>com.kewen.framework</groupId>
-            <artifactId>kewen-common-context</artifactId>
+            <artifactId>kewen-jdbc-core</artifactId>
         </dependency>
 
         <dependency>
