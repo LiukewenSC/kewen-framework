@@ -1,5 +1,7 @@
 package com.kewen.framework.common.core.utils;
 
+import org.springframework.util.CollectionUtils;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -58,6 +60,54 @@ public class TreeUtil {
         }
         return root.stream().peek(r -> r.setChildren(parentMap.get(r.getId()))).collect(Collectors.toList());
     }
+    /**
+     * 将树反向变成列表
+     * @param tree 树
+     * @param <P> id泛型
+     * @param <T> 节点泛型
+     * @return
+     */
+    public static  <P,T extends TreeBase<T,P>> List<T> unTransfer(T tree){
+        List<T> list = new ArrayList<>();
+        list.add(tree);
+        if (!CollectionUtils.isEmpty(tree.getChildren())){
+            for (T child : tree.getChildren()) {
+                list.addAll(unTransfer(child));
+            }
+        }
+        return list;
+    }
+    /**
+     * 从众多树中取回自己的子树
+     * @param trees 树集合
+     * @param id id
+     * @param <P>
+     * @param <T>
+     * @return
+     */
+    public static  <P,T extends TreeBase<T,P>> T fetchSubTree(List<T> trees, P id){
+        //循环每一节点
+        for (T node : trees) {
+            //匹配到了则返回
+            if (node.getId().equals(id)){
+                return node;
+            }
+            //没有孩子了则此节点中结束查找，返回上一级查找
+            if (CollectionUtils.isEmpty(node.getChildren())){
+                return null;
+            }
+            //遍历子节点，递归查找，查找到了则一直往上返回
+            T nodeResp = fetchSubTree(node.getChildren(), id);
+            if (nodeResp !=null){
+                return nodeResp;
+            }
+        }
+        //一直未找到则此列表树中无
+        return null;
+    }
+
+
+
 
     /**
      * @description 树形对象
@@ -102,5 +152,7 @@ public class TreeUtil {
         }
 
         void setChildren(List<T> children);
+
+        List<T> getChildren();
     }
 }

@@ -3,6 +3,7 @@ package ${package.Controller};
 import ${package.Service}.${table.serviceName};
 import ${package.Entity}.${entity};
     #if(${restControllerStyle})
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.springframework.web.bind.annotation.RestController;
 #else
 import org.springframework.stereotype.Controller;
@@ -19,13 +20,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.validation.annotation.Validated;
 
-import com.kewen.framework.jdbc.utils.PageUtils;
-
+import com.kewen.framework.jdbc.core.utils.PageUtils;
+import com.kewen.framework.common.core.model.PageResult;
+import com.kewen.framework.common.core.model.Result;
+import com.kewen.framework.common.core.model.IdReq;
+import com.kewen.framework.common.core.model.IdsReq;
+import com.kewen.framework.common.core.model.PageReq;
     #if(${swagger})
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 #end
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 
 /**
@@ -44,7 +50,7 @@ import javax.validation.constraints.NotNull;
 #else
 @Controller
 #end
-@RequestMapping("#if(${package.ModuleName})/${package.ModuleName}#end/#if(${controllerMappingHyphenStyle})${controllerMappingHyphen}#else${table.entityPath}#end")
+@RequestMapping("/mp#if(${package.ModuleName})/${package.ModuleName}#end/#if(${controllerMappingHyphenStyle})${controllerMappingHyphen}#else${table.entityPath}#end")
 #if(${kotlin})
 class ${table.controllerName}#if(${superControllerClass}) : ${superControllerClass}()#end
 
@@ -64,8 +70,8 @@ public class ${table.controllerName} {
     #if(${swagger})
     @ApiOperation(value = "添加", notes = "")
     #end
-    @PostMapping("/save")
-    public Result save(@RequestBody ${entity} entity){
+    @PostMapping("/add")
+    public Result add(@RequestBody ${entity} entity){
 
         ${table.entityPath}Service.save(entity);
 

@@ -2,6 +2,7 @@ package com.kewen.framework.auth.sys.controller;
 
 
 
+import com.kewen.framework.auth.sys.composite.SysUserComposite;
 import com.kewen.framework.auth.sys.model.req.UpdatePasswordReq;
 import com.kewen.framework.auth.sys.mp.entity.SysMenu;
 import com.kewen.framework.auth.sys.model.resp.MenuResp;
@@ -36,15 +37,18 @@ public class SysAuthController {
 	@Autowired
 	private SysMenuAuthComposite sysMenuAuthComposite;
 
+	@Autowired
+	private SysUserComposite sysUserComposite;
+
 
 	@PostMapping("/resetPassword")
 	public Result resetPassword(@RequestBody IdReq req){
-		sysMenuAuthComposite.resetPassword(req);
+		sysUserComposite.resetPassword(req);
 		return Result.success();
 	}
 	@PostMapping("/updatePassword")
 	public Result updatePassword(@RequestBody @Validated UpdatePasswordReq req){
-		sysMenuAuthComposite.updatePassword(req);
+		sysUserComposite.updatePassword(req);
 		return Result.success();
 	}
 
@@ -67,6 +71,14 @@ public class SysAuthController {
 		sysMenuAuthComposite.updateMenu(sysMenu);
 		return Result.success();
 	}
+	@PostMapping("/deleteMenu")
+	@CheckEndpoint
+	public Result<Void> deleteMenu(@Validated @RequestBody IdReq req){
+		sysMenuAuthComposite.deleteMenu(req);
+		return Result.success();
+	}
+
+
 	@PostMapping("/editMenuAuthorities")
 	@CheckEndpoint
 	public Result<Void> editMenuAuthorities(@RequestBody MenuAuthorityEditReq req){

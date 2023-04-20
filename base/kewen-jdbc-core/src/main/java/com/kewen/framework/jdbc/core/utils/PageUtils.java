@@ -1,4 +1,4 @@
-package com.kewen.framework.jdbc.utils;
+package com.kewen.framework.jdbc.core.utils;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;

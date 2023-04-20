@@ -11,6 +11,7 @@ import com.kewen.framework.auth.sys.constant.MenuTypeConstant;
 import com.kewen.framework.auth.sys.model.SysAuthority;
 import com.kewen.framework.auth.sys.model.req.UpdatePasswordReq;
 import com.kewen.framework.auth.sys.model.resp.MenuResp;
+import com.kewen.framework.auth.sys.model.resp.MenuRespBase;
 import com.kewen.framework.auth.sys.mp.entity.SysApplicationAuth;
 import com.kewen.framework.auth.sys.mp.entity.SysMenu;
 import com.kewen.framework.auth.sys.mp.entity.SysMenuAuth;
@@ -29,6 +30,7 @@ import com.kewen.framework.common.core.utils.TreeUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Collection;
@@ -56,12 +58,6 @@ public class MemorySysMenuAuthComposite implements SysMenuAuthComposite {
     private SysMenuAuthMpService menuAuthService;
     @Autowired
     private SysApplicationAuthMpService applicationAuthService;
-    @Autowired
-    private SysUserCredentialMpService credentialMpService;
-    @Autowired
-    private SysUserMpService userMpService;
-    @Autowired
-    AuthPasswordEncoder authPasswordEncoder;
 
 
     /**
@@ -73,6 +69,7 @@ public class MemorySysMenuAuthComposite implements SysMenuAuthComposite {
      */
     private List<SysMenu> sysMenus ;
 
+    private boolean usedCache = false;
 
     @Override
     public boolean hasMenuAuth(Collection<String> authorities, String url) {
@@ -177,6 +174,29 @@ public class MemorySysMenuAuthComposite implements SysMenuAuthComposite {
         return integer > 0;
     }
 
+    @Override
+    @Transactional
+    public void deleteMenu(IdReq req) {
+        List<MenuResp> menuTrees = getMenuTree();
+        MenuResp menuResp = TreeUtil.fetchSubTree(menuTrees, req.getId());
+        if (menuResp==null){
+            throw new BizException("菜单为空");
+        }
+        //获取平菜单列表
+        List<MenuResp> deleteMenus = TreeUtil.unTransfer(menuResp);
+        //找到需要删除的菜单id
+        List<Long> menuIds = deleteMenus.stream().map(MenuRespBase::getId).collect(Collectors.toList());
+
+        //移除菜单
+        sysMenuService.removeBatchByIds(menuIds);
+        //移除菜单权限
+        menuAuthService.remove(
+                new LambdaQueryWrapper<SysMenuAuth>()
+                        .in(SysMenuAuth::getMenuId,menuIds)
+        );
+    }
+
+
     /**
      * 是否需要移除本菜单，并在内部递归移除掉不属于自己的
      * @param menuResp 当前菜单
@@ -246,6 +266,9 @@ public class MemorySysMenuAuthComposite implements SysMenuAuthComposite {
      * @return
      */
     private List<SysMenu> getSysMenus(){
+        if (!usedCache){
+            return sysMenuService.list();
+        }
         if (this.sysMenus !=null){
             return this.sysMenus;
         }
@@ -262,6 +285,9 @@ public class MemorySysMenuAuthComposite implements SysMenuAuthComposite {
      * @return
      */
     private List<SysMenuAuth> getSysMenuAuths(){
+        if (!usedCache){
+            return menuAuthService.list();
+        }
         if (this.sysMenuAuths !=null){
             return this.sysMenuAuths;
         }
@@ -275,58 +301,5 @@ public class MemorySysMenuAuthComposite implements SysMenuAuthComposite {
 
 
 
-    @Override
-    public void updatePassword(UpdatePasswordReq req) {
-        SysUser byId = userMpService.getById(req.getId());
-        if (byId ==null){
-            throw new BizException("未查询到用户");
-        }
-        SysUserCredential credential = credentialMpService.getOne(
-                new LambdaQueryWrapper<SysUserCredential>()
-                        .eq(SysUserCredential::getUserId, req.getId())
-                        .select(SysUserCredential::getPassword)
-        );
-        if (credential==null) {
-            throw new BizException("未查询到用户凭证信息");
-        }
-        String encodePassword = credential.getPassword();
-        if (!authPasswordEncoder.matches(req.getOldPassword(),encodePassword)) {
-            throw new BizException("密码不匹配，无法修改");
-        }
-        String newPassword = authPasswordEncoder.encode(req.getNewPassword());
-        credentialMpService.update(
-                new LambdaUpdateWrapper<SysUserCredential>()
-                        .set(SysUserCredential::getPassword,newPassword)
-                        .set(SysUserCredential::getRemark, req.getRemark()==null?"":req.getRemark())
-                        .eq(SysUserCredential::getUserId,req.getId())
-        );
-    }
-
-    @Override
-    public void resetPassword(IdReq req) {
-        SysUser byId = userMpService.getById(req.getId());
-        if (byId ==null){
-            throw new BizException("未查询到用户");
-        }
-        SysUserCredential credential = credentialMpService.getOne(
-                new LambdaQueryWrapper<SysUserCredential>()
-                        .eq(SysUserCredential::getUserId, req.getId())
-                        .select(SysUserCredential::getPassword)
-        );
-        String initPassword = authPasswordEncoder.encode("123456");
-        if (credential ==null){
-            credentialMpService.save(
-                    new SysUserCredential()
-                            .setUserId(req.getId())
-                            .setPassword(initPassword)
-            );
-        } else {
-            credentialMpService.update(
-                    new LambdaUpdateWrapper<SysUserCredential>()
-                            .set(SysUserCredential::getPassword,initPassword)
-                            .eq(SysUserCredential::getUserId,req.getId())
-            );
-        }
-    }
 
 }

@@ -4,7 +4,9 @@ import com.kewen.framework.auth.sys.model.Position;
 import com.kewen.framework.auth.sys.model.Role;
 import com.kewen.framework.auth.sys.model.SysUserInfo;
 import com.kewen.framework.auth.sys.model.UserDept;
+import com.kewen.framework.auth.sys.model.req.UpdatePasswordReq;
 import com.kewen.framework.auth.sys.mp.entity.SysUserCredential;
+import com.kewen.framework.common.core.model.IdReq;
 
 import java.util.List;
 
@@ -44,5 +46,14 @@ public interface SysUserComposite {
      * @return
      */
     SysUserCredential getUserCredential(Long userId);
+
+    /**
+     * 修改密码
+     * @param req
+     */
+    void updatePassword(UpdatePasswordReq req);
+
+    void resetPassword(IdReq req);
+
 
 }

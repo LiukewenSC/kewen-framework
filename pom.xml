@@ -58,6 +58,11 @@
                 <artifactId>kewen-auth-sys-support</artifactId>
                 <version>${framework-version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.kewen.framework</groupId>
+                <artifactId>kewen-jdbc-core</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
 
 
             <!-- boot模块 -->

@@ -67,11 +67,6 @@ public interface SysMenuAuthComposite {
      */
     boolean hasBusinessAuth(Collection<String> auths, String module, String operate, Long businessId);
 
-    /**
-     * 修改密码
-     * @param req
-     */
-    void updatePassword(UpdatePasswordReq req);
 
-    void resetPassword(IdReq req);
+    void deleteMenu(IdReq req);
 }

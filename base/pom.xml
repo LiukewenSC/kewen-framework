@@ -19,6 +19,7 @@
         <module>kewen-common-web</module>
         <module>kewen-auth-core</module>
         <module>kewen-auth-sys-support</module>
+        <module>kewen-jdbc-core</module>
         <module>kewen-storage</module>
     </modules>
 
