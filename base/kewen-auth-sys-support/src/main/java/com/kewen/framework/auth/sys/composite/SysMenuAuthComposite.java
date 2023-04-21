@@ -2,7 +2,7 @@ package com.kewen.framework.auth.sys.composite;
 
 
 
-import com.kewen.framework.auth.sys.model.req.UpdatePasswordReq;
+import com.kewen.framework.auth.sys.model.req.MenuSaveReq;
 import com.kewen.framework.auth.sys.mp.entity.SysMenu;
 import com.kewen.framework.auth.sys.model.SysAuthority;
 import com.kewen.framework.auth.sys.model.resp.MenuResp;
@@ -38,7 +38,6 @@ public interface SysMenuAuthComposite {
      */
     List<MenuResp> getCurrentUserMenuTree(Collection<String> authorities);
 
-    void updateMenu(SysMenu sysMenu);
 
     /**
      * 编辑菜单权限
@@ -68,5 +67,8 @@ public interface SysMenuAuthComposite {
     boolean hasBusinessAuth(Collection<String> auths, String module, String operate, Long businessId);
 
 
+    void addMenu(MenuSaveReq req);
+    void updateMenu(MenuSaveReq req);
     void deleteMenu(IdReq req);
+
 }

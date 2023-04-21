@@ -3,22 +3,16 @@ package com.kewen.framework.auth.sys.composite.impl;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.kewen.framework.auth.core.model.AuthPasswordEncoder;
 import com.kewen.framework.auth.sys.composite.SysMenuAuthComposite;
 import com.kewen.framework.auth.sys.composite.mapper.SysUserCompositeMapper;
 import com.kewen.framework.auth.sys.constant.MenuTypeConstant;
 import com.kewen.framework.auth.sys.model.SysAuthority;
-import com.kewen.framework.auth.sys.model.req.UpdatePasswordReq;
+import com.kewen.framework.auth.sys.model.req.MenuSaveReq;
 import com.kewen.framework.auth.sys.model.resp.MenuResp;
 import com.kewen.framework.auth.sys.model.resp.MenuRespBase;
 import com.kewen.framework.auth.sys.mp.entity.SysApplicationAuth;
 import com.kewen.framework.auth.sys.mp.entity.SysMenu;
 import com.kewen.framework.auth.sys.mp.entity.SysMenuAuth;
-import com.kewen.framework.auth.sys.mp.entity.SysUser;
-import com.kewen.framework.auth.sys.mp.entity.SysUserCredential;
-import com.kewen.framework.auth.sys.mp.service.SysUserCredentialMpService;
-import com.kewen.framework.auth.sys.mp.service.SysUserMpService;
 import com.kewen.framework.auth.sys.utils.AuthorityConvertUtil;
 import com.kewen.framework.auth.sys.mp.service.SysApplicationAuthMpService;
 import com.kewen.framework.auth.sys.mp.service.SysMenuAuthMpService;
@@ -119,12 +113,6 @@ public class MemorySysMenuAuthComposite implements SysMenuAuthComposite {
         return menuTree;
     }
 
-    @Override
-    public void updateMenu(SysMenu sysMenu) {
-        sysMenuService.updateById(sysMenu);
-    }
-
-
 
     @Override
     public void editMenuAuthorities(Long menuId, List<SysAuthority> to) {
@@ -172,6 +160,24 @@ public class MemorySysMenuAuthComposite implements SysMenuAuthComposite {
     public boolean hasBusinessAuth(Collection<String> auths, String module, String operate, Long businessId) {
         Integer integer = userCompositeMapper.hasAuth(auths, module, operate, businessId);
         return integer > 0;
+    }
+
+    @Override
+    @Transactional
+    public void addMenu(MenuSaveReq req) {
+        sysMenuService.save(req);
+        Long menuId = req.getId();
+        List<SysAuthority> to = AuthorityConvertUtil.to(req.getAuthority());
+        editMenuAuthorities(menuId,to);
+    }
+
+    @Override
+    @Transactional
+    public void updateMenu(MenuSaveReq req) {
+        sysMenuService.updateById(req);
+        Long menuId = req.getId();
+        List<SysAuthority> to = AuthorityConvertUtil.to(req.getAuthority());
+        editMenuAuthorities(menuId,to);
     }
 
     @Override

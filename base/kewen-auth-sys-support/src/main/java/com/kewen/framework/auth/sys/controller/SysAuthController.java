@@ -3,6 +3,7 @@ package com.kewen.framework.auth.sys.controller;
 
 
 import com.kewen.framework.auth.sys.composite.SysUserComposite;
+import com.kewen.framework.auth.sys.model.req.MenuSaveReq;
 import com.kewen.framework.auth.sys.model.req.UpdatePasswordReq;
 import com.kewen.framework.auth.sys.mp.entity.SysMenu;
 import com.kewen.framework.auth.sys.model.resp.MenuResp;
@@ -65,9 +66,15 @@ public class SysAuthController {
 		List<MenuResp> menuTree = sysMenuAuthComposite.getMenuTree();
 		return Result.success(menuTree);
 	}
+	@PostMapping("/addMenu")
+	@CheckEndpoint
+	public Result<Void> addMenu(@RequestBody MenuSaveReq req){
+		sysMenuAuthComposite.addMenu(req);
+		return Result.success();
+	}
 	@PostMapping("/updateMenu")
 	@CheckEndpoint
-	public Result<Void> updateMenu(@RequestBody SysMenu sysMenu){
+	public Result<Void> updateMenu(@RequestBody MenuSaveReq sysMenu){
 		sysMenuAuthComposite.updateMenu(sysMenu);
 		return Result.success();
 	}
