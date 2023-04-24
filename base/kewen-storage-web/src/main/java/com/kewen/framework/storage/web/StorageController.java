@@ -7,7 +7,6 @@ import com.kewen.framework.storage.core.model.UploadBO;
 import com.kewen.framework.storage.web.model.UploadResult;
 import com.kewen.framework.storage.web.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,11 +30,6 @@ public class StorageController {
     @Autowired
     StorageService storageService;
 
-    private String downloadDomain = "http://localhost:8080";
-
-    public void setDownloadDomain(String downloadDomain) {
-        this.downloadDomain = downloadDomain;
-    }
 
 
 
@@ -65,14 +59,8 @@ public class StorageController {
             UploadBO upload = storageTemplate.upload(inputStream, storageName, contentType);
 
             //存储
-            storageService.save(originalFilename, suffix,storageName, upload.getKey(), contentType, upload.getSize());
+            UploadResult uploadResult = storageService.save(originalFilename, suffix, storageName, upload.getKey(), contentType, upload.getSize());
 
-
-            UploadResult uploadResult = new UploadResult(
-                    originalFilename,
-                    fullUrl(upload.getKey()),
-                    upload.getSize()
-            );
             return Result.success(uploadResult);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -81,12 +69,8 @@ public class StorageController {
 
     @GetMapping("/getDownloadUrl")
     public Result<UploadResult> getDownloadUrl(Long fileId) {
-        UploadResult result = storageService.getDownloadUrl(fileId);
-        result.setUrl(fullUrl(result.getUrl()));
+        UploadResult result = storageService.getDownloadInfo(fileId);
         return Result.success(result);
-    }
-    private String fullUrl(String path){
-        return "http://"+downloadDomain + "/" + path;
     }
 
 

@@ -11,11 +11,13 @@ import lombok.Getter;
 @Data
 public class UploadResult {
 
+    private Long fileId;
     private String fileName;
     private String url;
     private Long size;
 
-    public UploadResult(String fileName, String url, Long size) {
+    public UploadResult(Long fileId,String fileName, String url, Long size) {
+        this.fileId = fileId;
         this.fileName = fileName;
         this.url = url;
         this.size = size;
