@@ -18,6 +18,7 @@
         <module>security-sso-sample</module>
         <module>cloud-sample</module>
         <module>cloud-alibaba-sample</module>
+        <module>storage-boot-sample</module>
     </modules>
 
     <properties>
