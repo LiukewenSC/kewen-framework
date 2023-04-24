@@ -63,6 +63,16 @@
                 <artifactId>kewen-jdbc-core</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
+            <dependency>
+                <groupId>com.kewen.framework</groupId>
+                <artifactId>kewen-storage-core</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>com.kewen.framework</groupId>
+                <artifactId>kewen-storage-web</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
 
 
             <!-- boot模块 -->
@@ -85,6 +95,11 @@
                 <groupId>com.kewen.framework</groupId>
                 <artifactId>kewen-sso-starter</artifactId>
                 <version>${framework-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.kewen.framework</groupId>
+                <artifactId>kewen-storage-starter</artifactId>
+                <version>1.0-SNAPSHOT</version>
             </dependency>
 
 

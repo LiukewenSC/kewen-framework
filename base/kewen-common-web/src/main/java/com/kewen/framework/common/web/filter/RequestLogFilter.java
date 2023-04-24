@@ -4,6 +4,7 @@ package com.kewen.framework.common.web.filter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -21,6 +22,16 @@ import java.util.Map;
  */
 @Slf4j
 public class RequestLogFilter extends OncePerRequestFilter {
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String contentType = request.getContentType();
+        // multipart/form-data; boundary=--------------------------806095705637677561579964
+        if (StringUtils.isNotBlank(contentType) && org.springframework.util.StringUtils.startsWithIgnoreCase(contentType, "multipart/")) {
+            return true;
+        }
+        return false;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
