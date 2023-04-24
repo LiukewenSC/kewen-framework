@@ -46,9 +46,7 @@ public class StorageAutoConfiguration {
 
     @Bean
     StorageController storageController(){
-        StorageController storageController = new StorageController();
-        storageController.setDownloadDomain(storageProperties.getDownloadDomain());
-        return storageController;
+        return new StorageController();
     }
 
     @Bean
@@ -61,10 +59,13 @@ public class StorageAutoConfiguration {
     @ComponentScan("com.kewen.framework.storage.web.mp")
     @MapperScan("com.kewen.framework.storage.web.mp.mapper")
     public static class PersistentConfig{
-
+        @Autowired
+        StorageProperties storageProperties;
         @Bean
         SysFileStorageService storageService(){
-            return new SysFileStorageService();
+            SysFileStorageService fileStorageService = new SysFileStorageService();
+            fileStorageService.setDownloadDomain(storageProperties.getDownloadDomain());
+            return fileStorageService;
         }
 
     }

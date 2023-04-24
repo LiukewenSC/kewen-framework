@@ -3,6 +3,8 @@ package com.kewen.framework.storage.web.service.impl;
 import com.kewen.framework.storage.web.model.UploadResult;
 import com.kewen.framework.storage.web.service.StorageService;
 
+import java.util.List;
+
 /**
  * 
  * @author kewen
@@ -12,12 +14,18 @@ public class NoneStorageService implements StorageService {
 
 
     @Override
-    public void save(String name, String suffix, String storageName, String path, String mimeType, Long size) {
+    public UploadResult save(String name, String suffix, String storageName, String path, String mimeType, Long size) {
 
+        return null;
     }
 
     @Override
-    public UploadResult getDownloadUrl(Long fileId) {
+    public UploadResult getDownloadInfo(Long fileId) {
+        return null;
+    }
+
+    @Override
+    public List<UploadResult> listDownloadInfo(List<Long> fileIds) {
         return null;
     }
 }
