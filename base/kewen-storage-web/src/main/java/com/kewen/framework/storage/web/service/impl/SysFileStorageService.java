@@ -39,6 +39,9 @@ public class SysFileStorageService implements StorageService {
     @Override
     public UploadResult getDownloadInfo(Long fileId) {
         SysFileStorage byId = fileStorageMpService.getById(fileId);
+        if (byId ==null){
+            return null;
+        }
         return new UploadResult(byId.getId(), byId.getFileName(), fullUrl(byId.getPath()), byId.getSize());
     }
 

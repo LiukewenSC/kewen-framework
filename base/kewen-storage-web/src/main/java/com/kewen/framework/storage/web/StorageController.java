@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 /**
  * @author kewen
@@ -70,6 +71,11 @@ public class StorageController {
     @GetMapping("/getDownloadUrl")
     public Result<UploadResult> getDownloadUrl(Long fileId) {
         UploadResult result = storageService.getDownloadInfo(fileId);
+        return Result.success(result);
+    }
+    @GetMapping("/listDownloadUrl")
+    public Result<List<UploadResult>> listDownloadUrl(List<Long> fileIds) {
+        List<UploadResult> result = storageService.listDownloadInfo(fileIds);
         return Result.success(result);
     }
 
