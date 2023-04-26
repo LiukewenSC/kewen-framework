@@ -88,13 +88,16 @@ public class SecurityAuthConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        super.configure(web);
+        web.ignoring().antMatchers(authProperties.getPermitUrls());
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.authorizeRequests().antMatchers(authProperties.getPermitUrls()).permitAll().anyRequest().authenticated().and()
+        http
+                .authorizeRequests()
+                    .anyRequest().authenticated()
+                    .and()
                 //.addFilterAt(loginFilter(),UsernamePasswordAuthenticationFilter.class)
                 //.formLogin().and()
                 .apply(new JsonLoginAuthenticationFilterConfigurer<>())  //采用新建配置类的方式可以使得原来config中配置的对象依然有效

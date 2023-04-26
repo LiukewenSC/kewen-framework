@@ -11,6 +11,15 @@ import lombok.Getter;
 @Getter
 public class Result<T> {
     public static final Integer NO_LOGIN=401;
+    /**
+     * 业务异常
+     */
+    public static final Integer BIZ_FAILED=10001;
+
+    /**
+     * 请求校验异常
+     */
+    public static final Integer REQUEST_REJECT=10002;
 
     private Integer code;
     private Boolean success ;
