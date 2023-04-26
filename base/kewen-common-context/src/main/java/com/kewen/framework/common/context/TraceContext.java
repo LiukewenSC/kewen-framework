@@ -9,15 +9,13 @@ import org.slf4j.MDC;
  */
 public class TraceContext {
 
-    public static final String TRACE_ID="traceId";
-
     public static String get(){
-        return MDC.get(TRACE_ID);
+        return MDC.get(ContextConstant.TRACE_ID_KEY);
     }
     public static void set(String traceId){
-        MDC.put(TRACE_ID,traceId);
+        MDC.put(ContextConstant.TRACE_ID_KEY,traceId);
     }
-    public static void clear(){
-        MDC.clear();
+    public static void remove(String traceId){
+        MDC.remove(traceId);
     }
 }

@@ -2,15 +2,15 @@ package com.kewen.framework.boot.common.config;
 
 import com.kewen.framework.common.context.UserContext;
 import com.kewen.framework.common.web.exception.ExceptionHandlerAdvance;
-import com.kewen.framework.common.web.filter.RequestLogFilter;
+import com.kewen.framework.common.web.filter.RequestPersistanceFilter;
+import com.kewen.framework.common.web.filter.RequestPrintFilter;
+import com.kewen.framework.common.web.filter.TrackingLogFilter;
+import com.kewen.framework.common.web.filter.support.RequestParamPersistentHandler;
 import com.kewen.framework.common.web.interceptor.TenantInterceptor;
-import com.kewen.framework.common.web.interceptor.TraceInterceptor;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -27,8 +27,12 @@ public class WebConfig implements WebMvcConfigurer {
      * @return
      */
     @Bean
-    RequestLogFilter requestLogFilter(){
-        return new RequestLogFilter();
+    RequestPrintFilter requestLogFilter(){
+        return new RequestPrintFilter();
+    }
+    @Bean
+    RequestPersistanceFilter requestPersistanceFilter(ObjectProvider<RequestParamPersistentHandler> objectProvider){
+        return new RequestPersistanceFilter(objectProvider);
     }
 
     /**
@@ -54,8 +58,8 @@ public class WebConfig implements WebMvcConfigurer {
      * @return
      */
     @Bean
-    TraceInterceptor traceInterceptor(){
-        return new TraceInterceptor();
+    TrackingLogFilter traceLogFilter(){
+        return new TrackingLogFilter();
     }
 
     /**
@@ -72,8 +76,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        //日志拦截
-        registry.addWebRequestInterceptor(traceInterceptor());
+
         //租户拦截
         registry.addWebRequestInterceptor(tenantInterceptor());
 

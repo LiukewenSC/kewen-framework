@@ -3,3 +3,8 @@ server:
 spring:
   application:
     name: sample
+
+kewen:
+  base:
+    request:
+      params-persistent: true
