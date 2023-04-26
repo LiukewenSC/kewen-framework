@@ -2,8 +2,8 @@ package com.kewen.framework.boot.common.config;
 
 import com.kewen.framework.common.context.UserContext;
 import com.kewen.framework.common.web.exception.ExceptionHandlerAdvance;
-import com.kewen.framework.common.web.filter.RequestPersistanceFilter;
-import com.kewen.framework.common.web.filter.RequestPrintFilter;
+import com.kewen.framework.common.web.filter.RequestInfoFilter;
+import com.kewen.framework.common.web.filter.RequestPersistenceFilter;
 import com.kewen.framework.common.web.filter.TrackingLogFilter;
 import com.kewen.framework.common.web.filter.support.RequestParamPersistentHandler;
 import com.kewen.framework.common.web.interceptor.TenantInterceptor;
@@ -22,17 +22,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    /**
-     * 请求日志打印过滤器
-     * @return
-     */
     @Bean
-    RequestPrintFilter requestLogFilter(){
-        return new RequestPrintFilter();
+    RequestPersistenceFilter requestPersistanceFilter(ObjectProvider<RequestParamPersistentHandler> objectProvider){
+        return new RequestPersistenceFilter(objectProvider);
     }
+
     @Bean
-    RequestPersistanceFilter requestPersistanceFilter(ObjectProvider<RequestParamPersistentHandler> objectProvider){
-        return new RequestPersistanceFilter(objectProvider);
+    RequestInfoFilter requestInfoFilter(){
+        return new RequestInfoFilter();
     }
 
     /**

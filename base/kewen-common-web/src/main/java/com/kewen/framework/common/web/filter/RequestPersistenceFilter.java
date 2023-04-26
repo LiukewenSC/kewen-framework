@@ -1,8 +1,6 @@
 package com.kewen.framework.common.web.filter;
 
-import com.alibaba.fastjson2.JSON;
-import com.kewen.framework.common.core.utils.StringUtils;
-import com.kewen.framework.common.web.filter.model.BodyParsedHttpServletRequest;
+import com.kewen.framework.common.web.context.RequestInfoContext;
 import com.kewen.framework.common.web.filter.support.RequestParamPersistentHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.ObjectProvider;
@@ -24,25 +22,15 @@ import java.util.stream.Collectors;
  */
 @Order(1)
 @Slf4j
-public class RequestPersistanceFilter extends OncePerRequestFilter {
+public class RequestPersistenceFilter extends OncePerRequestFilter {
     List<RequestParamPersistentHandler> persistenceList;
-    public RequestPersistanceFilter(ObjectProvider<RequestParamPersistentHandler> objectProvider) {
+    public RequestPersistenceFilter(ObjectProvider<RequestParamPersistentHandler> objectProvider) {
         persistenceList = objectProvider.orderedStream().collect(Collectors.toList());
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         long start = System.currentTimeMillis();
-        String url = request.getRequestURI();
-        String remoteAddr = request.getRemoteAddr();
-        String method = request.getMethod();
-        String params = JSON.toJSONString(request.getParameterMap());
-        String body = null;
-        if (request instanceof BodyParsedHttpServletRequest){
-            byte[] bytes = ((BodyParsedHttpServletRequest) request).getBody();
-            body = StringUtils.strCompact(bytes);
-        }
-
         try {
             filterChain.doFilter(request,response);
         } finally {
@@ -50,14 +38,12 @@ public class RequestPersistanceFilter extends OncePerRequestFilter {
             int millisecond = (int) (end - start);
             for (RequestParamPersistentHandler persistent : persistenceList) {
                 try {
-                    persistent.save(url,method,remoteAddr,params,body,millisecond);
+                    persistent.save(RequestInfoContext.get(),millisecond);
                 } catch (Throwable e) {
-                    log.error(persistent.getClass().getName()+"持久化日志失败",e);
+                    log.warn(persistent.getClass().getName()+"持久化日志失败",e);
                 }
             }
         }
-
-
 
     }
 }

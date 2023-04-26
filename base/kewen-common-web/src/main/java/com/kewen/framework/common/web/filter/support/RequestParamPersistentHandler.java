@@ -1,6 +1,6 @@
 package com.kewen.framework.common.web.filter.support;
 
-import org.springframework.lang.Nullable;
+import com.kewen.framework.common.web.context.RequestInfo;
 
 /**
  *
@@ -9,5 +9,5 @@ import org.springframework.lang.Nullable;
  * @since 2023-04-26
  */
 public interface RequestParamPersistentHandler {
-    void save(String url, String method, String remoteAddr, @Nullable String params, @Nullable String body, Integer millisecond);
+    void save(RequestInfo requestInfo,Integer millisecond);
 }
