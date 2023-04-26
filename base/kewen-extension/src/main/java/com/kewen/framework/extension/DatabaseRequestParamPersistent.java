@@ -1,7 +1,10 @@
 package com.kewen.framework.extension;
 
+import com.alibaba.fastjson.JSON;
+import com.kewen.framework.common.context.TraceContext;
 import com.kewen.framework.common.context.UserContext;
 import com.kewen.framework.common.core.model.IUser;
+import com.kewen.framework.common.web.context.RequestInfo;
 import com.kewen.framework.common.web.filter.support.RequestParamPersistentHandler;
 import com.kewen.framework.extension.mp.entity.SysRequestLog;
 import com.kewen.framework.extension.mp.service.SysRequestLogMpService;
@@ -19,25 +22,29 @@ public class DatabaseRequestParamPersistent implements RequestParamPersistentHan
     SysRequestLogMpService requestLogMpService;
 
     @Override
-    public void save(String url, String method, String remoteAddr, String params, String body, Integer millisecond) {
+    public void save(RequestInfo requestInfo, Integer millisecond) {
         SysRequestLog sysRequestLog = new SysRequestLog();
-        if (UserContext.support()) {
+        if (UserContext.support() && UserContext.get() != null) {
             IUser user = UserContext.get();
-            if (user != null) {
-                sysRequestLog
-                        .setUserId(user.getUserId())
-                        .setUserName(user.getUserName());
-            }
+            sysRequestLog
+                    .setUserId(user.getUserId())
+                    .setUserName(user.getUserName());
+
+        } else {
+            sysRequestLog.setUserId(-1L);
+            sysRequestLog.setUserName("anonymous");
         }
 
         sysRequestLog
-                .setMethod(method)
+                .setMethod(requestInfo.getMethod())
                 .setMillisecond(millisecond)
-                .setIpAddress(remoteAddr)
+                .setIpAddress(requestInfo.getIp())
                 .setIpComment(null)
-                .setParams(params)
-                .setBody(body)
-                .setUrl(url);
+                .setParams(requestInfo.getParams())
+                .setBody(JSON.toJSONString(requestInfo.getBody()))
+                .setUrl(requestInfo.getUrl())
+                .setTraceId(TraceContext.get())
+        ;
         requestLogMpService.save(sysRequestLog);
     }
 }

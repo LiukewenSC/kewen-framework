@@ -13,3 +13,6 @@ kewen:
     store:
       type: token
       expire-time: 1800
+  base:
+    request:
+      params-persistent: true

@@ -12,6 +12,7 @@ public class StringUtils {
         s = s.replace("\n","");
         s = s.replace("\t","");
         s = s.replace("\r","");
+        s = s.replace(" ","");
         return s;
     }
 }

@@ -89,6 +89,11 @@ public class SysRequestLog extends Model<SysRequestLog> {
      */
     @TableField("status")
     private Integer status;
+    /**
+     * 请求跟踪号
+     */
+    @TableField("trace_id")
+    private String traceId;
 
     /**
      * 创建时间

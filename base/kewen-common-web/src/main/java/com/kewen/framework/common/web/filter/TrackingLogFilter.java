@@ -3,6 +3,7 @@ package com.kewen.framework.common.web.filter;
 import com.kewen.framework.common.context.ContextConstant;
 import com.kewen.framework.common.context.TraceContext;
 import com.kewen.framework.common.core.utils.UUIDUtil;
+import com.kewen.framework.common.web.context.RequestInfoContext;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -20,7 +21,7 @@ import java.io.IOException;
  * @since 2023-04-26
  */
 @Slf4j
-@Order(-9999)
+@Order(-9000)
 public class TrackingLogFilter extends OncePerRequestFilter {
 
 
