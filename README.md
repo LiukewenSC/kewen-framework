@@ -30,6 +30,8 @@ kewen:
       open: true
       tenant_id_column: tenant_id #租户列名
       ignore_prefix_tables: sys_log,sys_dict  # 排除的表字段前缀
+    request:
+      params-persistent: true  # 请求参数持久化开启
   auth:
     login-endpoint: /login
     logout-endpoint: /logout

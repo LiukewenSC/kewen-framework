@@ -1,5 +1,6 @@
 package com.kewen.framework.cloud.eureka.client.feign;
 
+import com.kewen.framework.common.context.ContextConstant;
 import com.kewen.framework.common.context.TraceContext;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
@@ -20,7 +21,7 @@ public class TraceHeaderInterceptor implements RequestInterceptor {
         //添加流水号
         String traceId = TraceContext.get();
         if (!StringUtils.isEmpty(traceId)){
-            requestTemplate.header(TraceContext.TRACE_ID,traceId);
+            requestTemplate.header(ContextConstant.TRACE_ID_KEY,traceId);
         }
     }
 }

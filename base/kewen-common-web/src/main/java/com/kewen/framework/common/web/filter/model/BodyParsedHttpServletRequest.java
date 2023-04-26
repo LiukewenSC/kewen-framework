@@ -1,6 +1,7 @@
-package com.kewen.framework.common.web.filter;
+package com.kewen.framework.common.web.filter.model;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.ReadListener;
 import javax.servlet.ServletInputStream;
@@ -13,48 +14,62 @@ import java.io.InputStreamReader;
 
 /**
  * 请求包装类，为了能够多读取一次数据流
+ *  当不支持body参数解析的时候返回的body数组为空
  * @author liukewen
  * @since 2022/12/29
  */
-public class CacheRequestWrapper extends HttpServletRequestWrapper {
+public class BodyParsedHttpServletRequest extends HttpServletRequestWrapper {
 
-    private byte[] body;
+    private final boolean isSupportParseBody;
 
-    private BufferedReader reader;
 
     private ServletInputStream inputStream;
+    private BufferedReader reader;
+    private byte[] body;
 
-    public CacheRequestWrapper(HttpServletRequest request) throws IOException {
+    public BodyParsedHttpServletRequest(HttpServletRequest request) throws IOException {
         super(request);
-        body = IOUtils.toByteArray(request.getInputStream());
-        inputStream = new RequestCachingInputStream(body);
+        isSupportParseBody = canParseBody(request);
+        if (isSupportParseBody){
+            body = IOUtils.toByteArray(request.getInputStream());
+            inputStream = new RequestCachingInputStream(body);
+        }
+    }
+    private boolean canParseBody(HttpServletRequest request){
+        String contentType = request.getContentType();
+        // multipart/form-data; boundary=--------------------------806095705637677561579964
+        if (StringUtils.isNotBlank(contentType) && org.springframework.util.StringUtils.startsWithIgnoreCase(contentType, "multipart/")) {
+            return false;
+        }
+        return true;
     }
 
     /**
-     * 只读取一次，保证可以不多占用内存
      * @return
      */
-    public byte[] getBodyOnce() {
-        byte[] clone = body.clone();
-        body=null;
-        return clone;
+    public byte[] getBody() {
+        return body;
     }
-
     @Override
     public ServletInputStream getInputStream() throws IOException {
-        if (inputStream != null) {
-            return inputStream;
+        if (!isSupportParseBody){
+            return super.getInputStream();
         }
-        return super.getInputStream();
+        return inputStream;
     }
 
-    @Override
+    /*@Override
     public BufferedReader getReader() throws IOException {
-        if (reader == null) {
+        if (!isSupportParseBody){
+            return super.getReader();
+        } else {
+            if (reader != null){
+                return reader;
+            }
             reader = new BufferedReader(new InputStreamReader(inputStream, getCharacterEncoding()));
+            return reader;
         }
-        return reader;
-    }
+    }*/
 
     private static class RequestCachingInputStream extends ServletInputStream {
 

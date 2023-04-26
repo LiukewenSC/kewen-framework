@@ -22,6 +22,7 @@
         <module>kewen-jdbc-core</module>
         <module>kewen-storage-core</module>
         <module>kewen-storage-web</module>
+        <module>kewen-extension</module>
     </modules>
 
 </project>

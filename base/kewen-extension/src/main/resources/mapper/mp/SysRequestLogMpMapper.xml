@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kewen.framework.extension.mp.mapper.SysRequestLogMpMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.kewen.framework.extension.mp.entity.SysRequestLog">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="user_name" property="userName" />
+        <result column="url" property="url" />
+        <result column="method" property="method" />
+        <result column="duration" property="duration" />
+        <result column="ip_address" property="ipAddress" />
+        <result column="ip_comment" property="ipComment" />
+        <result column="params" property="params" />
+        <result column="body" property="body" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_id, user_name, url, method, duration, ip_address, ip_comment, params, body, create_time, update_time
+    </sql>
+
+</mapper>

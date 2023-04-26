@@ -21,6 +21,7 @@
         <module>kewen-storage-starter</module>
         <module>kewen-task-starter</module>
         <module>kewen-magic-api-starter</module>
+        <module>kewen-extension-starter</module>
     </modules>
 
 </project>
