@@ -48,6 +48,13 @@ public class SysUserController {
         return Result.success();
     }
 
+    @GetMapping("/userCount")
+    public Result userCount(){
+        int count = sysUserService.userCount();
+        return Result.success(count);
+    }
+
+
 
     @GetMapping("/pageRole")
     public Result pageRole(@Validated UserPageReq req) {

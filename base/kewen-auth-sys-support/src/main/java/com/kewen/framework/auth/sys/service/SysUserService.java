@@ -98,6 +98,10 @@ public class SysUserService {
         userMpService.removeById(id);
     }
 
+    public int userCount() {
+        long count = userMpService.count();
+        return (int) count;
+    }
 
 
     public PageResult<SysRole> pageRole(UserPageReq req) {
@@ -121,4 +125,5 @@ public class SysUserService {
     public void deleteRole(Long id) {
         roleMpService.removeById(id);
     }
+
 }

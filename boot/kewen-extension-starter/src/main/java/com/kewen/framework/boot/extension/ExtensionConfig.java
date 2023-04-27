@@ -1,6 +1,6 @@
 package com.kewen.framework.boot.extension;
 
-import com.kewen.framework.extension.DatabaseRequestParamPersistent;
+import com.kewen.framework.extension.support.DatabaseRequestParamPersistent;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -13,8 +13,8 @@ import org.springframework.context.annotation.Configuration;
  * @since 2023-04-26
  */
 @Configuration
-@ComponentScan("com.kewen.framework.extension.mp")
-@MapperScan("com.kewen.framework.extension.mp.mapper")
+@ComponentScan("com.kewen.framework.extension")
+@MapperScan("com.kewen.framework.extension")
 public class ExtensionConfig {
 
     /**
