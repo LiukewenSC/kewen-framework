@@ -1,4 +1,6 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.kewen.framework.boot.common.config.WebConfig
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.kewen.framework.boot.common.config.WebConfig,\
+  com.kewen.framework.boot.common.config.RequestResponseParamsConfig
 
 org.springframework.boot.SpringApplicationRunListener=com.kewen.framework.boot.common.listener.PrintSpringApplicationRunListener
 

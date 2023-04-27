@@ -8,22 +8,25 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
+
 
 /**
+ *  请求返回参数解析配置，
  * @author kewen
- * @descrpition
- * @since 2022-12-09 15:53
+ * @since 2023-04-27
  */
 @Configuration
-public class JacksonConfig {
-
+public class RequestResponseParamsConfig {
     /**
-     * 配置jackson全局转换规则
+     * 配置 body序列化 jackson全局转换规则
      *
      * @return
      */
@@ -49,4 +52,38 @@ public class JacksonConfig {
         };
     }
 
+    @Bean
+    public Converter<String, Date> dateConverter() {
+        return new Converter<String, Date>() {
+            @Override
+            public Date convert(String source) {
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                try {
+                    return formatter.parse(source);
+                } catch (Exception e) {
+                    throw new RuntimeException(String.format("Error parsing %s to Date", source));
+                }
+            }
+        };
+    }
+
+    @Bean
+    public Converter<String, LocalDate> localDateConverter() {
+        return new Converter<String, LocalDate>() {
+            @Override
+            public LocalDate convert(String source) {
+                return LocalDate.parse(source, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            }
+        };
+    }
+
+    @Bean
+    public Converter<String, LocalDateTime> localDateTimeConverter() {
+        return new Converter<String, LocalDateTime>() {
+            @Override
+            public LocalDateTime convert(String source) {
+                return LocalDateTime.parse(source, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            }
+        };
+    }
 }
