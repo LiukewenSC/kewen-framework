@@ -1,6 +1,6 @@
 package com.kewen.framework.storage.web.service;
 
-import com.kewen.framework.storage.web.model.UploadResult;
+import com.kewen.framework.storage.web.model.FileInfo;
 
 import java.util.List;
 
@@ -20,19 +20,19 @@ public interface StorageService {
      * @param mimeType 文件类型
      * @param size 大小
      */
-    UploadResult save(String name ,String suffix,String storageName, String path,String mimeType,Long size);
+    FileInfo save(String name , String suffix, String storageName, String path, String mimeType, Long size);
 
     /**
      * 获取下载链接
      * @param fileId
      * @return
      */
-    UploadResult getDownloadInfo(Long fileId);
+    FileInfo getDownloadInfo(Long fileId);
 
     /**
      * 获取下载信息
      * @param fileIds
      * @return
      */
-    List<UploadResult> listDownloadInfo(List<Long> fileIds);
+    List<FileInfo> listDownloadInfo(List<Long> fileIds);
 }

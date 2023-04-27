@@ -4,7 +4,7 @@ import com.kewen.framework.common.core.model.Result;
 import com.kewen.framework.common.core.utils.UUIDUtil;
 import com.kewen.framework.storage.core.StorageTemplate;
 import com.kewen.framework.storage.core.model.UploadBO;
-import com.kewen.framework.storage.web.model.UploadResult;
+import com.kewen.framework.storage.web.model.FileInfo;
 import com.kewen.framework.storage.web.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,7 +36,7 @@ public class StorageController {
 
 
     @PostMapping("/upload")
-    public Result<UploadResult> upload(MultipartFile file) {
+    public Result<FileInfo> upload(MultipartFile file) {
         try {
             //原始文件名
             String originalFilename = file.getOriginalFilename();
@@ -60,22 +60,22 @@ public class StorageController {
             UploadBO upload = storageTemplate.upload(inputStream, storageName, contentType);
 
             //存储
-            UploadResult uploadResult = storageService.save(originalFilename, suffix, storageName, upload.getKey(), contentType, upload.getSize());
+            FileInfo fileInfo = storageService.save(originalFilename, suffix, storageName, upload.getKey(), contentType, upload.getSize());
 
-            return Result.success(uploadResult);
+            return Result.success(fileInfo);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     @GetMapping("/getDownloadUrl")
-    public Result<UploadResult> getDownloadUrl(Long fileId) {
-        UploadResult result = storageService.getDownloadInfo(fileId);
+    public Result<FileInfo> getDownloadUrl(Long fileId) {
+        FileInfo result = storageService.getDownloadInfo(fileId);
         return Result.success(result);
     }
     @GetMapping("/listDownloadUrl")
-    public Result<List<UploadResult>> listDownloadUrl(List<Long> fileIds) {
-        List<UploadResult> result = storageService.listDownloadInfo(fileIds);
+    public Result<List<FileInfo>> listDownloadUrl(List<Long> fileIds) {
+        List<FileInfo> result = storageService.listDownloadInfo(fileIds);
         return Result.success(result);
     }
 

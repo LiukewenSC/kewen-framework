@@ -7,10 +7,12 @@ import com.kewen.framework.common.web.filter.RequestPersistenceFilter;
 import com.kewen.framework.common.web.filter.TrackingLogFilter;
 import com.kewen.framework.common.web.filter.support.RequestParamPersistentHandler;
 import com.kewen.framework.common.web.interceptor.TenantInterceptor;
+import com.kewen.framework.common.web.support.TrackingLogResponseBodyAdvice;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -22,11 +24,20 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
+    /**
+     * 请求持久化过滤器，将请求持久化到数据库或文件中，因实现而定
+     * @param objectProvider
+     * @return
+     */
     @Bean
     RequestPersistenceFilter requestPersistanceFilter(ObjectProvider<RequestParamPersistentHandler> objectProvider){
         return new RequestPersistenceFilter(objectProvider);
     }
 
+    /**
+     * 请求过滤器，保存请求到上下文中
+     * @return
+     */
     @Bean
     RequestInfoFilter requestInfoFilter(){
         return new RequestInfoFilter();
@@ -39,6 +50,10 @@ public class WebConfig implements WebMvcConfigurer {
     @Bean
     ExceptionHandlerAdvance exceptionHandlerAdvance(){
         return new ExceptionHandlerAdvance();
+    }
+    @Bean
+    TrackingLogResponseBodyAdvice trackingLogResponseBodyAdvice(){
+        return new TrackingLogResponseBodyAdvice();
     }
 
 

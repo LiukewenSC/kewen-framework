@@ -82,7 +82,7 @@ public class MemorySysMenuAuthComposite implements SysMenuAuthComposite {
         Map<Long, List<SysMenuAuth>> authByMenuMap = getSysMenuAuths().stream()
                 .collect(Collectors.groupingBy(SysMenuAuth::getMenuId));
         List<MenuResp> collect = sysMenus.stream()
-                .map(l -> BeanUtil.convert(l, MenuResp.class))
+                .map(l -> BeanUtil.toBean(l, MenuResp.class))
                 .peek(m-> {
                     List<SysMenuAuth> sysMenuAuths = authByMenuMap.get(m.getId());
                     if (sysMenuAuths!=null){
@@ -214,7 +214,7 @@ public class MemorySysMenuAuthComposite implements SysMenuAuthComposite {
 
         if (CollectionUtils.isEmpty(subs)){
             //已经到了最底层，判断自己是否需要移除
-            boolean hasAuth = hasMenuAuth(authorities, BeanUtil.convert(menuResp, SysMenu.class));
+            boolean hasAuth = hasMenuAuth(authorities, BeanUtil.toBean(menuResp, SysMenu.class));
             //无权限则移除
             return !hasAuth;
         } else {
@@ -229,7 +229,7 @@ public class MemorySysMenuAuthComposite implements SysMenuAuthComposite {
             }
             //子菜单已经移除完了，则需要校验自己是否需要移除
             if (CollectionUtils.isEmpty(subs)){
-                boolean hasAuth = hasMenuAuth(authorities, BeanUtil.convert(menuResp, SysMenu.class));
+                boolean hasAuth = hasMenuAuth(authorities, BeanUtil.toBean(menuResp, SysMenu.class));
                 //无权限则移除
                 return !hasAuth;
             } else {

@@ -2,6 +2,7 @@ package com.kewen.framework.boot.storage;
 
 import com.kewen.framework.storage.core.StorageTemplate;
 import com.kewen.framework.storage.core.qiniu.QiNiuStorageTemplate;
+import com.kewen.framework.storage.web.FileResponseBodyAdvance;
 import com.kewen.framework.storage.web.StorageController;
 import com.kewen.framework.storage.web.service.StorageService;
 import com.kewen.framework.storage.web.service.impl.NoneStorageService;
@@ -48,6 +49,12 @@ public class StorageAutoConfiguration {
     StorageController storageController(){
         return new StorageController();
     }
+
+    @Bean
+    FileResponseBodyAdvance fileResponseBodyAdvance(){
+        return new FileResponseBodyAdvance();
+    }
+
 
     @Bean
     @ConditionalOnMissingBean(StorageService.class)

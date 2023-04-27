@@ -41,7 +41,7 @@ public class PageResult<T> {
     }
     public static <T> PageResult<T> convert(PageResult<Object> page, Class<T> tClass, Consumer<T> consumer){
         List<Object> records = page.getRecords();
-        List<T> convert = BeanUtil.convert(records, tClass,consumer);
+        List<T> convert = BeanUtil.toList(records, tClass,consumer);
         return convert(page,convert);
     }
     public static <T> PageResult<T> convert(PageResult<Object> page, List<T> records){

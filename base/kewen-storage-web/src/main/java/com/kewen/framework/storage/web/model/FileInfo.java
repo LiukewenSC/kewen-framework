@@ -1,7 +1,6 @@
 package com.kewen.framework.storage.web.model;
 
 import lombok.Data;
-import lombok.Getter;
 
 /**
  * 
@@ -9,14 +8,14 @@ import lombok.Getter;
  * @since 2023-04-24
  */
 @Data
-public class UploadResult {
+public class FileInfo {
 
     private Long fileId;
     private String fileName;
     private String url;
     private Long size;
 
-    public UploadResult(Long fileId,String fileName, String url, Long size) {
+    public FileInfo(Long fileId, String fileName, String url, Long size) {
         this.fileId = fileId;
         this.fileName = fileName;
         this.url = url;
