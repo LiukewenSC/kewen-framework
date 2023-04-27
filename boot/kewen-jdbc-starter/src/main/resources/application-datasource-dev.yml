@@ -1,9 +1,9 @@
 kewen:
   base:
     datasource:
-      db-url: "liukewensc.mysql.rds.aliyuncs.com:3306/uucs"
-      username: uucs
-      password: UUCSuucs
+      db-url: "liukewensc.mysql.rds.aliyuncs.com:3306/kewen_blog"
+      username: kewen
+      password: Lh19921002
     tenant:
       open: false
 

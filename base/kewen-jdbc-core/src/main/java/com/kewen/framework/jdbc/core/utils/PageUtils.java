@@ -34,7 +34,7 @@ public class PageUtils {
         long total = iPage.getTotal();
         List<T> list = new ArrayList<>();
         for (Object record : iPage.getRecords()) {
-            list.add(BeanUtil.convert(record, tClass));
+            list.add(BeanUtil.toBean(record, tClass));
         }
         return PageResult.of((int)page,(int)size,(int)total,list);
     }

@@ -1,6 +1,6 @@
 package com.kewen.framework.storage.web.service.impl;
 
-import com.kewen.framework.storage.web.model.UploadResult;
+import com.kewen.framework.storage.web.model.FileInfo;
 import com.kewen.framework.storage.web.mp.entity.SysFileStorage;
 import com.kewen.framework.storage.web.mp.service.SysFileStorageMpService;
 import com.kewen.framework.storage.web.service.StorageService;
@@ -24,7 +24,7 @@ public class SysFileStorageService implements StorageService {
     private String downloadDomain = "http://localhost:8080";
 
     @Override
-    public UploadResult save(String name, String suffix, String storageName, String path, String mimeType, Long size) {
+    public FileInfo save(String name, String suffix, String storageName, String path, String mimeType, Long size) {
         SysFileStorage storage = new SysFileStorage()
                 .setFileName(name)
                 .setStorageName(storageName)
@@ -33,26 +33,26 @@ public class SysFileStorageService implements StorageService {
                 .setMimeType(mimeType)
                 .setSize(size);
         boolean save = fileStorageMpService.save(storage);
-        return new UploadResult(storage.getId(), name, fullUrl(path), size);
+        return new FileInfo(storage.getId(), name, fullUrl(path), size);
     }
 
     @Override
-    public UploadResult getDownloadInfo(Long fileId) {
+    public FileInfo getDownloadInfo(Long fileId) {
         SysFileStorage byId = fileStorageMpService.getById(fileId);
         if (byId ==null){
             return null;
         }
-        return new UploadResult(byId.getId(), byId.getFileName(), fullUrl(byId.getPath()), byId.getSize());
+        return new FileInfo(byId.getId(), byId.getFileName(), fullUrl(byId.getPath()), byId.getSize());
     }
 
     @Override
-    public List<UploadResult> listDownloadInfo(List<Long> fileIds) {
+    public List<FileInfo> listDownloadInfo(List<Long> fileIds) {
         List<SysFileStorage> sysFileStorages = fileStorageMpService.listByIds(fileIds);
         if (CollectionUtils.isEmpty(sysFileStorages)) {
             return Collections.emptyList();
         }
         return sysFileStorages.stream()
-                .map(f -> new UploadResult(f.getId(), f.getFileName(), fullUrl(f.getPath()), f.getSize()))
+                .map(f -> new FileInfo(f.getId(), f.getFileName(), fullUrl(f.getPath()), f.getSize()))
                 .collect(Collectors.toList());
     }
 

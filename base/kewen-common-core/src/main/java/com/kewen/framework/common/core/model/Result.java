@@ -1,6 +1,7 @@
 package com.kewen.framework.common.core.model;
 
 
+import lombok.Data;
 import lombok.Getter;
 
 /**
@@ -8,7 +9,7 @@ import lombok.Getter;
  * @author kewen
  * @since 2022-11-25 13:48
  */
-@Getter
+@Data
 public class Result<T> {
     public static final Integer NO_LOGIN=401;
     /**
@@ -21,13 +22,10 @@ public class Result<T> {
      */
     public static final Integer REQUEST_REJECT=10002;
 
-    private Integer code;
-    private Boolean success ;
-    private String message;
-    private T data;
-
-    private Result() {
-    }
+    protected Integer code;
+    protected Boolean success ;
+    protected String message;
+    protected T data;
 
     public static Result<Void> success(){
         Result<Void> result = new Result<>();

@@ -28,11 +28,11 @@ public class BeanUtil {
      * @param <T> 返回泛型
      * @return
      */
-    public static <T> T convert(Object source, Class<T> clazz){
+    public static <T> T toBean(Object source, Class<T> clazz){
         String s = JSONObject.toJSONString(source);
         return JSONObject.parseObject(s, clazz);
     }
-    public static <T> List<T> convert(List source,Class<T> clazz){
+    public static <T> List<T> toList(List source, Class<T> clazz){
         String s = JSON.toJSONString(source);
         List<T> array = JSON.parseArray(s, clazz);
         if (CollectionUtils.isEmpty(array)){
@@ -40,8 +40,8 @@ public class BeanUtil {
         }
         return array;
     }
-    public static <T> List<T> convert(List source, Class<T> clazz, Consumer<T> consumer){
-        List<T> convert = convert(source, clazz);
+    public static <T> List<T> toList(List source, Class<T> clazz, Consumer<T> consumer){
+        List<T> convert = toList(source, clazz);
         for (T t : convert) {
             consumer.accept(t);
         }
@@ -66,7 +66,7 @@ public class BeanUtil {
         BeanUtils.copyProperties(source,target);
     }
     public static <T> T clone(T source){
-        return (T) convert(source, source.getClass());
+        return (T) toBean(source, source.getClass());
     }
 
 

@@ -46,7 +46,7 @@ public class MapUtil {
             }
             return (T)value;
         }
-        return BeanUtil.convert(value, clazz);
+        return BeanUtil.toBean(value, clazz);
     }
 
     /**
