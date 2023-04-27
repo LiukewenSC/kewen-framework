@@ -21,12 +21,28 @@ import java.util.List;
 @Slf4j
 public class ExceptionHandlerAdvance {
 
+    /**
+     * 业务异常
+     * @param e
+     * @return
+     */
     @ExceptionHandler(BizException.class)
     public Result<Void> bizException(BizException e){
         log.error("bizException >> ",e);
         return Result.failed(Result.BIZ_FAILED,e.getMessage());
     }
+    @ExceptionHandler(NullPointerException.class)
+    public Result<Void> bizException(NullPointerException e){
+        log.error("nullPointerException >> ",e);
+        return Result.failed(Result.BIZ_FAILED,e.getMessage());
+    }
 
+
+    /**
+     * 参数校验
+     * @param e
+     * @return
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Result methodArgumentNotValidException(MethodArgumentNotValidException e){
 
@@ -47,6 +63,11 @@ public class ExceptionHandlerAdvance {
         return Result.failed(Result.REQUEST_REJECT,message);
     }
 
+    /**
+     * 全局异常
+     * @param e
+     * @return
+     */
     @ExceptionHandler(Throwable.class)
     @ResponseStatus
     public Result<Void> throwable(Throwable e){
