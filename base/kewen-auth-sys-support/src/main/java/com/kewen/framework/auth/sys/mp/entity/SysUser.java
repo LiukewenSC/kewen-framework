@@ -62,6 +62,8 @@ public class SysUser extends Model<SysUser> {
      */
     @TableField("email")
     private String email;
+    @TableField("avatar_file_id")
+    private Long avatarFileId;
 
     /**
      * 1-男 2-女 3-..

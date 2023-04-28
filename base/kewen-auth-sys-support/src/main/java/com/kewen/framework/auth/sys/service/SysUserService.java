@@ -44,6 +44,13 @@ public class SysUserService {
     @Autowired
     SysUserComposite userComposite;
 
+
+    public UserResp getUser(Long userId) {
+        SysUser byId = userMpService.getById(userId);
+
+        return convert2Resp(byId);
+    }
+
     public PageResult<UserResp> pageUser(UserPageReq req) {
 
         Page<SysUser> page = userMpService.page(
@@ -56,15 +63,19 @@ public class SysUserService {
 
         List<UserResp> userResps = new ArrayList<>();
         for (SysUser record : records) {
-            UserResp userResp = new UserResp();
-            userResp.copyProperties(record);
-            SysUserInfo sysUserInfo = userComposite.getSysUserInfo(record.getId());
-            userResp.setDept(sysUserInfo.getDept());
-            userResp.setPositions(sysUserInfo.getPositions());
-            userResp.setRoles(sysUserInfo.getRoles());
-            userResps.add(userResp);
+            UserResp resp = convert2Resp(record);
+            userResps.add(resp);
         }
         return PageResult.of(req, (int) page.getTotal(), userResps);
+    }
+    private UserResp convert2Resp(SysUser user){
+        UserResp userResp = new UserResp();
+        userResp.copyProperties(user);
+        SysUserInfo sysUserInfo = userComposite.getSysUserInfo(user.getId());
+        userResp.setDept(sysUserInfo.getDept());
+        userResp.setPositions(sysUserInfo.getPositions());
+        userResp.setRoles(sysUserInfo.getRoles());
+        return userResp;
     }
 
     @Transactional
@@ -125,5 +136,4 @@ public class SysUserService {
     public void deleteRole(Long id) {
         roleMpService.removeById(id);
     }
-
 }

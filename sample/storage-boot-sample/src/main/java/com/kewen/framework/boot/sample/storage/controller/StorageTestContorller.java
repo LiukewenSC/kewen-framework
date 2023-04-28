@@ -1,8 +1,8 @@
 package com.kewen.framework.boot.sample.storage.controller;
 
 import com.kewen.framework.common.core.model.Result;
-import com.kewen.framework.storage.web.model.FileFillSupport;
-import com.kewen.framework.storage.web.model.FileInfo;
+import com.kewen.framework.storage.core.model.FileFillSupport;
+import com.kewen.framework.storage.core.model.FileInfo;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -4,7 +4,7 @@ import com.kewen.framework.common.core.model.Result;
 import com.kewen.framework.common.core.utils.UUIDUtil;
 import com.kewen.framework.storage.core.StorageTemplate;
 import com.kewen.framework.storage.core.model.UploadBO;
-import com.kewen.framework.storage.web.model.FileInfo;
+import com.kewen.framework.storage.core.model.FileInfo;
 import com.kewen.framework.storage.web.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

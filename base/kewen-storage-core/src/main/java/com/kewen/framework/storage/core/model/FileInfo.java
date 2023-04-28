@@ -1,4 +1,4 @@
-package com.kewen.framework.storage.web.model;
+package com.kewen.framework.storage.core.model;
 
 import lombok.Data;
 
