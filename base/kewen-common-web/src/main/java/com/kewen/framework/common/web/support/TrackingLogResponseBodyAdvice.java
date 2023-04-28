@@ -29,9 +29,12 @@ public class TrackingLogResponseBodyAdvice implements ResponseBodyAdvice<Result>
 
     @Override
     public Result beforeBodyWrite(Result body, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
-        TraceResult result = BeanUtil.toBean(body, TraceResult.class);
-        //TraceResult result = new TraceResult();
-
+        //坑爹的fastjson
+        TraceResult result = new TraceResult();
+        result.setCode(body.getCode());
+        result.setMessage(body.getMessage());
+        result.setSuccess(body.getSuccess());
+        result.setData(body.getData());
         result.setTraceId(TraceContext.get());
         return result;
     }

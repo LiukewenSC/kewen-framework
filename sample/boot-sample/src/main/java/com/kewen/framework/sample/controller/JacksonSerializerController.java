@@ -1,6 +1,7 @@
 package com.kewen.framework.sample.controller;
 
 import com.kewen.framework.common.core.model.Result;
+import com.kewen.framework.common.core.utils.MapUtil;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.Map;
 
 /**
  * 
@@ -33,5 +36,16 @@ public class JacksonSerializerController {
     public Result paramSerializer3(@RequestBody LocalDateParam req){
         return Result.success();
     }
+    @GetMapping("/deSerializerDate")
+    public Result deSerializerDate(){
+        Map<Object, Object> build = MapUtil.builder()
+                .put("date", new Date())
+                .put("localDateTime", LocalDateTime.now())
+                .put("localDate", LocalDate.now())
+                .build();
+        return Result.success(build);
+    }
+
+
 
 }

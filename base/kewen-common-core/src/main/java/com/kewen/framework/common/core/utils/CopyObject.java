@@ -7,7 +7,7 @@ package com.kewen.framework.common.core.utils;
  */
 public interface CopyObject<P> {
 
-    default void copyParent(P p){
+    default void copyProperties(P p){
         BeanUtil.copy(p,this);
     }
 
