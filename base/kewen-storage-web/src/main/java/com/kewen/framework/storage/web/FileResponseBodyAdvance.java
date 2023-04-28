@@ -74,8 +74,10 @@ public class FileResponseBodyAdvance implements ResponseBodyAdvice<Result> {
         //2 返回对象为Page的情况
         else if (data instanceof PageResult) {
             List<?> records = ((PageResult<?>) data).getRecords();
-            for (Object record : records) {
-                fetchFileFill(needFills, record);
+            if (records != null){
+                for (Object record : records) {
+                    fetchFileFill(needFills, record);
+                }
             }
         }
         //3 返回对象直接为 Object的
@@ -95,7 +97,15 @@ public class FileResponseBodyAdvance implements ResponseBodyAdvice<Result> {
             }
             //循环组装
             for (FileFillSupport needFill : needFills) {
-                needFill.setFileInfo(fileInfoMap.get(needFill.getFileId()));
+                Long fileId = needFill.getFileId();
+                if (fileId==null){
+                    continue;
+                }
+                FileInfo fileInfo = fileInfoMap.get(fileId);
+                if (fileInfo==null){
+                    continue;
+                }
+                needFill.setFileInfo(fileInfo);
             }
         }
     }

@@ -57,7 +57,7 @@ public class SysUserService {
         List<UserResp> userResps = new ArrayList<>();
         for (SysUser record : records) {
             UserResp userResp = new UserResp();
-            userResp.copyParent(record);
+            userResp.copyProperties(record);
             SysUserInfo sysUserInfo = userComposite.getSysUserInfo(record.getId());
             userResp.setDept(sysUserInfo.getDept());
             userResp.setPositions(sysUserInfo.getPositions());
