@@ -27,6 +27,12 @@ public class SysUserController {
 
     @Autowired
     SysUserService sysUserService;
+
+    @GetMapping("/getUser")
+    public Result<UserResp> getUser(Long userId){
+        UserResp resp = sysUserService.getUser(userId);
+        return Result.success(resp);
+    }
     @GetMapping("/pageUser")
     public Result pageUser(@Validated UserPageReq req) {
         PageResult<UserResp> page = sysUserService.pageUser(req);
@@ -53,6 +59,11 @@ public class SysUserController {
         int count = sysUserService.userCount();
         return Result.success(count);
     }
+
+
+
+
+
 
 
 

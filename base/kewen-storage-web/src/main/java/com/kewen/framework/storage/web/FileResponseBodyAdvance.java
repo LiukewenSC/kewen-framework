@@ -2,8 +2,8 @@ package com.kewen.framework.storage.web;
 
 import com.kewen.framework.common.core.model.PageResult;
 import com.kewen.framework.common.core.model.Result;
-import com.kewen.framework.storage.web.model.FileFillSupport;
-import com.kewen.framework.storage.web.model.FileInfo;
+import com.kewen.framework.storage.core.model.FileFillSupport;
+import com.kewen.framework.storage.core.model.FileInfo;
 import com.kewen.framework.storage.web.service.StorageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +60,9 @@ public class FileResponseBodyAdvance implements ResponseBodyAdvice<Result> {
      * @param data
      */
     private void fillFile(Object data){
+        if (data==null){
+            return;
+        }
 
         // key； 需要组装的对象 value:对应的fileId ，找到之后将对应的对象加入到其中，后续可以设值
         List<FileFillSupport> needFills = new ArrayList<>();

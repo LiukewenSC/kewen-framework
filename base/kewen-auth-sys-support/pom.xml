@@ -24,6 +24,10 @@
             <groupId>com.kewen.framework</groupId>
             <artifactId>kewen-jdbc-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.kewen.framework</groupId>
+            <artifactId>kewen-storage-core</artifactId>
+        </dependency>
 
 
 

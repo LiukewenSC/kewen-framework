@@ -1,6 +1,6 @@
 package com.kewen.framework.storage.web.service;
 
-import com.kewen.framework.storage.web.model.FileInfo;
+import com.kewen.framework.storage.core.model.FileInfo;
 
 import java.util.List;
 
