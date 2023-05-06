@@ -18,6 +18,17 @@
     </properties>
 
     <dependencies>
+
+        <dependency>
+            <groupId>com.kewen.framework</groupId>
+            <artifactId>kewen-common-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.kewen.framework</groupId>
+            <artifactId>kewen-common-starter</artifactId>
+        </dependency>
+
+
         <dependency>
             <groupId>org.ssssssss</groupId>
             <artifactId>magic-api-spring-boot-starter</artifactId>
