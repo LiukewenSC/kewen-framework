@@ -1,4 +1,4 @@
-package com.kewen.framework;
+package com.kewen.framework.boot.magic;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
