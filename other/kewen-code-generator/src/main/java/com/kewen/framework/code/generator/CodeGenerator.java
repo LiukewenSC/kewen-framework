@@ -54,7 +54,7 @@ public class CodeGenerator {
         /**
          * 基础包名
          */
-        public static final String BASE_PACKAGE = "com.kewen.framework.extension";
+        public static final String BASE_PACKAGE = "com.kewen.blog.service";
         /**
          * 模块名
          */
@@ -69,7 +69,7 @@ public class CodeGenerator {
          */
         public static final boolean ENABLE_SWAGGER = false;
         public static final List<String> IGNORE_TABLE_PREFIX = Arrays.asList("bak_","sys_log");
-        public static final List<String> CONTAINS_TABLE_PREFIX = Arrays.asList("sys_user_info");
+        public static final List<String> CONTAINS_TABLE_PREFIX = Arrays.asList("blog_comment");
         //public static final List<String> CONTAINS_TABLE_PREFIX =null;
 
         /**
