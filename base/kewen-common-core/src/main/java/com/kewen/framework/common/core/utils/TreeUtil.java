@@ -94,7 +94,7 @@ public class TreeUtil {
             }
             //没有孩子了则此节点中结束查找，返回上一级查找
             if (CollectionUtils.isEmpty(node.getChildren())){
-                return null;
+                continue;
             }
             //遍历子节点，递归查找，查找到了则一直往上返回
             T nodeResp = fetchSubTree(node.getChildren(), id);
@@ -104,6 +104,26 @@ public class TreeUtil {
         }
         //一直未找到则此列表树中无
         return null;
+    }
+
+    /**
+     * 获取子树的ID列表集合
+     * @param tree 树
+     * @param <ID>
+     * @param <T>
+     * @return
+     */
+    public static  <ID,T extends TreeBase<T, ID>> List<ID> fetchSubIds(T tree){
+        List<ID> ids = new ArrayList<>();
+        ids.add(tree.getId());
+        List<T> children = tree.getChildren();
+        if (org.apache.commons.collections4.CollectionUtils.isNotEmpty(children)){
+            for (T child : children) {
+                List<ID> subIds = fetchSubIds(child);
+                ids.addAll(subIds);
+            }
+        }
+        return ids;
     }
 
 

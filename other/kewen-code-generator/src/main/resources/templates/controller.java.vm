@@ -35,9 +35,7 @@ import java.util.List;
 
 
 /**
- * <p>
- * $!{table.comment} 前端控制器
- * </p>
+ * $!{table.comment} 接口
  *
  * @author ${author}
  * @since ${date}
