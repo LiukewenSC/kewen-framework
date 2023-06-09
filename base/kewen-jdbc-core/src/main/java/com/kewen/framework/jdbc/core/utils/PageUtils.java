@@ -23,13 +23,13 @@ public class PageUtils {
      * @return
      */
     public static <T> PageResult<T> page(IPage<T> iPage){
-        long page = iPage.getPages();
+        long page = iPage.getCurrent();
         long size = iPage.getSize();
         long total = iPage.getTotal();
         return PageResult.of((int)page,(int)size,(int)total,iPage.getRecords());
     }
     public static <T> PageResult<T> page(IPage iPage,Class<T> tClass){
-        long page = iPage.getPages();
+        long page = iPage.getCurrent();
         long size = iPage.getSize();
         long total = iPage.getTotal();
         List<T> list = new ArrayList<>();
