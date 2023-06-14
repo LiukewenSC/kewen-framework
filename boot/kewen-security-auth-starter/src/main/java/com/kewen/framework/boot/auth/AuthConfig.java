@@ -20,6 +20,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class AuthConfig {
 
     @Bean
+    PermitUrlContainer permitUrlContainer(){
+        return new PermitUrlContainer();
+    }
+
+    @Bean
     AuthUserContext authUserContext(){
         return new AuthUserContext();
     }

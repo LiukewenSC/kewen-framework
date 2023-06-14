@@ -44,6 +44,9 @@ public class SecurityAuthConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     AuthProperties authProperties;
 
+    @Autowired
+    PermitUrlContainer permitUrlContainer;
+
     public SecurityAuthConfig() {
         log.info("使用SpringSecurity作为安全框架");
     }
@@ -88,7 +91,7 @@ public class SecurityAuthConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers(authProperties.getPermitUrls());
+       super.configure(web);
     }
 
     @Override
@@ -96,6 +99,8 @@ public class SecurityAuthConfig extends WebSecurityConfigurerAdapter {
 
         http
                 .authorizeRequests()
+                    .antMatchers(permitUrlContainer.getPermitUrls()).permitAll()
+                    .antMatchers().permitAll()
                     .anyRequest().authenticated()
                     .and()
                 //.addFilterAt(loginFilter(),UsernamePasswordAuthenticationFilter.class)

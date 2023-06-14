@@ -25,7 +25,7 @@ public class StorageAutoConfigurationTest {
     StorageTemplate storageTemplate;
 
 
-    @Test
+    //@Test
     public void storageTemplate() throws IOException {
         UploadBO upload = storageTemplate.upload(
                 Files.newInputStream(Paths.get("E:\\download\\Adguard规则.txt")),
@@ -34,7 +34,7 @@ public class StorageAutoConfigurationTest {
         );
         log.info("上传返回:{}",upload);
     }
-    @Test
+    //@Test
     public void download(){
         String url = storageTemplate.downloadUrl("FkslgNeYxYfdNsy-k0jcQNQHM3YX");
 
