@@ -1,5 +1,6 @@
 package com.kewen.framework.boot.auth.security;
 
+import com.kewen.framework.boot.auth.PermitUrlContainer;
 import com.kewen.framework.boot.auth.security.token.TokenAuthenticationStrategy;
 import com.kewen.framework.boot.auth.security.token.TokenSecurityContextRepository;
 import com.kewen.framework.boot.auth.token.DefaultTokenKeyGenerator;
@@ -25,6 +26,7 @@ public class TokenManagementConfigurer<H extends HttpSecurityBuilder<H>> extends
     TokenStore<Authentication> tokenStore ;
     TokenKeyGenerator tokenKeyGenerator = new DefaultTokenKeyGenerator();
     AuthenticationFailureHandler authenticationFailureHandler;
+    PermitUrlContainer permitUrlContainer;
     TokenFilter tokenFilter;
     private boolean isRemoveSession = false;
 
@@ -60,6 +62,10 @@ public class TokenManagementConfigurer<H extends HttpSecurityBuilder<H>> extends
         this.authenticationFailureHandler = failureHandler;
         return this;
     }
+    public TokenManagementConfigurer<H> permitUrlContainer(PermitUrlContainer permitUrlContainer) {
+        this.permitUrlContainer = permitUrlContainer;
+        return this;
+    }
 
     @Override
     public void init(H http) throws Exception {
@@ -76,6 +82,7 @@ public class TokenManagementConfigurer<H extends HttpSecurityBuilder<H>> extends
         tokenAuthenticationStrategy.setStore(tokenStore);
         tokenAuthenticationStrategy.setKeyGenerator(tokenKeyGenerator);
         tokenFilter.setTokenAuthenticationStrategy(tokenAuthenticationStrategy);
+        tokenFilter.setPermitUrlContainer(permitUrlContainer);
         tokenFilter.setFailureHandler(authenticationFailureHandler);
         tokenFilter = postProcess(tokenFilter);
         tokenFilter.setFailureHandler(authenticationFailureHandler);
