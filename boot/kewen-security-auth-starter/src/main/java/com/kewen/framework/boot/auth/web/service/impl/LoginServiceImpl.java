@@ -9,7 +9,7 @@ import com.kewen.framework.common.core.exception.AuthorizationException;
 import com.kewen.framework.auth.sys.model.resp.LoginReq;
 import com.kewen.framework.auth.sys.model.resp.LoginResp;
 import com.kewen.framework.boot.auth.web.service.LoginService;
-import com.kewen.framework.boot.auth.web.WebAuthUserInfoContextContainer;
+import com.kewen.framework.boot.auth.web.WebUserContextContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,7 +26,7 @@ public class LoginServiceImpl implements LoginService {
 
 
     @Autowired
-    WebAuthUserInfoContextContainer webAuthUserInfoContextContainer;
+    WebUserContextContainer webUserContextContainer;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -46,7 +46,7 @@ public class LoginServiceImpl implements LoginService {
         passwordEncoder.matches(loginReq.getPassword(),userCredential.getPassword());
 
         // 保存
-        String token = webAuthUserInfoContextContainer.saveAuthUserInfo(authUser);
+        String token = webUserContextContainer.saveAuthUserInfo(authUser);
 
         LoginResp loginResp = new LoginResp();
         loginResp.setToken(token);

@@ -2,7 +2,7 @@ package com.kewen.framework.boot.auth.web.session;
 
 
 import com.kewen.framework.auth.core.model.AuthUserInfo;
-import com.kewen.framework.boot.auth.web.WebAuthUserInfoContextContainer;
+import com.kewen.framework.boot.auth.web.WebUserContextContainer;
 
 import javax.servlet.http.HttpSession;
 
@@ -11,13 +11,13 @@ import javax.servlet.http.HttpSession;
  * @author kewen
  * @since 2022-11-25 15:33
  */
-public class SessionCurrentUserInfoContextContainer implements WebAuthUserInfoContextContainer {
+public class WebSessionUserContextContainer implements WebUserContextContainer {
 
     public static final String USER_ATTR="currentUser";
 
     private final HttpSession httpSession;
 
-    public SessionCurrentUserInfoContextContainer(HttpSession httpSession) {
+    public WebSessionUserContextContainer(HttpSession httpSession) {
         this.httpSession = httpSession;
     }
 

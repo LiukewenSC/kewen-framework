@@ -4,8 +4,10 @@ import com.kewen.framework.boot.auth.security.annotation.SecurityIgnore;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.util.StringUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
@@ -20,8 +22,8 @@ import java.util.*;
  */
 public class PermitUrlContainer implements ApplicationContextAware {
 
-    @Autowired
-    private AuthProperties authProperties;
+    @Value("${kewen.auth.permit-url:}")
+    String permitUrl;
 
     private final List<String> annotationPermits=new ArrayList<>();
 
@@ -30,7 +32,10 @@ public class PermitUrlContainer implements ApplicationContextAware {
         Collection<String> list = new HashSet<>();
 
         list.addAll(annotationPermits);
-        list.addAll(Arrays.asList(authProperties.getPermitUrls()));
+        if (StringUtils.hasText(permitUrl)){
+            String[] permitUrls = StringUtils.tokenizeToStringArray(permitUrl, ";,");
+            list.addAll(Arrays.asList(permitUrls));
+        }
 
         return list.toArray(new String[0]);
     }

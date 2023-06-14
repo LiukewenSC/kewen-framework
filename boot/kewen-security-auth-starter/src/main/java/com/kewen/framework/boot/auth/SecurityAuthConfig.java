@@ -38,7 +38,6 @@ import java.io.PrintWriter;
 @Slf4j
 @Configuration
 @ConditionalOnClass(EnableWebSecurity.class)
-@EnableConfigurationProperties(AuthProperties.class)
 public class SecurityAuthConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
