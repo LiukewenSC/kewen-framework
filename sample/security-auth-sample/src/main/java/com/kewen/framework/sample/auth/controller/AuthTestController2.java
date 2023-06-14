@@ -1,9 +1,9 @@
 package com.kewen.framework.sample.auth.controller;
 
+import com.kewen.framework.auth.context.AuthUserContext;
 import com.kewen.framework.auth.sys.model.SysUserInfo;
 import com.kewen.framework.boot.auth.security.annotation.SecurityIgnore;
 import com.kewen.framework.common.core.model.Result;
-import com.kewen.framework.auth.context.AuthUserContext;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,8 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2023-04-10
  */
 @RestController
-@RequestMapping("/hello")
-public class AuthTestController {
+@RequestMapping("/hello2")
+@SecurityIgnore
+public class AuthTestController2 {
 
     @GetMapping("/hello")
     public Result hello(){
@@ -28,7 +29,6 @@ public class AuthTestController {
         return Result.success(authUserInfo);
     }
     @GetMapping("/ignore")
-    @SecurityIgnore
     public Result ignore(){
         SysUserInfo authUserInfo = AuthUserContext.get();
         return Result.success(authUserInfo);
