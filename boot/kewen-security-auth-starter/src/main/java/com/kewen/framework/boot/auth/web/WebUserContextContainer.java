@@ -8,7 +8,7 @@ import com.kewen.framework.auth.core.model.AuthUserInfo;
  * @author kewen
  * @since 2022-11-25 17:06
  */
-public interface WebAuthUserInfoContextContainer extends AuthUserInfoContextContainer {
+public interface WebUserContextContainer extends AuthUserInfoContextContainer {
 
     /**
      * 根据token设置用户信息，登录时需要将数据写入store中

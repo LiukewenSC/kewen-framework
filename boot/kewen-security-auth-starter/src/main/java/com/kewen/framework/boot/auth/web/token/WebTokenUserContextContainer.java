@@ -4,7 +4,7 @@ package com.kewen.framework.boot.auth.web.token;
 import com.kewen.framework.auth.core.model.AuthUserInfo;
 import com.kewen.framework.boot.auth.token.TokenKeyGenerator;
 import com.kewen.framework.boot.auth.token.TokenStore;
-import com.kewen.framework.boot.auth.web.WebAuthUserInfoContextContainer;
+import com.kewen.framework.boot.auth.web.WebUserContextContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author kewen
  * @since 2022-11-25 15:42
  */
-public class WebTokenUserInfoContextContainer implements WebAuthUserInfoContextContainer {
+public class WebTokenUserContextContainer implements WebUserContextContainer {
 
     @Autowired
     HttpServletRequest request;

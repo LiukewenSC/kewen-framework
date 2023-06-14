@@ -6,6 +6,7 @@ import com.kewen.framework.auth.core.annotation.endpoint.AuthMenuInterceptor;
 import com.kewen.framework.auth.sys.support.SysAuthHandler;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  * @since 2022-12-07 22:36
  */
 @Configuration
+@EnableConfigurationProperties(AuthProperties.class)
 public class AuthConfig {
 
     @Bean

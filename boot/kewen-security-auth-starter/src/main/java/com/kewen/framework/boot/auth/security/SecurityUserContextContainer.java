@@ -21,6 +21,7 @@ public class SecurityUserContextContainer implements AuthUserInfoContextContaine
         return Optional.of(SecurityContextHolder.getContext())
                 .map(SecurityContext::getAuthentication)
                 .map(Authentication::getPrincipal)
+                .filter(p->p instanceof SecurityUser)
                 .map(p -> (SecurityUser) p)
                 .map(SecurityUser::getAuthUserInfo)
                 .orElse(null);
