@@ -47,6 +47,7 @@ public class SecurityAuthConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     PermitUrlContainer permitUrlContainer;
 
+
     public SecurityAuthConfig() {
         log.info("使用SpringSecurity作为安全框架");
     }
@@ -172,6 +173,7 @@ public class SecurityAuthConfig extends WebSecurityConfigurerAdapter {
                     .removeSessionConfig()  //移除session的配置
                     .tokenStore(new MemoryTokenStore<>(authProperties.getStore().getExpireTime()))
                     .keyGenerator(new DefaultTokenKeyGenerator())
+                    .permitUrlContainer(permitUrlContainer)
                     .authenticationFailureHandler(authenticationSuccessFailHandler())
             ;
         } else {

@@ -1,5 +1,6 @@
 package com.kewen.framework.boot.auth.security;
 
+import com.kewen.framework.boot.auth.PermitUrlContainer;
 import com.kewen.framework.boot.auth.security.token.TokenAuthenticationStrategy;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -15,6 +16,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * 
@@ -26,17 +28,23 @@ public class TokenFilter  extends GenericFilterBean {
 
     private TokenAuthenticationStrategy tokenAuthenticationStrategy;
     private AuthenticationFailureHandler failureHandler;
+    private PermitUrlContainer permitUrlContainer;
+
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+
         doFilter((HttpServletRequest)servletRequest, (HttpServletResponse)servletResponse, filterChain);
     }
     public void doFilter(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws IOException, ServletException {
-        Authentication token = tokenAuthenticationStrategy.getToken(httpServletRequest);
-        if (token ==null){
-            failureHandler.onAuthenticationFailure(httpServletRequest,httpServletResponse,new SessionAuthenticationException("token不存在或已过期，请重新登录"));
-            return;
-        } else {
-            SecurityContextHolder.getContext().setAuthentication(token);
+        String uri = httpServletRequest.getRequestURI();
+        if (!Arrays.asList(permitUrlContainer.getPermitUrls()).contains(uri)){
+            Authentication token = tokenAuthenticationStrategy.getToken(httpServletRequest);
+            if (token ==null){
+                failureHandler.onAuthenticationFailure(httpServletRequest,httpServletResponse,new SessionAuthenticationException("token不存在或已过期，请重新登录"));
+                return;
+            } else {
+                SecurityContextHolder.getContext().setAuthentication(token);
+            }
         }
         filterChain.doFilter(httpServletRequest,httpServletResponse);
 
@@ -49,5 +57,9 @@ public class TokenFilter  extends GenericFilterBean {
 
     public void setFailureHandler(AuthenticationFailureHandler failureHandler) {
         this.failureHandler = failureHandler;
+    }
+
+    public void setPermitUrlContainer(PermitUrlContainer permitUrlContainer) {
+        this.permitUrlContainer = permitUrlContainer;
     }
 }
