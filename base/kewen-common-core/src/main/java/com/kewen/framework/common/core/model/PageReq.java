@@ -16,4 +16,12 @@ public class PageReq {
      */
     @NotNull
     protected Integer size;
+
+    /**
+     * 从0开始
+     * @return
+     */
+    public Integer getOffset(){
+        return (page-1)*size;
+    }
 }
