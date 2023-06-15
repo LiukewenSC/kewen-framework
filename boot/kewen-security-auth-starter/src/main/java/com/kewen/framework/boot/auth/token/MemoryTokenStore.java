@@ -4,6 +4,7 @@ package com.kewen.framework.boot.auth.token;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import org.apache.commons.lang3.StringUtils;
 
 import java.time.Duration;
 import java.util.Map;
@@ -37,6 +38,9 @@ public class MemoryTokenStore<T> implements TokenStore<T> {
 
     @Override
     public T get(String token) {
+        if (StringUtils.isBlank(token)){
+            return null;
+        }
         try {
             return store.getIfPresent(token);
         } catch (Exception e){

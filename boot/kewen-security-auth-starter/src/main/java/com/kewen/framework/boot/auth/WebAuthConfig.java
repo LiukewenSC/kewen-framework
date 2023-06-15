@@ -38,10 +38,17 @@ public class WebAuthConfig implements WebMvcConfigurer {
 
     @Autowired
     private AuthMenuInterceptor authMenuInterceptor;
+    @Autowired
+    AuthProperties authProperties;
+    @Autowired
+    PermitUrlContainer permitUrlContainer;
 
     @Bean
     public PermitUrlInterceptor permitUrlInterceptor(){
-        return new PermitUrlInterceptor();
+        PermitUrlInterceptor interceptor = new PermitUrlInterceptor();
+        interceptor.setPermitUrlContainer(permitUrlContainer);
+        interceptor.setAuthProperties(authProperties);
+        return interceptor;
     }
 
     public WebAuthConfig() {
