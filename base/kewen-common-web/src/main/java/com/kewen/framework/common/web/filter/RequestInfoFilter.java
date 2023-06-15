@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 
+ * 请求日志过滤器
  * @author kewen
  * @since 2023-04-26
  */
@@ -48,7 +48,13 @@ public class RequestInfoFilter extends OncePerRequestFilter {
                 .setHeaders(headers)
                 ;
 
-        log.info("请求信息{}",JSONObject.toJSONString(requestInfo));
+        log.info("请求ip:{},请求路径:{},请求方法{},请求params参数:{},请求body参数:{}",
+                requestInfo.getIp(),
+                requestInfo.getUrl(),
+                requestInfo.getMethod(),
+                requestInfo.getParams(),
+                requestInfo.getBody()
+        );
 
         RequestInfoContext.set(requestInfo);
         try {
