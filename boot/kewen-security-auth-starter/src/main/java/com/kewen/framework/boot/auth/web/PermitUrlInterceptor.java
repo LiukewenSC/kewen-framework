@@ -23,9 +23,9 @@ import java.util.Arrays;
  */
 public class PermitUrlInterceptor implements HandlerInterceptor {
 
-    @Autowired
+
     AuthProperties authProperties;
-    @Autowired
+
     PermitUrlContainer permitUrlContainer;
 
     @Override
@@ -43,5 +43,13 @@ public class PermitUrlInterceptor implements HandlerInterceptor {
             }
         }
         return true;
+    }
+
+    public void setAuthProperties(AuthProperties authProperties) {
+        this.authProperties = authProperties;
+    }
+
+    public void setPermitUrlContainer(PermitUrlContainer permitUrlContainer) {
+        this.permitUrlContainer = permitUrlContainer;
     }
 }
