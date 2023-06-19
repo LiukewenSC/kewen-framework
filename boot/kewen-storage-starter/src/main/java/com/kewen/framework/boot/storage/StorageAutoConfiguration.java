@@ -3,7 +3,8 @@ package com.kewen.framework.boot.storage;
 import com.kewen.framework.storage.core.StorageTemplate;
 import com.kewen.framework.storage.core.qiniu.QiNiuStorageTemplate;
 import com.kewen.framework.storage.web.FileResponseBodyAdvance;
-import com.kewen.framework.storage.web.StorageController;
+import com.kewen.framework.storage.web.controller.StorageController;
+import com.kewen.framework.storage.web.controller.StorageUploadCallback;
 import com.kewen.framework.storage.web.service.StorageService;
 import com.kewen.framework.storage.web.service.impl.NoneStorageService;
 import com.kewen.framework.storage.web.service.impl.SysFileStorageService;
@@ -41,7 +42,8 @@ public class StorageAutoConfiguration {
                 storageProperties.getAccessKey(),
                 storageProperties.getSecretKey(),
                 storageProperties.getBucket(),
-                storageProperties.getDownloadDomain()
+                storageProperties.getDownloadDomain(),
+                storageProperties.getUploadCallbackUrl()
         );
     }
 
@@ -49,6 +51,12 @@ public class StorageAutoConfiguration {
     StorageController storageController(){
         return new StorageController();
     }
+    @Bean
+    StorageUploadCallback storageUploadCallback(){
+        return new StorageUploadCallback();
+    }
+
+
 
     @Bean
     FileResponseBodyAdvance fileResponseBodyAdvance(){

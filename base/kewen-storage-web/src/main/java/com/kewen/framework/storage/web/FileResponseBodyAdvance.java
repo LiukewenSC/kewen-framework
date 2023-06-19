@@ -96,6 +96,9 @@ public class FileResponseBodyAdvance implements ResponseBodyAdvice<Result> {
             //变化成map方便取用
             Map<Long, FileInfo> fileInfoMap = new HashMap<>();
             for (FileInfo fileInfo : fileInfos) {
+                if (fileInfo ==null){
+                    continue;
+                }
                 fileInfoMap.putIfAbsent(fileInfo.getFileId(), fileInfo);
             }
             //循环组装

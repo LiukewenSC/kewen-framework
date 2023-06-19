@@ -1,6 +1,8 @@
 package com.kewen.framework.storage.core.qiniu;
 
+import cn.hutool.crypto.digest.DigestUtil;
 import com.kewen.framework.storage.core.StorageTemplate;
+import com.kewen.framework.storage.core.model.PreUploadTokenBO;
 import com.kewen.framework.storage.core.model.UploadBO;
 import com.qiniu.common.QiniuException;
 import com.qiniu.http.Response;
@@ -37,9 +39,10 @@ public class QiNiuStorageTemplate implements StorageTemplate {
      */
     // "rtk99wucl.hd-bkt.clouddn.com"
     private final String downloadDomain ;
+    private final String callbackUrl ;
     UploadManager uploadManager;
 
-    public QiNiuStorageTemplate(String accessKey, String secretKey, String bucket,String downloadDomain) {
+    public QiNiuStorageTemplate(String accessKey, String secretKey, String bucket,String downloadDomain,String callbackUrl) {
 
 
         this.auth = Auth.create(accessKey, secretKey);
@@ -53,22 +56,15 @@ public class QiNiuStorageTemplate implements StorageTemplate {
         this.uploadManager = new UploadManager(cfg);
         this.bucket = bucket;
         this.downloadDomain = downloadDomain;
-    }
-    private StringMap policy(){
-        StringMap policy = new StringMap();
-
-        // returnBody 可配置返回结构
-        // 魔法值对照 https://developer.qiniu.com/kodo/1235/vars#magicvar
-        // 自定义变量 https://developer.qiniu.com/kodo/1235/vars#xvar
-        policy.put("returnBody", "{\"key\":\"$(key)\",\"hash\":\"$(etag)\",\"size\":$(fsize)}");
-        return policy;
+        this.callbackUrl = callbackUrl;
     }
 
     @Override
     public UploadBO upload(InputStream stream, String storageName, String mediumType) {
-
+        StringMap policy = new StringMap();
+        policy.put("returnBody", "{\"key\":\"$(key)\",\"hash\":\"$(etag)\",\"size\":$(fsize)}");
         //...生成上传凭证，然后准备上传
-        String upToken = auth.uploadToken(bucket,null,20L,policy());
+        String upToken = auth.uploadToken(bucket,null,20L,policy);
 
 
         Response response = null;
@@ -105,6 +101,29 @@ public class QiNiuStorageTemplate implements StorageTemplate {
         } catch (QiniuException e) {
             throw new RuntimeException(e);
         }
+
+    }
+
+    @Override
+    public PreUploadTokenBO createPreUploadToken(String catalog,String fileName) {
+
+        StringMap putPolicy = new StringMap();
+
+        String md5Hex = DigestUtil.md5Hex(fileName);
+
+        // https://developer.qiniu.com/kodo/1206/put-policy
+        putPolicy.put("callbackUrl", callbackUrl);
+        putPolicy.put("callbackBody", "{\"key\":\"$(key)\",\"hash\":\"$(etag)\",\"bucket\":\"$(bucket)\",\"fsize\":$(fsize)}");
+        putPolicy.put("callbackBodyType", "application/json");
+
+        //putPolicy.put("forceSaveKey",true);
+        //putPolicy.put("saveKey",);
+
+        String key=catalog +"/"+fileName;
+
+        String token = auth.uploadToken(bucket, key, 20L, putPolicy);
+
+        return new PreUploadTokenBO().setUploadToken(token).setKey(key);
 
     }
 }

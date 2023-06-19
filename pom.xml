@@ -127,8 +127,6 @@
             </dependency>
 
 
-
-
             <!--************spring-cloud相关************-->
 
             <dependency>
@@ -162,10 +160,6 @@
             <!--************spring相关************-->
 
 
-
-
-
-
             <!--************spring-apache工具************-->
             <dependency>
                 <groupId>org.apache.commons</groupId>
@@ -183,8 +177,6 @@
                 <artifactId>commons-io</artifactId>
                 <version>1.3.2</version>
             </dependency>
-
-
 
 
             <!--************其他依赖************-->
@@ -225,6 +217,12 @@
                 <version>1.2.14</version>
             </dependency>
 
+
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>5.8.18</version>
+            </dependency>
 
             <!--************非项目依赖************-->
             <!--swagger-->

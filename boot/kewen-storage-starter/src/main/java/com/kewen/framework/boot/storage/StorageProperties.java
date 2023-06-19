@@ -17,4 +17,5 @@ public class StorageProperties {
     private String secretKey;
     private String bucket;
     private String downloadDomain;
+    private String uploadCallbackUrl;
 }
