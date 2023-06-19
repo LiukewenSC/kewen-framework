@@ -1,15 +1,21 @@
-package com.kewen.framework.storage.web;
+package com.kewen.framework.storage.web.controller;
 
+import cn.hutool.crypto.digest.DigestUtil;
+import cn.hutool.crypto.digest.MD5;
 import com.kewen.framework.common.core.model.Result;
 import com.kewen.framework.common.core.utils.UUIDUtil;
 import com.kewen.framework.storage.core.StorageTemplate;
+import com.kewen.framework.storage.core.model.PreUploadTokenBO;
 import com.kewen.framework.storage.core.model.UploadBO;
 import com.kewen.framework.storage.core.model.FileInfo;
 import com.kewen.framework.storage.web.service.StorageService;
+import com.qiniu.util.Md5;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,6 +29,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/storage")
+@Slf4j
 public class StorageController {
 
     @Autowired
@@ -32,6 +39,15 @@ public class StorageController {
     StorageService storageService;
 
 
+
+    @PostMapping("/genUploadToken")
+    public Result getUploadToken(@RequestParam("")String moduleName, @RequestParam("fileName") String fileName){
+        log.info("上传文件获取token {}",fileName);
+
+        PreUploadTokenBO tokenBO = storageTemplate.createPreUploadToken(fileName);
+
+        return Result.success(tokenBO);
+    }
 
 
 

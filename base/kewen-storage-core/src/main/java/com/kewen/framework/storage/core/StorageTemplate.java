@@ -1,5 +1,6 @@
 package com.kewen.framework.storage.core;
 
+import com.kewen.framework.storage.core.model.PreUploadTokenBO;
 import com.kewen.framework.storage.core.model.UploadBO;
 
 import java.io.InputStream;
@@ -13,4 +14,10 @@ import java.io.InputStream;
 public interface StorageTemplate {
     UploadBO upload(InputStream stream, String storageName, String mediumType);
     String downloadUrl(String key);
+
+    /**
+     * 客户端上传
+     * @return
+     */
+    PreUploadTokenBO createPreUploadToken(String catalog,String fileName);
 }
