@@ -45,7 +45,7 @@ public class StorageAutoConfiguration {
                 //华南机房
                 Region.region2(),
                 storageProperties.getBucket(),
-                storageProperties.getIsPublish(),
+                storageProperties.getIsPublic(),
                 storageProperties.getDownloadDomain(),
                 storageProperties.getUploadCallbackUrl()
         );

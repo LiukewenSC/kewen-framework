@@ -9,7 +9,7 @@ kewen:
     access-key: qYUhPA6FvZ29dQ4pz1BgLwHaTcV2vt_rD-GoEEFB
     secret-key: eyihg0gLAyHd2j08geDCCWdI0UHOfhxzpjFpKso1
     bucket: kewen-storage
-    is-publish: false
+    is-public: false
     download-domain: storage.liukewen.cn
     upload-callback-url: https://33960819lh.oicp.vip/storage/upload/callback
 
