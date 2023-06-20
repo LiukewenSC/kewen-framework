@@ -2,6 +2,7 @@ package com.kewen.framework.storage.web.controller;
 
 import cn.hutool.crypto.digest.DigestUtil;
 import cn.hutool.crypto.digest.MD5;
+import com.alibaba.fastjson2.JSONObject;
 import com.kewen.framework.common.core.exception.BizException;
 import com.kewen.framework.common.core.model.Result;
 import com.kewen.framework.common.core.utils.UUIDUtil;
@@ -9,6 +10,7 @@ import com.kewen.framework.storage.core.StorageTemplate;
 import com.kewen.framework.storage.core.model.PreUploadTokenBO;
 import com.kewen.framework.storage.core.model.UploadBO;
 import com.kewen.framework.storage.core.model.FileInfo;
+import com.kewen.framework.storage.web.model.PreUploadTokenReq;
 import com.kewen.framework.storage.web.model.PreUploadTokenResp;
 import com.kewen.framework.storage.web.mp.entity.SysStorageModule;
 import com.kewen.framework.storage.web.mp.service.SysStorageModuleMpService;
@@ -18,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -49,9 +52,9 @@ public class StorageController {
      * @return
      */
     @PostMapping("/genUploadToken")
-    public Result getUploadToken(@RequestParam("")String moduleName, @RequestParam("fileName") String fileName){
-        log.info("上传文件获取token {}",fileName);
-        PreUploadTokenResp resp = storageService.genUploadToken(moduleName, fileName);
+    public Result getUploadToken(@RequestBody PreUploadTokenReq req){
+        log.info("上传文件获取token {}", JSONObject.toJSONString(req));
+        PreUploadTokenResp resp = storageService.genUploadToken(req.getModuleName(), req.getFileName());
         return Result.success(resp);
     }
 

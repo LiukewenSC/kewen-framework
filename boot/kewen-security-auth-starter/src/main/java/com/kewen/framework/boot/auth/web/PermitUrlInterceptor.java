@@ -7,6 +7,7 @@ import com.kewen.framework.boot.auth.PermitUrlContainer;
 import com.kewen.framework.common.core.exception.AuthorizationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.context.request.WebRequestInterceptor;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -28,21 +29,32 @@ public class PermitUrlInterceptor implements HandlerInterceptor {
 
     PermitUrlContainer permitUrlContainer;
 
+    private final static AntPathMatcher matcher = new AntPathMatcher();
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
         String uri = request.getRequestURI();
 
-        String[] permitUrls = permitUrlContainer.getPermitUrls();
         String loginEndpoint = authProperties.getLoginEndpoint();
         String logoutEndpoint = authProperties.getLogoutEndpoint();
-        if (uri.equals(loginEndpoint) || uri.equals(logoutEndpoint) || Arrays.asList(permitUrls).contains(uri)) {
+        if (uri.equals(loginEndpoint) || uri.equals(logoutEndpoint) || !isMatches(uri)) {
             AuthUserInfo<?> authUserInfo = AuthUserContext.get();
             if (authUserInfo == null) {
-                throw new AuthorizationException("访问的资源需要认证");
+                throw new AuthorizationException("尚未登录或登录已过期，请重新登录");
             }
         }
         return true;
+    }
+    private boolean isMatches(String uri){
+
+        String[] permitUrls = permitUrlContainer.getPermitUrls();
+
+        for (String permitUrl : permitUrls) {
+            if (matcher.match(permitUrl,uri)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void setAuthProperties(AuthProperties authProperties) {

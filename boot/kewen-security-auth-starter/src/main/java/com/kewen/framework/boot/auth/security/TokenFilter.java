@@ -7,6 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.session.SessionAuthenticationException;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.GenericFilterBean;
 
 import javax.servlet.FilterChain;
@@ -29,7 +30,7 @@ public class TokenFilter  extends GenericFilterBean {
     private TokenAuthenticationStrategy tokenAuthenticationStrategy;
     private AuthenticationFailureHandler failureHandler;
     private PermitUrlContainer permitUrlContainer;
-
+    private final AntPathMatcher pathMatcher = new AntPathMatcher();
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
 
@@ -37,10 +38,11 @@ public class TokenFilter  extends GenericFilterBean {
     }
     public void doFilter(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws IOException, ServletException {
         String uri = httpServletRequest.getRequestURI();
-        if (!Arrays.asList(permitUrlContainer.getPermitUrls()).contains(uri)){
+
+        if (!isMatches(uri)){
             Authentication token = tokenAuthenticationStrategy.getToken(httpServletRequest);
             if (token ==null){
-                failureHandler.onAuthenticationFailure(httpServletRequest,httpServletResponse,new SessionAuthenticationException("token不存在或已过期，请重新登录"));
+                failureHandler.onAuthenticationFailure(httpServletRequest,httpServletResponse,new SessionAuthenticationException("尚未登录或登录已过期，请重新登录"));
                 return;
             } else {
                 SecurityContextHolder.getContext().setAuthentication(token);
@@ -48,6 +50,17 @@ public class TokenFilter  extends GenericFilterBean {
         }
         filterChain.doFilter(httpServletRequest,httpServletResponse);
 
+    }
+
+    private boolean isMatches(String uri){
+        String[] permitUrls = permitUrlContainer.getPermitUrls();
+
+        for (String permitUrl : permitUrls) {
+            if (pathMatcher.match(permitUrl,uri)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 

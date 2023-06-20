@@ -1,6 +1,8 @@
 package com.kewen.framework.boot.auth;
 
+import com.alibaba.fastjson2.JSONObject;
 import com.kewen.framework.boot.auth.security.annotation.SecurityIgnore;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import java.util.*;
  * @author kewen
  * @since 2023-06-14
  */
+@Slf4j
 public class PermitUrlContainer implements ApplicationContextAware {
 
     @Value("${kewen.auth.permit-url:}")
@@ -37,7 +40,9 @@ public class PermitUrlContainer implements ApplicationContextAware {
             list.addAll(Arrays.asList(permitUrls));
         }
 
-        return list.toArray(new String[0]);
+        String[] urls = list.toArray(new String[0]);
+        log.debug("放行的urls: {}", JSONObject.toJSONString(urls));
+        return urls;
     }
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
