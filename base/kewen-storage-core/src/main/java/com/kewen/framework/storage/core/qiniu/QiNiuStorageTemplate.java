@@ -60,7 +60,7 @@ public class QiNiuStorageTemplate implements StorageTemplate {
     }
 
     @Override
-    public UploadBO upload(InputStream stream, String storageName, String mediumType) {
+    public UploadBO upload(InputStream stream, String fileName, String mimeType) {
         StringMap policy = new StringMap();
         policy.put("returnBody", "{\"key\":\"$(key)\",\"hash\":\"$(etag)\",\"size\":$(fsize)}");
         //...生成上传凭证，然后准备上传
@@ -69,7 +69,7 @@ public class QiNiuStorageTemplate implements StorageTemplate {
 
         Response response = null;
         try {
-            response = uploadManager.put(stream, storageName, upToken, null, mediumType);
+            response = uploadManager.put(stream, fileName, upToken, null, mimeType);
 
             UploadBO uploadBO = response.jsonToObject(UploadBO.class);
 
@@ -105,21 +105,23 @@ public class QiNiuStorageTemplate implements StorageTemplate {
     }
 
     @Override
-    public PreUploadTokenBO createPreUploadToken(String catalog,String fileName) {
+    public PreUploadTokenBO createPreUploadToken(String moduleName, String fileName) {
 
         StringMap putPolicy = new StringMap();
 
-        String md5Hex = DigestUtil.md5Hex(fileName);
+        String key=moduleName+"/"+fileName;
 
         // https://developer.qiniu.com/kodo/1206/put-policy
         putPolicy.put("callbackUrl", callbackUrl);
-        putPolicy.put("callbackBody", "{\"key\":\"$(key)\",\"hash\":\"$(etag)\",\"bucket\":\"$(bucket)\",\"fsize\":$(fsize)}");
+
+        putPolicy.put("callbackBody", "{\"key\":\"$(key)\",\"hash\":\"$(etag)\",\"bucket\":\"$(bucket)\",\"size\":$(fsize)," +
+                "\"mimeType\":\"$(mimeType)\",\"fileId\":$(x:fileId)}"
+        );
         putPolicy.put("callbackBodyType", "application/json");
 
         //putPolicy.put("forceSaveKey",true);
         //putPolicy.put("saveKey",);
 
-        String key=catalog +"/"+fileName;
 
         String token = auth.uploadToken(bucket, key, 20L, putPolicy);
 

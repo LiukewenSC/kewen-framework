@@ -12,12 +12,12 @@ import java.io.InputStream;
  * @since 2023-04-23
  */
 public interface StorageTemplate {
-    UploadBO upload(InputStream stream, String storageName, String mediumType);
+    UploadBO upload(InputStream stream, String fileName, String mediumType);
     String downloadUrl(String key);
 
     /**
      * 客户端上传
      * @return
      */
-    PreUploadTokenBO createPreUploadToken(String catalog,String fileName);
+    PreUploadTokenBO createPreUploadToken(String relativeDirectory, String fileName);
 }

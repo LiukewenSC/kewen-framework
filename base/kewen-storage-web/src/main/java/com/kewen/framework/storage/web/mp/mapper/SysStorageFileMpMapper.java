@@ -1,6 +1,6 @@
 package com.kewen.framework.storage.web.mp.mapper;
 
-import com.kewen.framework.storage.web.mp.entity.SysFileStorage;
+import com.kewen.framework.storage.web.mp.entity.SysStorageFile;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -10,9 +10,9 @@ import org.apache.ibatis.annotations.Mapper;
  * </p>
  *
  * @author kewen
- * @since 2023-04-24
+ * @since 2023-06-20
  */
 @Mapper
-public interface SysFileStorageMpMapper extends BaseMapper<SysFileStorage> {
+public interface SysStorageFileMpMapper extends BaseMapper<SysStorageFile> {
 
 }

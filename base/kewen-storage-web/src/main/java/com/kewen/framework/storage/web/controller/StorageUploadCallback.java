@@ -4,7 +4,9 @@ import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.kewen.framework.common.core.model.Result;
 import com.kewen.framework.storage.web.model.UploadCallbackReq;
+import com.kewen.framework.storage.web.service.StorageService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,10 +20,14 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class StorageUploadCallback {
 
+    @Autowired
+    StorageService storageService;
     @RequestMapping("/upload/callback")
     public Result uploadCallback(@RequestBody UploadCallbackReq req){
 
         log.info("上传文件回调req: "+ JSONObject.toJSONString(req));
+
+        storageService.uploadCallback(req);
 
         return Result.success();
     }
