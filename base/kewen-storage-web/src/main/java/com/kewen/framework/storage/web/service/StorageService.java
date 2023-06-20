@@ -2,6 +2,7 @@ package com.kewen.framework.storage.web.service;
 
 import com.kewen.framework.storage.core.model.FileInfo;
 import com.kewen.framework.storage.core.model.PreUploadTokenBO;
+import com.kewen.framework.storage.web.model.PreUploadTokenResp;
 import com.kewen.framework.storage.web.model.UploadCallbackReq;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -19,7 +20,7 @@ public interface StorageService {
      * 客户端上传，获取上传token
      * @return
      */
-    PreUploadTokenBO genUploadToken(String moduleName,String fileName);
+    PreUploadTokenResp genUploadToken(String moduleName, String fileName);
     /**
      * 客户端上传回调接口
      * @param req

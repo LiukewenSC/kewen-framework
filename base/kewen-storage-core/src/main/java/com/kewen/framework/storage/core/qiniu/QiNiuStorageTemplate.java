@@ -31,45 +31,52 @@ public class QiNiuStorageTemplate implements StorageTemplate {
     Auth auth;
     /**
      * 存储桶空间
-     *   "kewen-blog"
+     * "kewen-blog"
      */
-    private final String bucket ;
+    private final String bucket;
+
+    /**
+     * 是否是公开空间
+     */
+    private final boolean isPublish;
     /**
      * 下载的域名地址
      */
     // "rtk99wucl.hd-bkt.clouddn.com"
-    private final String downloadDomain ;
-    private final String callbackUrl ;
+    private final String downloadDomain;
+    private final String callbackUrl;
     UploadManager uploadManager;
 
-    public QiNiuStorageTemplate(String accessKey, String secretKey, String bucket,String downloadDomain,String callbackUrl) {
+    public QiNiuStorageTemplate(String accessKey, String secretKey, Region region, String bucket, boolean isPublish, String downloadDomain, String callbackUrl) {
 
 
         this.auth = Auth.create(accessKey, secretKey);
 
         //构造一个带指定Region对象的配置类
-        Configuration cfg = new Configuration(Region.region0());
+        Configuration cfg = new Configuration(region);
         cfg.resumableUploadAPIVersion = Configuration.ResumableUploadAPIVersion.V2;// 指定分片上传版本
         cfg.useHttpsDomains = false;
 
         //...其他参数参考类注释
         this.uploadManager = new UploadManager(cfg);
         this.bucket = bucket;
+        this.isPublish = isPublish;
         this.downloadDomain = downloadDomain;
         this.callbackUrl = callbackUrl;
     }
 
     @Override
-    public UploadBO upload(InputStream stream, String fileName, String mimeType) {
+    public UploadBO upload(InputStream stream, String relativeDirectory, String fileName, String mimeType) {
         StringMap policy = new StringMap();
         policy.put("returnBody", "{\"key\":\"$(key)\",\"hash\":\"$(etag)\",\"size\":$(fsize)}");
+        String key = relativeDirectory + "/" + fileName;
         //...生成上传凭证，然后准备上传
-        String upToken = auth.uploadToken(bucket,null,20L,policy);
+        String upToken = auth.uploadToken(bucket, key, 20L, policy);
 
 
         Response response = null;
         try {
-            response = uploadManager.put(stream, fileName, upToken, null, mimeType);
+            response = uploadManager.put(stream, fileName, upToken, policy, mimeType);
 
             UploadBO uploadBO = response.jsonToObject(UploadBO.class);
 
@@ -91,12 +98,20 @@ public class QiNiuStorageTemplate implements StorageTemplate {
         // useHttps 是否使用 https【必须】
         // key      下载资源在七牛云存储的 key【必须】
         DownloadUrl url = new DownloadUrl(downloadDomain, false, key);
-        //url.setAttname(attname) // 配置 attname
+        // url.setAttname(attname) // 配置 attname
         //        .setFop(fop) // 配置 fop
         //        .setStyle(style, styleSeparator, styleParam) // 配置 style
         try {
-            String urlString = url.buildURL();
-           log.info("{} 下载链接 :{}",key,urlString);
+            String urlString;
+            if (isPublish) {
+                urlString = url.buildURL();
+            } else {
+                // 带有效期
+                long expireInSeconds = 3600;//1小时，可以自定义链接过期时间
+                long deadline = System.currentTimeMillis()/1000 + expireInSeconds;
+                urlString = url.buildURL(auth, deadline);
+            }
+            log.info("{} 下载链接 :{}", key, urlString);
             return urlString;
         } catch (QiniuException e) {
             throw new RuntimeException(e);
@@ -109,7 +124,7 @@ public class QiNiuStorageTemplate implements StorageTemplate {
 
         StringMap putPolicy = new StringMap();
 
-        String key=moduleName+"/"+fileName;
+        String key = moduleName + "/" + fileName;
 
         // https://developer.qiniu.com/kodo/1206/put-policy
         putPolicy.put("callbackUrl", callbackUrl);

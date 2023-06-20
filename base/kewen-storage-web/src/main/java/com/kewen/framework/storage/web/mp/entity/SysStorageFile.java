@@ -36,10 +36,10 @@ public class SysStorageFile extends Model<SysStorageFile> {
     private String fileName;
 
     /**
-     * 存储路径
+     * 存储的key值
      */
-    @TableField("relative_directory")
-    private String relativeDirectory;
+    @TableField("file_key")
+    private String fileKey;
 
     /**
      * 文件类型

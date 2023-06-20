@@ -5,6 +5,7 @@ import com.kewen.framework.storage.core.StorageTemplate;
 import com.kewen.framework.storage.core.model.FileInfo;
 import com.kewen.framework.storage.core.model.PreUploadTokenBO;
 import com.kewen.framework.storage.core.model.UploadBO;
+import com.kewen.framework.storage.web.model.PreUploadTokenResp;
 import com.kewen.framework.storage.web.model.UploadCallbackReq;
 import com.kewen.framework.storage.web.mp.entity.SysStorageFile;
 import com.kewen.framework.storage.web.mp.entity.SysStorageModule;
@@ -30,8 +31,6 @@ public class DefaultStorageService implements StorageService {
     @Autowired
     StorageTemplate storageTemplate;
 
-    private String downloadDomain;
-
     @Autowired
     SysStorageFileMpService storageFileMpService;
 
@@ -39,28 +38,35 @@ public class DefaultStorageService implements StorageService {
     SysStorageModuleMpService storageModuleMpService;
     
     @Override
-    public PreUploadTokenBO genUploadToken(String moduleName, String fileName) {
+    public PreUploadTokenResp genUploadToken(String moduleName, String fileName) {
         String relativeDirectory = getRelativeDirectory(moduleName);
 
-        SysStorageFile file = new SysStorageFile()
-                .setFileName(fileName)
-                .setRelativeDirectory(relativeDirectory)
-                .setStatus(0);
-        storageFileMpService.save(file);
 
         PreUploadTokenBO preUploadToken = storageTemplate.createPreUploadToken(relativeDirectory, fileName);
 
-        preUploadToken.setFileId(file.getId());
+        SysStorageFile file = new SysStorageFile()
+                .setFileName(fileName)
+                .setFileKey(preUploadToken.getKey())
+                .setStatus(0);
+        storageFileMpService.save(file);
+
+        PreUploadTokenResp resp = new PreUploadTokenResp();
+        resp.setFileId(file.getId())
+                .setKey(preUploadToken.getKey())
+                .setUploadToken(preUploadToken.getUploadToken())
+        ;
 
 
-        return preUploadToken;
+        return resp;
     }
 
     @Override
     public void uploadCallback(UploadCallbackReq req) {
 
         SysStorageFile storageFile = storageFileMpService.getById(req.getFileId());
-
+        if (storageFile==null) {
+            throw new RuntimeException("回调失败，无文件");
+        }
         storageFile.setMimeType(req.getMimeType())
                 .setSize(req.getSize())
                 .setStatus(2);
@@ -84,19 +90,20 @@ public class DefaultStorageService implements StorageService {
     public FileInfo upload(String moduleName,String fileName, String mimeType, InputStream inputStream) {
 
         //上传
-        UploadBO upload = storageTemplate.upload(inputStream, fileName, mimeType);
         String relativeDirectory =getRelativeDirectory(moduleName);
+        UploadBO upload = storageTemplate.upload(inputStream, relativeDirectory, fileName, mimeType);
 
 
         SysStorageFile file = new SysStorageFile()
-                .setRelativeDirectory(relativeDirectory)
+                .setFileKey(upload.getKey())
                 .setFileName(fileName)
                 .setMimeType(mimeType)
                 .setSize(upload.getSize())
+                .setStatus(2)
                 ;
         storageFileMpService.save(file);
         //存储
-       return new FileInfo(file.getId(),fileName,fullUrl(relativeDirectory,fileName),upload.getSize());
+       return new FileInfo(file.getId(),fileName, storageTemplate.downloadUrl(upload.getKey()), upload.getSize());
     }
     private String getRelativeDirectory(String moduleName){
         SysStorageModule module = storageModuleMpService.getById(moduleName);
@@ -109,11 +116,12 @@ public class DefaultStorageService implements StorageService {
 
     @Override
     public FileInfo getDownloadInfo(Long fileId) {
-        SysStorageFile byId = storageFileMpService.getById(fileId);
-        if (byId ==null){
+        SysStorageFile storageFile = storageFileMpService.getById(fileId);
+        if (storageFile ==null){
             return null;
         }
-        return new FileInfo(byId.getId(), byId.getFileName(), fullUrl(byId.getRelativeDirectory(),byId.getFileName()), byId.getSize());
+        String url = storageTemplate.downloadUrl(storageFile.getFileKey());
+        return new FileInfo(storageFile.getId(), storageFile.getFileName(), url, storageFile.getSize());
     }
 
     @Override
@@ -123,16 +131,8 @@ public class DefaultStorageService implements StorageService {
             return Collections.emptyList();
         }
         return SysStorageFiles.stream()
-                .map(f -> new FileInfo(f.getId(), f.getFileName(), fullUrl(f.getRelativeDirectory(),f.getFileName()), f.getSize()))
+                .map(f -> new FileInfo(f.getId(), f.getFileName(), storageTemplate.downloadUrl(f.getFileKey()), f.getSize()))
                 .collect(Collectors.toList());
-    }
-
-    private String fullUrl(String relativeDirectory,String fileName) {
-        return "http://" + downloadDomain + "/" +  relativeDirectory + "/" + fileName;
-    }
-
-    public void setDownloadDomain(String downloadDomain) {
-        this.downloadDomain = downloadDomain;
     }
 
     public void setStorageTemplate(StorageTemplate storageTemplate) {
