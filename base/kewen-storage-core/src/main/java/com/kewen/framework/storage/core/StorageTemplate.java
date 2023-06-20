@@ -12,7 +12,7 @@ import java.io.InputStream;
  * @since 2023-04-23
  */
 public interface StorageTemplate {
-    UploadBO upload(InputStream stream, String fileName, String mediumType);
+    UploadBO upload(InputStream stream,String relativeDirectory, String fileName, String mediumType);
     String downloadUrl(String key);
 
     /**

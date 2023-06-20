@@ -9,6 +9,7 @@ import com.kewen.framework.storage.core.StorageTemplate;
 import com.kewen.framework.storage.core.model.PreUploadTokenBO;
 import com.kewen.framework.storage.core.model.UploadBO;
 import com.kewen.framework.storage.core.model.FileInfo;
+import com.kewen.framework.storage.web.model.PreUploadTokenResp;
 import com.kewen.framework.storage.web.mp.entity.SysStorageModule;
 import com.kewen.framework.storage.web.mp.service.SysStorageModuleMpService;
 import com.kewen.framework.storage.web.service.StorageService;
@@ -41,16 +42,26 @@ public class StorageController {
     StorageService storageService;
 
 
-
+    /**
+     * 客户端上传模式  生成token
+     * @param moduleName
+     * @param fileName
+     * @return
+     */
     @PostMapping("/genUploadToken")
     public Result getUploadToken(@RequestParam("")String moduleName, @RequestParam("fileName") String fileName){
         log.info("上传文件获取token {}",fileName);
-        PreUploadTokenBO tokenBO = storageService.genUploadToken(moduleName, fileName);
-        return Result.success(tokenBO);
+        PreUploadTokenResp resp = storageService.genUploadToken(moduleName, fileName);
+        return Result.success(resp);
     }
 
 
-
+    /**
+     * 服务端上传
+     * @param moduleName
+     * @param file
+     * @return
+     */
     @PostMapping("/upload")
     public Result<FileInfo> upload(@RequestParam("moduleName") String moduleName,MultipartFile file) {
         try {
@@ -71,7 +82,7 @@ public class StorageController {
     }
 
     @GetMapping("/getDownloadUrl")
-    public Result<FileInfo> getDownloadUrl(Long fileId) {
+    public Result<FileInfo> getDownloadUrl(@RequestParam("fileId") Long fileId) {
         FileInfo result = storageService.getDownloadInfo(fileId);
         return Result.success(result);
     }

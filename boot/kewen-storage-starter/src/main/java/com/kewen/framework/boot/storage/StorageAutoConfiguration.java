@@ -9,6 +9,7 @@ import com.kewen.framework.storage.web.mp.service.SysStorageFileMpService;
 import com.kewen.framework.storage.web.mp.service.SysStorageModuleMpService;
 import com.kewen.framework.storage.web.service.StorageService;
 import com.kewen.framework.storage.web.service.impl.DefaultStorageService;
+import com.qiniu.storage.Region;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -41,7 +42,10 @@ public class StorageAutoConfiguration {
         return new QiNiuStorageTemplate(
                 storageProperties.getAccessKey(),
                 storageProperties.getSecretKey(),
+                //华南机房
+                Region.region2(),
                 storageProperties.getBucket(),
+                storageProperties.getIsPublish(),
                 storageProperties.getDownloadDomain(),
                 storageProperties.getUploadCallbackUrl()
         );
@@ -80,7 +84,6 @@ public class StorageAutoConfiguration {
             service.setStorageModuleMpService(storageModuleMpService);
             service.setStorageTemplate(storageTemplate);
             service.setStorageFileMpService(storageFileMpService);
-            service.setDownloadDomain(storageProperties.getDownloadDomain());
 
             return service;
         }

@@ -16,6 +16,7 @@ public class StorageProperties {
     private String accessKey;
     private String secretKey;
     private String bucket;
+    private Boolean isPublish = true;
     private String downloadDomain;
     private String uploadCallbackUrl;
 }

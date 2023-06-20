@@ -1,4 +1,4 @@
-package com.kewen.framework.storage.core.model;
+package com.kewen.framework.storage.web.model;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -11,7 +11,9 @@ import lombok.experimental.Accessors;
  */
 @Data
 @Accessors(chain = true)
-public class PreUploadTokenBO {
+public class PreUploadTokenResp {
+
+    private Long fileId;
     private String key;
     private String uploadToken;
 }

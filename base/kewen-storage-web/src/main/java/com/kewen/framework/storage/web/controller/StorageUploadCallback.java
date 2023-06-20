@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
+ * 文件上传完成回调
  * @author kewen
  * @since 2023-06-19
  */
@@ -22,6 +23,12 @@ public class StorageUploadCallback {
 
     @Autowired
     StorageService storageService;
+
+    /**
+     * 文件上传回调函数
+     * @param req
+     * @return
+     */
     @RequestMapping("/upload/callback")
     public Result uploadCallback(@RequestBody UploadCallbackReq req){
 
