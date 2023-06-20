@@ -38,7 +38,7 @@ public class QiNiuStorageTemplate implements StorageTemplate {
     /**
      * 是否是公开空间
      */
-    private final boolean isPublish;
+    private final boolean isPublic;
     /**
      * 下载的域名地址
      */
@@ -47,7 +47,7 @@ public class QiNiuStorageTemplate implements StorageTemplate {
     private final String callbackUrl;
     UploadManager uploadManager;
 
-    public QiNiuStorageTemplate(String accessKey, String secretKey, Region region, String bucket, boolean isPublish, String downloadDomain, String callbackUrl) {
+    public QiNiuStorageTemplate(String accessKey, String secretKey, Region region, String bucket, boolean isPublic, String downloadDomain, String callbackUrl) {
 
 
         this.auth = Auth.create(accessKey, secretKey);
@@ -60,7 +60,7 @@ public class QiNiuStorageTemplate implements StorageTemplate {
         //...其他参数参考类注释
         this.uploadManager = new UploadManager(cfg);
         this.bucket = bucket;
-        this.isPublish = isPublish;
+        this.isPublic = isPublic;
         this.downloadDomain = downloadDomain;
         this.callbackUrl = callbackUrl;
     }
@@ -103,7 +103,7 @@ public class QiNiuStorageTemplate implements StorageTemplate {
         //        .setStyle(style, styleSeparator, styleParam) // 配置 style
         try {
             String urlString;
-            if (isPublish) {
+            if (isPublic) {
                 urlString = url.buildURL();
             } else {
                 // 带有效期
