@@ -13,6 +13,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class PreUploadTokenBO {
 
+    private Long fileId;
     private String key;
     private String uploadToken;
 }

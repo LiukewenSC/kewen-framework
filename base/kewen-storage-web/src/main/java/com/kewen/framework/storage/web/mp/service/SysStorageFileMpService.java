@@ -1,6 +1,6 @@
 package com.kewen.framework.storage.web.mp.service;
 
-import com.kewen.framework.storage.web.mp.entity.SysFileStorage;
+import com.kewen.framework.storage.web.mp.entity.SysStorageFile;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
@@ -14,8 +14,8 @@ import java.util.List;
  * </p>
  *
  * @author kewen
- * @since 2023-04-24
+ * @since 2023-06-20
  */
-public interface SysFileStorageMpService extends IService<SysFileStorage> {
+public interface SysStorageFileMpService extends IService<SysStorageFile> {
 
 }

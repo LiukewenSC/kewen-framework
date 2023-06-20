@@ -16,13 +16,13 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author kewen
- * @since 2023-04-24
+ * @since 2023-06-20
  */
 @Getter
 @Setter
 @Accessors(chain = true)
-@TableName("sys_file_storage")
-public class SysFileStorage extends Model<SysFileStorage> {
+@TableName("sys_storage_file")
+public class SysStorageFile extends Model<SysStorageFile> {
 
     private static final long serialVersionUID = 1L;
 
@@ -36,22 +36,13 @@ public class SysFileStorage extends Model<SysFileStorage> {
     private String fileName;
 
     /**
-     * 对象存储名
+     * 存储路径
      */
-    @TableField("storage_name")
-    private String storageName;
-    /**
-     * 存储地址
-     */
-    @TableField("path")
-    private String path;
+    @TableField("relative_directory")
+    private String relativeDirectory;
+
     /**
      * 文件类型
-     */
-    @TableField("file_type")
-    private String fileType;
-    /**
-     * 存储类型
      */
     @TableField("mime_type")
     private String mimeType;
@@ -61,6 +52,13 @@ public class SysFileStorage extends Model<SysFileStorage> {
      */
     @TableField("size")
     private Long size;
+
+
+    /**
+     * 0-等待上传 1-上传中 2-完成 3-失败
+     */
+    @TableField("status")
+    private Integer status;
 
 
     @Override

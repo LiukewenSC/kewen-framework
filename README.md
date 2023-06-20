@@ -40,7 +40,6 @@ kewen:
       type: token  # session/token
       expire-time: 2000  #过期时间  秒
   storage:
-    open-persistent: true
     type: qiniu
     access-key: qYUhPA6FvZ29dQ4pz1BgLwHaTcV2vt_rD-GoEEFB
     secret-key: eyihg0gLAyHd2j08geDCCWdI0UHOfhxzpjFpKso1

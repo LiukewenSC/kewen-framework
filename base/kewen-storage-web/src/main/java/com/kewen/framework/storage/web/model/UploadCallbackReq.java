@@ -8,10 +8,12 @@ import lombok.Data;
  */
 @Data
 public class UploadCallbackReq {
+    private Long fileId;
     private String key;
     private String hash;
     private String bucket;
-    private String fsize;
+    private Long size;
+    private String mimeType;
 
 
 }

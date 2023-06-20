@@ -5,13 +5,13 @@ import com.kewen.framework.storage.core.qiniu.QiNiuStorageTemplate;
 import com.kewen.framework.storage.web.FileResponseBodyAdvance;
 import com.kewen.framework.storage.web.controller.StorageController;
 import com.kewen.framework.storage.web.controller.StorageUploadCallback;
+import com.kewen.framework.storage.web.mp.service.SysStorageFileMpService;
+import com.kewen.framework.storage.web.mp.service.SysStorageModuleMpService;
 import com.kewen.framework.storage.web.service.StorageService;
-import com.kewen.framework.storage.web.service.impl.NoneStorageService;
-import com.kewen.framework.storage.web.service.impl.SysFileStorageService;
+import com.kewen.framework.storage.web.service.impl.DefaultStorageService;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -24,8 +24,8 @@ import org.springframework.context.annotation.Import;
  * @since 2023-04-24
  */
 @Configuration
-@EnableConfigurationProperties(StorageProperties.class)
-@Import(StorageAutoConfiguration.PersistentConfig.class)
+@EnableConfigurationProperties({StorageProperties.class})
+@Import(StorageAutoConfiguration.DefaultStorageServiceConfig.class)
 public class StorageAutoConfiguration {
 
     @Autowired
@@ -56,31 +56,33 @@ public class StorageAutoConfiguration {
         return new StorageUploadCallback();
     }
 
-
-
     @Bean
     FileResponseBodyAdvance fileResponseBodyAdvance(){
         return new FileResponseBodyAdvance();
     }
 
 
-    @Bean
+    /**
+     * 默认的存储逻辑配置，模块信息存储在数据库中
+     */
     @ConditionalOnMissingBean(StorageService.class)
-    StorageService storageService(){
-        return new NoneStorageService();
-    }
-
-    @ConditionalOnProperty(name = "kewen.storage.open-persistent",havingValue = "true")
-    @ComponentScan("com.kewen.framework.storage.web.mp")
     @MapperScan("com.kewen.framework.storage.web.mp.mapper")
-    public static class PersistentConfig{
+    @ComponentScan("com.kewen.framework.storage.web.mp")
+    public static class DefaultStorageServiceConfig{
+
         @Autowired
         StorageProperties storageProperties;
+
         @Bean
-        SysFileStorageService storageService(){
-            SysFileStorageService fileStorageService = new SysFileStorageService();
-            fileStorageService.setDownloadDomain(storageProperties.getDownloadDomain());
-            return fileStorageService;
+        StorageService storageService(StorageTemplate storageTemplate,SysStorageFileMpService storageFileMpService,
+                                      SysStorageModuleMpService storageModuleMpService){
+            DefaultStorageService service = new DefaultStorageService();
+            service.setStorageModuleMpService(storageModuleMpService);
+            service.setStorageTemplate(storageTemplate);
+            service.setStorageFileMpService(storageFileMpService);
+            service.setDownloadDomain(storageProperties.getDownloadDomain());
+
+            return service;
         }
 
     }
