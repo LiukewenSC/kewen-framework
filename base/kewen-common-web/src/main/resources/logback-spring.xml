@@ -51,11 +51,11 @@
             <maxHistory>30</maxHistory>
         </rollingPolicy>
         <!-- 此日志文档记录所有级别的 -->
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+        <!--<filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>all</level>
             <onMatch>ACCEPT</onMatch>
-            <!--<onMismatch>DENY</onMismatch>-->
-        </filter>
+            &lt;!&ndash;<onMismatch>DENY</onMismatch>&ndash;&gt;
+        </filter>-->
     </appender>
 
     <!--
@@ -100,7 +100,9 @@
         <springProfile name="dev">
             <appender-ref ref="CONSOLE" />
         </springProfile>
-        <appender-ref ref="FILE_LOG_APPENDER"/>
+        <springProfile name="prod">
+            <appender-ref ref="FILE_LOG_APPENDER"/>
+        </springProfile>
     </root>
 
 </configuration>
