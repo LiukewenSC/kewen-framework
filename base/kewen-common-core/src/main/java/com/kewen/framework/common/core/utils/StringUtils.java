@@ -6,6 +6,11 @@ package com.kewen.framework.common.core.utils;
  */
 public class StringUtils {
 
+        /**
+     * 将字节数组转换为字符串，并去除空白字符和换行符
+     * @param bytes 字节数组
+     * @return 去除空白字符和换行符后的字符串
+     */
     public static String strCompact(byte[] bytes){
         String s = new String(bytes);
         s = s.replace("\\s","");
@@ -15,4 +20,5 @@ public class StringUtils {
         s = s.replace(" ","");
         return s;
     }
+
 }
