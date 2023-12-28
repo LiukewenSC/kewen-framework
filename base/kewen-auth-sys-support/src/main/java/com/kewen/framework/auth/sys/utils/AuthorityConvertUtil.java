@@ -141,13 +141,13 @@ public class AuthorityConvertUtil {
             }
         }
         SysAuthorityObject object = new SysAuthorityObject();
-        if (!org.springframework.util.CollectionUtils.isEmpty(users)){
+        if (!CollectionUtils.isEmpty(users)){
             object.setUsers(users);
         }
-        if (!org.springframework.util.CollectionUtils.isEmpty(depts)){
+        if (!CollectionUtils.isEmpty(depts)){
             object.setDepts(depts);
         }
-        if (!org.springframework.util.CollectionUtils.isEmpty(positions)){
+        if (!CollectionUtils.isEmpty(positions)){
             object.setPositions(positions);
         }
         if (!CollectionUtils.isEmpty(roles)){
