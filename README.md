@@ -24,8 +24,8 @@ kewen:
   base:
     datasource:
       db-url: "liukewensc.mysql.rds.aliyuncs.com:3306/uucs"
-      username: uucs
-      password: UUCSuucs
+      username: ****
+      password: ****
     tenant:
       open: true
       tenant_id_column: tenant_id #租户列名
@@ -41,8 +41,8 @@ kewen:
       expire-time: 2000  #过期时间  秒
   storage:
     type: qiniu
-    access-key: qYUhPA6FvZ29dQ4pz1BgLwHaTcV2vt_rD-GoEEFB
-    secret-key: eyihg0gLAyHd2j08geDCCWdI0UHOfhxzpjFpKso1
+    access-key: ****
+    secret-key: ****
     bucket: kewen-blog
     is-public: false
     download-domain: rtk99wucl.hd-bkt.clouddn.com
