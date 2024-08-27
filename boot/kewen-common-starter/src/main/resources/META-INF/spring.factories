@@ -1,8 +1,10 @@
+org.springframework.boot.SpringApplicationRunListener=\
+  com.kewen.framework.boot.common.listener.PrintSpringApplicationRunListener
+
+org.springframework.context.ApplicationContextInitializer=\
+  com.kewen.framework.common.core.context.YmlConfigurationClassParserInitializer
+
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.kewen.framework.boot.common.config.WebConfig,\
+  com.kewen.framework.boot.common.config.EarlyFilterConfig,\
   com.kewen.framework.boot.common.config.AsyncConfig,\
-  com.kewen.framework.boot.common.config.RequestResponseParamsConfig
-
-org.springframework.boot.SpringApplicationRunListener=com.kewen.framework.boot.common.listener.PrintSpringApplicationRunListener
-
-org.springframework.context.ApplicationContextInitializer=com.kewen.framework.common.context.initializer.CommonContextInitializer
+  com.kewen.framework.boot.common.config.RequestResponseFormatConfig

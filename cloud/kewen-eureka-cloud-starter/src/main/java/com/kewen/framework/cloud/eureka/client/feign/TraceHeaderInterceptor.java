@@ -1,7 +1,7 @@
 package com.kewen.framework.cloud.eureka.client.feign;
 
-import com.kewen.framework.common.context.ContextConstant;
-import com.kewen.framework.common.context.TraceContext;
+import com.kewen.framework.common.logger.model.LoggerConstant;
+import com.kewen.framework.common.logger.context.TraceContext;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +21,7 @@ public class TraceHeaderInterceptor implements RequestInterceptor {
         //添加流水号
         String traceId = TraceContext.get();
         if (!StringUtils.isEmpty(traceId)){
-            requestTemplate.header(ContextConstant.TRACE_ID_KEY,traceId);
+            requestTemplate.header(LoggerConstant.TRACE_ID_KEY,traceId);
         }
     }
 }

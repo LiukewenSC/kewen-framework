@@ -2,7 +2,6 @@ package com.kewen.framework.boot.magic.controller;
 
 import com.kewen.framework.common.core.model.Result;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**

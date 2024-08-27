@@ -35,7 +35,7 @@
         </dependency>
         <dependency>
             <groupId>com.kewen.framework</groupId>
-            <artifactId>kewen-common-core</artifactId>
+            <artifactId>kewen-common</artifactId>
         </dependency>
         <dependency>
             <groupId>com.baomidou</groupId>

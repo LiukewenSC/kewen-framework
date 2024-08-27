@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.generator.config.OutputFile;
 import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.VelocityTemplateEngine;
-import com.kewen.framework.common.core.utils.YmlUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ResourceUtils;
@@ -204,15 +203,7 @@ public class CodeGenerator {
             String username = pro.getProperty("spring.datasource.username").trim();
             String password = pro.getProperty("spring.datasource.password").trim();
             return new DataSourceConfig.Builder(url,username,password);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            System.out.println("未找到文件，找 .yml");
-            Map<String,String> map = YmlUtils.parse("classpath:" + Config.APPLICATION_CONFIG_FILE + ".yml" , "spring.datasource" , Map.class);
-            String url = map.get("url").trim();
-            String username = map.get("username".trim());
-            String password = map.get("password").trim();
-            return new DataSourceConfig.Builder(url,username,password);
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
             throw new RuntimeException(e);
