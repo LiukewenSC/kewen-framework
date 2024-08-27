@@ -14,11 +14,7 @@
     <dependencies>
         <dependency>
             <groupId>com.kewen.framework</groupId>
-            <artifactId>kewen-common-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.kewen.framework</groupId>
-            <artifactId>kewen-auth-sys-support</artifactId>
+            <artifactId>kewen-common</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>

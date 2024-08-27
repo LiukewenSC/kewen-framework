@@ -1,6 +1,6 @@
 package com.kewen.framework.boot.extension;
 
-import com.kewen.framework.extension.support.DatabaseRequestParamPersistent;
+import com.kewen.framework.extension.support.DatabasePersistentRequest;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -23,8 +23,8 @@ public class ExtensionConfig {
      */
     @Bean
     @ConditionalOnProperty(name = "kewen.base.request.params-persistent",havingValue ="true")
-    DatabaseRequestParamPersistent databaseRequestParamPersistent(){
-        return new DatabaseRequestParamPersistent();
+    DatabasePersistentRequest databaseRequestParamPersistent(){
+        return new DatabasePersistentRequest();
     }
 
 }

@@ -34,17 +34,17 @@
 
             <dependency>
                 <groupId>com.kewen.framework</groupId>
-                <artifactId>kewen-common-core</artifactId>
+                <artifactId>kewen-common</artifactId>
                 <version>${framework-version}</version>
             </dependency>
             <dependency>
                 <groupId>com.kewen.framework</groupId>
-                <artifactId>kewen-common-context</artifactId>
+                <artifactId>kewen-common</artifactId>
                 <version>${framework-version}</version>
             </dependency>
             <dependency>
                 <groupId>com.kewen.framework</groupId>
-                <artifactId>kewen-common-web</artifactId>
+                <artifactId>kewen-common</artifactId>
                 <version>${framework-version}</version>
             </dependency>
 

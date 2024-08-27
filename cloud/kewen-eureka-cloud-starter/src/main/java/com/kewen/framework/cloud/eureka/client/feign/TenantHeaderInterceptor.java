@@ -1,6 +1,6 @@
 package com.kewen.framework.cloud.eureka.client.feign;
 
-import com.kewen.framework.common.context.TenantContext;
+import com.kewen.framework.common.tenant.TenantContext;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +20,7 @@ public class TenantHeaderInterceptor implements RequestInterceptor {
     @Override
     public void apply(RequestTemplate requestTemplate) {
         //添加租户
-        Long tenantId = TenantContext.get();
+        Object tenantId = TenantContext.get();
         if (tenantId !=null){
             requestTemplate.header(TENANT_ID,tenantId.toString());
         }

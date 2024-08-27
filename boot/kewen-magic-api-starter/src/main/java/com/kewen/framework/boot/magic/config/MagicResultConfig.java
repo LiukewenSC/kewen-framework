@@ -2,7 +2,6 @@ package com.kewen.framework.boot.magic.config;
 
 import com.kewen.framework.common.core.model.Result;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 import org.ssssssss.magicapi.core.context.RequestEntity;
 import org.ssssssss.magicapi.core.interceptor.ResultProvider;
 
