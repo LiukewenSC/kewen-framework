@@ -20,6 +20,10 @@
     <modules>
         <module>basic</module>
         <module>basic-spring-boot-starter</module>
+        <module>tenant-spring-boot-starter</module>
+        <module>sample-basic-boot</module>
+        <module>auth-spring-boot-starter</module>
+        <module>sample-auth-boot</module>
     </modules>
 
 
