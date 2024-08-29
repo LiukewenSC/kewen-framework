@@ -3,10 +3,10 @@ package com.kewen.framework.basic.logger;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.kewen.framework.basic.logger.request.BodyHttpServletRequest;
-import com.kewen.framework.basic.logger.request.PersistentRequestEvent;
-import com.kewen.framework.basic.logger.request.RequestInfo;
+import com.kewen.framework.basic.logger.request.RequestLoggerEvent;
+import com.kewen.framework.basic.logger.request.RequestLogger;
+import com.kewen.framework.basic.utils.RequestIpUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -27,11 +27,11 @@ import java.util.Map;
  */
 @Order(2)
 @Slf4j
-public class PersistentRequestFilter extends OncePerRequestFilter {
+public class RequestLoggerFilter extends OncePerRequestFilter {
 
     ApplicationEventPublisher applicationEventPublisher;
 
-    public PersistentRequestFilter(ApplicationEventPublisher applicationEventPublisher) {
+    public RequestLoggerFilter(ApplicationEventPublisher applicationEventPublisher) {
         this.applicationEventPublisher = applicationEventPublisher;
     }
 
@@ -45,23 +45,21 @@ public class PersistentRequestFilter extends OncePerRequestFilter {
 
         BodyHttpServletRequest innerRequest = new BodyHttpServletRequest(request);
 
-        Object body = parseBody(innerRequest);
-
-        RequestInfo requestInfo = new RequestInfo()
-                .setUrl(innerRequest.getRequestURI())
-                .setMethod(innerRequest.getMethod())
+        RequestLogger requestLogger = new RequestLogger()
+                .setIp(RequestIpUtil.getIp(request))
+                .setUrl(request.getRequestURI())
+                .setMethod(request.getMethod())
                 .setParams(params)
-                .setBody(body)
-                .setIp(innerRequest.getRemoteAddr())
+                .setBody(parseBody(innerRequest))
                 .setHeaders(headers)
                 ;
 
         log.info("请求ip:{},请求路径:{},请求方法{},请求params参数:{},请求body参数:{}",
-                requestInfo.getIp(),
-                requestInfo.getUrl(),
-                requestInfo.getMethod(),
-                requestInfo.getParams(),
-                requestInfo.getBody()
+                requestLogger.getIp(),
+                requestLogger.getUrl(),
+                requestLogger.getMethod(),
+                requestLogger.getParams(),
+                requestLogger.getBody()
         );
 
         //记录请求和时长
@@ -71,10 +69,10 @@ public class PersistentRequestFilter extends OncePerRequestFilter {
         } finally {
             long end = System.currentTimeMillis();
             int millisecond = (int) (end - start);
-            requestInfo.setExecMillisecond(millisecond);
+            requestLogger.setExecMillisecond(millisecond);
 
             //发布请求持久化事件
-            applicationEventPublisher.publishEvent(new PersistentRequestEvent(requestInfo));
+            applicationEventPublisher.publishEvent(new RequestLoggerEvent(requestLogger));
         }
     }
 

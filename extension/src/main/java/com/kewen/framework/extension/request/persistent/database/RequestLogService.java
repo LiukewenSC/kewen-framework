@@ -1,4 +1,4 @@
-package com.kewen.framework.extension.request.log;
+package com.kewen.framework.extension.request.persistent.database;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.kewen.framework.extension.mp.entity.SysRequestLog;

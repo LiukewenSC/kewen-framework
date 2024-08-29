@@ -1,9 +1,9 @@
-package com.kewen.framework.extension.request;
+package com.kewen.framework.extension.request.persistent;
 
 import com.alibaba.fastjson.JSON;
 
-import com.kewen.framework.basic.logger.request.PersistentRequestEvent;
-import com.kewen.framework.basic.logger.request.RequestInfo;
+import com.kewen.framework.basic.logger.request.RequestLoggerEvent;
+import com.kewen.framework.basic.logger.request.RequestLogger;
 import com.kewen.framework.basic.logger.trace.TraceContext;
 import com.kewen.framework.extension.mp.entity.SysRequestLog;
 import com.kewen.framework.extension.mp.service.SysRequestLogMpService;
@@ -15,23 +15,23 @@ import org.springframework.context.ApplicationListener;
  * @author kewen
  * @since 2023-04-26
  */
-public class DatabasePersistentListener implements ApplicationListener<PersistentRequestEvent> {
+public class DatabasePersistentListener implements ApplicationListener<RequestLoggerEvent> {
 
     SysRequestLogMpService requestLogMpService;
 
     @Override
-    public void onApplicationEvent(PersistentRequestEvent event) {
-        save(event.getRequestInfo());
+    public void onApplicationEvent(RequestLoggerEvent event) {
+        save(event.getRequestLogger());
     }
-    public void save(RequestInfo requestInfo ) {
+    public void save(RequestLogger requestLogger) {
         SysRequestLog sysRequestLog = new SysRequestLog()
-                .setMethod(requestInfo.getMethod())
-                .setMillisecond(requestInfo.getExecMillisecond())
-                .setIpAddress(requestInfo.getIp())
+                .setMethod(requestLogger.getMethod())
+                .setMillisecond(requestLogger.getExecMillisecond())
+                .setIpAddress(requestLogger.getIp())
                 .setIpComment(null)
-                .setParams(requestInfo.getParams())
-                .setBody(JSON.toJSONString(requestInfo.getBody()))
-                .setUrl(requestInfo.getUrl())
+                .setParams(requestLogger.getParams())
+                .setBody(JSON.toJSONString(requestLogger.getBody()))
+                .setUrl(requestLogger.getUrl())
                 .setTraceId(TraceContext.get())
         ;
         requestLogMpService.save(sysRequestLog);
