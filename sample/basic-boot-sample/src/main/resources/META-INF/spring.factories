@@ -1,0 +1,2 @@
+org.springframework.boot.SpringApplicationRunListener=com.kewen.framework.sample.basic.listener.SpringBootLifeCycleListener
+org.springframework.boot.SpringBootExceptionReporter=com.kewen.framework.sample.basic.listener.ExceptionReporter
