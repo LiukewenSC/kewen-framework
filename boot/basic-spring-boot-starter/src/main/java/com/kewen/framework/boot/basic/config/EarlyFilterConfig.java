@@ -4,7 +4,7 @@ package com.kewen.framework.boot.basic.config;
 
 import com.kewen.framework.basic.filter.EarlyRequestFilter;
 import com.kewen.framework.basic.filter.EarlyRequestFilterProxy;
-import com.kewen.framework.basic.logger.PersistentRequestFilter;
+import com.kewen.framework.basic.logger.RequestLoggerFilter;
 import com.kewen.framework.basic.logger.TraceRequestFilter;
 import com.kewen.framework.basic.logger.trace.TraceIdProcessor;
 import org.springframework.beans.factory.ObjectProvider;
@@ -34,8 +34,8 @@ public class EarlyFilterConfig {
      * @return
      */
     @Bean
-    PersistentRequestFilter requestInfoFilter(ApplicationEventPublisher applicationEventPublisher){
-        return new PersistentRequestFilter(applicationEventPublisher);
+    RequestLoggerFilter requestInfoFilter(ApplicationEventPublisher applicationEventPublisher){
+        return new RequestLoggerFilter(applicationEventPublisher);
     }
 
 

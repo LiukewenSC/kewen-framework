@@ -1,4 +1,4 @@
-package com.kewen.framework.extension.request.log;
+package com.kewen.framework.extension.request.persistent.database;
 
 import lombok.Data;
 import lombok.experimental.Accessors;

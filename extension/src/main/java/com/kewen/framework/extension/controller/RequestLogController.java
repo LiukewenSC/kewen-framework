@@ -1,9 +1,9 @@
-package com.kewen.framework.extension.request;
+package com.kewen.framework.extension.controller;
 
 
 import com.kewen.framework.basic.model.Result;
-import com.kewen.framework.extension.request.log.RequestLogService;
-import com.kewen.framework.extension.request.log.TodayStatisticResp;
+import com.kewen.framework.extension.request.persistent.database.RequestLogService;
+import com.kewen.framework.extension.request.persistent.database.TodayStatisticResp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
