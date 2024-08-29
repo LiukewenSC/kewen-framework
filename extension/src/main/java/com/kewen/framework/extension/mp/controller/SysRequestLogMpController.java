@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.validation.annotation.Validated;
 
-import com.kewen.framework.common.core.model.PageResult;
-import com.kewen.framework.common.core.model.Result;
-import com.kewen.framework.common.core.model.IdReq;
-import com.kewen.framework.common.core.model.IdsReq;
-import com.kewen.framework.common.core.model.PageReq;
+import com.kewen.framework.basic.model.PageResult;
+import com.kewen.framework.basic.model.Result;
+import com.kewen.framework.basic.model.IdReq;
+import com.kewen.framework.basic.model.IdsReq;
+import com.kewen.framework.basic.model.PageReq;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
