@@ -18,12 +18,8 @@
     </properties>
 
     <modules>
-        <module>base</module>
-        <module>boot</module>
-        <module>cloud</module>
-        <module>cloud-alibaba</module>
-        <module>other</module>
-        <module>sample</module>
+        <module>basic</module>
+        <module>basic-spring-boot-starter</module>
     </modules>
 
 
@@ -31,101 +27,6 @@
         <dependencies>
 
             <!--************子工程模块************-->
-
-            <dependency>
-                <groupId>com.kewen.framework</groupId>
-                <artifactId>kewen-common</artifactId>
-                <version>${framework-version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.kewen.framework</groupId>
-                <artifactId>kewen-common</artifactId>
-                <version>${framework-version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.kewen.framework</groupId>
-                <artifactId>kewen-common</artifactId>
-                <version>${framework-version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.kewen.framework</groupId>
-                <artifactId>kewen-auth-core</artifactId>
-                <version>${framework-version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.kewen.framework</groupId>
-                <artifactId>kewen-auth-sys-support</artifactId>
-                <version>${framework-version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.kewen.framework</groupId>
-                <artifactId>kewen-jdbc-core</artifactId>
-                <version>1.0-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>com.kewen.framework</groupId>
-                <artifactId>kewen-storage-core</artifactId>
-                <version>1.0-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>com.kewen.framework</groupId>
-                <artifactId>kewen-storage-web</artifactId>
-                <version>1.0-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>com.kewen.framework</groupId>
-                <artifactId>kewen-extension</artifactId>
-                <version>1.0-SNAPSHOT</version>
-            </dependency>
-
-
-            <!-- boot模块 -->
-            <dependency>
-                <groupId>com.kewen.framework</groupId>
-                <artifactId>kewen-common-starter</artifactId>
-                <version>${framework-version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.kewen.framework</groupId>
-                <artifactId>kewen-jdbc-starter</artifactId>
-                <version>${framework-version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.kewen.framework</groupId>
-                <artifactId>kewen-security-auth-starter</artifactId>
-                <version>${framework-version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.kewen.framework</groupId>
-                <artifactId>kewen-sso-starter</artifactId>
-                <version>${framework-version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.kewen.framework</groupId>
-                <artifactId>kewen-storage-starter</artifactId>
-                <version>1.0-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>com.kewen.framework</groupId>
-                <artifactId>kewen-extension-starter</artifactId>
-                <version>1.0-SNAPSHOT</version>
-            </dependency>
-
-
-            <!-- cloud模块 -->
-            <dependency>
-                <groupId>com.kewen.framework.cloud</groupId>
-                <artifactId>kewen-eureka-cloud-starter</artifactId>
-                <version>${framework-version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.kewen.framework.cloud.alibaba</groupId>
-                <artifactId>kewen-nacos-alibaba-starter</artifactId>
-                <version>${framework-version}</version>
-            </dependency>
-
 
             <!--************spring-cloud相关************-->
 
@@ -170,12 +71,6 @@
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
                 <version>2.11.0</version>
-            </dependency>
-            <!--已过期，建议使用 commons-io:commons-io-->
-            <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-io</artifactId>
-                <version>1.3.2</version>
             </dependency>
 
 
