@@ -1,0 +1,19 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: sample
+  profiles:
+    active: dev
+
+  datasource:
+    hikari:
+      auto-commit:true
+      connection-test-query:select 1
+      connection-timeout:30000
+      idle-timeout:600000
+      max-lifetime:1800000
+      maximum-pool-size:5
+      minimum-idle:2
+      validation-timeout:5000
+      pool-name:HikaraPool-1
