@@ -1,6 +1,6 @@
 package com.kewen.framework.storage.web.service.impl;
 
-import com.kewen.framework.common.core.exception.BizException;
+import com.kewen.framework.basic.exception.BizException;
 import com.kewen.framework.storage.StorageTemplate;
 import com.kewen.framework.storage.model.FileInfo;
 import com.kewen.framework.storage.model.PreUploadTokenBO;
@@ -12,7 +12,6 @@ import com.kewen.framework.storage.web.mp.entity.SysStorageModule;
 import com.kewen.framework.storage.web.mp.service.SysStorageFileMpService;
 import com.kewen.framework.storage.web.mp.service.SysStorageModuleMpService;
 import com.kewen.framework.storage.web.service.StorageService;
-import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.InputStream;
@@ -26,14 +25,10 @@ import java.util.stream.Collectors;
  */
 public class DefaultStorageService implements StorageService {
 
-
-    @Autowired
     StorageTemplate storageTemplate;
 
-    @Autowired
     SysStorageFileMpService storageFileMpService;
 
-    @Autowired
     SysStorageModuleMpService storageModuleMpService;
     
     @Override
@@ -125,11 +120,11 @@ public class DefaultStorageService implements StorageService {
 
     @Override
     public List<FileInfo> listDownloadInfo(List<Long> fileIds) {
-        List<SysStorageFile> SysStorageFiles = storageFileMpService.listByIds(fileIds);
-        if (CollectionUtils.isEmpty(SysStorageFiles)) {
+        List<SysStorageFile> sysStorageFiles = storageFileMpService.listByIds(fileIds);
+        if (sysStorageFiles == null) {
             return Collections.emptyList();
         }
-        return SysStorageFiles.stream()
+        return sysStorageFiles.stream()
                 .map(f -> new FileInfo(f.getId(), f.getFileName(), storageTemplate.downloadUrl(f.getFileKey()), f.getSize()))
                 .collect(Collectors.toList());
     }

@@ -19,15 +19,10 @@
 
     <modules>
         <module>basic</module>
-        <module>basic-spring-boot-starter</module>
-        <module>tenant-spring-boot-starter</module>
         <module>sample/basic-boot-sample</module>
-        <module>auth-spring-boot-starter</module>
         <module>sample/auth-boot-sample</module>
-        <module>magic-spring-boot-starter</module>
-        <module>storage-spring-boot-starter</module>
         <module>extension</module>
-        <module>extension-spring-boot-starter</module>
+        <module>boot</module>
     </modules>
 
 
