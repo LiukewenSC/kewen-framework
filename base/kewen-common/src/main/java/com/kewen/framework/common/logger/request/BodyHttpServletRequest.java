@@ -1,4 +1,4 @@
-package com.kewen.framework.common.logger.model;
+package com.kewen.framework.common.logger.request;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -34,13 +34,15 @@ public class BodyHttpServletRequest extends HttpServletRequestWrapper {
             inputStream = new RequestCachingInputStream(body);
         }
     }
+
+    /**
+     * 只有json格式的数据接收body
+     * @param request
+     * @return
+     */
     private boolean canParseBody(HttpServletRequest request){
         String contentType = request.getContentType();
-        // multipart/form-data; boundary=--------------------------806095705637677561579964
-        if (StringUtils.isNotBlank(contentType) && org.springframework.util.StringUtils.startsWithIgnoreCase(contentType, "multipart/")) {
-            return false;
-        }
-        return true;
+        return StringUtils.isNotBlank(contentType) && org.springframework.util.StringUtils.startsWithIgnoreCase(contentType, "application/json");
     }
 
     /**

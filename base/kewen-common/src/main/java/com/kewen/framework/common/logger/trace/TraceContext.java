@@ -1,6 +1,6 @@
-package com.kewen.framework.common.logger.context;
+package com.kewen.framework.common.logger.trace;
 
-import com.kewen.framework.common.logger.model.LoggerConstant;
+import com.kewen.framework.common.logger.LoggerConstant;
 import org.slf4j.MDC;
 
 /**

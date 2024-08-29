@@ -7,7 +7,7 @@ package com.kewen.framework.common.tenant;
  */
 public class TenantContext {
 
-    private static final ThreadLocal<Object> context = new InheritableThreadLocal<>();
+    private static final ThreadLocal<String> context = new InheritableThreadLocal<>();
 
 
     public static boolean support(){
@@ -17,7 +17,7 @@ public class TenantContext {
      * 获取租户id
      * @return
      */
-    public static Object get(){
+    public static String get(){
         return context.get();
     }
 
@@ -25,7 +25,7 @@ public class TenantContext {
      * 设置租户
      * @param tenantId
      */
-    public static void set(long tenantId){
+    public static void set(String tenantId){
         context.set(tenantId);
     }
 

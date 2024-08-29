@@ -1,4 +1,4 @@
-package com.kewen.framework.common.logger.model;
+package com.kewen.framework.common.logger;
 
 /**
  * 上下文常量
