@@ -2,9 +2,12 @@ package com.kewen.framework.common.logger;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
-import com.kewen.framework.common.logger.model.RequestInfo;
-import com.kewen.framework.common.logger.model.BodyHttpServletRequest;
+import com.kewen.framework.common.logger.request.PersistentRequestEvent;
+import com.kewen.framework.common.logger.request.RequestInfo;
+import com.kewen.framework.common.logger.request.BodyHttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -15,7 +18,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,7 +29,8 @@ import java.util.Map;
 @Slf4j
 public class PersistentRequestFilter extends OncePerRequestFilter {
 
-    List<PersistentRequestStore> persistenceList;
+    @Autowired
+    ApplicationEventPublisher applicationEventPublisher;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -65,13 +68,10 @@ public class PersistentRequestFilter extends OncePerRequestFilter {
         } finally {
             long end = System.currentTimeMillis();
             int millisecond = (int) (end - start);
-            for (PersistentRequestStore persistent : persistenceList) {
-                try {
-                    persistent.save(requestInfo,millisecond);
-                } catch (Throwable e) {
-                    log.warn(persistent.getClass().getName()+"持久化日志失败",e);
-                }
-            }
+            requestInfo.setExecMillisecond(millisecond);
+
+            //发布请求持久化事件
+            applicationEventPublisher.publishEvent(new PersistentRequestEvent(requestInfo));
         }
     }
 

@@ -5,6 +5,7 @@ import com.kewen.framework.common.core.filter.EarlyRequestFilter;
 import com.kewen.framework.common.core.filter.EarlyRequestFilterProxy;
 import com.kewen.framework.common.logger.PersistentRequestFilter;
 import com.kewen.framework.common.logger.TraceRequestFilter;
+import com.kewen.framework.common.logger.trace.TraceIdProcessor;
 import com.kewen.framework.common.tenant.TenantRequestFilter;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.context.annotation.Bean;
@@ -23,8 +24,8 @@ public class EarlyFilterConfig {
      * @return
      */
     @Bean
-    TraceRequestFilter traceRequestFilter(){
-        return new TraceRequestFilter();
+    TraceRequestFilter traceRequestFilter(ObjectProvider<TraceIdProcessor> traceIdProcessor){
+        return new TraceRequestFilter(traceIdProcessor);
     }
     /**
      * 租户过滤器

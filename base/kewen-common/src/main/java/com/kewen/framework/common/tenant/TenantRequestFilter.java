@@ -27,7 +27,7 @@ public class TenantRequestFilter implements EarlyRequestFilter {
             String tenantStr = request.getHeader("tenantId");
             if (StringUtils.isNotBlank(tenantStr)){
                 try {
-                    TenantContext.set((Long.parseLong(tenantStr)));
+                    TenantContext.set(tenantStr);
                     filterChain.doFilter(request, response);
                 } finally {
                     TenantContext.clear();

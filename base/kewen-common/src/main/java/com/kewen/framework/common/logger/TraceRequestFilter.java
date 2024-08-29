@@ -2,9 +2,11 @@ package com.kewen.framework.common.logger;
 
 import com.kewen.framework.common.core.filter.EarlyRequestFilter;
 import com.kewen.framework.common.core.utils.UUIDUtil;
-import com.kewen.framework.common.logger.model.LoggerConstant;
-import com.kewen.framework.common.logger.context.TraceContext;
+import com.kewen.framework.common.logger.trace.TraceContext;
+import com.kewen.framework.common.logger.trace.TraceIdProcessor;
+import com.kewen.framework.common.logger.trace.HeaderTraceIdProcessor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.core.annotation.Order;
 
 import javax.servlet.FilterChain;
@@ -22,13 +24,23 @@ import java.io.IOException;
 @Order(3)
 public class TraceRequestFilter implements EarlyRequestFilter {
 
+    private TraceIdProcessor traceIdProcessor;
+
+    public TraceRequestFilter(ObjectProvider<TraceIdProcessor> traceIdProcessor) {
+        TraceIdProcessor processor = traceIdProcessor.getIfAvailable();
+        if (processor == null) {
+            this.traceIdProcessor = new HeaderTraceIdProcessor();
+        } else {
+            this.traceIdProcessor = processor;
+        }
+    }
+
     @Override
     public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        //从请求中取得交易号，没有则生成一个
-        String traceId = request.getHeader(LoggerConstant.TRACE_ID_KEY);
-        if (traceId==null){
-            traceId = UUIDUtil.generate();
-        }
+
+        //获取请求头流水号
+        String traceId = traceIdProcessor.getTraceId(request);
+
         TraceContext.set(traceId);
         try {
             filterChain.doFilter(request,response);

@@ -1,4 +1,4 @@
-package com.kewen.framework.common.logger.model;
+package com.kewen.framework.common.logger.request;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -17,8 +17,10 @@ public class RequestInfo {
     private String method;
     private String params;
     private Object body;
-
     private String ip;
-
     private Map<String,String> headers;
+    /**
+     * 执行时间
+     */
+    private long execMillisecond;
 }
