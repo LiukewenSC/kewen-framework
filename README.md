@@ -22,33 +22,17 @@ kewen框架
 
 示例表明的为默认值
 
-```yml
+```yaml
 kewen:
-  base:
-    datasource:
-      db-url: "liukewensc.mysql.rds.aliyuncs.com:3306/uucs"
-      username: ****
-      password: ****
-    tenant:
-      open: true
-      tenant_id_column: tenant_id #租户列名
-      ignore_prefix_tables: sys_log,sys_dict  # 排除的表字段前缀
-    request:
-      params-persistent: true  # 请求参数持久化开启
-  auth:
-    login-endpoint: /login
-    logout-endpoint: /logout
-    permit-url: /auth/getWebSiteName
-    store: 
-      type: token  # session/token
-      expire-time: 2000  #过期时间  秒
-  storage:
-    type: qiniu
-    access-key: ****
-    secret-key: ****
-    bucket: kewen-blog
-    is-public: false
-    download-domain: rtk99wucl.hd-bkt.clouddn.com
-
-
+  message:
+    fang-tang:
+      key: ''
+      domain: https://sctapi.ftqq.com
+  request:
+    message:
+      fang-tang: true
+    persistent:
+      database: true
+  tenant:
+    open: false
 ```
