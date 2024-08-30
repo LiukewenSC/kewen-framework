@@ -2,12 +2,14 @@ package com.kewen.framework.basic.logger;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
+import com.kewen.framework.basic.filter.EarlyRequestFilter;
 import com.kewen.framework.basic.logger.request.BodyHttpServletRequest;
 import com.kewen.framework.basic.logger.request.RequestLoggerEvent;
 import com.kewen.framework.basic.logger.request.RequestLogger;
 import com.kewen.framework.basic.utils.RequestIpUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -25,19 +27,14 @@ import java.util.Map;
  * @author kewen
  * @since 2023-04-26
  */
-@Order(2)
+@Order(3)
 @Slf4j
-public class RequestLoggerFilter extends OncePerRequestFilter {
+public class RequestLoggerFilter implements EarlyRequestFilter , ApplicationEventPublisherAware {
 
     ApplicationEventPublisher applicationEventPublisher;
 
-    public RequestLoggerFilter(ApplicationEventPublisher applicationEventPublisher) {
-        this.applicationEventPublisher = applicationEventPublisher;
-    }
-
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
+    public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         Map<String, String> headers = parseHeaders(request);
 
@@ -119,5 +116,10 @@ public class RequestLoggerFilter extends OncePerRequestFilter {
     private Object parseBody(BodyHttpServletRequest request){
         byte[] body = request.getBody();
         return body==null? null:JSON.parse(body);
+    }
+
+    @Override
+    public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
+        this.applicationEventPublisher=applicationEventPublisher;
     }
 }

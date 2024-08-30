@@ -21,7 +21,7 @@ import java.io.IOException;
  * @since 2023-04-26
  */
 @Slf4j
-@Order(3)
+@Order(1)
 public class TraceRequestFilter implements EarlyRequestFilter {
 
     private TraceIdProcessor traceIdProcessor;

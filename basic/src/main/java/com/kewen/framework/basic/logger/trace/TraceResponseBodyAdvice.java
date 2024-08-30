@@ -25,25 +25,7 @@ public class TraceResponseBodyAdvice implements ResponseBodyAdvice<Result> {
 
     @Override
     public Result beforeBodyWrite(Result body, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
-        //坑爹的fastjson
-        TraceResult result = new TraceResult();
-        result.setCode(body.getCode());
-        result.setMessage(body.getMessage());
-        result.setSuccess(body.getSuccess());
-        result.setData(body.getData());
-        result.setTraceId(TraceContext.get());
-        return result;
+        return TraceResult.of(body, TraceContext.get());
     }
 
-    private static class TraceResult extends Result {
-        private String traceId;
-
-        public String getTraceId() {
-            return traceId;
-        }
-
-        public void setTraceId(String traceId) {
-            this.traceId = traceId;
-        }
-    }
 }

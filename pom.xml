@@ -11,7 +11,7 @@
     <modelVersion>4.0.0</modelVersion>
     <properties>
         <framework-version>1.0-SNAPSHOT</framework-version>
-        <mybaits-plus-version>3.5.2</mybaits-plus-version>
+        <mybaits-plus-version>3.5.7</mybaits-plus-version>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -19,12 +19,21 @@
 
     <modules>
         <module>basic</module>
-        <module>sample/basic-boot-sample</module>
-        <module>sample/auth-boot-sample</module>
-        <module>extension</module>
+        <module>basic-support</module>
         <module>boot</module>
+        <module>sample</module>
     </modules>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure-processor</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+        </dependency>
+    </dependencies>
 
     <dependencyManagement>
         <dependencies>

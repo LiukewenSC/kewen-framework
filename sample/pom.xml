@@ -9,16 +9,13 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.kewen.framework.boot</groupId>
-    <artifactId>boot</artifactId>
+    <groupId>com.kewen.framework.sample</groupId>
+    <artifactId>sample</artifactId>
     <packaging>pom</packaging>
 
     <modules>
-        <module>basic-spring-boot-starter</module>
-        <module>tenant-spring-boot-starter</module>
-        <module>auth-spring-boot-starter</module>
-        <module>magic-spring-boot-starter</module>
-        <module>storage-spring-boot-starter</module>
+        <module>auth-boot-sample</module>
+        <module>basic-boot-sample</module>
     </modules>
 
     <properties>
