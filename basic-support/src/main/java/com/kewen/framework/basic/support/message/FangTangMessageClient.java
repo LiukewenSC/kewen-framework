@@ -12,6 +12,7 @@ import java.util.Map;
 
 /**
  * 方糖消息发送控制器
+ *
  * @author kewen
  * @since 2024-08-29
  */
@@ -19,38 +20,43 @@ public class FangTangMessageClient {
 
     private static final Logger log = LoggerFactory.getLogger(FangTangMessageClient.class);
 
-    String key ;
+    String key;
 
     String domain;
 
-    @Value("${spring.application.name}")
-    String applicationName;
+
 
     public FangTangMessageClient() {
         log.info("开启方糖消息推送");
     }
 
-    public void sendMessage(String title, String content) {
+
+    public void sendMessage(FangTangMessageDTO entity) {
 
         try {
             //这里content可以考虑弄成md或HTML格式的，方便阅读
-            String url = domain +"/" + key + ".send";
-            Map<Object, Object> build = MapBuilder.create().put("title", appendTitle(title)).put("desp", content).build();
-            String body = HttpUtil.createPost(url)
+            String url = domain + "/" + key + ".send";
+
+            Map<Object, Object> body = MapBuilder.create()
+                    .put("title", entity.getTitle())
+                    .put(entity.getDesp() != null, "desp", entity.getDesp())
+                    .put(entity.getShortDesp() != null, "short", entity.getShortDesp())
+                    .put(entity.getNoip() != null, "noip", entity.getNoip())
+                    .put(entity.getChannel() != null, "channel", entity.getChannel())
+                    .put(entity.getOpenid() != null, "openid", entity.getOpenid())
+                    .build();
+
+            String result = HttpUtil.createPost(url)
                     .contentType("application/json")
-                    .body(JSONObject.toJSONString(build))
+                    .body(JSONObject.toJSONString(body))
                     .execute()
                     .body();
             if (log.isDebugEnabled()) {
-                log.debug("返回信息:{}", body);
+                log.debug("返回信息:{}", result);
             }
         } catch (Throwable t) {
-            log.warn("方糖服务异常: " + t.getMessage(),t);
+            log.warn("方糖服务异常: " + t.getMessage(), t);
         }
-    }
-
-    private String appendTitle(String title) {
-        return applicationName +"工程消息: " +title;
     }
 
 
