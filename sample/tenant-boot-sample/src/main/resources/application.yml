@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: sample
+  datasource:
+    url: jdbc:mysql://liukewensc.mysql.rds.aliyuncs.com:3306/dev_framework_demo
+    username: kewen
+    password: Lh19921002
+    driver-class-name: com.mysql.cj.jdbc.Driver
+kewen:
+  tenant:
+    open: true
+
