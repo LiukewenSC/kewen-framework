@@ -1,0 +1,16 @@
+{
+  "properties": [
+    {
+      "name": "kewen.request.persistent.database",
+      "type": "java.lang.Boolean",
+      "defaultValue": false,
+      "description": "开启请求日志持久化到数据库."
+    },
+    {
+      "name": "kewen.request.message.fang-tang",
+      "type": "java.lang.Boolean",
+      "defaultValue": false,
+      "description": "开启请求IP发送到方糖消息中."
+    }
+  ]
+}

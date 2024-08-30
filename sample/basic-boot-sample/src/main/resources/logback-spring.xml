@@ -3,11 +3,6 @@
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
     <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
     <jmxConfigurator/>
-
-    <!-- 定义日志存储的路径 -->
-    <!--<property name="FILE_PATH" value="log/${spring.application.name}-log.%d{yyyy-MM-dd}.%i.log" />-->
-
-    <!-- 定义了一个名为logging.path的属性，它的值来自于spring中的logging.file.path，如果没有找到该属性默认为MyServerName（根据业务修改） -->
     <springProperty name="logging.path" source="logging.file.path" defaultValue="./logs"/>
     <springProperty name="logging.name" source="logging.file.name" defaultValue="logback"/>
 
@@ -24,13 +19,12 @@
             <totalSizeCap>2GB</totalSizeCap>
         </rollingPolicy>
         <encoder>
-            <pattern>%d{yyyy-MM-dd} %d{HH:mm:ss.SSS}  [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <pattern>%d{yyyy-MM-dd} %d{HH:mm:ss.SSS} %X{traceId} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
 
     <!-- 日志输出级别 -->
     <root level="INFO">
         <appender-ref ref="rollingFile"/>
-        <appender-ref ref="CONSOLE"/>
     </root>
 </configuration>
