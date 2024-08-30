@@ -3,10 +3,11 @@ server:
 spring:
   application:
     name: sample
-  profiles:
-    active: dev
-
   datasource:
+    url: jdbc:mysql://liukewensc.mysql.rds.aliyuncs.com:3306/dev_framework_demo
+    username: kewen
+    password: Lh19921002
+    driver-class-name: com.kewen.framework.boot.basic.p6spy.KP6SpyDriver
     hikari:
       auto-commit:true
       connection-test-query:select 1
@@ -17,3 +18,13 @@ spring:
       minimum-idle:2
       validation-timeout:5000
       pool-name:HikaraPool-1
+kewen:
+  message:
+    fang-tang:
+      key: SCT248328TA-iYbvN5Vab4ixXBUOqA60fLY5
+      domain: https://sctapi.ftqq.com
+  request:
+    message:
+      fang-tang: true
+    persistent:
+      database: true

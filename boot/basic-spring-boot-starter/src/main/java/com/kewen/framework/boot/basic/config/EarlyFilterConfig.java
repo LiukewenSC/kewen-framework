@@ -34,8 +34,8 @@ public class EarlyFilterConfig {
      * @return
      */
     @Bean
-    RequestLoggerFilter requestInfoFilter(ApplicationEventPublisher applicationEventPublisher){
-        return new RequestLoggerFilter(applicationEventPublisher);
+    RequestLoggerFilter requestInfoFilter(){
+        return new RequestLoggerFilter();
     }
 
 
