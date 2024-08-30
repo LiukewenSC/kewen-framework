@@ -19,21 +19,19 @@ import java.io.IOException;
 @Order(2)
 public class TenantRequestFilter implements EarlyRequestFilter {
 
-    private boolean isOpenTenant;
-
     @Override
     public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
-        if (isOpenTenant){
-            String tenantStr = request.getHeader("tenantId");
-            if (!StringUtils.hasText(tenantStr)){
-                try {
-                    TenantContext.set(Long.parseLong(tenantStr));
-                    filterChain.doFilter(request, response);
-                } finally {
-                    TenantContext.clear();
-                }
+        String tenantStr = request.getHeader(TenantConstant.TENANT_ID);
+        if (StringUtils.hasText(tenantStr)){
+            try {
+                TenantContext.set(Long.parseLong(tenantStr));
+                filterChain.doFilter(request, response);
+            } finally {
+                TenantContext.clear();
             }
+        } else {
+            filterChain.doFilter(request, response);
         }
-        filterChain.doFilter(request, response);
+
     }
 }

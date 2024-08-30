@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.kewen.framework.tenant.config.TenantConfig,\
+  com.kewen.framework.tenant.feign.TenantHeaderInterceptor
