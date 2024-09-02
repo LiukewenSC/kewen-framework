@@ -5,19 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-/**
- * 发起推送
- * 地址 https://sct.ftqq.com/sendkey
- * 向以下 URL 发送一个 HTTP 请求，并传递参数即可。
- * https://sctapi.ftqq.com/****************.send
- * 如果采用GET，请将参数通过`urlencode`编码；
- * 如果采用 POST 方式，默认以 FORM 方式解码，
- * 如果要通过 JSON 格式传递，请在 Header 中指定 `Content-type` 为 `application/json`，比如：
- * curl -X "POST" "https://sctapi.ftqq.com/key.send" -H 'Content-Type: application/json;charset=utf-8' -d ...
- *
- * @author kewen
- * @since 2024-08-30
- */
 @Getter
 @Setter
 @Accessors(chain = true)

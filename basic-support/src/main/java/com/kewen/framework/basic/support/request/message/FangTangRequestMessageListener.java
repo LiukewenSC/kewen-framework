@@ -7,12 +7,14 @@ import com.kewen.framework.basic.logger.request.RequestLoggerEvent;
 import com.kewen.framework.basic.logger.request.RequestLogger;
 import com.kewen.framework.basic.support.message.FangTangMessageClient;
 import com.kewen.framework.basic.support.message.FangTangMessageDTO;
+import com.kewen.framework.basic.support.request.MdUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.scheduling.annotation.Async;
 
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
@@ -53,15 +55,33 @@ public class FangTangRequestMessageListener implements ApplicationListener<Reque
                 //每次过期后新请求需要写一次数据
                 fangTangMessageClient.sendMessage(
                         new FangTangMessageDTO()
-                                .setTitle("[" + applicationName + "]消息")
+                                .setTitle("[" + applicationName + "]消息,\nIP["+requestLogger.getIp()+"]")
                                 .setShortDesp("IP["+requestLogger.getIp()+"]发起请求")
-                                .setDesp(JSONObject.toJSONString(requestLogger))
+                                .setDesp(parseMarkdown(requestLogger))
                 );
                 return object;
             });
         } catch (ExecutionException e) {
             throw new RuntimeException(e);
         }
+    }
+    private String parseMarkdown(RequestLogger requestLogger){
+        MdUtil.SectionBuilder builder = MdUtil.of()
+                .bigTitle("ip地址")
+                .text(requestLogger.getIp())
+                .bigTitle("url")
+                .text(requestLogger.getUrl());
+        builder.bigTitle("headers");
+        for (Map.Entry<String, String> entry : requestLogger.getHeaders().entrySet()) {
+            builder.text(entry.getKey(),entry.getValue());
+        }
+        builder.br();
+        builder.bigTitle("params")
+                .text(requestLogger.getParams());
+        builder.bigTitle("body")
+                .text(requestLogger.getBody().toString());
+
+        return builder.build();
     }
 
     public void setFangTangMessageClient(FangTangMessageClient fangTangMessageClient) {

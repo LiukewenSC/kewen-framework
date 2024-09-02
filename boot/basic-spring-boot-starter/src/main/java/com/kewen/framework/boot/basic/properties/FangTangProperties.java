@@ -10,7 +10,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @since 2024-08-30
  */
 @ConfigurationProperties("kewen.message.fang-tang")
-@Data
 public class FangTangProperties {
     /**
      * 秘钥
@@ -22,4 +21,19 @@ public class FangTangProperties {
     private String domain ="https://sctapi.ftqq.com";
 
 
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getDomain() {
+        return domain;
+    }
+
+    public void setDomain(String domain) {
+        this.domain = domain;
+    }
 }
