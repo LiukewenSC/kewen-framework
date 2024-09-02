@@ -55,7 +55,7 @@ public class FangTangRequestMessageListener implements ApplicationListener<Reque
                 //每次过期后新请求需要写一次数据
                 fangTangMessageClient.sendMessage(
                         new FangTangMessageDTO()
-                                .setTitle("[" + applicationName + "]消息,\nIP["+requestLogger.getIp()+"]")
+                                .setTitle("[" + applicationName + "]消息, IP["+requestLogger.getIp()+"]")
                                 .setShortDesp("IP["+requestLogger.getIp()+"]发起请求")
                                 .setDesp(parseMarkdown(requestLogger))
                 );
