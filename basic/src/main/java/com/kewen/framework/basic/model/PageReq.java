@@ -8,18 +8,16 @@ import javax.validation.constraints.NotNull;
 @Data
 public class PageReq {
     /**
-     * 页码
+     * 页码，从1开始
      */
+    @NotNull
+    private Long page;
 
-    @NotNull
-    @Min(value = 1L)
-    protected Integer page;
     /**
-     * 每页条数
+     * 页面大小
      */
     @NotNull
-    @Min(value = 1L)
-    protected Integer size;
+    private Long size;
 
     /**
      * 模糊搜索关键字
@@ -30,7 +28,7 @@ public class PageReq {
      * 从0开始
      * @return
      */
-    public Integer getOffset(){
+    public Long getOffset(){
         return (page-1)*size;
     }
 }

@@ -61,8 +61,8 @@ public class ExceptionAdviceHandler {
 
     @ExceptionHandler(InsufficientAuthenticationException.class)
     public Result insufficientAuthenticationException(InsufficientAuthenticationException t){
-        logger.error("授权异常：{}", t.getMessage(), t);
-        return Result.failed(401, t.getMessage());
+        logger.error("请求的权限不足，需要提升：{}", t.getMessage(), t);
+        return Result.failed(401, "请求的权限不足，需要提升，请重新登录");
     }
 
 }
