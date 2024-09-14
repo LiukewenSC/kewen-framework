@@ -76,7 +76,7 @@ public class FileResponseBodyAdvance implements ResponseBodyAdvice<Result> {
         }
         //2 返回对象为Page的情况
         else if (data instanceof PageResult) {
-            List<?> records = ((PageResult<?>) data).getRecords();
+            List<?> records = ((PageResult<?>) data).getData();
             if (records != null){
                 for (Object record : records) {
                     fetchFileFill(needFills, record);
