@@ -176,6 +176,9 @@ public class CodeGenerator {
         if (!CollectionUtils.isEmpty(properties.getIgnoreTablePrefix())){
             tableNames.removeIf(tableName -> properties.getIgnoreTablePrefix().stream().anyMatch(tableName::startsWith));
         }
+        if (tableNames.isEmpty() && !CollectionUtils.isEmpty(properties.getContainsTablePrefix())){
+            throw new RuntimeException("未查询到表");
+        }
         return tableNames;
     }
 
