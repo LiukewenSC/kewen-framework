@@ -26,25 +26,23 @@ public class Properties {
     private final String url = "jdbc:mysql://liukewensc.mysql.rds.aliyuncs.com:3306/kewen_own";
     private final String username = "kewen";
     private final String password = "Lh19921002";
-
     /**
      * 工程绝对路径地址，指定到src上面一层;
      * 为空则表示用代码生成器在的路径
      */
-    //public static final String ABSOLUTE_PATH="D:\\Projects\\kewen-framework\\base\\kewen-extension";
-    private final String absolutePath ="D:\\Projects\\kewen-framework\\base\\kewen-storage-web";
+    private final String absolutePath ="D:\\Projects\\kewen-own-backend";
 
     /**
      * 基础包名
      */
-    private final String basePackage = "com.kewen.framework.storage.web";
+    private final String basePackage = "com.kewen.own";
 
     /**
      * 是否开启swagger
      */
     private final boolean enableSwagger = false;
     private final List<String> ignoreTablePrefix = Arrays.asList("bak_","sys_log");
-    private final List<String> containsTablePrefix = Arrays.asList("sys_storage");
+    private final List<String> containsTablePrefix = Arrays.asList("notepad_note");
     /**
      * 作者
      */
