@@ -17,6 +17,7 @@
         <module>auth-boot-sample</module>
         <module>basic-boot-sample</module>
         <module>tenant-boot-sample</module>
+        <module>storage-boot-sample</module>
     </modules>
 
     <properties>
