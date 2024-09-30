@@ -1,18 +1,18 @@
 package com.kewen.framework.storage.web.mp.mapper;
 
+import com.kewen.framework.storage.web.mp.entity.FileDetail;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.kewen.framework.storage.web.mp.entity.SysStorageFile;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <p>
- * 文件存储 Mapper 接口
+ * 文件记录表 Mapper 接口
  * </p>
  *
  * @author kewen
- * @since 2023-06-20
+ * @since 2024-09-30
  */
 @Mapper
-public interface SysStorageFileMpMapper extends BaseMapper<SysStorageFile> {
+public interface FileDetailMpMapper extends BaseMapper<FileDetail> {
 
 }

@@ -10,10 +10,6 @@ import lombok.Data;
 @Data
 public class PreUploadTokenReq {
     /**
-     * 模块名
-     */
-    String moduleName;
-    /**
      * 文件名，可支持 /目录
      */
     String fileName;

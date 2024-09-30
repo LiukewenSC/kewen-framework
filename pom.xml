@@ -40,6 +40,16 @@
         <dependencies>
 
             <!--************子工程模块************-->
+            <dependency>
+                <groupId>com.kewen.framework.boot</groupId>
+                <artifactId>storage-spring-boot-starter</artifactId>
+                <version>${framework-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.kewen.framework.boot</groupId>
+                <artifactId>basic-spring-boot-starter</artifactId>
+                <version>${framework-version}</version>
+            </dependency>
 
             <!--************spring-cloud相关************-->
 
@@ -131,6 +141,18 @@
                 <artifactId>hutool-all</artifactId>
                 <version>5.8.18</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.dromara.x-file-storage</groupId>
+                <artifactId>x-file-storage-spring</artifactId>
+                <version>2.2.1</version>
+            </dependency>
+            <dependency>
+                <groupId>com.qiniu</groupId>
+                <artifactId>qiniu-java-sdk</artifactId>
+                <version>7.12.1</version>
+            </dependency>
+
 
             <!--************非项目依赖************-->
             <!--swagger-->

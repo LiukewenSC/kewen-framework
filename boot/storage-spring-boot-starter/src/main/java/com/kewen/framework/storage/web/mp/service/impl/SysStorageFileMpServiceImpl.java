@@ -1,10 +1,9 @@
 package com.kewen.framework.storage.web.mp.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.kewen.framework.storage.web.mp.entity.SysStorageFile;
 import com.kewen.framework.storage.web.mp.mapper.SysStorageFileMpMapper;
 import com.kewen.framework.storage.web.mp.service.SysStorageFileMpService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 /**
