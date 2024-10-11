@@ -34,6 +34,8 @@ public class QiNiuStorageTemplate implements StorageTemplate {
      */
     private final String bucket;
 
+    private final String rootPath;
+
     /**
      * 是否是公开空间
      */
@@ -46,7 +48,7 @@ public class QiNiuStorageTemplate implements StorageTemplate {
     private final String callbackUrl;
     UploadManager uploadManager;
 
-    public QiNiuStorageTemplate(String accessKey, String secretKey, Region region, String bucket, boolean isPublic, String downloadDomain, String callbackUrl) {
+    public QiNiuStorageTemplate(String accessKey, String secretKey, Region region, String bucket, String rootPath, boolean isPublic, String downloadDomain, String callbackUrl) {
 
 
         this.auth = Auth.create(accessKey, secretKey);
@@ -62,6 +64,7 @@ public class QiNiuStorageTemplate implements StorageTemplate {
         this.isPublic = isPublic;
         this.downloadDomain = downloadDomain;
         this.callbackUrl = callbackUrl;
+        this.rootPath = rootPath;
     }
 
     @Override
@@ -123,7 +126,7 @@ public class QiNiuStorageTemplate implements StorageTemplate {
 
         StringMap putPolicy = new StringMap();
 
-        String key = relativeDirectory + "/" + fileName;
+        String key = rootPath + "/" + relativeDirectory + "/" + fileName;
 
         // https://developer.qiniu.com/kodo/1206/put-policy
         putPolicy.put("callbackUrl", callbackUrl);
@@ -132,6 +135,8 @@ public class QiNiuStorageTemplate implements StorageTemplate {
                 "\"mimeType\":\"$(mimeType)\",\"fileId\":$(x:fileId)}"
         );
         putPolicy.put("callbackBodyType", "application/json");
+        putPolicy.put("persistentType", "1");
+        putPolicy.put("persistentNotifyUrl","https://33960819lh.oicp.vip/storage/upload/callbackAsync");
 
         //putPolicy.put("forceSaveKey",true);
         //putPolicy.put("saveKey",);

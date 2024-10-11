@@ -8,6 +8,7 @@ import com.kewen.framework.storage.web.model.PreUploadTokenReq;
 import com.kewen.framework.storage.web.model.PreUploadTokenResp;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -37,7 +38,7 @@ public class FileStorageEndpoint {
      * @return
      */
     @PostMapping("/genUploadToken")
-    public Result getUploadToken(@RequestBody PreUploadTokenReq req){
+    public Result getUploadToken(@RequestBody @Validated PreUploadTokenReq req){
         log.info("上传文件获取token {}", JSONObject.toJSONString(req));
         String yyyyMMdd = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
 
