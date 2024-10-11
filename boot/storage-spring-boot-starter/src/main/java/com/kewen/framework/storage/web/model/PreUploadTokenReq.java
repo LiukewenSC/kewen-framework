@@ -2,6 +2,8 @@ package com.kewen.framework.storage.web.model;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+
 /**
  * 预上传文件名
  * @author kewen
@@ -10,7 +12,8 @@ import lombok.Data;
 @Data
 public class PreUploadTokenReq {
     /**
-     * 文件名，可支持 /目录
+     * 文件名
      */
+    @NotBlank(message = "文件名不能为空")
     String fileName;
 }

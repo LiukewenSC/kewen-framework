@@ -23,14 +23,14 @@ public class Properties {
         CodeGenerator.main(args);
     }
 
-    private final String url = "jdbc:mysql://liukewensc.mysql.rds.aliyuncs.com:3306/dev_framework_demo";
+    private final String url = "jdbc:mysql://liukewensc.mysql.rds.aliyuncs.com:3306/kewen_own";
     private final String username = "kewen";
     private final String password = "Lh19921002";
     /**
      * 工程绝对路径地址，指定到src上面一层;
      * 为空则表示用代码生成器在的路径
      */
-    private final String absolutePath ="D:\\Projects\\kewen-framework\\sample\\storage-boot-sample";
+    private final String absolutePath ="D:\\Projects\\kewen-own-backend";
 
     /**
      * 基础包名
@@ -41,8 +41,8 @@ public class Properties {
      * 是否开启swagger
      */
     private final boolean enableSwagger = false;
+    private final List<String> containsTablePrefix = Arrays.asList("baby_growth_record");
     private final List<String> ignoreTablePrefix = Arrays.asList("bak_","sys_log");
-    private final List<String> containsTablePrefix = Arrays.asList("file_");
     /**
      * 作者
      */
