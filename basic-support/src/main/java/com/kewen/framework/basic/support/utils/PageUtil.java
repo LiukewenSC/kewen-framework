@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public class PageConverter {
+public class PageUtil {
 
     public static <T> Page<T> pageReq2BaomidouPage(PageReq PageReq) {
         return new Page<>(PageReq.getPage(), PageReq.getSize());
@@ -46,8 +46,11 @@ public class PageConverter {
      * @param <T> 数据类型
      * @return
      */
-    public static <T> PageResult<T> pageAndConvert(PageReq req, IService<T> service) {
-        return pageAndConvert(req, service, new Query<T>());
+    public static <T> PageResult<T> page(PageReq req, IService<T> service) {
+        return page(req, service, new Query<T>());
+    }
+    public static <T> PageResult<T> page(PageReq req, IService<T> service,Wrapper<T> wrapper) {
+        return page(req, service, new Query<T>());
     }
 
     /**
@@ -58,7 +61,7 @@ public class PageConverter {
      * @param <T> 数据类型
      * @return
      */
-    public static <T> PageResult<T> pageAndConvert(PageReq req, IService<T> service, Query<T> query) {
+    public static <T> PageResult<T> page(PageReq req, IService<T> service, Query<T> query) {
         Page<T> baomidoPage = new Page<>(req.getPage(), req.getSize());
 
         Consumer<Page<T>> consumer = query == null ? null : query.getPageConsumer();
@@ -84,8 +87,8 @@ public class PageConverter {
      * @param <R> 返回参数
      * @return
      */
-    public static <T, R> PageResult<R> pageAndConvert(PageReq req, IService<T> service, Query<T> query, Function<List<T>, List<R>> function) {
-        PageResult<T> PageResult = pageAndConvert(req, service, query);
+    public static <T, R> PageResult<R> page(PageReq req, IService<T> service, Query<T> query, Function<List<T>, List<R>> function) {
+        PageResult<T> PageResult = page(req, service, query);
         List<T> listT = PageResult.getData();
         List<R> listR = function.apply(listT);
         return PageResult.of(PageResult.getPage(), PageResult.getSize(), PageResult.getTotal(), listR);
