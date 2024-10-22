@@ -19,10 +19,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.validation.annotation.Validated;
+import org.apache.commons.lang3.StringUtils;
 
 import com.kewen.framework.auth.core.annotation.AuthMenu;
 import com.kewen.framework.basic.model.*;
-import com.kewen.framework.basic.support.utils.PageConverter;
+import com.kewen.framework.basic.support.utils.PageUtil;
 
 #if(${swagger})
 import io.swagger.annotations.Api;
@@ -120,21 +121,47 @@ public class ${table.controllerName} {
     @ApiOperation(value = "分页查询", notes = "")
     #end
     @GetMapping("/page")
-    public Result<PageResult<${entity}>> page(@Validated PageReq pageReq) {
-        return Result.success(
-                PageConverter.pageAndConvert(pageReq, ${table.entityPath}Service)
+    public Result<PageResult<${entity}>> page(@Validated PageReq pageReq,${entity} entity) {
+        PageResult<${entity}> pageResult = PageUtil.page(
+            pageReq,
+            ${table.entityPath}Service,
+            wrapper(entity)
         );
+        return Result.success(pageResult);
     }
 
     #if(${swagger})
     @ApiOperation(value = "列表查询", notes = "")
     #end
     @GetMapping(value = "/list")
-    public Result findList(@ModelAttribute ${entity} model) {
-
-        LambdaQueryWrapper<${entity}> wrapper = new LambdaQueryWrapper<>(model);
-        List<${entity}> list = ${table.entityPath}Service.list(wrapper);
+    public Result<List<${entity}>> list(${entity} entity) {
+        List<${entity}> list = ${table.entityPath}Service.list(
+                wrapper(entity)
+        );
         return Result.success(list);
+    }
+     /**
+     *  组装统一定义查询条件
+     * @param entity
+     * @return
+     */
+    private LambdaQueryWrapper<${entity}> wrapper(${entity} entity){
+        return new LambdaQueryWrapper<${entity}>()
+            //需要添加条件查询就在这里添加
+        #foreach($field in ${table.fields})
+            #set($fieldUpperFirst=$field.propertyName.substring(0,1).toUpperCase() + ${field.propertyName.substring(1)})
+            #if("$field.keyFlag"==true)
+                    .eq(entity.get${fieldUpperFirst}() !=null,${entity}::get$fieldUpperFirst,entity.get${fieldUpperFirst}())
+            #elseif("$field.columnType.type"=="String")
+                    .like(StringUtils.isNotBlank(entity.get${fieldUpperFirst}()),${entity}::get$fieldUpperFirst,entity.get${fieldUpperFirst}())
+            #else
+                    .eq(entity.get${fieldUpperFirst}() !=null,${entity}::get$fieldUpperFirst,entity.get${fieldUpperFirst}())
+            #end
+            #if ("$field.propertyName" == "$orderByDescProperty")
+                    .orderByDesc(${entity}::get${fieldUpperFirst})
+            #end
+        #end
+        ;
     }
 
 }

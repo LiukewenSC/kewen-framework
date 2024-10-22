@@ -23,25 +23,27 @@ public class Properties {
         CodeGenerator.main(args);
     }
 
-    private final String url = "jdbc:mysql://liukewensc.mysql.rds.aliyuncs.com:3306/kewen_own";
-    private final String username = "kewen";
-    private final String password = "Lh19921002";
+    private final String url = "jdbc:mysql://119.6.253.231:16102/emergency-product";
+    private final String username = "root";
+    private final String password = "Dplbtob@2019";
     /**
      * 工程绝对路径地址，指定到src上面一层;
      * 为空则表示用代码生成器在的路径
      */
-    private final String absolutePath ="D:\\Projects\\kewen-own-backend";
+    private final String absolutePath ="D:\\Projects\\kewen-framework\\sample\\auth-boot-sample";
 
     /**
      * 基础包名
      */
-    private final String basePackage = "com.kewen.own";
+    private final String basePackage = "com.kewen.framework.sample.auth";
+
+    private final String orderByDescProperty="createTime";
 
     /**
      * 是否开启swagger
      */
     private final boolean enableSwagger = false;
-    private final List<String> containsTablePrefix = Arrays.asList("baby_growth_record");
+    private final List<String> containsTablePrefix = Arrays.asList("sys_user");
     private final List<String> ignoreTablePrefix = Arrays.asList("bak_","sys_log");
     /**
      * 作者

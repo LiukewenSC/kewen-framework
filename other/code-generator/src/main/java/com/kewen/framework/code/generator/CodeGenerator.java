@@ -135,9 +135,9 @@ public class CodeGenerator {
 
                 })
                 .templateEngine(new VelocityTemplateEngine())
-                /*.injectionConfig(builder -> {
-                    builder.customMap(Collections.singletonMap("enableSwagger",Config.ENABLE_SWAGGER));
-                })*/
+                .injectionConfig(builder -> {
+                    builder.customMap(Collections.singletonMap("orderByDescProperty",properties.getOrderByDescProperty()));
+                })
                 ;
     }
 
