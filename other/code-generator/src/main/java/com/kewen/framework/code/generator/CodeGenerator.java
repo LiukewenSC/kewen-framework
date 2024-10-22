@@ -116,7 +116,7 @@ public class CodeGenerator {
                             .serviceBuilder()//service文件策略
                                 .fileOverride()
                                 .formatServiceFileName("%sMpService")//格式化 service 接口文件名称
-                                .formatServiceImplFileName("%sMpServiceImpl")//格式化 service 接口文件名称
+                                .disableServiceImpl()
                                 .build()
                             .controllerBuilder()//控制层策略
                                 .fileOverride()
@@ -130,7 +130,7 @@ public class CodeGenerator {
                     //模板配置
                     builder.controller("/templates/controller.java.vm")
                             .service("/templates/service.java.vm")
-                            .serviceImpl("/templates/serviceimpl.java.vm")
+                            //.serviceImpl("/templates/serviceimpl.java.vm")
                             .entity("/templates/entity.java.vm");
 
                 })
