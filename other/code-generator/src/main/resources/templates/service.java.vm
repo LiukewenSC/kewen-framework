@@ -1,12 +1,12 @@
 package ${package.Service};
 
 import ${package.Entity}.${entity};
+import ${package.Mapper}.${table.mapperName};
+import ${package.Service}.${table.serviceName};
+import ${superServiceImplClassPackage};
 import ${superServiceClassPackage};
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-
-
-import java.util.List;
-
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Service;
 
 /**
  * <p>
@@ -16,10 +16,13 @@ import java.util.List;
  * @author ${author}
  * @since ${date}
  */
+@Service
 #if(${kotlin})
-interface ${table.serviceName} : ${superServiceClass}<${entity}>
+open class ${table.serviceImplName} : ${superServiceImplClass}<${table.mapperName}, ${entity}> implements ${superServiceClass}<${entity}> {
+
+}
 #else
-public interface ${table.serviceName} extends ${superServiceClass}<${entity}> {
+public class ${table.serviceName} extends ${superServiceImplClass}<${table.mapperName}, ${entity}> implements ${superServiceClass}<${entity}> {
 
 }
 #end
