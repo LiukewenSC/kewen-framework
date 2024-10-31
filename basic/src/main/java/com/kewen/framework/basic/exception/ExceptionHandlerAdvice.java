@@ -1,8 +1,6 @@
-package com.kewen.framework.basic.handler;
+package com.kewen.framework.basic.exception;
 
 
-import com.kewen.framework.basic.exception.BizException;
-import com.kewen.framework.basic.exception.ExceptionConstant;
 import com.kewen.framework.basic.model.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindingResult;
