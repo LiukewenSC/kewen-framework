@@ -92,7 +92,7 @@ public class CodeGenerator {
                             .addInclude(tableNames)
                             .entityBuilder() //实体策略配置
                                 //.disableSerialVersionUID()禁用生成SerialVersionUID：默认true
-                                .fileOverride()
+                                .enableFileOverride()
                                 .enableChainModel()//开启链式模型
                                 //.enableActiveRecord() //开启 ActiveRecord 模式
                                 .enableLombok()//开启lombok
@@ -104,35 +104,33 @@ public class CodeGenerator {
                                 .columnNaming(NamingStrategy.underline_to_camel)//表字段映射实体属性命名规则：默认null，不指定按照naming执行
                                 .idType(IdType.AUTO)//添加全局主键类型
                                 //.formatFileName("%s")//格式化实体名称，%s取消首字母I
+                                .javaTemplate("/templates/entity.java.vm")
                                 .build()
                             .mapperBuilder()//mapper文件策略
-                                .fileOverride()
+                                .enableFileOverride()
                                 //.enableMapperAnnotation()//开启mapper注解
                                 .enableBaseResultMap()//启用xml文件中的BaseResultMap 生成
                                 .enableBaseColumnList()//启用xml文件中的BaseColumnList
                                 //.cache(缓存类.class)设置缓存实现类
                                 .formatMapperFileName("%sMpMapper")//格式化Dao类名称
                                 .formatXmlFileName("%sMpMapper")//格式化xml文件名称
+                                .mapperTemplate("/templates/mapper.java.vm")
+                                .mapperXmlTemplate("/templates/mapper.xml.vm")
                                 .build()
                             .serviceBuilder()//service文件策略
-                                .fileOverride()
+                                .enableFileOverride()
                                 .formatServiceFileName("%sMpService")//格式化 service 接口文件名称
                                 .disableServiceImpl()
+                                .serviceTemplate("/templates/service.java.vm")
+                                //.serviceImplTemplate("/templates/serviceImpl.java.vm")
                                 .build()
                             .controllerBuilder()//控制层策略
-                                .fileOverride()
+                                .enableFileOverride()
                                 //.enableHyphenStyle()开启驼峰转连字符，默认：false
                                 .enableRestStyle()//开启生成@RestController
                                 .formatFileName("%sMpController")//格式化文件名称
+                                .template("/templates/controller.java.vm")
                     ;
-
-                })
-                .templateConfig(builder -> {
-                    //模板配置
-                    builder.controller("/templates/controller.java.vm")
-                            .service("/templates/service.java.vm")
-                            //.serviceImpl("/templates/serviceimpl.java.vm")
-                            .entity("/templates/entity.java.vm");
 
                 })
                 .templateEngine(new VelocityTemplateEngine())
