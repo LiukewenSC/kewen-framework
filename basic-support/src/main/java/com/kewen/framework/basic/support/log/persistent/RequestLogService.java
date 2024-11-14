@@ -1,9 +1,8 @@
-package com.kewen.framework.basic.support.log.persistent.database;
+package com.kewen.framework.basic.support.log.persistent;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.kewen.framework.basic.support.mp.entity.SysRequestLog;
 import com.kewen.framework.basic.support.mp.service.SysRequestLogMpService;
-import com.kewen.framework.basic.support.log.persistent.database.mapper.SysRequestLogMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,9 +21,6 @@ import java.util.stream.Collectors;
  */
 @Service
 public class RequestLogService {
-
-    @Autowired
-    SysRequestLogMapper sysRequestLogMapper;
 
     @Autowired
     SysRequestLogMpService sysRequestLogMpService;

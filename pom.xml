@@ -50,6 +50,16 @@
                 <artifactId>basic-spring-boot-starter</artifactId>
                 <version>${framework-version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.kewen.framework.auth</groupId>
+                <artifactId>auth-spring-boot-starter</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>com.kewen.framework</groupId>
+                <artifactId>basic</artifactId>
+                <version>${framework-version}</version>
+            </dependency>
 
             <!--************spring-cloud相关************-->
 
@@ -129,23 +139,11 @@
                 <artifactId>fastjson2</artifactId>
                 <version>2.0.25</version>
             </dependency>
-            <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>druid-spring-boot-starter</artifactId>
-                <version>1.2.14</version>
-            </dependency>
-
 
             <dependency>
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-all</artifactId>
                 <version>5.8.18</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.dromara.x-file-storage</groupId>
-                <artifactId>x-file-storage-spring</artifactId>
-                <version>2.2.1</version>
             </dependency>
             <dependency>
                 <groupId>com.qiniu</groupId>
