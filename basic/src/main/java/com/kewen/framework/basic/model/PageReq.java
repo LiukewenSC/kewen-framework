@@ -11,13 +11,13 @@ public class PageReq {
      * 页码，从1开始
      */
     @NotNull
-    private Long page;
+    private Integer page;
 
     /**
      * 页面大小
      */
     @NotNull
-    private Long size;
+    private Integer size;
 
     /**
      * 模糊搜索关键字
@@ -28,7 +28,7 @@ public class PageReq {
      * 从0开始
      * @return
      */
-    public Long getOffset(){
+    public Integer getOffset(){
         return (page-1)*size;
     }
 }

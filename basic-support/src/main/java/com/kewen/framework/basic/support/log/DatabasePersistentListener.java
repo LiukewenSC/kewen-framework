@@ -1,4 +1,4 @@
-package com.kewen.framework.basic.support.log.persistent;
+package com.kewen.framework.basic.support.log;
 
 import com.alibaba.fastjson.JSON;
 

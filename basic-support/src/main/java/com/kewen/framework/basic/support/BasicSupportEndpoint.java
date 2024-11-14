@@ -1,9 +1,9 @@
-package com.kewen.framework.basic.support.log;
+package com.kewen.framework.basic.support;
 
 
 import com.kewen.framework.basic.model.Result;
-import com.kewen.framework.basic.support.log.persistent.database.RequestLogService;
-import com.kewen.framework.basic.support.log.persistent.database.TodayStatisticResp;
+import com.kewen.framework.basic.support.log.persistent.RequestLogService;
+import com.kewen.framework.basic.support.log.persistent.TodayStatisticResp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +20,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/request")
-public class RequestLogController {
+public class BasicSupportEndpoint {
 
     @Autowired
     RequestLogService requestLogService;

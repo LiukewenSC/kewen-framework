@@ -1,10 +1,10 @@
 package com.kewen.framework.basic.model;
 
-import com.kewen.framework.basic.utils.BeanUtil;
+
 import lombok.Data;
 
 import java.util.List;
-import java.util.function.Consumer;
+
 
 /**
  * @author kewen
@@ -15,12 +15,12 @@ import java.util.function.Consumer;
 public class PageResult<T> {
 
 
-    private Long page;
-    private Long size;
-    private Long total;
+    private Integer page;
+    private Integer size;
+    private Integer total;
     private List<T> data;
 
-    public static <T> PageResult<T> of(Long page, Long size, Long total, List<T> data){
+    public static <T> PageResult<T> of(Integer page, Integer size, Integer total, List<T> data){
         PageResult<T> result = new PageResult<>();
         result.setPage(page);
         result.setSize(size);

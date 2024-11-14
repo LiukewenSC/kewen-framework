@@ -1,4 +1,4 @@
-package com.kewen.framework.basic.support.log.message;
+package com.kewen.framework.basic.support.log;
 
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.cache.Cache;
@@ -19,7 +19,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 持久化日志到数据库记录
+ * 发送方糖消息
  *
  * @author kewen
  * @since 2024-08-29
@@ -32,7 +32,7 @@ public class FangTangRequestMessageListener implements ApplicationListener<Reque
 
     private FangTangMessageClient fangTangMessageClient;
 
-    @Value("${spring.application.name}")
+    @Value("${spring.application.name:}")
     String applicationName;
 
 

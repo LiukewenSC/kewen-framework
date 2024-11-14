@@ -2,8 +2,8 @@ package com.kewen.framework.boot.basic.config;
 
 
 import com.kewen.framework.basic.support.message.FangTangMessageClient;
-import com.kewen.framework.basic.support.log.message.FangTangRequestMessageListener;
-import com.kewen.framework.basic.support.log.persistent.DatabasePersistentListener;
+import com.kewen.framework.basic.support.log.FangTangRequestMessageListener;
+import com.kewen.framework.basic.support.log.DatabasePersistentListener;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
