@@ -1,0 +1,17 @@
+kewen:
+  auth:
+    auth-data-table:
+      table-name: sys_auth_data
+      id-column: id
+      data-id-column: data_id
+      authority-column: authority
+      description-column: description
+      business-function-column: business_function
+      operate-column: operate
+    cache-auth: false  # 是否缓存菜单权限
+  security:
+    login:
+      login-url: /login                 #登录地址
+      current-user-url: /currentUser    #当前用户接口地址
+      username-parameter: username      # username参数
+      password-parameter: password      # password参数
