@@ -1,19 +1,31 @@
-server:
-  port: 8080
-spring:
-  application:
-    name: sample
-  profiles:
-    active: dev
 
-  datasource:
-    hikari:
-      auto-commit:true
-      connection-test-query:select 1
-      connection-timeout:30000
-      idle-timeout:600000
-      max-lifetime:1800000
-      maximum-pool-size:5
-      minimum-idle:2
-      validation-timeout:5000
-      pool-name:HikaraPool-1
+logging:
+  level:
+    org.springframework.security: debug
+  file:
+    name: auth-sample
+    path: ./logs
+
+kewen-framework:
+  auth:
+    auth-data-table:
+      table-name: sys_auth_data
+      id-column: id
+      data-id-column: data_id
+      authority-column: authority
+      description-column: description
+      business-function-column: business_function
+      operate-column: operate
+    cache-auth: false  # 是否缓存菜单权限
+    security:
+      login:
+        login-url: /login                 #登录地址
+        current-user-url: /currentUser    #当前用户接口地址
+        maximum-sessions: 1               #最大session数量
+        max-sessions-prevents-login: true # 是否不允许挤下线
+        username-parameter: username      # username参数
+        password-parameter: password      # password参数
+spring:
+  session:
+    store-type: jdbc
+    timeout: 2D #超时2天
