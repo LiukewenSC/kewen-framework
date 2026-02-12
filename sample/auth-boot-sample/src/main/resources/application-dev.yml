@@ -1,6 +1,0 @@
-spring:
-  datasource:
-    url: jdbc:mysql://liukewen.cn:13306/kewen_framework_auth_template
-    username: open_framework
-    password: framework123456_
-    driver-class-name: com.kewen.framework.boot.basic.p6spy.KP6SpyDriver

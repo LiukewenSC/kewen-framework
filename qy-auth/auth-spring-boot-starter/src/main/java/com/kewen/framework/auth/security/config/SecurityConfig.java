@@ -1,10 +1,9 @@
 package com.kewen.framework.auth.security.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kewen.framework.auth.security.configurer.JsonLoginAuthenticationFilterConfigurer;
 import com.kewen.framework.auth.security.extension.PermitUrlContainer;
 import com.kewen.framework.auth.security.filter.AuthUserContextFilter;
-import com.kewen.framework.auth.security.properties.SecurityLoginProperties;
+import com.kewen.framework.auth.security.properties.SecurityProperties;
 import com.kewen.framework.auth.security.response.AuthenticationSuccessResultResolver;
 import com.kewen.framework.auth.security.response.SecurityAuthenticationExceptionResolverHandler;
 import com.kewen.framework.auth.security.response.SecurityAuthenticationSuccessHandler;
@@ -18,8 +17,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.session.SessionRegistry;
-import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.security.web.session.SessionManagementFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -34,11 +31,11 @@ import java.util.Iterator;
  * @since 2023-02-23
  */
 @Configuration
-@EnableConfigurationProperties({SecurityLoginProperties.class})
+@EnableConfigurationProperties({SecurityProperties.class})
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    SecurityLoginProperties loginProperties;
+    SecurityProperties securityProperties;
 
     @Autowired
     SecurityUserDetailsService securityUserDetailsService;
@@ -89,14 +86,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .anyRequest().authenticated()
                     .and()
                 //.formLogin()  不再用表单登录了，采用Json登录方式，因此不需要再formLogin引入FormLoginConfigurer配置UsernamePasswordAuthenticationFilter
-                .apply(new JsonLoginAuthenticationFilterConfigurer<>())
-                    .loginProcessingUrl(loginProperties.getLoginUrl())
-                    .usernameParameter(loginProperties.getUsernameParameter())
-                    .passwordParameter(loginProperties.getPasswordParameter())
-                    //.authenticationDetailsSource()  在认证前封装的Authentication中添加详细信息，如从request中拿到的ip,等信息
-                    .successHandler(successHandler)
-                    .failureHandler(exceptionResolverHandler)
-                    .and()
                 .logout()
                     .logoutSuccessHandler(successHandler)
                     .and()
@@ -112,7 +101,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         .and()*/
                 .csrf().disable()
                 //.cors().configurationSource(corsConfigurationSource()).and()
-                .addFilterAfter(new AuthUserContextFilter(loginProperties.getCurrentUserUrl(),resultResolverProvider,objectMapper), SessionManagementFilter.class)
+                .addFilterAfter(new AuthUserContextFilter(securityProperties.getCurrentUserUrl(),resultResolverProvider,objectMapper), SessionManagementFilter.class)
         ;
         //如果有自定义配置就继续执行自定义的，会覆盖当前的配置
         Iterator<HttpSecurityCustomizer> iterator = httpSecurityCustomizers.stream().iterator();
