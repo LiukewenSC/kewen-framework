@@ -78,7 +78,7 @@
                 <configuration>
                     <!-- <classifier>exec</classifier>-->
                     <!-- 指定该Main Class为全局的唯一入口 -->
-                    <mainClass>com.kewen.framework.auth.sample.AuthWebSample</mainClass>
+                    <mainClass>com.kewen.framework.auth.sample.AuthBootSampleApp</mainClass>
                     <layout>ZIP</layout>
                 </configuration>
                 <executions>
