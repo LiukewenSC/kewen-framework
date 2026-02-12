@@ -1,4 +1,4 @@
-package com.kewen.framework.auth.security.password.configurer;
+package com.kewen.framework.auth.security.password.config;
 
 import com.kewen.framework.auth.security.password.filter.JsonLoginFilter;
 import org.springframework.security.config.annotation.web.HttpSecurityBuilder;
