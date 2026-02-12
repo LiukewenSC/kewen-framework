@@ -11,7 +11,7 @@
     <packaging>pom</packaging>
     <properties>
         <framework-version>1.0-SNAPSHOT</framework-version>
-        <mybaits-plus-version>3.5.12</mybaits-plus-version>
+        <mybaits-plus-version>3.5.8</mybaits-plus-version>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -139,6 +139,11 @@
                 <artifactId>mybatis-plus-generator</artifactId>
                 <version>${mybaits-plus-version}</version>
             </dependency>
+            <!--<dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-jsqlparser</artifactId>
+                <version>${mybaits-plus-version}</version>
+            </dependency>-->
             <dependency>
                 <groupId>p6spy</groupId>
                 <artifactId>p6spy</artifactId>
@@ -189,6 +194,46 @@
                 <artifactId>swagger-bootstrap-ui</artifactId>
                 <version>1.9.6</version>
             </dependency>
+
+
+
+
+            <!-- 子工程模块 -->
+            <dependency>
+                <groupId>com.kewen.framework.auth</groupId>
+                <artifactId>auth-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.kewen.framework.auth</groupId>
+                <artifactId>auth-core-spring-boot-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.kewen.framework.auth</groupId>
+                <artifactId>auth-rbac</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.kewen.framework.auth</groupId>
+                <artifactId>auth-rbac-spring-boot-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- MyBatis -->
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis</artifactId>
+                <version>3.5.16</version>
+            </dependency>
+
+            <!-- JSqlParser -->
+            <dependency>
+                <groupId>com.github.jsqlparser</groupId>
+                <artifactId>jsqlparser</artifactId>
+                <version>4.7</version>
+            </dependency>
+
 
         </dependencies>
     </dependencyManagement>
