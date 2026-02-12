@@ -1,5 +1,6 @@
-package com.kewen.framework.auth.security.password.configurer;
+package com.kewen.framework.auth.security.password.config;
 
+import com.kewen.framework.auth.security.config.HttpSecurityCustomizer;
 import com.kewen.framework.auth.security.password.properties.SecurityLoginProperties;
 import com.kewen.framework.auth.security.response.SecurityAuthenticationExceptionResolverHandler;
 import com.kewen.framework.auth.security.response.SecurityAuthenticationSuccessHandler;
@@ -16,7 +17,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
  */
 @Configuration
 @EnableConfigurationProperties({SecurityLoginProperties.class})
-public class PasswordSecurityConfig extends WebSecurityConfigurerAdapter {
+public class PasswordSecurityConfig implements HttpSecurityCustomizer {
 
     @Autowired
     SecurityLoginProperties loginProperties;
@@ -27,17 +28,21 @@ public class PasswordSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     SecurityAuthenticationExceptionResolverHandler exceptionResolverHandler;
 
-
     @Override
+    public void customizer(HttpSecurity http) throws Exception {
+        configure(http);
+    }
+
     protected void configure(HttpSecurity http) throws Exception {
         http.apply(new JsonLoginAuthenticationFilterConfigurer<>())
-                    .loginProcessingUrl(loginProperties.getLoginUrl())
-                    .usernameParameter(loginProperties.getUsernameParameter())
-                    .passwordParameter(loginProperties.getPasswordParameter())
-                    //.authenticationDetailsSource()  在认证前封装的Authentication中添加详细信息，如从request中拿到的ip,等信息
-                    .successHandler(successHandler)
-                    .failureHandler(exceptionResolverHandler)
-                    .and()
+                .loginProcessingUrl(loginProperties.getLoginUrl())
+                .usernameParameter(loginProperties.getUsernameParameter())
+                .passwordParameter(loginProperties.getPasswordParameter())
+                //.authenticationDetailsSource()  在认证前封装的Authentication中添加详细信息，如从request中拿到的ip,等信息
+                .successHandler(successHandler)
+                .failureHandler(exceptionResolverHandler)
+                .and()
         ;
     }
+
 }

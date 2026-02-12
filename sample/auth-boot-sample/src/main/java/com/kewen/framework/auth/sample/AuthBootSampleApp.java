@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
 @SpringBootApplication
-public class AuthWebSample {
+public class AuthBootSampleApp {
     public static void main(String[] args) {
-        ConfigurableApplicationContext run = SpringApplication.run(AuthWebSample.class, args);
+        ConfigurableApplicationContext run = SpringApplication.run(AuthBootSampleApp.class, args);
     }
 }
