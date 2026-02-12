@@ -16,7 +16,6 @@
     <modules>
         <module>basic-spring-boot-starter</module>
         <module>tenant-spring-boot-starter</module>
-        <module>auth-spring-boot-starter2</module>
         <module>magic-spring-boot-starter</module>
         <module>storage-spring-boot-starter</module>
     </modules>
