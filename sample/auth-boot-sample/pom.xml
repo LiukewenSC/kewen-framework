@@ -35,8 +35,8 @@
             <artifactId>auth-spring-boot-starter</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.kewen.framework</groupId>
-            <artifactId>idaas-authentications</artifactId>
+            <groupId>com.kewen.framework.boot</groupId>
+            <artifactId>basic-spring-boot-starter</artifactId>
         </dependency>
 
         <dependency>

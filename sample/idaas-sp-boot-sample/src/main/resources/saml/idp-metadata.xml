@@ -1,0 +1,22 @@
+<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" entityID="idaas-idp4">
+<md:IDPSSODescriptor WantAuthnRequestsSigned="false" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+<md:KeyDescriptor use="signing">
+<ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+<ds:X509Data>
+<ds:X509Certificate>MIIC3jCCAcagAwIBAgIIEy7uT9GSBnYwDQYJKoZIhvcNAQEFBQAwLzELMAkGA1UEBhMCQ04xDzANBgNVBAgMBuWbm+W3nTEPMA0GA1UEAwwG5rWL6K+VMB4XDTI1MDcwNzAxMzQ1NFoXDTI4MDcwNjAxMzQ1NFowLzELMAkGA1UEBhMCQ04xDzANBgNVBAgMBuWbm+W3nTEPMA0GA1UEAwwG5rWL6K+VMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAkZjg04PXGCh30YZP43rxZ3wn4mlreGEAQh2WmQSpQvkLXQ+UYgggMQctChM5TT/1ZxD4Z9t5tyKpdHoRkM8MN+aW1V3YKsdJoFmE2eKCbNUsTqnW6Mfj2HDjlnQ+aHm5bX4UN9giKQyDw4YfguAGmsg8HscLy6W23XwO7chr160bocJQ5X+C+wugEwr9iCkGstgO5kgBtsWX9GCsoQYMyQETuPLYBY+1yc5fsl6Q03DlG8bpY7gwgQiZqHaAF3Wr+6y/lF12ebkMiOM/PFQHEmFykiBGPPy2ciaCilJWjGSgQb3KAkvETu/ULYw/P69nG1pae5uJTB07RmOFFJSzdQIDAQABMA0GCSqGSIb3DQEBBQUAA4IBAQB+lOkId3FTePFeHce9YykzQCW6kK3pPpQWFNCjxzoki1tbcUEuev0QzE+mphbfd0SS8dQusaXRsghqTUM2q2U0cm7Y7bRRKTEZuGboAkao4umoO1EnyNvj2gAm8IpUIoSn/lMErpGGSK7SGXkWA/Frzt8pzQZpI+b/R0Bnq5/WfZtKD+XNmT9+SVbl1DaNEwVpCD5i/CPI+sk23O4p6SKm3ktmJXXbTiOwZHpFE+TVE51ZzhoJz4kHPBh1Ey3+rJxVxXTpHZ2DKBKrOxanu4yJrCuG+pWSP6C3xNt8CpfGN76whsqMTxIJKzRPiJ0tMYHo5M+EP//Tff7XuCt3k64+</ds:X509Certificate>
+</ds:X509Data>
+</ds:KeyInfo>
+</md:KeyDescriptor>
+<md:KeyDescriptor use="encryption">
+<ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+<ds:X509Data>
+<ds:X509Certificate>MIIC3jCCAcagAwIBAgIIEy7uT9GSBnYwDQYJKoZIhvcNAQEFBQAwLzELMAkGA1UEBhMCQ04xDzANBgNVBAgMBuWbm+W3nTEPMA0GA1UEAwwG5rWL6K+VMB4XDTI1MDcwNzAxMzQ1NFoXDTI4MDcwNjAxMzQ1NFowLzELMAkGA1UEBhMCQ04xDzANBgNVBAgMBuWbm+W3nTEPMA0GA1UEAwwG5rWL6K+VMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAkZjg04PXGCh30YZP43rxZ3wn4mlreGEAQh2WmQSpQvkLXQ+UYgggMQctChM5TT/1ZxD4Z9t5tyKpdHoRkM8MN+aW1V3YKsdJoFmE2eKCbNUsTqnW6Mfj2HDjlnQ+aHm5bX4UN9giKQyDw4YfguAGmsg8HscLy6W23XwO7chr160bocJQ5X+C+wugEwr9iCkGstgO5kgBtsWX9GCsoQYMyQETuPLYBY+1yc5fsl6Q03DlG8bpY7gwgQiZqHaAF3Wr+6y/lF12ebkMiOM/PFQHEmFykiBGPPy2ciaCilJWjGSgQb3KAkvETu/ULYw/P69nG1pae5uJTB07RmOFFJSzdQIDAQABMA0GCSqGSIb3DQEBBQUAA4IBAQB+lOkId3FTePFeHce9YykzQCW6kK3pPpQWFNCjxzoki1tbcUEuev0QzE+mphbfd0SS8dQusaXRsghqTUM2q2U0cm7Y7bRRKTEZuGboAkao4umoO1EnyNvj2gAm8IpUIoSn/lMErpGGSK7SGXkWA/Frzt8pzQZpI+b/R0Bnq5/WfZtKD+XNmT9+SVbl1DaNEwVpCD5i/CPI+sk23O4p6SKm3ktmJXXbTiOwZHpFE+TVE51ZzhoJz4kHPBh1Ey3+rJxVxXTpHZ2DKBKrOxanu4yJrCuG+pWSP6C3xNt8CpfGN76whsqMTxIJKzRPiJ0tMYHo5M+EP//Tff7XuCt3k64+</ds:X509Certificate>
+</ds:X509Data>
+</ds:KeyInfo>
+</md:KeyDescriptor>
+<md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://idp4-test.alibaba.net/public/api/application/plugin_saml/idp4plugin_saml10/sp_logout"/>
+<md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://idp4-test.alibaba.net/public/api/application/plugin_saml/idp4plugin_saml10/sp_logout"/>
+<md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://idp4-test.alibaba.net/enduser/api/application/plugin_saml/idp4plugin_saml10/sp_sso"/>
+<md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://idp4-test.alibaba.net/enduser/api/application/plugin_saml/idp4plugin_saml10/sp_sso_post"/>
+</md:IDPSSODescriptor>
+</md:EntityDescriptor>
