@@ -55,7 +55,12 @@
             <dependency>
                 <groupId>com.kewen.framework.auth</groupId>
                 <artifactId>auth-spring-boot-starter</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>${framework-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.kewen.framework</groupId>
+                <artifactId>idaas-authentications</artifactId>
+                <version>${framework-version}</version>
             </dependency>
             <dependency>
                 <groupId>com.kewen.framework</groupId>
