@@ -10,6 +10,10 @@
     </parent>
 
     <artifactId>qy-idaas</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>idaas-authentications</module>
+    </modules>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
