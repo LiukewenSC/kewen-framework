@@ -5,20 +5,27 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.kewen.framework</groupId>
-        <artifactId>kewen-framework</artifactId>
+        <artifactId>qy-idaas</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>qy-idaas</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>idaas-authentications</module>
-    </modules>
+    <artifactId>idaas-authentications</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.kewen.framework.auth</groupId>
+            <artifactId>auth-spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-saml2-service-provider</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>
