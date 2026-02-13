@@ -1,0 +1,32 @@
+kewen:
+  auth:
+    auth-data-table:
+      table-name: sys_auth_data
+      id-column: id
+      data-id-column: data_id
+      authority-column: authority
+      description-column: description
+      business-function-column: business_function
+      operate-column: operate
+    cache-auth: false  # 是否缓存菜单权限
+  security:
+    remember-me:
+      enabled: true
+      remember-parameter: remember-me
+      validity-seconds: 2592000
+    session:
+      maximum-sessions: 10               #最大session数量
+      max-sessions-prevents-login: true # 是否不允许挤下线
+    current-user-url: /currentUser    #当前用户接口地址
+    login:
+      password:
+        login-url: /login                 #登录地址
+        username-parameter: username      # username参数
+        password-parameter: password      # password参数
+      saml:
+        registration-id: kewen-saml          # relying party registration id
+        entity-id: idaas-idp4     # your app entity id
+        use-metadata: true
+        web-sso-url: "https://idp4-test.alibaba.net/sso/saml" # your idp sso url
+        idp-certificate-resource: classpath:saml/idp-certificate.crt # your idp certificate resource
+        metadata-resource: classpath:saml/idp-metadata.xml

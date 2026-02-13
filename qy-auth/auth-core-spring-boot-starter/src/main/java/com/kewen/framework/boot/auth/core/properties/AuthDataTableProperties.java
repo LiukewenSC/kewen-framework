@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  * @author kewen
  * @since 2023-12-28
  */
-@ConfigurationProperties("kewen-framework.auth.auth-data-table")
+@ConfigurationProperties("kewen.auth.auth-data-table")
 public class AuthDataTableProperties {
     /**
      * 业务关联表名
