@@ -18,6 +18,7 @@
         <module>tenant-boot-sample</module>
         <module>storage-boot-sample</module>
         <module>auth-boot-sample</module>
+        <module>idaas-sp-boot-sample</module>
     </modules>
 
     <properties>

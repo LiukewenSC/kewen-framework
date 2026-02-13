@@ -73,7 +73,7 @@ public class SessionConfig {
             try {
                 http.sessionManagement()
                         .maximumSessions(session.getMaximumSessions())
-                        .sessionRegistry(sessionRegistry)
+                        //.sessionRegistry(sessionRegistry)
                         .expiredSessionStrategy(event -> {
                             HttpServletResponse response = event.getResponse();
                             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

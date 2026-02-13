@@ -1,33 +1,3 @@
-server:
-  port: 8081
-spring:
-  application:
-    name: sample
-  profiles:
-    active: dev
-
-  datasource:
-    hikari:
-      auto-commit:true
-      connection-test-query:select 1
-      connection-timeout:30000
-      idle-timeout:600000
-      max-lifetime:1800000
-      maximum-pool-size:5
-      minimum-idle:2
-      validation-timeout:5000
-      pool-name:HikaraPool-1
-  session:
-    store-type: jdbc
-    timeout: 2D #超时2天
-
-logging:
-  level:
-    org.springframework.security: debug
-  file:
-    name: auth-sample
-    path: ./logs
-
 kewen:
   auth:
     auth-data-table:
@@ -53,3 +23,10 @@ kewen:
         login-url: /login                 #登录地址
         username-parameter: username      # username参数
         password-parameter: password      # password参数
+      saml:
+        registration-id: kewen-saml          # relying party registration id
+        entity-id: idaas-idp4     # your app entity id
+        use-metadata: true
+        web-sso-url: "https://idp4-test.alibaba.net/sso/saml" # your idp sso url
+        idp-certificate-resource: classpath:saml/idp-certificate.crt # your idp certificate resource
+        metadata-resource: classpath:saml/idp-metadata.xml

@@ -7,6 +7,10 @@ spring:
     active: dev
 
   datasource:
+    url: jdbc:mysql://localhost:3306/kewen_framework_auth_template
+    username: open_framework
+    password: Framework123456_
+    driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       auto-commit:true
       connection-test-query:select 1
@@ -53,3 +57,10 @@ kewen:
         login-url: /login                 #登录地址
         username-parameter: username      # username参数
         password-parameter: password      # password参数
+      saml:
+        registration-id: kewen-saml          # relying party registration id
+        entity-id: idaas-idp4     # your app entity id
+        use-metadata: true
+        web-sso-url: "https://idp4-test.alibaba.net/sso/saml" # your idp sso url
+        idp-certificate-resource: classpath:saml/idp-certificate.crt # your idp certificate resource
+        metadata-resource: classpath:saml/idp-metadata.xml
