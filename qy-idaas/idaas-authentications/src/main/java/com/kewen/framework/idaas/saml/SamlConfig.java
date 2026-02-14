@@ -1,6 +1,8 @@
 package com.kewen.framework.idaas.saml;
 
 import com.kewen.framework.auth.security.config.HttpSecurityCustomizer;
+import com.kewen.framework.auth.security.response.SecurityAuthenticationExceptionResolverHandler;
+import com.kewen.framework.auth.security.response.SecurityAuthenticationSuccessHandler;
 import com.kewen.framework.idaas.saml.properties.SamlProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +47,17 @@ public class SamlConfig implements HttpSecurityCustomizer {
     @Autowired
     private SamlProperties samlProperties;
 
+    @Autowired
+    SecurityAuthenticationSuccessHandler successHandler;
+    @Autowired
+    SecurityAuthenticationExceptionResolverHandler exceptionResolverHandler;
+
+
+    @Bean
+    SamlSecurityUserConverter samlSecurityUserConverter(){
+        return new SamlSecurityUserConverter();
+    }
+
     /**
      * 添加 SAML2 登录配置到 HttpSecurity
      *
@@ -58,6 +71,8 @@ public class SamlConfig implements HttpSecurityCustomizer {
                         new OpenSamlAuthenticationProvider()
                 ))
                 .relyingPartyRegistrationRepository(relyingPartyRegistrationRepository())
+                .successHandler(successHandler)
+                .failureHandler(exceptionResolverHandler)
         );
     }
 
