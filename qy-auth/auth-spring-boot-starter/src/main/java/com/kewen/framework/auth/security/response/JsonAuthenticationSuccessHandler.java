@@ -25,9 +25,9 @@ public class JsonAuthenticationSuccessHandler implements SecurityAuthenticationS
     private static final Logger log = LoggerFactory.getLogger(JsonAuthenticationSuccessHandler.class);
     private ObjectMapper objectMapper;
     private AuthenticationSuccessResultResolver resultResolver;
-    private ObjectProvider<SecurityUserConverter> securityUserConverters;
+    private ObjectProvider<SecurityUserParser> securityUserConverters;
 
-    public JsonAuthenticationSuccessHandler(AuthenticationSuccessResultResolver resultResolver , ObjectMapper objectMapper, ObjectProvider<SecurityUserConverter> securityUserConverters) {
+    public JsonAuthenticationSuccessHandler(AuthenticationSuccessResultResolver resultResolver , ObjectMapper objectMapper, ObjectProvider<SecurityUserParser> securityUserConverters) {
         this.objectMapper = objectMapper;
         this.resultResolver = resultResolver;
         this.securityUserConverters = securityUserConverters;
@@ -46,9 +46,9 @@ public class JsonAuthenticationSuccessHandler implements SecurityAuthenticationS
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         Object principal = authentication.getPrincipal();
         SecurityUser user  = null;
-        for (SecurityUserConverter securityUserConverter : securityUserConverters) {
-            if (securityUserConverter.support(request, principal)) {
-                user = securityUserConverter.convert(request, principal);
+        for (SecurityUserParser securityUserParser : securityUserConverters) {
+            if (securityUserParser.support(request, authentication)) {
+                user = securityUserParser.convert(request, authentication);
                 break;
             }
         }
