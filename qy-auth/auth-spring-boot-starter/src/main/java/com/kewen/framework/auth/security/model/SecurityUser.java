@@ -5,16 +5,18 @@ import com.kewen.framework.auth.core.entity.BaseAuth;
 import com.kewen.framework.auth.core.entity.IAuthObject;
 import lombok.Data;
 import lombok.experimental.Accessors;
+import org.springframework.security.core.AuthenticatedPrincipal;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.stream.Collectors;
 
 @Data
 @Accessors(chain = true)
-public class SecurityUser<T extends IAuthObject> implements UserDetails, CurrentUser {
+public class SecurityUser<T extends IAuthObject> implements UserDetails, CurrentUser, AuthenticatedPrincipal {
 
 
     private String token;
@@ -129,7 +131,7 @@ public class SecurityUser<T extends IAuthObject> implements UserDetails, Current
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (authObject == null) {
-            return null;
+            return Collections.emptyList() ;
         }
         return authObject.listBaseAuth().stream()
                 .map(BaseAuth::getAuth)
