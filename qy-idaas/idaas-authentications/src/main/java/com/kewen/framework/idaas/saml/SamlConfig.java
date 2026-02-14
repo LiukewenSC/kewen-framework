@@ -64,18 +64,21 @@ public class SamlConfig implements HttpSecurityCustomizer {
      */
     @Override
     public void customizer(HttpSecurity http) throws Exception {
+        SamlAuthenticationProvider samlAuthenticationProvider = new SamlAuthenticationProvider(
+                new OpenSamlAuthenticationProvider(),
+                userDetailsService
+        );
+        //两种方式，
+        // 1. 将 SAML2 认证提供者添加到 HttpSecurity，则不需要添加2对应的authenticationManager，保持使用统一的
+        // 2. .authenticationManager(new ProviderManager(samlAuthenticationProvider))，那么不需要http.authenticationProvider(samlAuthenticationProvider);
+        http.authenticationProvider(samlAuthenticationProvider);
         http
-                .saml2Login(saml2 -> saml2
-                        .authenticationManager(new ProviderManager(
-                                new SamlAuthenticationProvider(
-                                        new OpenSamlAuthenticationProvider(),
-                                        userDetailsService
-                                )
-                        ))
-                        .relyingPartyRegistrationRepository(relyingPartyRegistrationRepository())
-                        .successHandler(successHandler)
-                        .failureHandler(exceptionResolverHandler)
-                );
+                .saml2Login()
+                //.authenticationManager(new ProviderManager(samlAuthenticationProvider))
+                .relyingPartyRegistrationRepository(relyingPartyRegistrationRepository())
+                .successHandler(successHandler)
+                .failureHandler(exceptionResolverHandler)
+        ;
     }
 
     /**
