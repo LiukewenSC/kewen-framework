@@ -6,6 +6,7 @@ import com.kewen.framework.auth.security.extension.PermitUrlContainer;
 import com.kewen.framework.auth.security.response.*;
 import com.kewen.framework.auth.security.service.RabcSecurityUserDetailsService;
 import com.kewen.framework.auth.security.service.SecurityUserDetailsService;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -47,8 +48,8 @@ public class SecurityBeanConfig {
     @Bean
     @ConditionalOnMissingBean(SecurityAuthenticationSuccessHandler.class)
     SecurityAuthenticationSuccessHandler securityAuthenticationSuccessHandler(
-            AuthenticationSuccessResultResolver resultResolverProvider, ObjectMapper objectMapper){
-        return new DefaultSecurityAuthenticationSuccessHandler(resultResolverProvider,objectMapper);
+            AuthenticationSuccessResultResolver resultResolverProvider, ObjectMapper objectMapper, ObjectProvider<SecurityUserConverter> securityUserConverters){
+        return new JsonAuthenticationSuccessHandler(resultResolverProvider,objectMapper, securityUserConverters);
     }
 
 
@@ -66,5 +67,9 @@ public class SecurityBeanConfig {
     @ConditionalOnMissingBean(AuthenticationSuccessResultResolver.class)
     AuthenticationSuccessResultResolver authenticationSuccessResultResolver(){
         return new NoneAuthenticationSuccessResultResolver();
+    }
+    @Bean
+    SystemUserSecurityUserConverter systemUserSecurityUserConverter(){
+        return new SystemUserSecurityUserConverter();
     }
 }

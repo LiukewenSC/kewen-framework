@@ -128,6 +128,9 @@ public class SecurityUser<T extends IAuthObject> implements UserDetails, Current
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (authObject == null) {
+            return null;
+        }
         return authObject.listBaseAuth().stream()
                 .map(BaseAuth::getAuth)
                 .map(a -> (GrantedAuthority) () -> a)
