@@ -18,7 +18,7 @@ import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.session.FindByIndexNameSessionRepository;
 import org.springframework.session.security.SpringSessionBackedSessionRegistry;
 import org.springframework.session.security.web.authentication.SpringSessionRememberMeServices;
-import org.springframework.session.web.http.HeaderHttpSessionIdResolver;
+import com.kewen.framework.auth.security.extension.HeaderCookieHttpSessionIdResolver;
 import org.springframework.session.web.http.HttpSessionIdResolver;
 
 import javax.servlet.http.HttpServletResponse;
@@ -36,9 +36,13 @@ public class SessionConfig {
      * 使用 Header方式获取sessionID
      * @return
      */
+    /**
+     * 组合 Session ID 解析器：优先从 Header（Authorization）中获取 token，
+     * 没有则回退到 Cookie 方式，实现 token 和 session 双模式兼容
+     */
     @Bean
     HttpSessionIdResolver sessionIdResolver() {
-        return new HeaderHttpSessionIdResolver("Authorization");
+        return new HeaderCookieHttpSessionIdResolver("Authorization");
     }
 
     @Bean
