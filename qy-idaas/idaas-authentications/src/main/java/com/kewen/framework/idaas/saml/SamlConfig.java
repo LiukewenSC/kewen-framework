@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.saml2.credentials.Saml2X509Credential;
 import org.springframework.security.saml2.provider.service.authentication.OpenSamlAuthenticationProvider;
 import org.springframework.security.saml2.provider.service.registration.InMemoryRelyingPartyRegistrationRepository;
@@ -52,11 +53,8 @@ public class SamlConfig implements HttpSecurityCustomizer {
     @Autowired
     SecurityAuthenticationExceptionResolverHandler exceptionResolverHandler;
 
-
-    @Bean
-    SamlSecurityUserParser samlSecurityUserConverter(){
-        return new SamlSecurityUserParser();
-    }
+    @Autowired
+    UserDetailsService userDetailsService;
 
     /**
      * 添加 SAML2 登录配置到 HttpSecurity
@@ -66,14 +64,18 @@ public class SamlConfig implements HttpSecurityCustomizer {
      */
     @Override
     public void customizer(HttpSecurity http) throws Exception {
-        http.saml2Login(saml2 -> saml2
-                .authenticationManager(new ProviderManager(
-                        new OpenSamlAuthenticationProvider()
-                ))
-                .relyingPartyRegistrationRepository(relyingPartyRegistrationRepository())
-                .successHandler(successHandler)
-                .failureHandler(exceptionResolverHandler)
-        );
+        http
+                .saml2Login(saml2 -> saml2
+                        .authenticationManager(new ProviderManager(
+                                new SamlAuthenticationProvider(
+                                        new OpenSamlAuthenticationProvider(),
+                                        userDetailsService
+                                )
+                        ))
+                        .relyingPartyRegistrationRepository(relyingPartyRegistrationRepository())
+                        .successHandler(successHandler)
+                        .failureHandler(exceptionResolverHandler)
+                );
     }
 
     /**
@@ -110,7 +112,7 @@ public class SamlConfig implements HttpSecurityCustomizer {
         return RelyingPartyRegistration
                 .withRegistrationId(samlProperties.getRegistrationId())
                 .localEntityIdTemplate(samlProperties.getSpEntityId()) //默认值 {baseUrl}/saml2/service-provider-metadata/{registrationId}
-                .assertionConsumerServiceUrlTemplate("{baseUrl}"+ Saml2WebSsoAuthenticationFilter.DEFAULT_FILTER_PROCESSES_URI)
+                .assertionConsumerServiceUrlTemplate("{baseUrl}" + Saml2WebSsoAuthenticationFilter.DEFAULT_FILTER_PROCESSES_URI)
                 .providerDetails(providerDetails -> providerDetails
                         .entityId(metadata.getEntityId())
                         .webSsoUrl(metadata.getSsoUrl())
@@ -134,7 +136,7 @@ public class SamlConfig implements HttpSecurityCustomizer {
         return RelyingPartyRegistration
                 .withRegistrationId(samlProperties.getRegistrationId())
                 .localEntityIdTemplate(samlProperties.getSpEntityId())
-                .assertionConsumerServiceUrlTemplate("{baseUrl}"+ Saml2WebSsoAuthenticationFilter.DEFAULT_FILTER_PROCESSES_URI)
+                .assertionConsumerServiceUrlTemplate("{baseUrl}" + Saml2WebSsoAuthenticationFilter.DEFAULT_FILTER_PROCESSES_URI)
                 .providerDetails(providerDetails -> providerDetails
                         .entityId(samlProperties.getEntityId())
                         .binding(Saml2MessageBinding.POST)

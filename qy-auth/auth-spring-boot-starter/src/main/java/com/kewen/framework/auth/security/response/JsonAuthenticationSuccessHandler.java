@@ -25,12 +25,10 @@ public class JsonAuthenticationSuccessHandler implements SecurityAuthenticationS
     private static final Logger log = LoggerFactory.getLogger(JsonAuthenticationSuccessHandler.class);
     private ObjectMapper objectMapper;
     private AuthenticationSuccessResultResolver resultResolver;
-    private ObjectProvider<SecurityUserParser> securityUserConverters;
 
-    public JsonAuthenticationSuccessHandler(AuthenticationSuccessResultResolver resultResolver , ObjectMapper objectMapper, ObjectProvider<SecurityUserParser> securityUserConverters) {
+    public JsonAuthenticationSuccessHandler(AuthenticationSuccessResultResolver resultResolver , ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
         this.resultResolver = resultResolver;
-        this.securityUserConverters = securityUserConverters;
     }
 
     /**
@@ -45,16 +43,11 @@ public class JsonAuthenticationSuccessHandler implements SecurityAuthenticationS
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         Object principal = authentication.getPrincipal();
-        SecurityUser user  = null;
-        for (SecurityUserParser securityUserParser : securityUserConverters) {
-            if (securityUserParser.support(request, authentication)) {
-                user = securityUserParser.convert(request, authentication);
-                break;
-            }
-        }
-        if (user == null) {
+        // 所有协议返回的都是SecurityUser，不是的需要自定义AuthenticationProvider，并返回SecurityUser
+        if (!(principal instanceof SecurityUser)){
             throw new AuthenticationServiceException("Principal is not a SecurityUser");
         }
+        SecurityUser user = (SecurityUser) principal;
         user.setToken(request.getSession().getId());
         user.setLoginTime(LocalDateTime.now());
         //清空密码
