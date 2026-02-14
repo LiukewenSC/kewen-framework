@@ -54,8 +54,8 @@ public class SamlConfig implements HttpSecurityCustomizer {
 
 
     @Bean
-    SamlSecurityUserConverter samlSecurityUserConverter(){
-        return new SamlSecurityUserConverter();
+    SamlSecurityUserParser samlSecurityUserConverter(){
+        return new SamlSecurityUserParser();
     }
 
     /**
