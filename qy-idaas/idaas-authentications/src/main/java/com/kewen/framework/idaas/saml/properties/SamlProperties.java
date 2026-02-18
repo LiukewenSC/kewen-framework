@@ -40,24 +40,24 @@ public class SamlProperties {
      */
     private Resource metadataResource = new ClassPathResource("saml/idp-metadata.xml");
 
-    /**
+/*    *//**
      * 是否使用 metadata.xml 自动解析，默认 true。
      * 设为 false 时使用手动配置的 entityId、webSsoUrl、idpCertificateResource
-     */
+     *//*
     private boolean useMetadata = true;
 
-    /**
+    *//**
      * IdP Entity ID，useMetadata=false 时生效
-     */
-    private String entityId = "idaas-idp4";
+     *//*
+    private String idpIdentityId = "idaas-idp4";
 
-    /**
+    *//**
      * IdP SSO 登录地址，useMetadata=false 时生效
-     */
+     *//*
     private String webSsoUrl = "https://idp4-test.alibaba.net/sso/saml";
 
-    /**
+    *//**
      * IdP 证书资源路径，useMetadata=false 时生效，默认 classpath:saml/idp-certificate.crt
-     */
-    private Resource idpCertificateResource = new ClassPathResource("saml/idp-certificate.crt");
+     *//*
+    private Resource idpCertificateResource = new ClassPathResource("saml/idp-certificate.crt");*/
 }
