@@ -1,0 +1,22 @@
+<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" entityID="idaas-idp4-dev">
+    <md:IDPSSODescriptor WantAuthnRequestsSigned="false" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+        <md:KeyDescriptor use="signing">
+            <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+                <ds:X509Data>
+                    <ds:X509Certificate>MIICTTCCAbagAwIBAgIILCbzq2SpxMswDQYJKoZIhvcNAQEFBQAwaDELMAkGA1UEBhMCQ04xDzANBgNVBAgMBuWbm+W3nTEPMA0GA1UEBwwG5oiQ6YO9MRMwEQYDVQQKDAprZXdlbl9jb21wMRIwEAYDVQQLDAlrZXdlbl9vcmcxDjAMBgNVBAMTBWtld2VuMCAXDTI1MDcwMzAyNDMzMVoYDzMwMjMxMTA0MDI0MzMxWjBoMQswCQYDVQQGEwJDTjEPMA0GA1UECAwG5Zub5bedMQ8wDQYDVQQHDAbmiJDpg70xEzARBgNVBAoMCmtld2VuX2NvbXAxEjAQBgNVBAsMCWtld2VuX29yZzEOMAwGA1UEAxMFa2V3ZW4wgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAKknAWX0PC/LPENfNbBZcH1DkkYpPnsNQskAQNvC90GhCiRspuQ4CMOFZDZedXkNOCzXXNh5BeACPdiLXvw3mI07PxnKtfU2OOmeyPCrCA47eU+CiM7yArN9UnrdS+UqK08t0D19IpyhSWy6nJJ84y/XgOK6stwLg0LtVNapMv5/AgMBAAEwDQYJKoZIhvcNAQEFBQADgYEAeUtEbI13CdZSEPR1W3ylfc1UWyQJBpuxOF1QorhTTr38faUXJsJ/Wb64Qcn3CSTw2l7C6wN+hsPQZaDcPlfKuTQaNKxIvsVxOoXUPxyJ2SEAhFrJA6YV53p7FMzx1M+pt8bW+XRxnagZGT1DBrtDOo6mw0qwQs9m4stQf6GwfrY=</ds:X509Certificate>
+                </ds:X509Data>
+            </ds:KeyInfo>
+        </md:KeyDescriptor>
+        <md:KeyDescriptor use="encryption">
+            <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+                <ds:X509Data>
+                    <ds:X509Certificate>MIICTTCCAbagAwIBAgIILCbzq2SpxMswDQYJKoZIhvcNAQEFBQAwaDELMAkGA1UEBhMCQ04xDzANBgNVBAgMBuWbm+W3nTEPMA0GA1UEBwwG5oiQ6YO9MRMwEQYDVQQKDAprZXdlbl9jb21wMRIwEAYDVQQLDAlrZXdlbl9vcmcxDjAMBgNVBAMTBWtld2VuMCAXDTI1MDcwMzAyNDMzMVoYDzMwMjMxMTA0MDI0MzMxWjBoMQswCQYDVQQGEwJDTjEPMA0GA1UECAwG5Zub5bedMQ8wDQYDVQQHDAbmiJDpg70xEzARBgNVBAoMCmtld2VuX2NvbXAxEjAQBgNVBAsMCWtld2VuX29yZzEOMAwGA1UEAxMFa2V3ZW4wgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAKknAWX0PC/LPENfNbBZcH1DkkYpPnsNQskAQNvC90GhCiRspuQ4CMOFZDZedXkNOCzXXNh5BeACPdiLXvw3mI07PxnKtfU2OOmeyPCrCA47eU+CiM7yArN9UnrdS+UqK08t0D19IpyhSWy6nJJ84y/XgOK6stwLg0LtVNapMv5/AgMBAAEwDQYJKoZIhvcNAQEFBQADgYEAeUtEbI13CdZSEPR1W3ylfc1UWyQJBpuxOF1QorhTTr38faUXJsJ/Wb64Qcn3CSTw2l7C6wN+hsPQZaDcPlfKuTQaNKxIvsVxOoXUPxyJ2SEAhFrJA6YV53p7FMzx1M+pt8bW+XRxnagZGT1DBrtDOo6mw0qwQs9m4stQf6GwfrY=</ds:X509Certificate>
+                </ds:X509Data>
+            </ds:KeyInfo>
+        </md:KeyDescriptor>
+        <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://idp4-dev.alibaba.net/public/api/application/plugin_saml/idp4plugin_saml13/sp_logout"/>
+        <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://idp4-dev.alibaba.net/public/api/application/plugin_saml/idp4plugin_saml13/sp_logout"/>
+        <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://idp4-dev.alibaba.net/enduser/api/application/plugin_saml/idp4plugin_saml13/sp_sso"/>
+        <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://idp4-dev.alibaba.net/enduser/api/application/plugin_saml/idp4plugin_saml13/sp_sso_post"/>
+    </md:IDPSSODescriptor>
+</md:EntityDescriptor>

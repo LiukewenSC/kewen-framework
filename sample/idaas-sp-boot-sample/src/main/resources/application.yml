@@ -66,3 +66,10 @@ kewen:
             #web-sso-url: "https://idp4-test.alibaba.net/sso/saml" # your idp sso url
             #idp-certificate-resource: classpath:saml/idp-certificate.crt # your idp certificate resource
             metadata-resource: classpath:saml/metadata/idaas-idp4-test-metadata.xml
+          -
+            registration-id: idp4-dev-kewen-loc-registration          # relying party registration id
+            sp-entity-id: idp4-dev-kewen-loc     # your app entity id
+            #use-metadata: true
+            #web-sso-url: "https://idp4-test.alibaba.net/sso/saml" # your idp sso url
+            #idp-certificate-resource: classpath:saml/idp-certificate.crt # your idp certificate resource
+            metadata-resource: classpath:saml/metadata/idaas-idp4-dev-metadata.xml
