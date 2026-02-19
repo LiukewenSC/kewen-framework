@@ -58,9 +58,11 @@ kewen:
         username-parameter: username      # username参数
         password-parameter: password      # password参数
       saml:
-        registration-id: kewen-saml          # relying party registration id
-        entity-id: idaas-idp4     # your app entity id
-        use-metadata: true
-        web-sso-url: "https://idp4-test.alibaba.net/sso/saml" # your idp sso url
-        idp-certificate-resource: classpath:saml/idp-certificate.crt # your idp certificate resource
-        metadata-resource: classpath:saml/idp-metadata.xml
+        registrations:
+          -
+            registration-id: idp4-test-kewen-loc-registration          # relying party registration id
+            sp-entity-id: idp4-test-kewen-loc     # your app entity id
+            #use-metadata: true
+            #web-sso-url: "https://idp4-test.alibaba.net/sso/saml" # your idp sso url
+            #idp-certificate-resource: classpath:saml/idp-certificate.crt # your idp certificate resource
+            metadata-resource: classpath:saml/metadata/idaas-idp4-test-metadata.xml
