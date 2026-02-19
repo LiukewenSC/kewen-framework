@@ -24,6 +24,8 @@ import org.springframework.security.saml2.provider.service.servlet.filter.Saml2W
 import java.io.InputStream;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * SAML2 认证配置
@@ -77,7 +79,10 @@ public class SamlConfig implements HttpSecurityCustomizer {
                 .relyingPartyRegistrationRepository(relyingPartyRegistrationRepository())
                 .successHandler(successHandler)
                 .failureHandler(exceptionResolverHandler)
+                .loginProcessingUrl(samlProperties.getLoginProcessingUrl())
         ;
+        
+        
     }
 
     /**
@@ -88,9 +93,9 @@ public class SamlConfig implements HttpSecurityCustomizer {
      */
     @Bean
     public RelyingPartyRegistrationRepository relyingPartyRegistrationRepository() {
-        RelyingPartyRegistration registration;
+        List<RelyingPartyRegistration> registration;
         //if (samlProperties.isUseMetadata()) {
-            registration = buildRegistrationFromMetadata();
+            registration = buildRegistrationFromMetadata(samlProperties);
         //} else {
             //registration = buildRegistrationFromProperties();
         //}
@@ -100,7 +105,12 @@ public class SamlConfig implements HttpSecurityCustomizer {
     /**
      * 从 IdP metadata.xml 中自动解析并构建 RelyingPartyRegistration
      */
-    private RelyingPartyRegistration buildRegistrationFromMetadata() {
+    private List<RelyingPartyRegistration> buildRegistrationFromMetadata(SamlProperties samlProperties) {
+        return samlProperties.getRegistrations().stream().map(
+                samlProperty -> buildRegistrationFromMetadata(samlProperty, samlProperties.getLoginProcessingUrl())
+        ).collect(Collectors.toList());
+    }
+    private RelyingPartyRegistration buildRegistrationFromMetadata(SamlProperties.RegistrationSamlProperties samlProperties,String loginProcessingUrl) {
         IdpMetadataParser parser = new IdpMetadataParser();
         IdpMetadataParser.IdpMetadata metadata = parser.parse(samlProperties.getMetadataResource());
 
@@ -114,7 +124,8 @@ public class SamlConfig implements HttpSecurityCustomizer {
         return RelyingPartyRegistration
                 .withRegistrationId(samlProperties.getRegistrationId())
                 .localEntityIdTemplate(samlProperties.getSpEntityId()) //默认值 {baseUrl}/saml2/service-provider-metadata/{registrationId}
-                .assertionConsumerServiceUrlTemplate("{baseUrl}" + Saml2WebSsoAuthenticationFilter.DEFAULT_FILTER_PROCESSES_URI)
+                //.assertionConsumerServiceUrlTemplate("{baseUrl}" + Saml2WebSsoAuthenticationFilter.DEFAULT_FILTER_PROCESSES_URI)
+                .assertionConsumerServiceUrlTemplate("{baseUrl}"+loginProcessingUrl)
                 .providerDetails(providerDetails -> providerDetails
                         .entityId(metadata.getEntityId())
                         .webSsoUrl(metadata.getSsoUrl())
