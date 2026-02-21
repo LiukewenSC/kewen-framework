@@ -64,14 +64,17 @@ public class SessionConfig {
      * @param repository
      * @return
      */
-    @Bean
+    /*@Bean
     SessionRegistry springSessionBackedSessionRegistry(FindByIndexNameSessionRepository repository) {
         return new SpringSessionBackedSessionRegistry(repository);
-    }
+    }*/
 
 
     @Bean
+/*
     public HttpSecurityCustomizer HttpSecurityCustomizer(SessionRegistry sessionRegistry, SessionProperties session) {
+*/
+    public HttpSecurityCustomizer HttpSecurityCustomizer( SessionProperties session) {
 
         return http -> {
             try {
