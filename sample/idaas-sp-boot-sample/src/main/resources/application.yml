@@ -22,7 +22,7 @@ spring:
       validation-timeout:5000
       pool-name:HikaraPool-1
   session:
-    store-type: jdbc
+    store-type: none
     timeout: 2D #超时2天
 
 logging:
@@ -73,3 +73,20 @@ kewen:
             #web-sso-url: "https://idp4-test.alibaba.net/sso/saml" # your idp sso url
             #idp-certificate-resource: classpath:saml/idp-certificate.crt # your idp certificate resource
             metadata-resource: classpath:saml/metadata/idaas-idp4-dev-metadata.xml
+      oauth2:
+        authorization-uri: /oauth2/authorize
+        clients:
+          -
+            registration-id: idp4-test-kewen-loc-registration
+            client-id: 0789ffd84caa2d24c93b6e0658722d6aIG2ger3ZUSU
+            client-secret: hH2NlvIDLLfJxUyTZH8Pq2nMT2wKWdu5n7tBUaO8Dp
+            authorization-uri: http://idp4-test.alibaba.net/oauth/authorize
+            token-uri: http://idp4-test.alibaba.net/oauth/token
+            user-info-uri: http://idp4-test.alibaba.net/api/bff/v1.2/oauth/userinfo
+            user-name-attribute-name: sub
+            client-authentication-method: basic
+            authorization-grant-type: authorization_code
+            scopes:
+              -  read
+            redirect-uri-template: "{baseUrl}/login/oauth2/code/{registrationId}"
+            ignore-ssl: true
