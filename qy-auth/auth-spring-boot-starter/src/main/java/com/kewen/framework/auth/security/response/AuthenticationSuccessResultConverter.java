@@ -4,7 +4,7 @@ import com.kewen.framework.auth.security.model.SecurityUser;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-public interface JsonSuccessResultConverter {
+public interface AuthenticationSuccessResultConverter {
 
     boolean support(Authentication authentication);
 

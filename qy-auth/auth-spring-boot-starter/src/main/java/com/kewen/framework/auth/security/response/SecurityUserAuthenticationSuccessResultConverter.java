@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
  * @author kewen
  * @since 1.0
  */
-public class SecurityUserJsonSuccessResultConverter implements JsonSuccessResultConverter{
+public class SecurityUserAuthenticationSuccessResultConverter implements AuthenticationSuccessResultConverter {
     @Override
     public boolean support(Authentication authentication) {
         return authentication.getPrincipal() instanceof SecurityUser;
