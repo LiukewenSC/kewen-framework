@@ -62,6 +62,10 @@ public class Oauth2Config implements HttpSecurityCustomizer {
         return new DefaultAuthorizationCodeTokenResponseClient();
     }
 
+    /**
+     * 这里自定义了一个DefaultOAuth2UserService，用来解决Oauth2默认的ssl证书校验，如果不需要的话就不用此处的Bean，会默认生成一个
+     * @return
+     */
     @Bean
     public OAuth2UserService oAuth2UserService() {
         //return new IdaasSPOAuth2UserService();
