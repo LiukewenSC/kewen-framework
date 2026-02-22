@@ -48,8 +48,12 @@ public class SecurityBeanConfig {
     @Bean
     @ConditionalOnMissingBean(SecurityAuthenticationSuccessHandler.class)
     SecurityAuthenticationSuccessHandler securityAuthenticationSuccessHandler(
-            AuthenticationSuccessResultResolver resultResolverProvider, ObjectMapper objectMapper){
-        return new JsonAuthenticationSuccessHandler(resultResolverProvider,objectMapper);
+            AuthenticationSuccessResultResolver resultResolverProvider, ObjectMapper objectMapper, ObjectProvider<AuthenticationSuccessResultConverter> jsonSuccessResultConverter){
+        return new JsonAuthenticationSuccessHandler(resultResolverProvider,objectMapper,jsonSuccessResultConverter);
+    }
+    @Bean
+    SecurityUserAuthenticationSuccessResultConverter securityUserJsonSuccessResultConverter() {
+        return new SecurityUserAuthenticationSuccessResultConverter();
     }
 
 

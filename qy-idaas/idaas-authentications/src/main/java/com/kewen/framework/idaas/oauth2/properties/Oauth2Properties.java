@@ -1,4 +1,4 @@
-package com.kewen.framework.idaas.oauth2;
+package com.kewen.framework.idaas.oauth2.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
