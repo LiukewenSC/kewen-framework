@@ -1,11 +1,9 @@
 package com.kewen.framework.auth.security.response;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kewen.framework.auth.security.model.SecurityUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 
 import javax.servlet.ServletException;
@@ -25,10 +23,12 @@ public class JsonAuthenticationSuccessHandler implements SecurityAuthenticationS
     private static final Logger log = LoggerFactory.getLogger(JsonAuthenticationSuccessHandler.class);
     private ObjectMapper objectMapper;
     private AuthenticationSuccessResultResolver resultResolver;
+    private ObjectProvider<AuthenticationSuccessResultConverter> jsonSuccessResultConverter;
 
-    public JsonAuthenticationSuccessHandler(AuthenticationSuccessResultResolver resultResolver , ObjectMapper objectMapper) {
+    public JsonAuthenticationSuccessHandler(AuthenticationSuccessResultResolver resultResolver , ObjectMapper objectMapper, ObjectProvider<AuthenticationSuccessResultConverter> jsonSuccessResultConverter) {
         this.objectMapper = objectMapper;
         this.resultResolver = resultResolver;
+        this.jsonSuccessResultConverter = jsonSuccessResultConverter;
     }
 
     /**
@@ -42,17 +42,23 @@ public class JsonAuthenticationSuccessHandler implements SecurityAuthenticationS
      */
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        Object principal = authentication.getPrincipal();
+
         // 所有协议返回的都是SecurityUser，不是的需要自定义AuthenticationProvider，并返回SecurityUser
-        if (!(principal instanceof SecurityUser)){
-            throw new AuthenticationServiceException("Principal is not a SecurityUser");
+        JsonSuccessResult jsonSuccessResult = null;
+
+        for (AuthenticationSuccessResultConverter successResultConverter : jsonSuccessResultConverter) {
+            if (successResultConverter.support(authentication)) {
+                jsonSuccessResult = successResultConverter.convert(authentication);
+                break;
+            }
         }
-        SecurityUser user = (SecurityUser) principal;
-        user.setToken(request.getSession().getId());
-        user.setLoginTime(LocalDateTime.now());
-        //清空密码
-        user.setPassword("");
-        Object result =  resultResolver.resolver(request,response,user);
+        if (jsonSuccessResult ==null){
+            jsonSuccessResult = new JsonSuccessResult();
+        }
+
+        jsonSuccessResult.setToken(request.getSession().getId());
+        jsonSuccessResult.setLoginTime(LocalDateTime.now());
+        Object result =  resultResolver.resolver(request,response,jsonSuccessResult);
         writeResponseBody(response, result);
     }
     private void writeResponseBody(HttpServletResponse response,Object result) throws IOException {

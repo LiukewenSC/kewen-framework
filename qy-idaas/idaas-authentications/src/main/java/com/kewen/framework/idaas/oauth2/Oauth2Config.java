@@ -3,16 +3,16 @@ package com.kewen.framework.idaas.oauth2;
 import com.kewen.framework.auth.security.config.HttpSecurityCustomizer;
 import com.kewen.framework.auth.security.response.SecurityAuthenticationExceptionResolverHandler;
 import com.kewen.framework.auth.security.response.SecurityAuthenticationSuccessHandler;
+import com.kewen.framework.idaas.oauth2.properties.Oauth2Properties;
+import com.kewen.framework.idaas.oauth2.result.Oauth2AuthenticationSuccessResultConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.oauth2.client.authentication.OAuth2LoginAuthenticationProvider;
 import org.springframework.security.oauth2.client.endpoint.DefaultAuthorizationCodeTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
-import org.springframework.security.oauth2.client.http.OAuth2ErrorResponseErrorHandler;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
@@ -23,7 +23,6 @@ import org.springframework.security.oauth2.client.web.HttpSessionOAuth2Authoriza
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -55,6 +54,10 @@ public class Oauth2Config implements HttpSecurityCustomizer {
         return new HttpSessionOAuth2AuthorizationRequestRepository();
     }
     @Bean
+    public Oauth2AuthenticationSuccessResultConverter oauth2JsonSuccessResultConverter(){
+        return new Oauth2AuthenticationSuccessResultConverter();
+    }
+    @Bean
     public OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient() {
         return new DefaultAuthorizationCodeTokenResponseClient();
     }
@@ -65,12 +68,6 @@ public class Oauth2Config implements HttpSecurityCustomizer {
         DefaultOAuth2UserService defaultOAuth2UserService = new DefaultOAuth2UserService();
         defaultOAuth2UserService.setRestOperations(new RestOperationBuilder().enableSsl(false).build());
         return defaultOAuth2UserService;
-    }
-    @Bean
-    public IdaasSPOAuth2LoginAuthenticationProvider idaasSPOAuth2LoginAuthenticationProvider() {
-        return new IdaasSPOAuth2LoginAuthenticationProvider(new OAuth2LoginAuthenticationProvider(
-                accessTokenResponseClient(),oAuth2UserService()
-                ));
     }
 
     @Override
