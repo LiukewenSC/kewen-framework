@@ -2,12 +2,14 @@ package com.kewen.framework.auth.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kewen.framework.auth.core.AuthUserContext;
-import com.kewen.framework.auth.security.exception.NoLoginException;
 import com.kewen.framework.auth.security.model.SecurityUser;
 import com.kewen.framework.auth.security.response.AuthenticationSuccessResultResolver;
+import com.kewen.framework.auth.security.response.AuthenticationSuccessResultConverter;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -31,40 +33,45 @@ public class AuthUserContextFilter extends OncePerRequestFilter {
     private String currentUserUrl;
     private ObjectMapper objectMapper;
     private AuthenticationSuccessResultResolver resultResolver;
+    private ObjectProvider<AuthenticationSuccessResultConverter> jsonSuccessResultConverter;
+    private UserDetailsService userDetailsService;
 
-    public AuthUserContextFilter(String currentUserUrl, AuthenticationSuccessResultResolver resultResolver , ObjectMapper objectMapper) {
+    public AuthUserContextFilter(String currentUserUrl, AuthenticationSuccessResultResolver resultResolver ,
+                                 ObjectMapper objectMapper, ObjectProvider<AuthenticationSuccessResultConverter> jsonSuccessResultConverter,
+                                 UserDetailsService userDetailsService) {
         this.currentUserUrl = currentUserUrl;
         this.resultResolver = resultResolver;
         this.objectMapper = objectMapper;
+        this.jsonSuccessResultConverter = jsonSuccessResultConverter;
+        this.userDetailsService = userDetailsService;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        Optional<Object> principalOptional = Optional.of(SecurityContextHolder.getContext())
-                .map(SecurityContext::getAuthentication)
-                .map(Authentication::getPrincipal);
+        Optional<Authentication> principalOptional = Optional.of(SecurityContextHolder.getContext())
+                .map(SecurityContext::getAuthentication);
+
+        //设置用户权限上下文
+        principalOptional.ifPresent(principal -> {
+            if (principal instanceof SecurityUser) {
+                for (AuthenticationSuccessResultConverter successResultConverter : jsonSuccessResultConverter) {
+                    if (successResultConverter.support(principal)) {
+                        SecurityUser securityUser = successResultConverter.convert(userDetailsService, principal);
+                        AuthUserContext.setCurrentUser(securityUser);
+                        break;
+                    }
+                }
+            }
+        });
 
         //如果是查询当前用户，则直接返回，没有查询到则报错需要登录
         if (currentUserUrl.equals(request.getRequestURI())) {
-            if (!principalOptional.isPresent() || !(principalOptional.get() instanceof SecurityUser)) {
-                throw new NoLoginException("No SecurityUser found");
-            }
-            Object currentUser = principalOptional.get();
-            SecurityUser securityUser = (SecurityUser) currentUser;
-            //清除密码
-            securityUser.setPassword("");
+            SecurityUser securityUser = (SecurityUser)AuthUserContext.getCurrentUser();
             Object result = resultResolver.resolver(request, response, securityUser);
             writeResponseBody(response,result);
             return;
         }
-        principalOptional.ifPresent(principal -> {
-            if (principal instanceof SecurityUser) {
-                SecurityUser securityUser = (SecurityUser) principal;
-                AuthUserContext.setCurrentUser(securityUser);
-            }
-        });
-
 
         filterChain.doFilter(request, response);
     }

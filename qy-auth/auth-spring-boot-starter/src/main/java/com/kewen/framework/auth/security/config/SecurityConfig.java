@@ -5,6 +5,7 @@ import com.kewen.framework.auth.security.extension.PermitUrlContainer;
 import com.kewen.framework.auth.security.filter.AuthUserContextFilter;
 import com.kewen.framework.auth.security.properties.SecurityProperties;
 import com.kewen.framework.auth.security.response.AuthenticationSuccessResultResolver;
+import com.kewen.framework.auth.security.response.AuthenticationSuccessResultConverter;
 import com.kewen.framework.auth.security.response.SecurityAuthenticationExceptionResolverHandler;
 import com.kewen.framework.auth.security.response.SecurityAuthenticationSuccessHandler;
 import com.kewen.framework.auth.security.service.SecurityUserDetailsService;
@@ -54,6 +55,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     ObjectMapper objectMapper;
+    @Autowired
+    ObjectProvider<AuthenticationSuccessResultConverter> jsonSuccessResultConverter;
 
     @Autowired
     ObjectProvider<HttpSecurityCustomizer> httpSecurityCustomizers;
@@ -101,7 +104,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         .and()*/
                 .csrf().disable()
                 //.cors().configurationSource(corsConfigurationSource()).and()
-                .addFilterAfter(new AuthUserContextFilter(securityProperties.getCurrentUserUrl(),resultResolverProvider,objectMapper), SessionManagementFilter.class)
+                .addFilterAfter(new AuthUserContextFilter(securityProperties.getCurrentUserUrl(),resultResolverProvider,objectMapper,jsonSuccessResultConverter,userDetailsService()), SessionManagementFilter.class)
         ;
         //如果有自定义配置就继续执行自定义的，会覆盖当前的配置
         Iterator<HttpSecurityCustomizer> iterator = httpSecurityCustomizers.stream().iterator();
