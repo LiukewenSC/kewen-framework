@@ -129,7 +129,7 @@ public class SamlConfig implements HttpSecurityCustomizer {
                 .providerDetails(providerDetails -> providerDetails
                         .entityId(metadata.getEntityId())
                         .webSsoUrl(metadata.getSsoUrl())
-                        .binding(Saml2MessageBinding.POST)
+                        .binding(metadata.getSsoBinding())
                 )
                 .credentials(credentials -> credentials.add(verificationCredential))
                 .build();
