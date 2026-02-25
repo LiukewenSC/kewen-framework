@@ -1,18 +1,17 @@
 package com.kewen.framework.idaas.saml;
 
 import net.shibboleth.utilities.java.support.xml.BasicParserPool;
+import org.apache.commons.lang3.tuple.Pair;
 import org.opensaml.core.config.InitializationService;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.UnmarshallerFactory;
-import org.opensaml.saml.saml2.metadata.EntityDescriptor;
-import org.opensaml.saml.saml2.metadata.IDPSSODescriptor;
-import org.opensaml.saml.saml2.metadata.KeyDescriptor;
-import org.opensaml.saml.saml2.metadata.SingleSignOnService;
+import org.opensaml.saml.saml2.metadata.*;
 import org.opensaml.security.credential.UsageType;
 import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.X509Data;
 import org.springframework.core.io.Resource;
+import org.springframework.security.saml2.provider.service.registration.Saml2MessageBinding;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -58,10 +57,11 @@ public class IdpMetadataParser {
                 throw new IllegalStateException("metadata.xml 中未找到 IDPSSODescriptor");
             }
 
-            String ssoUrl = extractSsoUrl(idpDescriptor);
+            Pair<Saml2MessageBinding,String> ssoPair = extractSsoUrl(idpDescriptor);
+            Pair<Saml2MessageBinding,String> logoutPair = extractLogoutUrl(idpDescriptor);
             X509Certificate certificate = extractCertificate(idpDescriptor);
 
-            return new IdpMetadata(entityId, ssoUrl, certificate);
+            return new IdpMetadata(entityId,  ssoPair.getRight(),ssoPair.getLeft(), certificate,logoutPair.getRight(), logoutPair.getLeft());
         } catch (Exception e) {
             throw new IllegalStateException("解析 IdP metadata.xml 失败: " + metadataResource, e);
         }
@@ -91,25 +91,42 @@ public class IdpMetadataParser {
     /**
      * 从 IDPSSODescriptor 中提取 SSO URL，优先使用 HTTP-POST 绑定，其次 HTTP-Redirect
      */
-    private String extractSsoUrl(IDPSSODescriptor idpDescriptor) {
+    private Pair<Saml2MessageBinding,String> extractSsoUrl(IDPSSODescriptor idpDescriptor) {
         List<SingleSignOnService> ssoServices = idpDescriptor.getSingleSignOnServices();
 
         for (SingleSignOnService ssoService : ssoServices) {
             if (HTTP_POST_BINDING.equals(ssoService.getBinding())) {
-                return ssoService.getLocation();
+                return Pair.of(Saml2MessageBinding.POST, ssoService.getLocation());
             }
         }
         for (SingleSignOnService ssoService : ssoServices) {
             if (HTTP_REDIRECT_BINDING.equals(ssoService.getBinding())) {
-                return ssoService.getLocation();
+                return Pair.of(Saml2MessageBinding.REDIRECT, ssoService.getLocation());
             }
         }
-        if (!ssoServices.isEmpty()) {
+        /*if (!ssoServices.isEmpty()) {
             return ssoServices.get(0).getLocation();
-        }
+        }*/
         throw new IllegalStateException("metadata.xml 中未找到 SingleSignOnService");
     }
+    private Pair<Saml2MessageBinding,String> extractLogoutUrl(IDPSSODescriptor idpDescriptor) {
+        List<SingleLogoutService> ssoServices = idpDescriptor.getSingleLogoutServices();
 
+        for (SingleLogoutService ssoService : ssoServices) {
+            if (HTTP_POST_BINDING.equals(ssoService.getBinding())) {
+                return Pair.of(Saml2MessageBinding.POST, ssoService.getLocation());
+            }
+        }
+        for (SingleLogoutService ssoService : ssoServices) {
+            if (HTTP_REDIRECT_BINDING.equals(ssoService.getBinding())) {
+                return Pair.of(Saml2MessageBinding.REDIRECT, ssoService.getLocation());
+            }
+        }
+        /*if (!ssoServices.isEmpty()) {
+            return ssoServices.get(0).getLocation();
+        }*/
+        throw new IllegalStateException("metadata.xml 中未找到 SingleSignOnService");
+    }
     /**
      * 从 IDPSSODescriptor 中提取用于签名验证的 X509 证书
      */
@@ -153,12 +170,18 @@ public class IdpMetadataParser {
     public static class IdpMetadata {
         private final String entityId;
         private final String ssoUrl;
+        private final Saml2MessageBinding ssoBinding;
         private final X509Certificate signingCertificate;
+        private final String logoutUrl;
+        private final Saml2MessageBinding logoutBinding;
 
-        public IdpMetadata(String entityId, String ssoUrl, X509Certificate signingCertificate) {
+        public IdpMetadata(String entityId, String ssoUrl, Saml2MessageBinding ssoBinding, X509Certificate signingCertificate, String logoutUrl, Saml2MessageBinding logoutBinding) {
             this.entityId = entityId;
             this.ssoUrl = ssoUrl;
+            this.ssoBinding = ssoBinding;
             this.signingCertificate = signingCertificate;
+            this.logoutUrl = logoutUrl;
+            this.logoutBinding = logoutBinding;
         }
 
         public String getEntityId() {
@@ -171,6 +194,18 @@ public class IdpMetadataParser {
 
         public X509Certificate getSigningCertificate() {
             return signingCertificate;
+        }
+
+        public String getLogoutUrl() {
+            return logoutUrl;
+        }
+
+        public Saml2MessageBinding getLogoutBinding() {
+            return logoutBinding;
+        }
+
+        public Saml2MessageBinding getSsoBinding() {
+            return ssoBinding;
         }
     }
 }
