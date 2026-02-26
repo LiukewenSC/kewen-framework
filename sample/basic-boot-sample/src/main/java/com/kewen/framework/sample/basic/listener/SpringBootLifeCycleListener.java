@@ -1,6 +1,7 @@
 package com.kewen.framework.sample.basic.listener;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.ConfigurableBootstrapContext;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringApplicationRunListener;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -20,12 +21,12 @@ public class SpringBootLifeCycleListener implements SpringApplicationRunListener
     }
 
     @Override
-    public void starting() {
+    public void starting(ConfigurableBootstrapContext bootstrapContext) {
         log.info("----"+this.getClass().getName()+" : "+"starting");
     }
 
     @Override
-    public void environmentPrepared(ConfigurableEnvironment environment) {
+    public void environmentPrepared(ConfigurableBootstrapContext bootstrapContext, ConfigurableEnvironment environment) {
 
     }
 

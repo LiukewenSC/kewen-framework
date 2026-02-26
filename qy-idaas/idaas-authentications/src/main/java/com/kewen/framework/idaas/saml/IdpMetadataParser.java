@@ -56,12 +56,12 @@ public class IdpMetadataParser {
             if (idpDescriptor == null) {
                 throw new IllegalStateException("metadata.xml 中未找到 IDPSSODescriptor");
             }
-
             Pair<Saml2MessageBinding,String> ssoPair = extractSsoUrl(idpDescriptor);
             Pair<Saml2MessageBinding,String> logoutPair = extractLogoutUrl(idpDescriptor);
             X509Certificate certificate = extractCertificate(idpDescriptor);
 
-            return new IdpMetadata(entityId,  ssoPair.getRight(),ssoPair.getLeft(), certificate,logoutPair.getRight(), logoutPair.getLeft());
+            Boolean wantAuthnRequestsSigned = idpDescriptor.getWantAuthnRequestsSigned();
+            return new IdpMetadata(entityId,  ssoPair.getRight(),ssoPair.getLeft(), certificate,wantAuthnRequestsSigned, logoutPair.getRight(), logoutPair.getLeft());
         } catch (Exception e) {
             throw new IllegalStateException("解析 IdP metadata.xml 失败: " + metadataResource, e);
         }
@@ -172,14 +172,16 @@ public class IdpMetadataParser {
         private final String ssoUrl;
         private final Saml2MessageBinding ssoBinding;
         private final X509Certificate signingCertificate;
+        private final boolean wantAuthnRequestsSigned;
         private final String logoutUrl;
         private final Saml2MessageBinding logoutBinding;
 
-        public IdpMetadata(String entityId, String ssoUrl, Saml2MessageBinding ssoBinding, X509Certificate signingCertificate, String logoutUrl, Saml2MessageBinding logoutBinding) {
+        public IdpMetadata(String entityId, String ssoUrl, Saml2MessageBinding ssoBinding, X509Certificate signingCertificate, boolean wantAuthnRequestsSigned, String logoutUrl, Saml2MessageBinding logoutBinding) {
             this.entityId = entityId;
             this.ssoUrl = ssoUrl;
             this.ssoBinding = ssoBinding;
             this.signingCertificate = signingCertificate;
+            this.wantAuthnRequestsSigned = wantAuthnRequestsSigned;
             this.logoutUrl = logoutUrl;
             this.logoutBinding = logoutBinding;
         }
@@ -206,6 +208,10 @@ public class IdpMetadataParser {
 
         public Saml2MessageBinding getSsoBinding() {
             return ssoBinding;
+        }
+
+        public boolean isWantAuthnRequestsSigned() {
+            return wantAuthnRequestsSigned;
         }
     }
 }

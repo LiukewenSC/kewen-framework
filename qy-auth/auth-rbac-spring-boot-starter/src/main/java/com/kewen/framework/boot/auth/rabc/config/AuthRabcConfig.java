@@ -25,8 +25,6 @@ import org.springframework.context.annotation.Configuration;
 public class AuthRabcConfig {
 
     @Autowired
-    SysAuthMenuComposite sysAuthMenuComposite;
-    @Autowired
     SysMenuApiMpService sysMenuApiMpService;
     @Autowired
     JdbcAuthDataPersistent jdbcAuthDataPersistent;
@@ -38,7 +36,7 @@ public class AuthRabcConfig {
      */
     @Bean
     @ConditionalOnMissingBean(AuthMenuHandler.class)
-    public RabcAnnotationAuthHandler annotationAuthHandler(){
+    public RabcAnnotationAuthHandler annotationAuthHandler(SysAuthMenuComposite sysAuthMenuComposite){
         RabcAnnotationAuthHandler handler = new RabcAnnotationAuthHandler();
         handler.setSysAuthMenuComposite(sysAuthMenuComposite);
         return handler;
