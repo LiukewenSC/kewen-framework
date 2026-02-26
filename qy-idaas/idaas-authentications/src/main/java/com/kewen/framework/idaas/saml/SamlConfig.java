@@ -13,13 +13,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.saml2.credentials.Saml2X509Credential;
+import org.springframework.security.saml2.core.Saml2X509Credential;
+import org.springframework.security.saml2.provider.service.authentication.OpenSaml4AuthenticationProvider;
 import org.springframework.security.saml2.provider.service.authentication.OpenSamlAuthenticationProvider;
 import org.springframework.security.saml2.provider.service.registration.InMemoryRelyingPartyRegistrationRepository;
 import org.springframework.security.saml2.provider.service.registration.RelyingPartyRegistration;
 import org.springframework.security.saml2.provider.service.registration.RelyingPartyRegistrationRepository;
-import org.springframework.security.saml2.provider.service.registration.Saml2MessageBinding;
-import org.springframework.security.saml2.provider.service.servlet.filter.Saml2WebSsoAuthenticationFilter;
 
 import java.io.InputStream;
 import java.security.cert.CertificateFactory;
@@ -80,6 +79,10 @@ public class SamlConfig implements HttpSecurityCustomizer {
                 .successHandler(successHandler)
                 .failureHandler(exceptionResolverHandler)
                 .loginProcessingUrl(samlProperties.getLoginProcessingUrl())
+                .and()
+                /*.saml2Logout(saml2Logout ->
+                        saml2Logout.logoutUrl("/logout/saml2/sso/{registrationId}")
+                )*/
         ;
         
         
@@ -116,58 +119,21 @@ public class SamlConfig implements HttpSecurityCustomizer {
 
         log.info("从 metadata.xml 解析成功: entityId={}, ssoUrl={}", metadata.getEntityId(), metadata.getSsoUrl());
 
-        Saml2X509Credential verificationCredential = new Saml2X509Credential(
-                metadata.getSigningCertificate(),
-                Saml2X509Credential.Saml2X509CredentialType.VERIFICATION
-        );
+        Saml2X509Credential verificationCredential = Saml2X509Credential.verification(metadata.getSigningCertificate());
 
         return RelyingPartyRegistration
                 .withRegistrationId(samlProperties.getRegistrationId())
-                .localEntityIdTemplate(samlProperties.getSpEntityId()) //默认值 {baseUrl}/saml2/service-provider-metadata/{registrationId}
-                //.assertionConsumerServiceUrlTemplate("{baseUrl}" + Saml2WebSsoAuthenticationFilter.DEFAULT_FILTER_PROCESSES_URI)
-                .assertionConsumerServiceUrlTemplate("{baseUrl}"+loginProcessingUrl)
-                .providerDetails(providerDetails -> providerDetails
+                .entityId(samlProperties.getSpEntityId())
+                .assertionConsumerServiceLocation("{baseUrl}" + loginProcessingUrl)
+                .assertingPartyDetails(assertingParty -> assertingParty
                         .entityId(metadata.getEntityId())
-                        .webSsoUrl(metadata.getSsoUrl())
-                        .binding(metadata.getSsoBinding())
+                        .wantAuthnRequestsSigned(metadata.isWantAuthnRequestsSigned())
+                        .singleSignOnServiceLocation(metadata.getSsoUrl())
+                        .singleSignOnServiceBinding(metadata.getSsoBinding())
+                        .singleLogoutServiceLocation(metadata.getLogoutUrl())
+                        .singleLogoutServiceBinding(metadata.getLogoutBinding())
+                        .verificationX509Credentials(credentials -> credentials.add(verificationCredential))
                 )
-                .credentials(credentials -> credentials.add(verificationCredential))
                 .build();
     }
-
-    /**
-     * 使用手动配置的属性构建 RelyingPartyRegistration
-     */
-    /*private RelyingPartyRegistration buildRegistrationFromProperties() {
-        X509Certificate idpCertificate = loadCertificateFromResource(samlProperties.getIdpCertificateResource());
-
-        Saml2X509Credential verificationCredential = new Saml2X509Credential(
-                idpCertificate,
-                Saml2X509Credential.Saml2X509CredentialType.VERIFICATION
-        );
-
-        return RelyingPartyRegistration
-                .withRegistrationId(samlProperties.getRegistrationId())
-                .localEntityIdTemplate(samlProperties.getSpEntityId())
-                .assertionConsumerServiceUrlTemplate("{baseUrl}" + Saml2WebSsoAuthenticationFilter.DEFAULT_FILTER_PROCESSES_URI)
-                .providerDetails(providerDetails -> providerDetails
-                        .entityId(samlProperties.getIdpIdentityId())
-                        .binding(Saml2MessageBinding.POST)
-                        .webSsoUrl(samlProperties.getWebSsoUrl())
-                )
-                .credentials(credentials -> credentials.add(verificationCredential))
-                .build();
-    }*/
-
-    /**
-     * 从资源文件加载 X509 证书
-     */
-    /*private X509Certificate loadCertificateFromResource(Resource certificateResource) {
-        try (InputStream inputStream = certificateResource.getInputStream()) {
-            CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
-            return (X509Certificate) certificateFactory.generateCertificate(inputStream);
-        } catch (Exception e) {
-            throw new IllegalStateException("无法加载 IdP 证书: " + certificateResource, e);
-        }
-    }*/
 }
