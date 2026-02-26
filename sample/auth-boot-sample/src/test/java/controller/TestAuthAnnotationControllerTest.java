@@ -6,10 +6,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.kewen.framework.auth.rabc.mp.entity.SysMenuRoute;
 import com.kewen.framework.auth.rabc.mp.service.SysMenuRouteMpService;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.CollectionUtils;
 
 import java.io.File;
@@ -24,7 +22,6 @@ import java.util.List;
  * @since 2024-05-10 14:10
  */
 @SpringBootTest
-@RunWith(SpringJUnit4ClassRunner.class)
 public class TestAuthAnnotationControllerTest {
 
     @Autowired
