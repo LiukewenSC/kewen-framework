@@ -12,6 +12,7 @@ import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 允许放行的url配置
@@ -45,12 +46,29 @@ public class PermitUrlContainer implements ApplicationContextAware {
         Map<RequestMappingInfo, HandlerMethod> handlerMethods = requestMappingHandlerMapping.getHandlerMethods();
         for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : handlerMethods.entrySet()) {
             RequestMappingInfo requestMappingInfo = entry.getKey();
-            Set<String> patterns = requestMappingInfo.getPatternsCondition().getPatterns();
+            Set<String> patterns = extractPatterns(requestMappingInfo);
             HandlerMethod value = entry.getValue();
             boolean hasAnnotation = value.hasMethodAnnotation(SecurityIgnore.class);
             if (hasAnnotation || value.getMethod().getDeclaringClass().isAnnotationPresent(SecurityIgnore.class)) {
                 annotationPermits.addAll(patterns);
             }
         }
+    }
+
+    /**
+     * 从RequestMappingInfo中提取URL模式，兼容Spring MVC 5.3+（Spring Boot 2.6+）
+     * 5.3+ 默认使用PathPatternParser，getPatternsCondition()会返回null，需要使用getPathPatternsCondition()
+     */
+    private Set<String> extractPatterns(RequestMappingInfo requestMappingInfo) {
+        if (requestMappingInfo.getPatternsCondition() != null) {
+            return requestMappingInfo.getPatternsCondition().getPatterns();
+        }
+        if (requestMappingInfo.getPathPatternsCondition() != null) {
+            return requestMappingInfo.getPathPatternsCondition().getPatterns()
+                    .stream()
+                    .map(Object::toString)
+                    .collect(Collectors.toSet());
+        }
+        return Collections.emptySet();
     }
 }

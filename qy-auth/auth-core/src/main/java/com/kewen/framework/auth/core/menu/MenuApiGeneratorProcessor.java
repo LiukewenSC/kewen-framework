@@ -18,6 +18,7 @@ import java.util.*;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 /**
  * API菜单生成处理器
@@ -165,10 +166,26 @@ public class MenuApiGeneratorProcessor implements ApplicationContextAware,Runnab
      * @param methodName  名称，不会为空
      */
     private void putMenuAuth(RequestMappingInfo mappingInfo, String methodName, String controllerPath) {
-        PatternsRequestCondition patternsCondition = mappingInfo.getPatternsCondition();
-        Set<String> patterns = patternsCondition.getPatterns();
+        Set<String> patterns = extractPatterns(mappingInfo);
         for (String pattern : patterns) {
             menuApiMap.putIfAbsent(pattern.trim(), MenuApiEntity.of(pattern, methodName, controllerPath));
         }
+    }
+
+    /**
+     * 从RequestMappingInfo中提取URL模式，兼容Spring MVC 5.3+（Spring Boot 2.6+）
+     * 5.3+ 默认使用PathPatternParser，getPatternsCondition()会返回null，需要使用getPathPatternsCondition()
+     */
+    private Set<String> extractPatterns(RequestMappingInfo mappingInfo) {
+        if (mappingInfo.getPatternsCondition() != null) {
+            return mappingInfo.getPatternsCondition().getPatterns();
+        }
+        if (mappingInfo.getPathPatternsCondition() != null) {
+            return mappingInfo.getPathPatternsCondition().getPatterns()
+                    .stream()
+                    .map(Object::toString)
+                    .collect(Collectors.toSet());
+        }
+        return Collections.emptySet();
     }
 }

@@ -27,11 +27,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 @Configuration
 @EnableConfigurationProperties(AuthDataTableProperties.class)
 public class AuthCoreConfig {
-    /**
-     * 注解处理器
-     */
-    @Autowired
-    private AuthDataHandler annotationAuthHandler;
 
 
     /*--------------------------------------core.annotation.下配置--------------------------------------*/
@@ -42,7 +37,7 @@ public class AuthCoreConfig {
      * @return
      */
     @Bean
-    DataCheckAspect dataCheckAspect() {
+    DataCheckAspect dataCheckAspect(AuthDataHandler annotationAuthHandler) {
         DataCheckAspect aspect = new DataCheckAspect();
         aspect.setAnnotationAuthHandler(annotationAuthHandler);
         return aspect;
