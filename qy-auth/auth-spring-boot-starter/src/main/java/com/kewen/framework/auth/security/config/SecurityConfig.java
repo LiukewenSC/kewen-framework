@@ -89,9 +89,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .anyRequest().authenticated()
                     .and()
                 //.formLogin()  不再用表单登录了，采用Json登录方式，因此不需要再formLogin引入FormLoginConfigurer配置UsernamePasswordAuthenticationFilter
-                //.logout()
-                //    .logoutSuccessHandler(successHandler)
-                //    .and()
+                .logout()
+                    .logoutSuccessHandler(successHandler)
+                    .and()
                 .exceptionHandling()
                     .accessDeniedHandler(exceptionResolverHandler)
                     .authenticationEntryPoint(exceptionResolverHandler)
