@@ -6,6 +6,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * SAML2 认证属性配置
@@ -31,6 +32,34 @@ public class SamlProperties {
     private String loginProcessingUrl = "/login/saml2/sso/{registrationId}";
 
     private List<RegistrationSamlProperties> registrations;
+
+    /**
+     * SP 签名密钥库配置，用于对 SAML AuthnRequest 和 LogoutRequest 签名
+     */
+    private SpSigningKeystore spSigningKeystore;
+
+    @Data
+    public static class SpSigningKeystore {
+        /**
+         * keystore 文件路径，如 classpath:saml/sp-keystore.jks
+         */
+        private Resource keystoreResource;
+
+        /**
+         * keystore 密码
+         */
+        private String keystorePassword = "changeit";
+
+        /**
+         * 密钥别名
+         */
+        private String keyAlias = "sp-signing";
+
+        /**
+         * 密钥密码
+         */
+        private String keyPassword = "changeit";
+    }
 
 
     /**

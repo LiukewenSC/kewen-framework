@@ -58,6 +58,11 @@ kewen:
         username-parameter: username      # username参数
         password-parameter: password      # password参数
       saml:
+        sp-signing-keystore:
+          keystore-resource: classpath:saml/sp-keystore.jks
+          keystore-password: changeit
+          key-alias: sp-signing
+          key-password: changeit
         registrations:
           -
             registration-id: idp4-test-kewen-loc-registration          # relying party registration id
