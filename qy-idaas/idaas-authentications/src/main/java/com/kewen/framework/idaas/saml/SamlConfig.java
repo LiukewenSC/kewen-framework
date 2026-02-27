@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.Resource;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.saml2.core.Saml2X509Credential;
@@ -21,6 +21,8 @@ import org.springframework.security.saml2.provider.service.registration.RelyingP
 import org.springframework.security.saml2.provider.service.registration.RelyingPartyRegistrationRepository;
 
 import java.io.InputStream;
+import java.security.KeyStore;
+import java.security.PrivateKey;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.List;
@@ -64,10 +66,11 @@ public class SamlConfig implements HttpSecurityCustomizer {
      */
     @Override
     public void customizer(HttpSecurity http) throws Exception {
-        SamlAuthenticationProvider samlAuthenticationProvider = new SamlAuthenticationProvider(
+        /*SamlAuthenticationProvider samlAuthenticationProvider = new SamlAuthenticationProvider(
                 new OpenSamlAuthenticationProvider(),
                 userDetailsService
-        );
+        );*/
+        AuthenticationProvider samlAuthenticationProvider = new OpenSamlAuthenticationProvider();
         //两种方式，
         // 1. 将 SAML2 认证提供者添加到 HttpSecurity，则不需要添加2对应的authenticationManager，保持使用统一的
         // 2. .authenticationManager(new ProviderManager(samlAuthenticationProvider))，那么不需要http.authenticationProvider(samlAuthenticationProvider);
@@ -80,9 +83,11 @@ public class SamlConfig implements HttpSecurityCustomizer {
                 .failureHandler(exceptionResolverHandler)
                 .loginProcessingUrl(samlProperties.getLoginProcessingUrl())
                 .and()
-                /*.saml2Logout(saml2Logout ->
-                        saml2Logout.logoutUrl("/logout/saml2/sso/{registrationId}")
-                )*/
+                .saml2Logout(saml2Logout ->
+                        saml2Logout
+                                .logoutUrl("/logout")
+                                .logoutRequest().logoutUrl("/logout/saml2/slo")
+                )
         ;
         
         
@@ -104,6 +109,10 @@ public class SamlConfig implements HttpSecurityCustomizer {
         //}
         return new InMemoryRelyingPartyRegistrationRepository(registration);
     }
+    @Bean
+    SamlAuthenticationSuccessResultConverter samlAuthenticationSuccessResultConverter() {
+        return new SamlAuthenticationSuccessResultConverter();
+    }
 
     /**
      * 从 IdP metadata.xml 中自动解析并构建 RelyingPartyRegistration
@@ -121,7 +130,7 @@ public class SamlConfig implements HttpSecurityCustomizer {
 
         Saml2X509Credential verificationCredential = Saml2X509Credential.verification(metadata.getSigningCertificate());
 
-        return RelyingPartyRegistration
+        RelyingPartyRegistration.Builder builder = RelyingPartyRegistration
                 .withRegistrationId(samlProperties.getRegistrationId())
                 .entityId(samlProperties.getSpEntityId())
                 .assertionConsumerServiceLocation("{baseUrl}" + loginProcessingUrl)
@@ -133,7 +142,46 @@ public class SamlConfig implements HttpSecurityCustomizer {
                         .singleLogoutServiceLocation(metadata.getLogoutUrl())
                         .singleLogoutServiceBinding(metadata.getLogoutBinding())
                         .verificationX509Credentials(credentials -> credentials.add(verificationCredential))
-                )
-                .build();
+                );
+
+        // 配置 SP 签名凭证（用于签名 AuthnRequest 和 LogoutRequest）
+        Saml2X509Credential signingCredential = loadSpSigningCredential();
+        if (signingCredential != null) {
+            builder.signingX509Credentials(credentials -> credentials.add(signingCredential));
+        }
+
+        return builder.build();
+    }
+
+    /**
+     * 从 keystore 加载 SP 签名凭证（私钥+证书），用于签名 SAML AuthnRequest 和 LogoutRequest
+     *
+     * @return SP 签名凭证，如果未配置 keystore 则返回 null
+     */
+    private Saml2X509Credential loadSpSigningCredential() {
+        SamlProperties.SpSigningKeystore keystoreConfig = samlProperties.getSpSigningKeystore();
+        if (keystoreConfig == null || keystoreConfig.getKeystoreResource() == null) {
+            return null;
+        }
+        try (InputStream inputStream = keystoreConfig.getKeystoreResource().getInputStream()) {
+            KeyStore keyStore = KeyStore.getInstance("JKS");
+            keyStore.load(inputStream, keystoreConfig.getKeystorePassword().toCharArray());
+
+            PrivateKey privateKey = (PrivateKey) keyStore.getKey(
+                    keystoreConfig.getKeyAlias(),
+                    keystoreConfig.getKeyPassword().toCharArray()
+            );
+            X509Certificate certificate = (X509Certificate) keyStore.getCertificate(keystoreConfig.getKeyAlias());
+
+            return Saml2X509Credential.signing(privateKey, certificate);
+        } catch (Exception e) {
+            throw new IllegalStateException("加载 SP 签名密钥库失败: " + keystoreConfig.getKeystoreResource(), e);
+        }
+    }
+
+
+    @Bean
+    public SamlLogoutController samlLogoutController() {
+        return new SamlLogoutController();
     }
 }
