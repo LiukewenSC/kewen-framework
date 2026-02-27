@@ -12,9 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.saml2.core.Saml2X509Credential;
-import org.springframework.security.saml2.provider.service.authentication.OpenSaml4AuthenticationProvider;
 import org.springframework.security.saml2.provider.service.authentication.OpenSamlAuthenticationProvider;
 import org.springframework.security.saml2.provider.service.registration.InMemoryRelyingPartyRegistrationRepository;
 import org.springframework.security.saml2.provider.service.registration.RelyingPartyRegistration;
@@ -55,9 +53,6 @@ public class SamlConfig implements HttpSecurityCustomizer {
     @Autowired
     SecurityAuthenticationExceptionResolverHandler exceptionResolverHandler;
 
-    @Autowired
-    UserDetailsService userDetailsService;
-
     /**
      * 添加 SAML2 登录配置到 HttpSecurity
      *
@@ -66,10 +61,7 @@ public class SamlConfig implements HttpSecurityCustomizer {
      */
     @Override
     public void customizer(HttpSecurity http) throws Exception {
-        /*SamlAuthenticationProvider samlAuthenticationProvider = new SamlAuthenticationProvider(
-                new OpenSamlAuthenticationProvider(),
-                userDetailsService
-        );*/
+        //这里不能用OpenSaml4AuthenticationProvider，OpenSaml4AuthenticationProvider只支持jdk11以上
         AuthenticationProvider samlAuthenticationProvider = new OpenSamlAuthenticationProvider();
         //两种方式，
         // 1. 将 SAML2 认证提供者添加到 HttpSecurity，则不需要添加2对应的authenticationManager，保持使用统一的
@@ -87,6 +79,8 @@ public class SamlConfig implements HttpSecurityCustomizer {
                         saml2Logout
                                 .logoutUrl("/logout")
                                 .logoutRequest().logoutUrl("/logout/saml2/slo")
+                                .and()
+                                .logoutResponse().logoutUrl("/logout/saml2/slo")
                 )
         ;
         
@@ -119,21 +113,29 @@ public class SamlConfig implements HttpSecurityCustomizer {
      */
     private List<RelyingPartyRegistration> buildRegistrationFromMetadata(SamlProperties samlProperties) {
         return samlProperties.getRegistrations().stream().map(
-                samlProperty -> buildRegistrationFromMetadata(samlProperty, samlProperties.getLoginProcessingUrl())
+                samlProperty -> buildRegistrationFromMetadata(samlProperties,samlProperty, samlProperties.getLoginProcessingUrl())
         ).collect(Collectors.toList());
     }
-    private RelyingPartyRegistration buildRegistrationFromMetadata(SamlProperties.RegistrationSamlProperties samlProperties,String loginProcessingUrl) {
+    private RelyingPartyRegistration buildRegistrationFromMetadata(SamlProperties samlProperties, SamlProperties.RegistrationSamlProperties spSamlProperties,String loginProcessingUrl) {
         IdpMetadataParser parser = new IdpMetadataParser();
-        IdpMetadataParser.IdpMetadata metadata = parser.parse(samlProperties.getMetadataResource());
+        IdpMetadataParser.IdpMetadata metadata = parser.parse(spSamlProperties.getMetadataResource());
 
         log.info("从 metadata.xml 解析成功: entityId={}, ssoUrl={}", metadata.getEntityId(), metadata.getSsoUrl());
 
         Saml2X509Credential verificationCredential = Saml2X509Credential.verification(metadata.getSigningCertificate());
 
         RelyingPartyRegistration.Builder builder = RelyingPartyRegistration
-                .withRegistrationId(samlProperties.getRegistrationId())
-                .entityId(samlProperties.getSpEntityId())
+                .withRegistrationId(spSamlProperties.getRegistrationId())
+                .entityId(spSamlProperties.getSpEntityId())
                 .assertionConsumerServiceLocation("{baseUrl}" + loginProcessingUrl)
+                .singleLogoutServiceBinding(metadata.getLogoutBinding())
+                // 如果使用SP退出联动IDP退出，则必须设置此处，否则
+                // org/springframework/security/saml2/provider/service/web/authentication/logout/Saml2LogoutResponseFilter.java:123 处
+                //registration.getSingleLogoutServiceResponseLocation() 为空，会报错
+                //同时org.springframework.security.saml2.provider.service.authentication.logout.OpenSamlLogoutResponseValidator.validateDestination
+                // 也会使用全匹配校验destination是否匹配
+                .singleLogoutServiceLocation("{baseUrl}"+samlProperties.getLogoutRequestUrl())
+                .singleLogoutServiceResponseLocation("{baseUrl}"+samlProperties.getLogoutResponseUrl())
                 .assertingPartyDetails(assertingParty -> assertingParty
                         .entityId(metadata.getEntityId())
                         .wantAuthnRequestsSigned(metadata.isWantAuthnRequestsSigned())

@@ -6,7 +6,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * SAML2 认证属性配置
@@ -37,6 +36,9 @@ public class SamlProperties {
      * SP 签名密钥库配置，用于对 SAML AuthnRequest 和 LogoutRequest 签名
      */
     private SpSigningKeystore spSigningKeystore;
+
+    private String logoutRequestUrl = "/logout/saml2/slo";
+    private String logoutResponseUrl = "/logout/saml2/slo";
 
     @Data
     public static class SpSigningKeystore {
