@@ -1,3 +1,4 @@
+/*
 package com.kewen.framework.auth.sample.config;
 
 import com.baomidou.mybatisplus.annotation.DbType;
@@ -10,12 +11,16 @@ import org.springframework.context.annotation.Configuration;
 public class MybatisPlusConfig {
 
 
-    /**
+    */
+/**
      * 添加分页插件
-     */
-    /**
+     *//*
+
+    */
+/**
      * 添加分页插件
-     */
+     *//*
+
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
@@ -24,3 +29,4 @@ public class MybatisPlusConfig {
         return interceptor;
     }
 }
+*/

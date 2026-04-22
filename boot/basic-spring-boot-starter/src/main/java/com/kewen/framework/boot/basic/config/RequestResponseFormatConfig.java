@@ -48,7 +48,7 @@ public class RequestResponseFormatConfig {
      * @return
      */
     @Bean
-    public Jackson2ObjectMapperBuilderCustomizer customizer() {
+    public Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilderCustomizer() {
 
         return new Jackson2ObjectMapperBuilderCustomizer() {
             @Override
