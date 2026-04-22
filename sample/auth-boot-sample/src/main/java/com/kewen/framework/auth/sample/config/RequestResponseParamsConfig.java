@@ -1,3 +1,4 @@
+/*
 package com.kewen.framework.auth.sample.config;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -18,18 +19,22 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 
+*/
 /**
  *  请求返回参数解析配置，
  * @author kewen
  * @since 2023-04-27
- */
+ *//*
+
 @Configuration
 public class RequestResponseParamsConfig {
-    /**
+    */
+/**
      * 配置 body序列化 jackson全局转换规则
      *
      * @return
-     */
+     *//*
+
     @Bean
     public Jackson2ObjectMapperBuilderCustomizer customizer() {
 
@@ -90,3 +95,4 @@ public class RequestResponseParamsConfig {
         };
     }
 }
+*/

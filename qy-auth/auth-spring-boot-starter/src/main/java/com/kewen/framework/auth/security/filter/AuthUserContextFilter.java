@@ -49,18 +49,16 @@ public class AuthUserContextFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        Optional<Authentication> principalOptional = Optional.of(SecurityContextHolder.getContext())
+        Optional<Authentication> optionalAuthentication = Optional.of(SecurityContextHolder.getContext())
                 .map(SecurityContext::getAuthentication);
 
         //设置用户权限上下文
-        principalOptional.ifPresent(principal -> {
-            if (principal instanceof SecurityUser) {
-                for (AuthenticationSuccessResultConverter successResultConverter : jsonSuccessResultConverter) {
-                    if (successResultConverter.support(principal)) {
-                        SecurityUser securityUser = successResultConverter.convert(userDetailsService, principal);
-                        AuthUserContext.setCurrentUser(securityUser);
-                        break;
-                    }
+        optionalAuthentication.ifPresent(authentication -> {
+            for (AuthenticationSuccessResultConverter successResultConverter : jsonSuccessResultConverter) {
+                if (successResultConverter.support(authentication)) {
+                    SecurityUser securityUser = successResultConverter.convert(userDetailsService, authentication);
+                    AuthUserContext.setCurrentUser(securityUser);
+                    break;
                 }
             }
         });
