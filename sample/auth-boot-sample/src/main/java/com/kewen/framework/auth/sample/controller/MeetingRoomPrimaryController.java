@@ -11,7 +11,7 @@ import com.kewen.framework.auth.rabc.model.RabcPageResult;
 import com.kewen.framework.auth.sample.model.MeetingRoomAddReq;
 import com.kewen.framework.auth.sample.model.MeetingRoomResult;
 import com.kewen.framework.auth.sample.model.MeetingRoomUpdatePrimaryAuth;
-import com.kewen.framework.basic.model.Result;;
+import com.kewen.framework.basic.model.Result;
 import com.kewen.framework.auth.sample.mp.entity.MeetingRoom;
 import com.kewen.framework.auth.sample.mp.service.MeetingRoomMpService;
 import org.apache.commons.lang3.StringUtils;

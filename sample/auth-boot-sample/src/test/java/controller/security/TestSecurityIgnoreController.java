@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestSecurityIgnoreController {
 
     @RequestMapping("/hello")
-    public Result hello(){
+    public Result<String> hello(){
         return Result.success("SecurityIgnore method");
     }
 

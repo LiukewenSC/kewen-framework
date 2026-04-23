@@ -14,7 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
 import java.util.List;
@@ -39,7 +43,7 @@ public class RabcCurrentUserController implements ApplicationContextAware {
         return RabcResult.success(menuTree);
     }
     @PostMapping("/updatePassword")
-    public RabcResult updatePassword(@RequestBody @Validated UpdatePasswordReq req){
+    public RabcResult<Void> updatePassword(@RequestBody @Validated UpdatePasswordReq req){
         rabcCurrentUserService.updatePassword(AuthUserContext.getCurrentUser(),req.getOldPassword(), req.getNewPassword());
         return RabcResult.success();
     }

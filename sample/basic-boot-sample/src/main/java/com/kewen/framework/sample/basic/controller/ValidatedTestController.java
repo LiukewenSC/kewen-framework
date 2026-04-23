@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ValidatedTestController {
     @PostMapping("/validated/hello")
-    public Result hello(@Validated @RequestBody ValidatedReq req){
+    public Result<Void> hello(@Validated @RequestBody ValidatedReq req){
         return Result.success();
     }
 }

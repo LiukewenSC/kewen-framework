@@ -4,6 +4,7 @@ import com.kewen.framework.auth.core.AuthMenu;
 import com.kewen.framework.auth.rabc.model.RabcIdReq;
 import com.kewen.framework.auth.rabc.model.RabcPageConverter;
 import com.kewen.framework.auth.rabc.model.RabcPageReq;
+import com.kewen.framework.auth.rabc.model.RabcPageResult;
 import com.kewen.framework.auth.rabc.model.RabcResult;
 import com.kewen.framework.auth.rabc.mp.entity.SysDept;
 import com.kewen.framework.auth.rabc.mp.service.SysDeptMpService;
@@ -27,24 +28,24 @@ public class RabcDeptController {
 
     @GetMapping("/list")
     @AuthMenu(name = "部门列表")
-    public RabcResult listDept(){
+    public RabcResult<List<SysDept>> listDept(){
         List<SysDept> list = sysDeptMpService.list();
         return RabcResult.success(list);
     }
     @GetMapping("/page")
     @AuthMenu(name = "部门分页")
-    public RabcResult pageDept(@Validated RabcPageReq req){
+    public RabcResult<RabcPageResult<SysDept>> pageDept(@Validated RabcPageReq req){
         return RabcResult.success(RabcPageConverter.pageAndConvert(req, sysDeptMpService));
     }
     @PostMapping("/add")
     @AuthMenu(name = "添加部门")
-    public RabcResult add(@RequestBody SysDept sysDept){
+    public RabcResult<Boolean> add(@RequestBody SysDept sysDept){
         boolean b = sysDeptMpService.save(sysDept);
         return RabcResult.success(b);
     }
     @PostMapping("/update")
     @AuthMenu(name = "部门列表")
-    public RabcResult update(@RequestBody SysDept sysDept){
+    public RabcResult<Boolean> update(@RequestBody SysDept sysDept){
         if (sysDept.getId()==null){
             throw new RuntimeException("用户ID为空");
         }
@@ -53,7 +54,7 @@ public class RabcDeptController {
     }
     @PostMapping("/delete")
     @AuthMenu(name = "删除部门")
-    public RabcResult delete(@RequestBody @Validated RabcIdReq rabcIdReq){
+    public RabcResult<Boolean> delete(@RequestBody @Validated RabcIdReq rabcIdReq){
         boolean b = sysDeptMpService.removeById(rabcIdReq.getId());
         return RabcResult.success(b);
     }
