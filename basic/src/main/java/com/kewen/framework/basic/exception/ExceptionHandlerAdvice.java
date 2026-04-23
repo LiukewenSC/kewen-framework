@@ -44,7 +44,7 @@ public class ExceptionHandlerAdvice {
      * @return
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Result methodArgumentNotValidException(MethodArgumentNotValidException e){
+    public Result<Void> methodArgumentNotValidException(MethodArgumentNotValidException e){
 
         BindingResult bindingResult = e.getBindingResult();
 

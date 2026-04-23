@@ -64,7 +64,7 @@ public abstract class AbstractHeaderRememberMeServices implements RememberMeServ
      */
     @Override
     public Authentication autoLogin(HttpServletRequest request, HttpServletResponse response) {
-        String header = request.getHeader(headerName);;
+        String header = request.getHeader(headerName);
         if (header == null) {
             return null;
         }

@@ -24,20 +24,20 @@ public class JacksonSerializerController {
 
 
     @GetMapping("/paramSerializer")
-    public Result paramSerializer(@RequestParam(required = false) LocalDate localDate, @RequestParam(required = false) LocalDateTime localDateTime){
+    public Result<Void> paramSerializer(@RequestParam(required = false) LocalDate localDate, @RequestParam(required = false) LocalDateTime localDateTime){
         return Result.success();
     }
     @GetMapping("/paramSerializer2")
-    public Result paramSerializer2(LocalDateParam req){
+    public Result<Void> paramSerializer2(LocalDateParam req){
         return Result.success();
     }
 
     @GetMapping("/paramSerializer3")
-    public Result paramSerializer3(@RequestBody LocalDateParam req){
+    public Result<Void> paramSerializer3(@RequestBody LocalDateParam req){
         return Result.success();
     }
     @GetMapping("/deSerializerDate")
-    public Result deSerializerDate(){
+    public Result<Map<Object, Object>> deSerializerDate(){
         Map<Object, Object> build = MapUtil.builder()
                 .put("date", new Date())
                 .put("localDateTime", LocalDateTime.now())

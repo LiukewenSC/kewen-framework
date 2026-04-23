@@ -20,7 +20,7 @@ public class ExceptionAdviceHandler {
 
 
     @ExceptionHandler(AccessDeniedException.class)
-    public Result accessDeniedException(AccessDeniedException t){
+    public Result<Void> accessDeniedException(AccessDeniedException t){
         logger.error("访问异常：{}", t.getMessage(), t);
         return Result.failed(401, t.getMessage());
     }
@@ -28,39 +28,39 @@ public class ExceptionAdviceHandler {
 
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(NoLoginException.class)
-    public Result authenticationException(NoLoginException t){
+    public Result<Void> authenticationException(NoLoginException t){
         logger.error("服务异常：{}", t.getMessage(), t);
         return Result.failed(401, t.getMessage());
     }
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(AuthenticationException.class)
-    public Result authenticationException(AuthenticationException t){
+    public Result<Void> authenticationException(AuthenticationException t){
         logger.error("认证异常：{}", t.getMessage(), t);
         return Result.failed(403, t.getMessage());
     }
 
     @ExceptionHandler(AuthException.class)
-    public Result authException(AuthException e){
+    public Result<Void> authException(AuthException e){
         logger.error(e.getMessage(),e);
         return Result.failed(HttpStatus.FORBIDDEN.value(),e.getMessage());
     }
 
 
     @ExceptionHandler(Throwable.class)
-    public Result throwException(Throwable t){
+    public Result<Void> throwException(Throwable t){
         logger.error("全局异常：{}", t.getMessage(), t);
         return Result.failed(500, t.getMessage());
     }
 
     @ExceptionHandler(InternalAuthenticationServiceException.class)
-    public Result authenticationException(InternalAuthenticationServiceException t){
+    public Result<Void> authenticationException(InternalAuthenticationServiceException t){
         logger.error("服务异常：{}", t.getMessage(), t);
         return Result.failed(500, t.getMessage());
     }
 
     @ExceptionHandler(InsufficientAuthenticationException.class)
-    public Result insufficientAuthenticationException(InsufficientAuthenticationException t){
+    public Result<Void> insufficientAuthenticationException(InsufficientAuthenticationException t){
         logger.error("请求的权限不足，需要提升："+ t.getMessage(), t);
         return Result.failed(401, "请求的权限不足，需要提升，请重新登录");
     }

@@ -12,7 +12,7 @@ public class TestSecurityController {
 
     @PreAuthorize("hasAuthority(ROLE_1)")
     @GetMapping("/admin")
-    public Result admin(){
+    public Result<String> admin(){
         return Result.success("hasAuthority(ROLE_1)");
     }
 
