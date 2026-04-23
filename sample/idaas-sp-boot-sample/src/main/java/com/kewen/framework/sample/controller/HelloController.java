@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping
 public class HelloController {
     @RequestMapping("/hello")
-    public Result hello() {
+    public Result<String> hello() {
         return Result.success("hello");
     }
     @RequestMapping("/")
-    public Result hello2() {
+    public Result<String> hello2() {
         return Result.success("index");
     }
 }

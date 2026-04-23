@@ -33,24 +33,24 @@ public class RabcUserController {
 
     @GetMapping("/list")
     @AuthMenu(name = "用户列表")
-    public RabcResult listUser(){
+    public RabcResult<List<SysUser>> listUser(){
         List<SysUser> list = sysUserMpService.list();
         return RabcResult.success(list);
     }
     @GetMapping("/page")
     @AuthMenu(name = "分页")
-    public RabcResult pageUser(@Validated RabcPageReq rabcPageReq){
+    public RabcResult<RabcPageResult<SysUser>> pageUser(@Validated RabcPageReq rabcPageReq){
         RabcPageResult<SysUser> result = RabcPageConverter.pageAndConvert(rabcPageReq,sysUserMpService);
         return RabcResult.success(result);
     }
     @PostMapping("/add")
     @AuthMenu(name = "新增")
-    public RabcResult add(@RequestBody SysUser sysUser){
+    public RabcResult<Boolean> add(@RequestBody SysUser sysUser){
         boolean b = sysUserMpService.save(sysUser);
         return RabcResult.success(b);
     }
     @PostMapping("/update")
-    public RabcResult update(@RequestBody SysUser sysUser){
+    public RabcResult<Boolean> update(@RequestBody SysUser sysUser){
         if (sysUser.getId()==null){
             throw new RuntimeException("用户ID为空");
         }
@@ -58,7 +58,7 @@ public class RabcUserController {
         return RabcResult.success(b);
     }
     @PostMapping("/delete")
-    public RabcResult delete(@RequestBody @Validated RabcIdReq rabcIdReq){
+    public RabcResult<Boolean> delete(@RequestBody @Validated RabcIdReq rabcIdReq){
         boolean b = sysUserMpService.removeById(rabcIdReq.getId());
         return RabcResult.success(b);
     }
