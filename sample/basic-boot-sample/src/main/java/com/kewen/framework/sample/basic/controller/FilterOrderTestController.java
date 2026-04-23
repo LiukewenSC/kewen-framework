@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class FilterOrderTestController {
 
     @RequestMapping("/filter/hello")
-    public Result filter(){
+    public Result<?> filter(){
         //IUser iUser = UserContext.get();
         return Result.success();
     }
