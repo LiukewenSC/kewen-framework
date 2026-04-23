@@ -1,0 +1,83 @@
+{
+  "version": "1.0",
+  "language": "zh",
+  "title": "Kewen Framework 后端项目 Wiki",
+  "description": "Kewen Framework 后端框架完整文档，包含权限系统、核心模块、API 接口、数据库设计等内容",
+  "root": {
+    "id": "root",
+    "title": "Kewen Framework",
+    "children": [
+      {
+        "id": "overview",
+        "title": "项目概述",
+        "path": "content/项目概述.md"
+      },
+      {
+        "id": "auth",
+        "title": "权限控制系统",
+        "children": [
+          {
+            "id": "auth-overview",
+            "title": "权限系统概述",
+            "path": "content/权限控制系统/权限系统概述.md"
+          }
+        ]
+      },
+      {
+        "id": "modules",
+        "title": "核心模块",
+        "children": [
+          {
+            "id": "module-architecture",
+            "title": "模块架构",
+            "path": "content/核心模块/模块架构.md"
+          }
+        ]
+      },
+      {
+        "id": "api",
+        "title": "API 接口层",
+        "children": [
+          {
+            "id": "api-overview",
+            "title": "接口概览",
+            "path": "content/API接口层/接口概览.md"
+          }
+        ]
+      },
+      {
+        "id": "data",
+        "title": "数据模型层",
+        "children": [
+          {
+            "id": "database-design",
+            "title": "数据库设计",
+            "path": "content/数据模型层/数据库设计.md"
+          }
+        ]
+      },
+      {
+        "id": "config",
+        "title": "配置指南",
+        "children": [
+          {
+            "id": "basic-config",
+            "title": "基础配置",
+            "path": "content/配置指南/基础配置.md"
+          }
+        ]
+      },
+      {
+        "id": "practice",
+        "title": "开发实践",
+        "children": [
+          {
+            "id": "best-practices",
+            "title": "最佳实践",
+            "path": "content/开发实践/最佳实践.md"
+          }
+        ]
+      }
+    ]
+  }
+}
