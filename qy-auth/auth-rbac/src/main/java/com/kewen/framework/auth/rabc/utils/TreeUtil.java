@@ -170,12 +170,13 @@ public class TreeUtil {
      * @param <T>
      * @return
      */
-    public static <T extends TreeChildren<T>> List<T> convertList(Collection<? extends TreeChildren> collection, Class<T> clazz){
+    @SuppressWarnings("unchecked")
+    public static <T extends TreeChildren<T>> List<T> convertList(Collection<? extends TreeChildren<?>> collection, Class<T> clazz){
         ArrayList<T> list = new ArrayList<>();
-        for (TreeChildren col : collection) {
+        for (TreeChildren<?> col : collection) {
             T bean = BeanUtil.toBean(col, clazz);
             if (!CollectionUtils.isEmpty(col.getChildren())){
-                bean.setChildren(convertList(col.getChildren(), clazz));
+                bean.setChildren((List<T>) convertList((Collection<? extends TreeChildren<?>>) (Collection<?>) col.getChildren(), clazz));
             }
             list.add(bean);
         }

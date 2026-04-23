@@ -27,7 +27,7 @@ public class QiNiuStorageTemplate implements StorageTemplate {
      */
     //private String accessKey = "qYUhPA6FvZ29dQ4pz1BgLwHaTcV2vt_rD-GoEEFB";
     //private String secretKey = "eyihg0gLAyHd2j08geDCCWdI0UHOfhxzpjFpKso1";
-    Auth auth;
+    private final Auth auth;
     /**
      * 存储桶空间
      * "kewen-blog"
@@ -46,7 +46,7 @@ public class QiNiuStorageTemplate implements StorageTemplate {
     // "rtk99wucl.hd-bkt.clouddn.com"
     private final String downloadDomain;
     private final String callbackUrl;
-    UploadManager uploadManager;
+    private final UploadManager uploadManager;
 
     public QiNiuStorageTemplate(String accessKey, String secretKey, Region region, String bucket, String rootPath, boolean isPublic, String downloadDomain, String callbackUrl) {
 

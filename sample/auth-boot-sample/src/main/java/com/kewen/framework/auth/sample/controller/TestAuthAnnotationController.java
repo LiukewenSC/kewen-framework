@@ -7,7 +7,7 @@ import com.kewen.framework.auth.core.AuthMenu;
 import com.kewen.framework.auth.core.data.edit.IdDataEdit;
 import com.kewen.framework.auth.rabc.model.RabcPageReq;
 import com.kewen.framework.auth.rabc.model.RabcPageResult;
-import com.kewen.framework.basic.model.Result;;
+import com.kewen.framework.basic.model.Result;
 import com.kewen.framework.auth.sample.mp.entity.TestauthAnnotationBusiness;
 import com.kewen.framework.auth.sample.mp.service.TestauthAnnotationBusinessMpService;
 import lombok.Data;
