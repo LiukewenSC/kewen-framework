@@ -83,8 +83,8 @@ public class SamlConfig implements HttpSecurityCustomizer {
                                 .logoutResponse().logoutUrl("/logout/saml2/slo")
                 )
         ;
-        
-        
+
+
     }
 
     /**
@@ -128,7 +128,6 @@ public class SamlConfig implements HttpSecurityCustomizer {
                 .withRegistrationId(spSamlProperties.getRegistrationId())
                 .entityId(spSamlProperties.getSpEntityId())
                 .assertionConsumerServiceLocation("{baseUrl}" + loginProcessingUrl)
-                .singleLogoutServiceBinding(metadata.getLogoutBinding())
                 // 如果使用SP退出联动IDP退出，则必须设置此处，否则
                 // org/springframework/security/saml2/provider/service/web/authentication/logout/Saml2LogoutResponseFilter.java:123 处
                 //registration.getSingleLogoutServiceResponseLocation() 为空，会报错
@@ -141,10 +140,18 @@ public class SamlConfig implements HttpSecurityCustomizer {
                         .wantAuthnRequestsSigned(metadata.isWantAuthnRequestsSigned())
                         .singleSignOnServiceLocation(metadata.getSsoUrl())
                         .singleSignOnServiceBinding(metadata.getSsoBinding())
-                        .singleLogoutServiceLocation(metadata.getLogoutUrl())
-                        .singleLogoutServiceBinding(metadata.getLogoutBinding())
                         .verificationX509Credentials(credentials -> credentials.add(verificationCredential))
-                );
+                )
+        ;
+
+        // 只在 metadata 中有 SingleLogoutService 时才设置退出相关属性
+        if (metadata.getLogoutUrl() != null && metadata.getLogoutBinding() != null) {
+            builder.singleLogoutServiceBinding(metadata.getLogoutBinding())
+                    .assertingPartyDetails(assertingParty -> assertingParty
+                            .singleLogoutServiceLocation(metadata.getLogoutUrl())
+                            .singleLogoutServiceBinding(metadata.getLogoutBinding())
+                    );
+        }
 
         // 配置 SP 签名凭证（用于签名 AuthnRequest 和 LogoutRequest）
         Saml2X509Credential signingCredential = loadSpSigningCredential();
