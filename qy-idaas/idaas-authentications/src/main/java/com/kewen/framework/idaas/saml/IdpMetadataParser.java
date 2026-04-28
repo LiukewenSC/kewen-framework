@@ -61,7 +61,9 @@ public class IdpMetadataParser {
             X509Certificate certificate = extractCertificate(idpDescriptor);
 
             Boolean wantAuthnRequestsSigned = idpDescriptor.getWantAuthnRequestsSigned();
-            return new IdpMetadata(entityId,  ssoPair.getRight(),ssoPair.getLeft(), certificate,wantAuthnRequestsSigned, logoutPair.getRight(), logoutPair.getLeft());
+            String logoutUrl = logoutPair != null ? logoutPair.getRight() : null;
+            Saml2MessageBinding logoutBinding = logoutPair != null ? logoutPair.getLeft() : null;
+            return new IdpMetadata(entityId, ssoPair.getRight(), ssoPair.getLeft(), certificate, wantAuthnRequestsSigned, logoutUrl, logoutBinding);
         } catch (Exception e) {
             throw new IllegalStateException("解析 IdP metadata.xml 失败: " + metadataResource, e);
         }
@@ -122,10 +124,7 @@ public class IdpMetadataParser {
                 return Pair.of(Saml2MessageBinding.REDIRECT, ssoService.getLocation());
             }
         }
-        /*if (!ssoServices.isEmpty()) {
-            return ssoServices.get(0).getLocation();
-        }*/
-        throw new IllegalStateException("metadata.xml 中未找到 SingleSignOnService");
+        return null;
     }
     /**
      * 从 IDPSSODescriptor 中提取用于签名验证的 X509 证书

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" entityID="idp-demo3">
+    <md:IDPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+        <md:KeyDescriptor use="signing">
+            <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+                <ds:X509Data>
+                    <ds:X509Certificate>
+                        MIIC3DCCAcSgAwIBAgIGAZ3Rf5DJMA0GCSqGSIb3DQEBCwUAMC8xEjAQBgNVBAMMCWlkcC1kZW1vMzEMMAoGA1UECgwDSURQMQswCQYDVQQGEwJDTjAeFw0yNjA0MjgwMDMxMzFaFw0yNzA0MjgwMDMxMzFaMC8xEjAQBgNVBAMMCWlkcC1kZW1vMzEMMAoGA1UECgwDSURQMQswCQYDVQQGEwJDTjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAIFU1U5EI0UCrcXSGxbfXioWF+MzgpPJw85yWMhd3TK9ZSxK/4YjjTiFoTe9wTcyp/9vYTRE+tKljKN6fqPf716Wxupi/2tYC0naCZr3dAZ1U3JZwinSESrHRHqSbSPDiOJo6/pYbo53CwPmeIsY5/XS7xvnMYH3VLbzd6aK6f/yFT+jUbOmBWgS/dki1G8eytQXAnDHT0ZEWuyIniYvdzyDBkstDuZ73s1d+VZUXv2TZvi6Ly6D2bs1gskPY0cLuwbhDBihLJ8AtUE4E17UOmFaYK1t0BtSq9RE4PeAQpNpV/iq3d32+SS1OmDAbTOM0qntceUllHm4f1HwD6cK4I8CAwEAATANBgkqhkiG9w0BAQsFAAOCAQEAMLeaNPNamWh0QZO77401bfh8gMzR7iIBJ8jaltb1DXLNTJNeTrP/aqmOqa0swgLOqVY/KV5oB6APecUpjX0eLZeVnxUAFxLNeE4yijYSGqlUdeQZ3u8tp56ome3QE9gsG7g1mb8qVIKPV+rkylxl7PLp6MM0QAVcaeoeVx3vDKzEZ92jghVSUOv+pPMTba3d8wrvpzjCOZHqrWV9TDipGsn3iyOiU/AjVJ4oQoBHszUTgHLu5fdLShAsNMXDz+4zcJz0WndSsQPzNOT754KeU72+itMC/7Rw7GTDSxZzVg9it8TotW/9dolsNTgr78siY/7WeCLBAEO4s3i5lJlTpw==
+                    </ds:X509Certificate>
+                </ds:X509Data>
+            </ds:KeyInfo>
+        </md:KeyDescriptor>
+        <md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress</md:NameIDFormat>
+        <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+                                Location="http://localhost:9010/saml/sso"/>
+        <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+                                Location="http://localhost:9010/saml/sso"/>
+    </md:IDPSSODescriptor>
+</md:EntityDescriptor>
