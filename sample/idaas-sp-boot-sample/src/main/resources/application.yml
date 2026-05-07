@@ -88,6 +88,20 @@ kewen:
         authorization-uri: /oauth2/authorize
         clients:
           -
+            registration-id: kewen-local-registration
+            client-id: client_7f7c827b91224a9d
+            client-secret: b54258d7b3e643b489859dec2eec95aaa16c1c701fd4470182b3d0e9926426c1
+            authorization-uri: http://localhost:9010/oauth2/authorize
+            token-uri: http://localhost:9010/oauth2/token
+            user-info-uri: http://localhost:9010/oauth2/userinfo
+            user-name-attribute-name: sub
+            client-authentication-method: basic
+            authorization-grant-type: authorization_code
+            scopes:
+              -  read
+            redirect-uri-template: "{baseUrl}/login/oauth2/code/{registrationId}"
+            ignore-ssl: true
+          -
             registration-id: idp4-test-kewen-loc-registration
             client-id: 0789ffd84caa2d24c93b6e0658722d6aIG2ger3ZUSU
             client-secret: hH2NlvIDLLfJxUyTZH8Pq2nMT2wKWdu5n7tBUaO8Dp
