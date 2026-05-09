@@ -27,7 +27,9 @@ spring:
 
 logging:
   level:
-    org.springframework.security: debug
+    org.springframework.security: TRACE
+    org.springframework.security.oauth2.jwt: TRACE
+    com.nimbusds: TRACE
   file:
     name: auth-sample
     path: ./logs
@@ -85,10 +87,19 @@ kewen:
             metadata-resource: classpath:saml/metadata/kewen-local-metadata.xml
 
       oauth2:
-        authorization-uri: /oauth2/authorize
+        sso-authorization-uri: /oauth2/authorize
         clients:
           -
-            registration-id: kewen-local-registration
+            registration-id: kewen-local-oidc-registration
+            protocol-type: oidc
+            client-id: client_7f7c827b91224a9d
+            client-secret: b54258d7b3e643b489859dec2eec95aaa16c1c701fd4470182b3d0e9926426c1
+            issuer-uri: http://localhost:9010/oidc
+            jwk-set-uri: http://localhost:9010/oidc/jwks?client_id=client_7f7c827b91224a9d
+            #jwk-set-params: ?client_id=client_7f7c827b91224a9d
+          -
+            registration-id: kewen-local-oauth-registration
+            protocol-type: oauth2
             client-id: client_7f7c827b91224a9d
             client-secret: b54258d7b3e643b489859dec2eec95aaa16c1c701fd4470182b3d0e9926426c1
             authorization-uri: http://localhost:9010/oauth2/authorize
