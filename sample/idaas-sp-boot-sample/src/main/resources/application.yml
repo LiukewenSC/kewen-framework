@@ -67,6 +67,10 @@ kewen:
           key-password: changeit
         registrations:
           -
+            registration-id: kewen-local-registration
+            sp-entity-id: kewen-loc
+            metadata-resource: classpath:saml/metadata/kewen-local-metadata.xml
+          -
             registration-id: idp4-test-kewen-loc-registration          # relying party registration id
             sp-entity-id: idp4-test-kewen-loc     # your app entity id
             #use-metadata: true
@@ -81,10 +85,6 @@ kewen:
             registration-id: idp4-loc-kewen-loc-registration
             sp-entity-id: idp4-loc-kewen-loc
             metadata-resource: classpath:saml/metadata/idaas-idp4-loc-metadata.xml
-          -
-            registration-id: kewen-local-registration
-            sp-entity-id: kewen-loc
-            metadata-resource: classpath:saml/metadata/kewen-local-metadata.xml
 
       oauth2:
         sso-authorization-uri: /oauth2/authorize
