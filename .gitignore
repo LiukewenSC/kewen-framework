@@ -35,3 +35,11 @@ target/
 hs_err_pid*
 # 排除nacos的日志和本地保存
 cloud-alibaba/nacos-server/nacos-server-2.1.1/nacos/data/
+
+# 敏感文件 - 不要提交到版本控制 #
+*.jks
+*.p12
+*.pfx
+*.keystore
+**/logs/
+**/target/

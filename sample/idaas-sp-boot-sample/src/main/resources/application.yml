@@ -8,8 +8,8 @@ spring:
 
   datasource:
     url: jdbc:mysql://localhost:3306/kewen_framework_auth_template
-    username: open_framework
-    password: Framework123456_
+    username: your_username
+    password: your_password
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       auto-commit:true
@@ -92,16 +92,15 @@ kewen:
           -
             registration-id: kewen-local-oidc-registration
             protocol-type: oidc
-            client-id: client_7f7c827b91224a9d
-            client-secret: b54258d7b3e643b489859dec2eec95aaa16c1c701fd4470182b3d0e9926426c1
+            client-id: your_client_id
+            client-secret: your_client_secret
             issuer-uri: http://localhost:9010/oidc
-            jwk-set-uri: http://localhost:9010/oidc/jwks?client_id=client_7f7c827b91224a9d
-            #jwk-set-params: ?client_id=client_7f7c827b91224a9d
+            jwk-set-uri: http://localhost:9010/oidc/jwks?client_id=your_client_id
           -
             registration-id: kewen-local-oauth-registration
             protocol-type: oauth2
-            client-id: client_7f7c827b91224a9d
-            client-secret: b54258d7b3e643b489859dec2eec95aaa16c1c701fd4470182b3d0e9926426c1
+            client-id: your_client_id
+            client-secret: your_client_secret
             authorization-uri: http://localhost:9010/oauth2/authorize
             token-uri: http://localhost:9010/oauth2/token
             user-info-uri: http://localhost:9010/oauth2/userinfo
@@ -114,11 +113,11 @@ kewen:
             ignore-ssl: true
           -
             registration-id: idp4-test-kewen-loc-registration
-            client-id: 0789ffd84caa2d24c93b6e0658722d6aIG2ger3ZUSU
-            client-secret: hH2NlvIDLLfJxUyTZH8Pq2nMT2wKWdu5n7tBUaO8Dp
-            authorization-uri: http://idp4-test.alibaba.net/oauth/authorize
-            token-uri: http://idp4-test.alibaba.net/oauth/token
-            user-info-uri: http://idp4-test.alibaba.net/api/bff/v1.2/oauth/userinfo
+            client-id: your_idp4_client_id
+            client-secret: your_idp4_client_secret
+            authorization-uri: http://idp4-test.example.net/oauth/authorize
+            token-uri: http://idp4-test.example.net/oauth/token
+            user-info-uri: http://idp4-test.example.net/api/bff/v1.2/oauth/userinfo
             user-name-attribute-name: sub
             client-authentication-method: basic
             authorization-grant-type: authorization_code

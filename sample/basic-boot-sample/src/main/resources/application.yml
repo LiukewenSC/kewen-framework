@@ -4,9 +4,9 @@ spring:
   application:
     name: sample
   datasource:
-    url: jdbc:mysql://liukewensc.mysql.rds.aliyuncs.com:3306/dev_framework_demo
-    username: kewen
-    password: Lh19921002
+    url: jdbc:mysql://localhost:3306/your_database
+    username: your_username
+    password: your_password
     driver-class-name: com.kewen.framework.boot.basic.p6spy.KP6SpyDriver
     hikari:
       auto-commit:true
@@ -21,7 +21,7 @@ spring:
 kewen:
   message:
     fang-tang:
-      key: SCT248328TA-iYbvN5Vab4ixXBUOqA60fLY5
+      key: your_fangtang_key
       domain: https://sctapi.ftqq.com
   request:
     message:
