@@ -23,14 +23,27 @@ public class Properties {
         CodeGenerator.main(args);
     }
 
-    private final String url = "jdbc:mysql://119.6.253.231:16102/emergency-product";
-    private final String username = "root";
-    private final String password = "Dplbtob@2019";
+    /**
+     * 数据库连接URL - 请替换为实际的数据库地址
+     * 示例: jdbc:mysql://localhost:3306/your_database
+     */
+    private final String url = "jdbc:mysql://localhost:3306/your_database";
+    
+    /**
+     * 数据库用户名 - 请替换为实际的用户名
+     */
+    private final String username = "your_username";
+    
+    /**
+     * 数据库密码 - 请替换为实际的密码
+     */
+    private final String password = "your_password";
     /**
      * 工程绝对路径地址，指定到src上面一层;
      * 为空则表示用代码生成器在的路径
+     * 示例: /path/to/your/project/sample/auth-boot-sample
      */
-    private final String absolutePath ="D:\\Projects\\kewen-framework\\sample\\auth-boot-sample";
+    private final String absolutePath = "";
 
     /**
      * 基础包名
