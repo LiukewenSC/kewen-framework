@@ -172,6 +172,11 @@ public class SamlConfig implements HttpSecurityCustomizer {
         if (keystoreConfig == null || keystoreConfig.getKeystoreResource() == null) {
             return null;
         }
+
+        if (!keystoreConfig.getKeystoreResource().exists()){
+            log.warn("SP 签名密钥库不存在: {}", keystoreConfig.getKeystoreResource().getFilename());
+            return null;
+        }
         try (InputStream inputStream = keystoreConfig.getKeystoreResource().getInputStream()) {
             KeyStore keyStore = KeyStore.getInstance("JKS");
             keyStore.load(inputStream, keystoreConfig.getKeystorePassword().toCharArray());
