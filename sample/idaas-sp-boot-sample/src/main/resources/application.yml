@@ -61,7 +61,7 @@ kewen:
         password-parameter: password      # password参数
       saml:
         sp-signing-keystore:
-          #keystore-resource: classpath:saml/sp-keystore.jks
+          keystore-resource: classpath:saml/sp-keystore.jks
           keystore-password: changeit
           key-alias: sp-signing
           key-password: changeit
