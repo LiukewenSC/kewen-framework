@@ -88,8 +88,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         List<String> permitList = new ArrayList<>();
-
-        urlSecurityCustomizers.stream().forEach(urlSecurityCustomizer -> permitList.addAll(urlSecurityCustomizer.permitAll()));
+        for (UrlSecurityCustomizer urlSecurityCustomizer : urlSecurityCustomizers) {
+            permitList.addAll(urlSecurityCustomizer.permitAll());
+        }
         http
                 .authorizeRequests()
                     .antMatchers(permitList.toArray(new String[0])).permitAll()
