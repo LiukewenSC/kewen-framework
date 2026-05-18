@@ -2,7 +2,7 @@ package com.kewen.framework.auth.security.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kewen.framework.auth.security.filter.WebSecurityGlobalExceptionHandlerFilter;
-import com.kewen.framework.auth.security.extension.PermitUrlContainer;
+import com.kewen.framework.auth.security.extension.PropertiesUrlSecurityCustomizer;
 import com.kewen.framework.auth.security.response.AuthenticationSuccessResultConverter;
 import com.kewen.framework.auth.security.response.AuthenticationSuccessResultResolver;
 import com.kewen.framework.auth.security.response.JsonAuthenticationSuccessHandler;
@@ -69,8 +69,8 @@ public class SecurityBeanConfig {
                 .setHandlerExceptionResolvers(handlerExceptionResolvers);
     }
     @Bean
-    PermitUrlContainer permitUrlContainer(){
-        return new PermitUrlContainer();
+    PropertiesUrlSecurityCustomizer permitUrlContainer(){
+        return new PropertiesUrlSecurityCustomizer();
     }
 
     @Bean

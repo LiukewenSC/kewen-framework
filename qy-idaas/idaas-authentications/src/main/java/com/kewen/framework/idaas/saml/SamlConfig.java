@@ -1,6 +1,7 @@
 package com.kewen.framework.idaas.saml;
 
 import com.kewen.framework.auth.security.config.HttpSecurityCustomizer;
+import com.kewen.framework.auth.security.config.UrlSecurityCustomizer;
 import com.kewen.framework.auth.security.response.SecurityAuthenticationExceptionResolverHandler;
 import com.kewen.framework.auth.security.response.SecurityAuthenticationSuccessHandler;
 import com.kewen.framework.idaas.saml.properties.SamlProperties;
@@ -23,6 +24,7 @@ import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,7 +43,7 @@ import java.util.stream.Collectors;
  */
 @Configuration
 @EnableConfigurationProperties({SamlProperties.class})
-public class SamlConfig implements HttpSecurityCustomizer {
+public class SamlConfig implements HttpSecurityCustomizer, UrlSecurityCustomizer {
 
     private static final Logger log = LoggerFactory.getLogger(SamlConfig.class);
 
@@ -197,5 +199,10 @@ public class SamlConfig implements HttpSecurityCustomizer {
     @Bean
     public SamlLogoutController samlLogoutController() {
         return new SamlLogoutController();
+    }
+
+    @Override
+    public List<String> permitAll() {
+        return Collections.singletonList("/saml2/service-provider-metadata/**");
     }
 }
