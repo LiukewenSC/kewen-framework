@@ -1,7 +1,7 @@
 package com.kewen.framework.auth.security.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kewen.framework.auth.security.extension.PermitUrlContainer;
+import com.kewen.framework.auth.security.extension.PropertiesUrlSecurityCustomizer;
 import com.kewen.framework.auth.security.filter.AuthUserContextFilter;
 import com.kewen.framework.auth.security.properties.SecurityProperties;
 import com.kewen.framework.auth.security.response.AuthenticationSuccessResultResolver;
@@ -11,6 +11,7 @@ import com.kewen.framework.auth.security.response.SecurityAuthenticationSuccessH
 import com.kewen.framework.auth.security.service.SecurityUserDetailsService;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,7 +25,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author kewen
@@ -48,9 +51,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     SecurityAuthenticationExceptionResolverHandler exceptionResolverHandler;
 
     @Autowired
-    PermitUrlContainer permitUrlContainer;
-
-    @Autowired
     AuthenticationSuccessResultResolver resultResolverProvider ;
 
     @Autowired
@@ -60,6 +60,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     ObjectProvider<HttpSecurityCustomizer> httpSecurityCustomizers;
+
+
+    @Autowired
+    ObjectProvider<UrlSecurityCustomizer> urlSecurityCustomizers;
     /**
      * 加入监听器，session销毁时才会触发 spring容器的感知，否则 security监听不到销毁
      * @return
@@ -83,9 +87,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        List<String> permitList = new ArrayList<>();
+
+        urlSecurityCustomizers.stream().forEach(urlSecurityCustomizer -> permitList.addAll(urlSecurityCustomizer.permitAll()));
         http
                 .authorizeRequests()
-                    .antMatchers(permitUrlContainer.getPermitUrls()).permitAll()
+                    .antMatchers(permitList.toArray(new String[0])).permitAll()
                     .anyRequest().authenticated()
                     .and()
                 //.formLogin()  不再用表单登录了，采用Json登录方式，因此不需要再formLogin引入FormLoginConfigurer配置UsernamePasswordAuthenticationFilter
