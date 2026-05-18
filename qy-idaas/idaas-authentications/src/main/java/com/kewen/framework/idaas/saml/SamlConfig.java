@@ -15,9 +15,15 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.saml2.core.Saml2X509Credential;
 import org.springframework.security.saml2.provider.service.authentication.OpenSamlAuthenticationProvider;
+import org.springframework.security.saml2.provider.service.metadata.OpenSamlMetadataResolver;
+import org.springframework.security.saml2.provider.service.metadata.Saml2MetadataResolver;
 import org.springframework.security.saml2.provider.service.registration.InMemoryRelyingPartyRegistrationRepository;
 import org.springframework.security.saml2.provider.service.registration.RelyingPartyRegistration;
 import org.springframework.security.saml2.provider.service.registration.RelyingPartyRegistrationRepository;
+import org.springframework.security.saml2.provider.service.servlet.filter.Saml2WebSsoAuthenticationFilter;
+import org.springframework.security.saml2.provider.service.web.DefaultRelyingPartyRegistrationResolver;
+import org.springframework.security.saml2.provider.service.web.RelyingPartyRegistrationResolver;
+import org.springframework.security.saml2.provider.service.web.Saml2MetadataFilter;
 
 import java.io.InputStream;
 import java.security.KeyStore;
@@ -43,7 +49,7 @@ import java.util.stream.Collectors;
  */
 @Configuration
 @EnableConfigurationProperties({SamlProperties.class})
-public class SamlConfig implements HttpSecurityCustomizer, UrlSecurityCustomizer {
+public class SamlConfig implements HttpSecurityCustomizer{
 
     private static final Logger log = LoggerFactory.getLogger(SamlConfig.class);
 
@@ -83,10 +89,14 @@ public class SamlConfig implements HttpSecurityCustomizer, UrlSecurityCustomizer
                                 .logoutRequest().logoutUrl("/logout/saml2/slo")
                                 .and()
                                 .logoutResponse().logoutUrl("/logout/saml2/slo")
-                )
-        ;
-
-
+                );
+        // 添加SAML sp Metadata过滤器，spring-security 默认是不添加sp的metadata的
+        // 默认的路径为 /saml2/service-provider-metadata/{registrationId}
+        Saml2MetadataFilter saml2MetadataFilter = new Saml2MetadataFilter(
+                (RelyingPartyRegistrationResolver)new DefaultRelyingPartyRegistrationResolver(relyingPartyRegistrationRepository()),
+                new OpenSamlMetadataResolver()
+        );
+        http.addFilterBefore(saml2MetadataFilter, Saml2WebSsoAuthenticationFilter.class);
     }
 
     /**
@@ -201,8 +211,4 @@ public class SamlConfig implements HttpSecurityCustomizer, UrlSecurityCustomizer
         return new SamlLogoutController();
     }
 
-    @Override
-    public List<String> permitAll() {
-        return Collections.singletonList("/saml2/service-provider-metadata/**");
-    }
 }
