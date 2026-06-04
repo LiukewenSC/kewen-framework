@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kewen.framework.auth.rabc.composite.mapper.SysUserUnionCompositeMapper">
+<mapper namespace="com.kewen.framework.auth.rbac.composite.mapper.SysUserUnionCompositeMapper">
 
-    <resultMap id="UserAuthObjectResult" type="com.kewen.framework.auth.rabc.composite.model.CurrentUserSimpleAuthObject">
-        <collection property="users" ofType="com.kewen.framework.auth.rabc.composite.model.User">
+    <resultMap id="UserAuthObjectResult" type="com.kewen.framework.auth.rbac.composite.model.CurrentUserSimpleAuthObject">
+        <collection property="users" ofType="com.kewen.framework.auth.rbac.composite.model.User">
             <id property="id" column="user_id"/>
             <result property="name" column="user_name"/>
         </collection>
-        <collection property="depts" ofType="com.kewen.framework.auth.rabc.composite.model.Dept">
+        <collection property="depts" ofType="com.kewen.framework.auth.rbac.composite.model.Dept">
             <id property="id" column="dept_id"/>
             <result property="name" column="dept_name"/>
         </collection>
-        <collection property="roles" ofType="com.kewen.framework.auth.rabc.composite.model.Role">
+        <collection property="roles" ofType="com.kewen.framework.auth.rbac.composite.model.Role">
             <id property="id" column="role_id"/>
             <result property="name" column="role_name"/>
         </collection>

@@ -1,7 +1,7 @@
 package com.kewen.framework.auth.security.handler;
 
 
-import com.kewen.framework.auth.rabc.model.RabcResult;
+import com.kewen.framework.auth.rbac.model.RabcResult;
 import com.kewen.framework.basic.model.Result;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
