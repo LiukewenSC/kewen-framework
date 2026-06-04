@@ -1,15 +1,14 @@
 package com.kewen.framework.boot.auth.rabc.config;
 
-import com.kewen.framework.auth.core.data.AuthDataHandler;
 import com.kewen.framework.auth.core.AuthDataAdaptor;
 import com.kewen.framework.auth.core.data.JdbcAuthDataPersistent;
 import com.kewen.framework.auth.core.menu.AuthMenuHandler;
-import com.kewen.framework.auth.rabc.RabcAnnotationAuthHandler;
-import com.kewen.framework.auth.rabc.composite.AuthMenuStore;
-import com.kewen.framework.auth.rabc.composite.SysAuthMenuComposite;
-import com.kewen.framework.auth.rabc.composite.impl.MemoryExpiredAuthMenuStore;
-import com.kewen.framework.auth.rabc.extension.RabcMenuApiServcie;
-import com.kewen.framework.auth.rabc.mp.service.SysMenuApiMpService;
+import com.kewen.framework.auth.rbac.RabcAnnotationAuthHandler;
+import com.kewen.framework.auth.rbac.composite.AuthMenuStore;
+import com.kewen.framework.auth.rbac.composite.SysAuthMenuComposite;
+import com.kewen.framework.auth.rbac.composite.impl.MemoryExpiredAuthMenuStore;
+import com.kewen.framework.auth.rbac.extension.RabcMenuApiServcie;
+import com.kewen.framework.auth.rbac.mp.service.SysMenuApiMpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;

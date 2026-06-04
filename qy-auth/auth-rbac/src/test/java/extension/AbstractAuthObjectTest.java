@@ -3,7 +3,7 @@ package extension;
 
 import com.alibaba.fastjson.JSONObject;
 import com.kewen.framework.auth.core.entity.BaseAuth;
-import com.kewen.framework.auth.rabc.composite.model.*;
+import com.kewen.framework.auth.rbac.composite.model.*;
 import org.junit.Assert;
 import org.junit.Test;
 

@@ -1,7 +1,7 @@
 package controller;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.kewen.framework.auth.rabc.mp.entity.SysMenuRoute;
+import com.kewen.framework.auth.rbac.mp.entity.SysMenuRoute;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;

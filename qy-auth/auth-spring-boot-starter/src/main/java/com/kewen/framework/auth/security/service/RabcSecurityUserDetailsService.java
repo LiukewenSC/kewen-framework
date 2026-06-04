@@ -1,11 +1,11 @@
 package com.kewen.framework.auth.security.service;
 
-import com.kewen.framework.auth.rabc.composite.SysUserComposite;
-import com.kewen.framework.auth.rabc.composite.model.SimpleAuthObject;
-import com.kewen.framework.auth.rabc.extension.RabcCurrentUserService;
-import com.kewen.framework.auth.rabc.model.UserAuthObject;
-import com.kewen.framework.auth.rabc.mp.entity.SysUser;
-import com.kewen.framework.auth.rabc.mp.entity.SysUserCredential;
+import com.kewen.framework.auth.rbac.composite.SysUserComposite;
+import com.kewen.framework.auth.rbac.composite.model.SimpleAuthObject;
+import com.kewen.framework.auth.rbac.extension.RabcCurrentUserService;
+import com.kewen.framework.auth.rbac.model.UserAuthObject;
+import com.kewen.framework.auth.rbac.mp.entity.SysUser;
+import com.kewen.framework.auth.rbac.mp.entity.SysUserCredential;
 import com.kewen.framework.auth.security.model.SecurityUser;
 import lombok.Setter;
 import org.springframework.security.core.userdetails.UserDetails;

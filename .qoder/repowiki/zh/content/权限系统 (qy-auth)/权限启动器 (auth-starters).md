@@ -210,7 +210,7 @@ AuthMenuStore <|-- MemoryExpiredAuthMenuStore : "默认实现"
 - [AuthRabcConfig.java](file://qy-auth/auth-rbac-spring-boot-starter/src/main/java/com/kewen/framework/boot/auth/rabc/config/AuthRabcConfig.java)
 
 ### AuthRabcScanConfig 包扫描与组件注册
-- Mapper 扫描：对 com.kewen.framework.auth.rabc.**.mapper 包下的 Mapper 接口进行扫描。
+- Mapper 扫描：对 com.kewen.framework.auth.rbac.**.mapper 包下的 Mapper 接口进行扫描。
 - 组件扫描：对 service.impl、composite、controller 三个包进行组件扫描，确保服务实现、组合器与控制器被注册为 Spring Bean。
 - 作用：保证引入 RBAC 启动器后，业务侧的 Mapper 与服务实现能被自动发现与装配。
 
@@ -337,5 +337,5 @@ SEC_POM --> RABC_POM
   - 权限表字段映射：kewen.auth.auth-data-table.*
   - 菜单缓存开关：kewen-framework.auth.cache-auth
 - 常见目录与包
-  - Mapper 扫描：com.kewen.framework.auth.rabc.**.mapper
+  - Mapper 扫描：com.kewen.framework.auth.rbac.**.mapper
   - 组件扫描：service.impl、composite、controller
