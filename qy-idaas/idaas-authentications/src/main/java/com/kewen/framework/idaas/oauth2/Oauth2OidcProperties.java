@@ -128,21 +128,17 @@ public class Oauth2OidcProperties {
         private Set<String> scopes;
 
         /**
-         * OIDC 自动发现：IDP 的 Issuer URI
-         * Oauth2也可以提供服务的自发现地址
-         * 不管和Oauth2或Oidc，只需要.well-known前面的
-         * <p>设置此值后，系统会自动从 {@code {oidcDiscoveryUri}/.well-known/openid-configuration}
-         *      或 {@code {oauth2DiscoveryUri}/.well-known/oauth-authorization-server}
-         * 发现授权端点、令牌端点、用户信息端点、JWKS URI 等所有元数据。
-         * </p>
-         * <p><b>与手动配置的关系：</b></p>
+         * OIDC/OAuth2 自动发现端点（Issuer URI）
+         * <p>配置后，系统会自动从
+         * {@code {discoveryUri}/.well-known/openid-configuration} 或
+         * {@code {discoveryUri}/.well-known/oauth-authorization-server} 发现所有端点元数据。</p>
+         * <p><b>使用规则：</b></p>
          * <ul>
-         *   <li>配置此值后，{@code authorizationUri}、{@code tokenUri}、{@code userInfoUri} 等手动端点配置<b>不再需要</b></li>
-         *   <li>不配置此值时，将使用手动指定的端点（传统 OAuth2 模式）</li>
-         *   <li>自定义的配置会覆盖发现端点获取的配置</li>
+         *   <li>配置此项后，可省略 {@code authorizationUri}、{@code tokenUri}、{@code userInfoUri} 等手动配置</li>
+         *   <li>未配置时，使用手动指定的端点（传统 OAuth2 模式）</li>
+         *   <li>手动配置会覆盖自动发现的配置</li>
          * </ul>
          * <p>示例：{@code https://your-idp.example.com}</p>
-         * <p>参考：<a href="https://openid.net/specs/openid-connect-discovery-1_0.html">OpenID Connect Discovery</a></p>
          */
         private String issuerUri;
 
@@ -210,29 +206,6 @@ public class Oauth2OidcProperties {
         private String jwkSetUri;
 
         /**
-         * jwks的端点后缀参数，因为标准的jwks不带参数，但是有的IDP是每个sp都有不同的jwks，因此需要拼接相关的参数
-         * 如果是你自己填了jwkSetUri，那么不建议使用此参数，直接jwkSetUri拼接好即可
-         * eg:    ?client=1
-         * eg:   /client1
-         * @deprecated 暂时不这么用，麻烦又没多大意义
-         */
-        /*private String jwkSetParams;*/
-
-        /**
-         * 额外配置元数据
-         * <p><b>协议归属：</b> <b>OIDC 专用</b>（由 {@code oidcDiscoveryUri} 自动发现时生成）</p>
-         * <p>存储从 OIDC Discovery 文档中获取的其他元数据，如：</p>
-         * <ul>
-         *   <li>{@code end_session_endpoint} - OIDC RP-Initiated Logout 端点</li>
-         *   <li>{@code revocation_endpoint} - 令牌撤销端点</li>
-         *   <li>{@code claims_supported} - 支持的声明列表</li>
-         *   <li>{@code response_types_supported} - 支持的响应类型</li>
-         * </ul>
-         * <p>通常由系统自动填充，无需手动配置。</p>
-         */
-        private Map<String, Object> configurationMetadata = Collections.emptyMap();
-
-        /**
          * 客户端显示名称
          * <p><b>协议归属：</b> OAuth2通用 + OIDC通用</p>
          * <p>用于日志输出和调试的可读名称，非必填。</p>
@@ -243,7 +216,7 @@ public class Oauth2OidcProperties {
          * 是否忽略 SSL 证书校验
          * <p><b>协议归属：</b> OAuth2通用 + OIDC通用</p>
          * <p>设置为 {@code true} 时会跳过对 IDP 的 SSL 证书验证（<b>仅用于测试/开发环境</b>）。</p>
-         * <p><b>⚠️ 生产环境务必保持默认值 {@code false}</b></p>
+         * <p><b>⚠️ 生产环境务必保持true {@code true}</b></p>
          */
         private boolean ignoreSsl = false;
     }
