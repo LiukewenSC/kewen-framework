@@ -12,12 +12,12 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @MapperScan({
-        "com.kewen.framework.auth.rabc.**.mapper"
+        "com.kewen.framework.auth.rbac.**.mapper"
 })
 @ComponentScan({
-        "com.kewen.framework.auth.rabc.mp.service.impl",
-        "com.kewen.framework.auth.rabc.composite",
-        "com.kewen.framework.auth.rabc.controller"
+        "com.kewen.framework.auth.rbac.mp.service.impl",
+        "com.kewen.framework.auth.rbac.composite",
+        "com.kewen.framework.auth.rbac.controller"
 })
 public class AuthRabcScanConfig {
 

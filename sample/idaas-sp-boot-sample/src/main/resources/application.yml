@@ -94,13 +94,14 @@ kewen:
             protocol-type: oidc
             client-id: client_7f7c827b91224a9d
             client-secret: b54258d7b3e643b489859dec2eec95aaa16c1c701fd4470182b3d0e9926426c1
-            issuer-uri: http://localhost:9010/oidc
-            jwk-set-uri: http://localhost:9010/oidc/jwks?client_id=client_7f7c827b91224a9d
+            issuer-uri: http://localhost:9010
+            #jwk-set-uri: http://localhost:9010/oidc/jwks?client_id=client_7f7c827b91224a9d
           -
             registration-id: kewen-local-oauth-registration
             protocol-type: oauth2
             client-id: client_7f7c827b91224a9d
             client-secret: b54258d7b3e643b489859dec2eec95aaa16c1c701fd4470182b3d0e9926426c1
+            # issuer-uri: http://localhost:9010
             authorization-uri: http://localhost:9010/oauth2/authorize
             token-uri: http://localhost:9010/oauth2/token
             user-info-uri: http://localhost:9010/oauth2/userinfo

@@ -5,7 +5,6 @@ import com.kewen.framework.auth.security.response.SecurityAuthenticationExceptio
 import com.kewen.framework.auth.security.response.SecurityAuthenticationSuccessHandler;
 import com.kewen.framework.idaas.oauth2.Oauth2OidcProperties.Oauth2OidcRegistrationClientProperties;
 import com.kewen.framework.idaas.oauth2.result.Oauth2AuthenticationSuccessResultConverter;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,6 @@ import org.springframework.security.oauth2.client.web.AuthorizationRequestReposi
 import org.springframework.security.oauth2.client.web.HttpSessionOAuth2AuthorizationRequestRepository;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
-import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -145,18 +143,21 @@ public class Oauth2Config implements HttpSecurityCustomizer {
      * 通过手动配置的端点创建 OAuth2 ClientRegistration
      */
     private ClientRegistration createOAuth2ClientRegistration(Oauth2OidcRegistrationClientProperties client) {
-        ClientRegistration.Builder builder = ClientRegistration.withRegistrationId(client.getRegistrationId());
-        return builder.registrationId(client.getRegistrationId()).clientId(client.getClientId())
+        ClientRegistration.Builder builder = ClientRegistration.withRegistrationId(client.getRegistrationId())
+                .clientId(client.getClientId())
                 .clientSecret(client.getClientSecret())
                 .clientAuthenticationMethod(client.getClientAuthenticationMethod())
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .redirectUri(client.getRedirectUriTemplate())
-                .authorizationUri(client.getAuthorizationUri())
-                .userInfoUri(client.getUserInfoUri())
-                .userNameAttributeName(client.getUserNameAttributeName())
-                .scope(client.getScopes())
-                .tokenUri(client.getTokenUri())
-                .build();
+                .scope(client.getScopes());
+
+        // 可选配置项：仅在非空时设置（有 discoveryUri 时会自动发现）
+        Optional.ofNullable(client.getAuthorizationUri()).ifPresent(builder::authorizationUri);
+        Optional.ofNullable(client.getTokenUri()).ifPresent(builder::tokenUri);
+        Optional.ofNullable(client.getUserInfoUri()).ifPresent(builder::userInfoUri);
+        Optional.ofNullable(client.getUserNameAttributeName()).ifPresent(builder::userNameAttributeName);
+
+        return builder.build();
     }
 
 
@@ -198,9 +199,12 @@ public class Oauth2Config implements HttpSecurityCustomizer {
                 .redirectUri(client.getRedirectUriTemplate())
                 .scope(scopes.toArray(new String[0]))
                 .clientName(client.getClientName());
-        if (StringUtils.isNotBlank(client.getJwkSetUri())){
-            builder.jwkSetUri(client.getJwkSetUri());
-        }
+        
+        // 可选配置项：JWK Set URI（有 discoveryUri 时会自动发现）
+        Optional.ofNullable(client.getJwkSetUri()).ifPresent(builder::jwkSetUri);
+        Optional.ofNullable(client.getAuthorizationUri()).ifPresent(builder::authorizationUri);
+        Optional.ofNullable(client.getTokenUri()).ifPresent(builder::tokenUri);
+        Optional.ofNullable(client.getUserInfoUri()).ifPresent(builder::userInfoUri);
         return builder.build();
     }
 
