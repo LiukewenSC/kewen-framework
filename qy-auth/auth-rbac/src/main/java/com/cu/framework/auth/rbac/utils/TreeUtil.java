@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
  * @date 2022/1/6 12:51
  */
 public class TreeUtil {
+    /** 工具类，私有构造器禁止实例化 */
     private TreeUtil() {
     }
 

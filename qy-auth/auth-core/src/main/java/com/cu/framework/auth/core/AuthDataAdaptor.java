@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class AuthDataAdaptor {
 
+    /** 数据权限处理器，实际执行权限数据的读写 */
     @Autowired
     private AuthDataHandler annotationAuthHandler;
 

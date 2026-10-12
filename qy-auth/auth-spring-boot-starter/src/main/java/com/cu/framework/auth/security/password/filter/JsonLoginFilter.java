@@ -20,6 +20,11 @@ import java.util.Map;
  * @since 2024-07-02
  */
 public class JsonLoginFilter extends UsernamePasswordAuthenticationFilter {
+    /**
+     * 认证尝试：仅支持 POST；Content-Type 为 JSON 时从请求体按配置的用户名/密码字段名解析出凭证，
+     * 构造 UsernamePasswordAuthenticationToken 提交认证管理器；非 JSON 请求回退父类的表单参数方式
+     * @throws AuthenticationServiceException 非 POST 请求或 JSON 请求体解析失败时抛出
+     */
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
 

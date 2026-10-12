@@ -12,16 +12,34 @@ import java.util.Objects;
 @Data
 @Accessors(chain = true)
 public class MenuApiEntity<T> {
+    /** 菜单API主键ID，入库前由 MenuApiService#generateId 生成 */
     T id;
+    /** 请求路径，菜单API的唯一标识，equals / hashCode 基于此字段 */
     String path;
+    /** 菜单名称，方法级菜单为 控制器名>方法菜单名 形式 */
     String name;
+    /** 上级菜单ID，根据 parentPath 对应的菜单取得，无上级时为根节点ID */
     T parentId;
+    /** 上级菜单路径，来自 Controller 类上 @RequestMapping 的路径 */
     String parentPath;
 
+    /**
+     * 创建不带上级路径的菜单API实体
+     * @param path 请求路径
+     * @param name 菜单名称
+     * @return 菜单API实体
+     */
     public static MenuApiEntity of(String path, String name) {
         return of(path, name, null);
     }
 
+    /**
+     * 创建菜单API实体
+     * @param path 请求路径
+     * @param name 菜单名称
+     * @param parentPath 上级菜单路径，可为 null
+     * @return 菜单API实体
+     */
     public static MenuApiEntity of(String path, String name, String parentPath) {
         MenuApiEntity apiEntity = new MenuApiEntity();
         apiEntity.setPath(path);

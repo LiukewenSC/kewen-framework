@@ -27,6 +27,9 @@ public class SysRequestLog extends Model<SysRequestLog> {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * 主键 ID，数据库自增
+     */
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
@@ -108,6 +111,10 @@ public class SysRequestLog extends Model<SysRequestLog> {
     private LocalDateTime updateTime;
 
 
+    /**
+     * 返回本实体的主键值，供 MyBatis-Plus ActiveRecord 模式（Model 的 insert/updateById 等方法）定位记录
+     * @return 主键 ID
+     */
     @Override
     public Serializable pkVal() {
         return this.id;

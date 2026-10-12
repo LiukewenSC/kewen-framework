@@ -22,9 +22,17 @@ import java.util.Collection;
  */
 public class MenuAccessInterceptor implements HandlerInterceptor {
 
+    /** 菜单权限处理器，校验当前用户是否有菜单路径的访问权限 */
     @Autowired
     private AuthMenuHandler authMenuHandler;
 
+    /**
+     * 请求进入 Controller 方法前校验菜单权限：
+     * 非 HandlerMethod 请求、或方法与所在类均未标注 {@link AuthMenu} 时直接放行；
+     * 否则取去掉 contextPath 的请求路径与当前登录用户权限做校验
+     * @return 是否放行，校验通过返回 true
+     * @throws AuthException 当前用户没有该菜单路径访问权限时抛出
+     */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         //不兼容的方法，即不是（Controller对应的方法）不做拦截
@@ -59,6 +67,11 @@ public class MenuAccessInterceptor implements HandlerInterceptor {
         }
         return true;
     }
+    /**
+     * 获取用于权限校验的请求路径，即 RequestURI 去掉 contextPath 前缀
+     * @param request 当前请求
+     * @return 应用内路径
+     */
     private String getUrl(HttpServletRequest request){
         String url = request.getRequestURI();
         String contextPath = request.getContextPath();

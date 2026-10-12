@@ -28,6 +28,7 @@ public class MeetingRoom extends Model<MeetingRoom> {
 
     private static final long serialVersionUID = 1L;
 
+    /** 会议室主键，数据库自增 */
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
@@ -73,9 +74,11 @@ public class MeetingRoom extends Model<MeetingRoom> {
     @TableField("is_phone")
     private Integer isPhone;
 
+    /** 创建时间 */
     @TableField("create_time")
     private LocalDateTime createTime;
 
+    /** 更新时间 */
     @TableField("update_time")
     private LocalDateTime updateTime;
 

@@ -10,6 +10,13 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class RequestIpUtil {
 
+    /**
+     * 获取客户端真实 IP：依次尝试 x-forwarded-for、X-Forwarded-For、X-Real-IP、
+     * Proxy-Client-IP、WL-Proxy-Client-IP、HTTP_CLIENT_IP、HTTP_X_FORWARDED_FOR 请求头，
+     * 头不存在或值为 unknown 时继续尝试，全部取不到时返回 getRemoteAddr()
+     * @param request HTTP 请求
+     * @return 客户端 IP
+     */
     public static String getIp(HttpServletRequest request) {
         String ip = request.getHeader("x-forwarded-for");
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {

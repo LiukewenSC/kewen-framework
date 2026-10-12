@@ -37,22 +37,35 @@ import javax.servlet.http.HttpServletResponse;
 @Deprecated
 public abstract class AbstractHeaderRememberMeServices implements RememberMeServices, LogoutHandler, InitializingBean {
     protected static final Logger logger = LoggerFactory.getLogger(AbstractHeaderRememberMeServices.class);
+    /** 携带 remember-me token 的请求头/响应头名称，默认 remember-me-token */
     protected String headerName ="remember-me-token";
+    /** 标记本次登录是否要求记住我的请求头或请求参数名，默认 remember-me */
     protected String rememberMeParam ="remember-me";
+    /** 构造 RememberMeAuthenticationToken 所用的密钥，启动时校验非空 */
     protected String key="123456";
+    /** Header 值中 series 与 token 的拼接分隔符，默认英文逗号 */
     private String split=",";
+    /** 用户权限映射器，默认 NullAuthoritiesMapper 原样返回权限 */
     private GrantedAuthoritiesMapper authoritiesMapper = new NullAuthoritiesMapper();
+    /** 认证详情构造源，默认从当前请求构造 WebAuthenticationDetails */
     private AuthenticationDetailsSource<HttpServletRequest, ?> authenticationDetailsSource = new WebAuthenticationDetailsSource();
+    /** 为 true 时忽略 remember-me 参数，始终视为请求了记住我 */
     private boolean alwaysRemember;
+    /** 加载用户详情的服务，启动时校验非空，供子类自动登录时使用 */
     protected UserDetailsService userDetailsService;
+    /** Spring Security 国际化消息访问器，供子类取错误提示文案 */
     protected final MessageSourceAccessor messages = SpringSecurityMessageSource
             .getAccessor();
     //两周
     private int tokenValiditySeconds = 1209600;
 
 
+    /** 自动登录前的用户状态校验器，默认校验账号锁定/过期等状态 */
     private UserDetailsChecker userDetailsChecker = new AccountStatusUserDetailsChecker();
 
+    /**
+     * 初始化校验：key 必须非空，userDetailsService 必须已注入，否则启动失败
+     */
     @Override
     public void afterPropertiesSet() {
         Assert.hasLength(key, "key cannot be empty or null");
@@ -81,6 +94,12 @@ public abstract class AbstractHeaderRememberMeServices implements RememberMeServ
 
         return createSuccessfulAuthentication(request, user);
     }
+    /**
+     * 基于校验通过的用户详情构造 RememberMe 自动登录认证结果
+     * @param request 当前请求，用于构造认证详情
+     * @param user 已通过状态校验的用户详情
+     * @return 携带 key 与用户权限的 RememberMeAuthenticationToken
+     */
     protected Authentication createSuccessfulAuthentication(HttpServletRequest request, UserDetails user) {
         RememberMeAuthenticationToken auth = new RememberMeAuthenticationToken(key, user,
                 authoritiesMapper.mapAuthorities(user.getAuthorities()));
@@ -107,6 +126,9 @@ public abstract class AbstractHeaderRememberMeServices implements RememberMeServ
         response.setHeader(headerName,null);
         onLoginFail(request, response);
     }
+    /**
+     * 登录失败后的钩子方法，默认空实现，子类可覆写（如清除已存储的 token）
+     */
     protected void onLoginFail(HttpServletRequest request, HttpServletResponse response){
     }
 
@@ -122,6 +144,12 @@ public abstract class AbstractHeaderRememberMeServices implements RememberMeServ
 
         onLoginSuccess(request, response, successfulAuthentication);
     }
+    /**
+     * 登录成功且请求了记住我之后的回调，由子类实现具体的 token 签发与存储逻辑
+     * @param request 当前请求
+     * @param response 当前响应，用于写回 remember-me token 响应头
+     * @param successfulAuthentication 登录成功的认证结果
+     */
     protected abstract void onLoginSuccess(HttpServletRequest request,
                                            HttpServletResponse response, Authentication successfulAuthentication);
 
@@ -167,11 +195,22 @@ public abstract class AbstractHeaderRememberMeServices implements RememberMeServ
                                     HttpServletResponse response) {
         response.setHeader(headerName,encodeHeader(token.getSeries(),token.getTokenValue()));
     }
+    /**
+     * 按分隔符拆分 remember-me 请求头的值
+     * @param header 请求头原始值，格式为 series + 分隔符 + token
+     * @return 左值为 series、右值为 token 的键值对
+     */
     private Pair<String,String> decodeHeader(String header) {
         String[] split1 = header.split(split);
         return Pair.of(split1[0], split1[1]);
     }
 
+    /**
+     * 将 series 与 token 用分隔符拼接为写入响应头的值（未做 Base64 编码）
+     * @param series token 系列号
+     * @param token token 值
+     * @return 拼接后的响应头值
+     */
     private String encodeHeader(String series, String token) {
         String concat = series.concat(split).concat(token);
         //return Base64.getEncoder().encodeToString(concat.getBytes());

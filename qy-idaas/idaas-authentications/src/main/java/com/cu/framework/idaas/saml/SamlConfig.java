@@ -53,11 +53,14 @@ public class SamlConfig implements HttpSecurityCustomizer{
 
     private static final Logger log = LoggerFactory.getLogger(SamlConfig.class);
 
+    /** SAML 配置属性（前缀 cu.security.login.saml） */
     @Autowired
     private SamlProperties samlProperties;
 
+    /** SAML 登录成功处理器，配置到 saml2Login 的 successHandler */
     @Autowired
     SecurityAuthenticationSuccessHandler successHandler;
+    /** 认证异常处理器，配置到 saml2Login 的 failureHandler */
     @Autowired
     SecurityAuthenticationExceptionResolverHandler exceptionResolverHandler;
 
@@ -115,6 +118,10 @@ public class SamlConfig implements HttpSecurityCustomizer{
         //}
         return new InMemoryRelyingPartyRegistrationRepository(registration);
     }
+    /**
+     * SAML 登录成功结果转换器 Bean，把 Saml2AuthenticatedPrincipal 转换为统一的登录成功响应
+     * @return SAML 认证成功结果转换器
+     */
     @Bean
     SamlAuthenticationSuccessResultConverter samlAuthenticationSuccessResultConverter() {
         return new SamlAuthenticationSuccessResultConverter();
@@ -128,6 +135,16 @@ public class SamlConfig implements HttpSecurityCustomizer{
                 samlProperty -> buildRegistrationFromMetadata(samlProperties,samlProperty, samlProperties.getLoginProcessingUrl())
         ).collect(Collectors.toList());
     }
+    /**
+     * 解析单个注册项的 IdP metadata.xml 并构建 RelyingPartyRegistration：
+     * 设置 SP 的 registrationId、entityId、ACS 地址与登出地址，
+     * 从元数据填充 IdP 的 entityId、SSO 地址、绑定方式与验签证书；
+     * 元数据中存在 SingleLogoutService 时补充登出绑定，配置了 keystore 时附加 SP 签名凭证
+     * @param samlProperties SAML 全局配置
+     * @param spSamlProperties 当前注册项配置
+     * @param loginProcessingUrl SP 的 ACS（登录回调）路径
+     * @return 构建完成的 RelyingPartyRegistration
+     */
     private RelyingPartyRegistration buildRegistrationFromMetadata(SamlProperties samlProperties, SamlProperties.RegistrationSamlProperties spSamlProperties,String loginProcessingUrl) {
         IdpMetadataParser parser = new IdpMetadataParser();
         IdpMetadataParser.IdpMetadata metadata = parser.parse(spSamlProperties.getMetadataResource());
@@ -206,6 +223,10 @@ public class SamlConfig implements HttpSecurityCustomizer{
     }
 
 
+    /**
+     * SAML2 GET 方式退出控制器 Bean，提供 GET /saml2/logout 自动提交 POST 表单触发退出
+     * @return SAML 退出控制器
+     */
     @Bean
     public SamlLogoutController samlLogoutController() {
         return new SamlLogoutController();

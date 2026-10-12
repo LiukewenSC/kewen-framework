@@ -25,8 +25,12 @@ import java.io.Serializable;
 @TableName("sys_storage_file")
 public class SysStorageFile extends Model<SysStorageFile> {
 
+    /** 序列化版本号 */
     private static final long serialVersionUID = 1L;
 
+    /**
+     * 主键，自增
+     */
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 

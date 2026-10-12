@@ -32,6 +32,13 @@ public class BeanUtil {
         String s = JSONObject.toJSONString(source);
         return JSONObject.parseObject(s, clazz);
     }
+    /**
+     * 用 fastjson 将源列表序列化后再反序列化为指定类型的列表，结果为空时返回空列表
+     * @param source 源列表
+     * @param clazz 目标元素类型
+     * @param <T> 目标元素泛型
+     * @return 转换后的列表，不为 null
+     */
     public static <T> List<T> toList(List source, Class<T> clazz){
         String s = JSON.toJSONString(source);
         List<T> array = JSON.parseArray(s, clazz);
@@ -40,6 +47,14 @@ public class BeanUtil {
         }
         return array;
     }
+    /**
+     * 在 toList 转换的基础上，对每个转换后的元素执行 consumer 回调
+     * @param source 源列表
+     * @param clazz 目标元素类型
+     * @param consumer 对每个转换结果执行的回调
+     * @param <T> 目标元素泛型
+     * @return 转换后的列表
+     */
     public static <T> List<T> toList(List source, Class<T> clazz, Consumer<T> consumer){
         List<T> convert = toList(source, clazz);
         for (T t : convert) {
@@ -48,10 +63,22 @@ public class BeanUtil {
         return convert;
     }
 
+    /**
+     * 用 fastjson 按 TypeReference 泛型信息将 JSON 字符串反序列化为对象
+     * @param json JSON 字符串
+     * @param typeReference 目标泛型类型引用
+     * @param <T> 目标类型
+     * @return 反序列化后的对象
+     */
     public static <T> T parseObject(String json, TypeReference<T> typeReference){
         return JSONObject.parseObject(json,typeReference);
     }
 
+    /**
+     * 用 fastjson 将对象序列化为 JSON 字符串
+     * @param bean 待序列化对象
+     * @return JSON 字符串
+     */
     public static String toJsonString(Object bean){
         return JSONObject.toJSONString(bean);
     }
@@ -65,6 +92,12 @@ public class BeanUtil {
     public static <S,T>  void copy(S source,T target){
         BeanUtils.copyProperties(source,target);
     }
+    /**
+     * 深克隆对象：经 fastjson 序列化为 JSON 字符串后再反序列化回同类型的新对象
+     * @param source 源对象
+     * @param <T> 对象类型
+     * @return 克隆出的新对象
+     */
     public static <T> T clone(T source){
         return (T) toBean(source, source.getClass());
     }

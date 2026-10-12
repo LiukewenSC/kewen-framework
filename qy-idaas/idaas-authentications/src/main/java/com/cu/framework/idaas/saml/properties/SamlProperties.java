@@ -30,6 +30,9 @@ public class SamlProperties {
      */
     private String loginProcessingUrl = "/login/saml2/sso/{registrationId}";
 
+    /**
+     * SAML 客户端注册配置列表，支持配置多个 registration
+     */
     private List<RegistrationSamlProperties> registrations;
 
     /**
@@ -37,9 +40,20 @@ public class SamlProperties {
      */
     private SpSigningKeystore spSigningKeystore;
 
+    /**
+     * SP 单点登出请求（LogoutRequest）处理地址，注册时作为 singleLogoutServiceLocation，默认 /logout/saml2/slo
+     */
     private String logoutRequestUrl = "/logout/saml2/slo";
+    /**
+     * SP 单点登出响应（LogoutResponse）处理地址，注册时作为 singleLogoutServiceResponseLocation，默认 /logout/saml2/slo
+     */
     private String logoutResponseUrl = "/logout/saml2/slo";
 
+    /**
+     * SP 签名密钥库（JKS）配置项
+     * @author kewen
+     * @since 2026-02-14
+     */
     @Data
     public static class SpSigningKeystore {
         /**
@@ -74,6 +88,11 @@ public class SamlProperties {
     @Deprecated
     private String loginPageUrl;
 
+    /**
+     * 单个 SAML 客户端（registration）的配置项
+     * @author kewen
+     * @since 2026-02-14
+     */
     @Data
     public static class RegistrationSamlProperties{
 
@@ -98,6 +117,10 @@ public class SamlProperties {
          */
         private String spEntityId = "cu-saml";
 
+        /**
+         * 获取注册 ID；registrationId 未配置时回退返回 spEntityId
+         * @return 注册 ID
+         */
         public String getRegistrationId() {
             if (registrationId == null) {
                 return spEntityId;

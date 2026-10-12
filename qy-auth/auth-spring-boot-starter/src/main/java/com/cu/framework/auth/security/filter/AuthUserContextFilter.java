@@ -30,12 +30,25 @@ import java.util.Optional;
  */
 public class AuthUserContextFilter extends OncePerRequestFilter {
 
+    /** 查询当前登录用户的请求 URI，命中该 URI 的请求由本过滤器直接返回，不再进入后续过滤链 */
     private String currentUserUrl;
+    /** 写出 JSON 响应体所用的序列化器 */
     private ObjectMapper objectMapper;
+    /** 认证成功结果解析器，将 SecurityUser 包装为最终响应结构 */
     private AuthenticationSuccessResultResolver resultResolver;
+    /** Authentication 转 SecurityUser 的转换器提供者 */
     private ObjectProvider<AuthenticationSuccessResultConverter> jsonSuccessResultConverter;
+    /** 用户详情服务，供转换器加载用户使用 */
     private UserDetailsService userDetailsService;
 
+    /**
+     * 构造过滤器
+     * @param currentUserUrl 查询当前登录用户的请求 URI
+     * @param resultResolver 认证成功结果解析器
+     * @param objectMapper JSON 序列化器
+     * @param jsonSuccessResultConverter 认证结果转换器提供者
+     * @param userDetailsService 用户详情服务
+     */
     public AuthUserContextFilter(String currentUserUrl, AuthenticationSuccessResultResolver resultResolver ,
                                  ObjectMapper objectMapper, ObjectProvider<AuthenticationSuccessResultConverter> jsonSuccessResultConverter,
                                  UserDetailsService userDetailsService) {
@@ -46,6 +59,10 @@ public class AuthUserContextFilter extends OncePerRequestFilter {
         this.userDetailsService = userDetailsService;
     }
 
+    /**
+     * 已认证时用支持的转换器将 Authentication 转为 SecurityUser 写入 AuthUserContext；
+     * 若请求 URI 为 currentUserUrl，则解析当前用户并直接以 JSON 返回，不再走后续过滤链；否则放行
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
@@ -74,6 +91,9 @@ public class AuthUserContextFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
+    /**
+     * 将结果对象序列化为 JSON 并以 UTF-8 写入响应体
+     */
     private void writeResponseBody(HttpServletResponse response,Object result) throws IOException {
         response.setContentType("application/json;charset=utf-8");
         PrintWriter out = response.getWriter();

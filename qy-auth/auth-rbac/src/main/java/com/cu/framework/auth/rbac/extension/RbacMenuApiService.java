@@ -44,6 +44,12 @@ public class RbacMenuApiService implements MenuApiService<Long> {
         sysMenuApiMpService.saveBatch(list);
     }
     //填充类型， 父ID为0 则填充自己
+    /**
+     * 根据父 ID 填充菜单权限类型：顶级菜单（父 ID 为 null 或 0）返回 OWNER(1)-基于自身权限，
+     * 否则返回 PARENT(2)-基于父菜单权限
+     * @param parentId 父菜单 ID
+     * @return 权限类型值，对应 MenuTypeConstant.AUTH_TYPE
+     */
     public Integer fillAuthType(Long parentId){
         return (parentId==null || parentId == 0L) ? 1 : 2;
     }

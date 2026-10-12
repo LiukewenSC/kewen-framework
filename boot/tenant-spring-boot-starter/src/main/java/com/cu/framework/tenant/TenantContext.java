@@ -10,6 +10,10 @@ public class TenantContext {
     private static final ThreadLocal<Long> context = new InheritableThreadLocal<>();
 
 
+    /**
+     * 判断当前线程上下文中是否已设置租户 ID
+     * @return 已设置租户 ID 返回 true，否则返回 false
+     */
     public static boolean support(){
         return context.get() !=null;
     }

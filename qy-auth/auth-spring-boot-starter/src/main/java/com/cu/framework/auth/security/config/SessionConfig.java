@@ -45,6 +45,10 @@ public class SessionConfig {
         return new HeaderCookieHttpSessionIdResolver("Authorization");
     }
 
+    /**
+     * 基于 Spring Session 的 RememberMeServices，仅当 cu.security.remember-me.enabled=true 时注册；
+     * remember-me 参数名与 token 有效期取自 RememberMeProperties 配置
+     */
     @Bean
     @ConditionalOnProperty(name = "cu.security.remember-me.enabled", havingValue = "true")
     RememberMeServices springSessionRememberMeServices(RememberMeProperties rememberMe) {
@@ -54,6 +58,9 @@ public class SessionConfig {
         return services;
     }
 
+    /**
+     * 注册 spring-session 事件切面，使 SessionRepository 的创建/删除操作能发布会话事件
+     */
     @Bean
     SessionRepositoryEventAspect findByIndexNameSessionRepositoryAspect(){
         return new SessionRepositoryEventAspect();
@@ -70,6 +77,10 @@ public class SessionConfig {
     }*/
 
 
+    /**
+     * 会话并发控制定制器：按 SessionProperties 配置最大会话数与超限是否阻止登录，
+     * 会话过期时返回 401 及“登录状态失效，请重新登录”的 JSON 响应
+     */
     @Bean
 /*
     public HttpSecurityCustomizer HttpSecurityCustomizer(SessionRegistry sessionRegistry, SessionProperties session) {

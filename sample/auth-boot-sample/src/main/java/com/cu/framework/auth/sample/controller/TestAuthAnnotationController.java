@@ -93,9 +93,16 @@ public class TestAuthAnnotationController {
         return "没有权限执行";
     }
 
+    /**
+     * 测试数据编辑接口的请求体，实现 IdDataEdit 以提供业务数据 ID，
+     * 供 @AuthDataOperation 切面校验当前登录人对该数据的操作权限
+     * @author kewen
+     * @since 2026-02-12
+     */
     @Data
     public static class EditIdDataEdit implements IdDataEdit<Long> {
 
+        /** 业务数据 ID，即数据权限校验时的 dataId */
         private Long id;
 
         private String name;

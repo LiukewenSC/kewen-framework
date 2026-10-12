@@ -21,7 +21,9 @@ import java.util.logging.Logger;
  * @since 2024-08-16
  */
 public class KP6SpyDriver implements Driver {
+    /** 驱动静态单例，在静态代码块中注册到 DriverManager */
     private static Driver instance = new KP6SpyDriver();
+    /** JDBC 事件监听器工厂，首次建立连接时通过 SPI 加载，也可由 setJdbcEventListenerFactory 覆盖 */
     private static JdbcEventListenerFactory jdbcEventListenerFactory;
 
     static {
@@ -32,6 +34,11 @@ public class KP6SpyDriver implements Driver {
         }
     }
 
+    /**
+     * 判断是否接受该 URL：所有以 jdbc: 开头的 URL 都被接受（无需 p6spy: 前缀）
+     * @param url 连接 URL
+     * @return URL 非空且以 jdbc: 开头时返回 true
+     */
     @Override
     public boolean acceptsURL(final String url) {
         //return url != null && url.startsWith("jdbc:p6spy:");
@@ -49,6 +56,10 @@ public class KP6SpyDriver implements Driver {
         return url;
     }
 
+    /**
+     * 获取当前已注册到 DriverManager 的所有驱动
+     * @return 已注册驱动列表
+     */
     static List<Driver> registeredDrivers() {
         List<Driver> result = new ArrayList<Driver>();
         for (Enumeration<Driver> driverEnumeration = DriverManager.getDrivers(); driverEnumeration.hasMoreElements(); ) {
@@ -57,6 +68,14 @@ public class KP6SpyDriver implements Driver {
         return result;
     }
 
+    /**
+     * 建立连接：先找到接受该 URL 的真实驱动，触发 p6spy 获取连接前后事件回调，
+     * 最后把真实连接包装为带事件监听的 ConnectionWrapper 返回
+     * @param url 连接 URL，不能为 null
+     * @param properties 连接属性
+     * @return 包装后的连接；URL 不被接受时返回 null
+     * @throws SQLException url 为 null、找不到可用驱动或真实驱动连接失败时抛出
+     */
     @Override
     public Connection connect(String url, Properties properties) throws SQLException {
         // if there is no url, we have problems
@@ -97,6 +116,12 @@ public class KP6SpyDriver implements Driver {
         return ConnectionWrapper.wrap(conn, jdbcEventListener, connectionInformation);
     }
 
+    /**
+     * 遍历 DriverManager 中已注册的驱动，找到第一个接受该 URL 的真实（passthru）驱动
+     * @param url 连接 URL
+     * @return 接受该 URL 的真实驱动
+     * @throws SQLException 找不到接受该 URL 的驱动时抛出
+     */
     protected Driver findPassthru(String url) throws SQLException {
         // registers the passthru drivers, if configured s
         P6ModuleManager.getInstance();
@@ -142,10 +167,19 @@ public class KP6SpyDriver implements Driver {
     }
 
     // Note: @Override annotation not added to allow compilation using Java 1.6
+    /**
+     * 获取父级日志记录器，本驱动不支持该特性
+     * @return 不会返回，固定抛出异常
+     * @throws SQLFeatureNotSupportedException 始终抛出，表示不支持此特性
+     */
     public Logger getParentLogger() throws SQLFeatureNotSupportedException {
         throw new SQLFeatureNotSupportedException("Feature not supported");
     }
 
+    /**
+     * 覆盖默认的 JDBC 事件监听器工厂
+     * @param jdbcEventListenerFactory 要使用的监听器工厂
+     */
     public static void setJdbcEventListenerFactory(JdbcEventListenerFactory jdbcEventListenerFactory) {
         KP6SpyDriver.jdbcEventListenerFactory = jdbcEventListenerFactory;
     }

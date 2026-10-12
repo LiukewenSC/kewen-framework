@@ -17,6 +17,9 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class AuthResponseBodyResultResolver implements AuthenticationSuccessResultResolver {
 
+    /**
+     * 将数据包装为 Result.success，并附带当前 TraceContext 链路信息后返回
+     */
     @Override
     public Object resolver(HttpServletRequest request, HttpServletResponse response,@Nullable Object data) {
         Result<Object> success = Result.success(data);

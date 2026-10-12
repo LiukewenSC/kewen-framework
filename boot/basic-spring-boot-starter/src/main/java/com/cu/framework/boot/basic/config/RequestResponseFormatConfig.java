@@ -37,6 +37,10 @@ public class RequestResponseFormatConfig {
     ExceptionHandlerAdvice exceptionHandlerAdvance(){
         return new ExceptionHandlerAdvice();
     }
+    /**
+     * 链路追踪响应体增强，把 TraceContext 中的流水号信息写入返回的 Result
+     * @return 链路追踪 ResponseBodyAdvice
+     */
     @Bean
     TraceResponseBodyAdvice trackingLogResponseBodyAdvice(){
         return new TraceResponseBodyAdvice();
@@ -72,6 +76,10 @@ public class RequestResponseFormatConfig {
         };
     }
 
+    /**
+     * 字符串转 Date 转换器，按 yyyy-MM-dd HH:mm:ss 格式解析
+     * @return String 到 Date 的转换器
+     */
     @Bean
     public Converter<String, Date> dateConverter() {
         return new Converter<String, Date>() {
@@ -87,6 +95,10 @@ public class RequestResponseFormatConfig {
         };
     }
 
+    /**
+     * 字符串转 LocalDate 转换器，按 yyyy-MM-dd 格式解析
+     * @return String 到 LocalDate 的转换器
+     */
     @Bean
     public Converter<String, LocalDate> localDateConverter() {
         return new Converter<String, LocalDate>() {
@@ -97,6 +109,10 @@ public class RequestResponseFormatConfig {
         };
     }
 
+    /**
+     * 字符串转 LocalDateTime 转换器，按 yyyy-MM-dd HH:mm:ss 格式解析
+     * @return String 到 LocalDateTime 的转换器
+     */
     @Bean
     public Converter<String, LocalDateTime> localDateTimeConverter() {
         return new Converter<String, LocalDateTime>() {

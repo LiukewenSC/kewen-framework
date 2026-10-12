@@ -14,6 +14,7 @@ import java.util.Map;
  */
 public class MapUtil {
 
+    /** 全局共享的 SpEL 表达式解析器 */
     private static final SpelExpressionParser PARSER = new SpelExpressionParser();
 
     /**
@@ -60,11 +61,21 @@ public class MapUtil {
         String spel = convertSpel(name);
         PARSER.parseExpression("#map" + spel).setValue(context, value);
     }
+    /**
+     * 构建 SpEL 求值上下文，并把 map 绑定为上下文变量 #map
+     * @param map 待绑定的 map
+     * @return 绑定了 #map 变量的求值上下文
+     */
     private static EvaluationContext mapEvaluationContext(Map map){
         EvaluationContext ctx = new StandardEvaluationContext();
         ctx.setVariable("map",map);
         return ctx;
     }
+    /**
+     * 将点分隔路径（如 a.b.c）转换为 SpEL 的 map 取值形式（['a']['b']['c']）
+     * @param name 点分隔路径
+     * @return SpEL 索引表达式片段
+     */
     private static String convertSpel(String name){
         String[] split = name.split("\\.");
         StringBuilder builder = new StringBuilder("");
@@ -86,10 +97,21 @@ public class MapUtil {
     public static <K, V> Builder<K, V> builder(Class<K> keyClass,Class<V> valueCLass){
         return new Builder<K, V>(keyClass,valueCLass);
     }
+    /**
+     * 快速构建Map，不显式指定键值类型，由泛型推断
+     * @param <K> 键类型
+     * @param <V> 值类型
+     * @return Map 构建器
+     */
     public static <K, V> Builder<K, V> builder(){
         return new Builder<K, V>();
     }
 
+    /**
+     * Map 的链式构建器，内部基于 HashMap，通过 put 逐个添加键值对，build 返回结果
+     * @author kewen
+     * @since 2024-08-29
+     */
     public static class Builder<K,V> {
         private final Map<K, V> map;
         private Builder(Class<K> keyClass,Class<V> valueCLass) {

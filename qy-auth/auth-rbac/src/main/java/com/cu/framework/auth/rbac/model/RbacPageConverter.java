@@ -10,8 +10,19 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+/**
+ * RBAC 分页转换工具，负责 RbacPageReq、MyBatis-Plus Page 与 RbacPageResult 之间的转换，并提供直接执行分页查询的封装
+ * @author kewen
+ * @since 2026-02-12
+ */
 public class RbacPageConverter {
 
+    /**
+     * 将 RbacPageReq 转换为 MyBatis-Plus 的分页对象
+     * @param rbacPageReq 分页请求参数
+     * @param <T> 数据类型
+     * @return Page 分页对象
+     */
     public static <T> Page<T> pageReq2BaomidouPage(RbacPageReq rbacPageReq) {
         return new Page<>(rbacPageReq.getPage(), rbacPageReq.getSize());
     }
@@ -89,10 +100,17 @@ public class RbacPageConverter {
         return RbacPageResult.of(rbacPageResult.getPage(), rbacPageResult.getSize(), rbacPageResult.getTotal(), listR);
     }
 
+    /**
+     * 分页查询条件载体，配合 pageAndConvert 使用
+     * @author kewen
+     * @since 2026-02-12
+     */
     @Data
     @Accessors(chain = true)
     public static class Query<T> {
+        /** 分页前对 Page 对象的自定义处理回调，可为 null */
         Consumer<Page<T>> pageConsumer;
+        /** MyBatis-Plus 查询条件，为 null 时无条件分页查询 */
         Wrapper<T> wrapper;
     }
 }

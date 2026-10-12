@@ -13,6 +13,7 @@ import java.util.List;
 @Data
 public class IdsReq {
 
+    /** ID 列表参数，@NotEmpty 非空校验 */
     @NotEmpty
     protected List<Long> ids;
 }

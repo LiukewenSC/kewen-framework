@@ -11,6 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * 菜单路由管理接口（/menu/route），类上 @AuthMenu 名称为"菜单路由相关接口"
+ * @author kewen
+ * @since 2026-02-12
+ */
 @RestController
 @RequestMapping("/menu/route")
 @AuthMenu(name = "菜单路由相关接口")

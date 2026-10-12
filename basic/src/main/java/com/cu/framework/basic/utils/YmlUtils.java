@@ -38,6 +38,12 @@ public class YmlUtils {
     }
 
 
+    /**
+     * 基于 Spring ResourceUtils 解析路径并打开文件输入流（支持 classpath: 等资源前缀）
+     * @param filePath 文件路径
+     * @return 带缓冲的文件输入流
+     * @throws FileNotFoundException 文件不存在时抛出
+     */
     private static InputStream getInputStream(String filePath) throws FileNotFoundException {
         /*
         //jdk方式
@@ -60,11 +66,21 @@ public class YmlUtils {
     public static Properties parse2Properties(String... paths){
         return YamlUtilProcessor.process(paths).getProperties() ;
     }
+    /**
+     * 使用 Spring 的 YamlPropertiesFactoryBean 将 yaml 资源转换为 Properties
+     * @param resources yaml 资源
+     * @return 解析后的 Properties
+     */
     public static Properties parse2PropertiesBak(Resource... resources){
         YamlPropertiesFactoryBean bean = new YamlPropertiesFactoryBean();
         bean.setResources(resources);
         return bean.getObject();
     }
+    /**
+     * 通过 YamlUtilProcessor 将 yaml 资源解析为 Properties
+     * @param resources yaml 资源
+     * @return 解析后的 Properties
+     */
     public static Properties parse2Properties(Resource... resources){
         return YamlUtilProcessor.process(resources).getProperties() ;
     }
@@ -108,6 +124,10 @@ public class YmlUtils {
         public static YamlUtilProcessor process(Resource... resources){
             return new YamlUtilProcessor(resources).init();
         }
+        /**
+         * 构造处理器，设置待解析资源并初始化承接解析结果的 Properties 与 Map 容器
+         * @param resources yaml 资源
+         */
         private YamlUtilProcessor(Resource... resources) {
             this.setResources(resources);
             this.properties=CollectionFactory.createStringAdaptingProperties();

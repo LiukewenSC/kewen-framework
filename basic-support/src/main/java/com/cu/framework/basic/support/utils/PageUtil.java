@@ -13,8 +13,20 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+/**
+ * 分页转换工具，在本框架的 {@link PageReq}/{@link PageResult} 与 MyBatis-Plus 的 {@link Page} 之间做适配，
+ * 使业务层可以直接用 IService 完成分页查询而不必手写转换代码
+ * @author kewen
+ * @since 2024-10-22
+ */
 public class PageUtil {
 
+    /**
+     * 将框架的分页请求参数转换为 MyBatis-Plus 的分页对象
+     * @param PageReq 框架分页请求，取其 page（页码，从 1 开始）与 size（每页条数）
+     * @param <T> 分页记录的类型
+     * @return 尚未执行查询的 MyBatis-Plus 分页对象
+     */
     public static <T> Page<T> pageReq2BaomidouPage(PageReq PageReq) {
         return new Page<>(PageReq.getPage(), PageReq.getSize());
     }

@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 public class IdReq {
+    /** ID 参数，@NotNull 非空校验 */
     @NotNull
     protected Long id;
 }

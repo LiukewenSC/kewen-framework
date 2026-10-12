@@ -31,13 +31,23 @@ public class RestOperationBuilder {
 
     private static final Logger log = LoggerFactory.getLogger(RestOperationBuilder.class);
 
+    /** 是否启用 SSL 证书校验，默认 true；设为 false 时构建的客户端信任所有证书并跳过主机名校验 */
     private boolean enableSsl = true;
 
+    /**
+     * 设置是否启用 SSL 证书校验（链式调用）
+     * @param enableSsl false 表示跳过证书与主机名校验
+     * @return 当前构建器
+     */
     public RestOperationBuilder enableSsl(boolean enableSsl) {
         this.enableSsl = enableSsl;
         return this;
     }
 
+    /**
+     * 构建 RestOperations
+     * @return 按当前配置创建的 RestOperations
+     */
     public RestOperations build() {
         return createRestOperations();
     }
@@ -72,6 +82,11 @@ public class RestOperationBuilder {
         return restTemplate;
     }
 
+    /**
+     * 为 HttpClient 配置信任所有证书、忽略主机名校验的 SSLContext（仅用于开发环境）；
+     * 配置失败时记录告警并沿用默认 SSL 配置
+     * @param httpClientBuilder 待配置的 HttpClient 构建器
+     */
     private void addSsl(HttpClientBuilder httpClientBuilder) {
         // 创建信任所有证书的 SSLContext（仅用于开发环境）
         try {

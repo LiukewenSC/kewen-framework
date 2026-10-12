@@ -14,11 +14,22 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
  * @since 1.0
  */
 public class Oauth2AuthenticationSuccessResultConverter implements AuthenticationSuccessResultConverter {
+    /**
+     * 判断是否支持该认证结果：principal 为 OAuth2User 时支持
+     * @param authentication 认证结果
+     * @return principal 是 OAuth2User 返回 true
+     */
     @Override
     public boolean support(Authentication authentication) {
         return authentication.getPrincipal() instanceof OAuth2User;
     }
 
+    /**
+     * 把 OAuth2User 的属性（name、nickName、username、phone、email、avatarFileId、gender、authObject）
+     * 提取组装为统一的登录成功 JSON 结果
+     * @param authentication 认证结果，principal 须为 OAuth2User
+     * @return 登录成功响应结果
+     */
     @Override
     public JsonSuccessResult convert(Authentication authentication) {
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
@@ -34,6 +45,12 @@ public class Oauth2AuthenticationSuccessResultConverter implements Authenticatio
         return result;
     }
 
+    /**
+     * 以 OAuth2User 的 name 作为用户名，通过 UserDetailsService 加载对应的 SecurityUser
+     * @param userDetailsService 用户详情服务
+     * @param authentication 认证结果，principal 须为 OAuth2User
+     * @return 加载到的 SecurityUser
+     */
     @Override
     public SecurityUser convert(UserDetailsService userDetailsService, Authentication authentication) {
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();

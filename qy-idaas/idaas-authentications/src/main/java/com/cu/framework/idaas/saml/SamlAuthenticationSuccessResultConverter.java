@@ -14,11 +14,22 @@ import org.springframework.security.saml2.provider.service.authentication.Saml2A
  * @since 4.24.0-SP01
  */
 public class SamlAuthenticationSuccessResultConverter implements AuthenticationSuccessResultConverter {
+    /**
+     * 判断是否支持该认证结果：principal 为 Saml2AuthenticatedPrincipal 时支持
+     * @param authentication 认证结果
+     * @return principal 是 Saml2AuthenticatedPrincipal 返回 true
+     */
     @Override
     public boolean support(Authentication authentication) {
         return authentication.getPrincipal() instanceof Saml2AuthenticatedPrincipal;
     }
 
+    /**
+     * 把 SAML 认证主体转换为统一的登录成功 JSON 结果：
+     * name 取 principal 名称，nickName 取 relyingPartyRegistrationId
+     * @param authentication 认证结果，principal 须为 Saml2AuthenticatedPrincipal
+     * @return 登录成功响应结果
+     */
     @Override
     public JsonSuccessResult convert(Authentication authentication) {
         Saml2AuthenticatedPrincipal principal = (Saml2AuthenticatedPrincipal) authentication.getPrincipal();
@@ -28,6 +39,12 @@ public class SamlAuthenticationSuccessResultConverter implements AuthenticationS
         return result;
     }
 
+    /**
+     * 以 SAML 主体的 name 作为用户名，通过 UserDetailsService 加载对应的 SecurityUser
+     * @param userDetailsService 用户详情服务
+     * @param authentication 认证结果，principal 须为 Saml2AuthenticatedPrincipal
+     * @return 加载到的 SecurityUser
+     */
     @Override
     public SecurityUser convert(UserDetailsService userDetailsService, Authentication authentication) {
         Saml2AuthenticatedPrincipal principal = (Saml2AuthenticatedPrincipal) authentication.getPrincipal();

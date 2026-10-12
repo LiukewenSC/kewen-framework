@@ -21,6 +21,10 @@ import org.springframework.context.annotation.Configuration;
 @ConditionalOnClass(Feign.class)
 public class TenantHeaderInterceptor implements RequestInterceptor {
 
+    /**
+     * Feign 请求发出前，若当前 TenantContext 中存在租户 ID，则写入请求头 tenantId 传递给下游服务
+     * @param requestTemplate Feign 请求模板
+     */
     @Override
     public void apply(RequestTemplate requestTemplate) {
         //添加租户

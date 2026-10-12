@@ -38,6 +38,7 @@ public class MybatisDataRangeInterceptor implements Interceptor,ApplicationConte
     public MybatisDataRangeInterceptor() {
     }
 
+    /** SQL 权限注入器，首次使用时从 Spring 容器懒加载 */
     SqlAuthInject sqlAuthInject;
     /**
      * Mybatis的插件先于spring容器的完全初始化 ,因此不能直接通过注入等方式获取到容器中的Bean，需要在第一次使用的时候才进行初始化
@@ -107,12 +108,21 @@ public class MybatisDataRangeInterceptor implements Interceptor,ApplicationConte
         return invocation.proceed();
     }
 
+    /**
+     * 通过 MyBatis 插件机制包装拦截目标，签名匹配时返回代理对象
+     * @param target 待包装的目标对象
+     * @return 包装后的对象
+     */
     @Override
     public Object plugin(Object target) {
         return Plugin.wrap(target,this);
         //return Interceptor.super.plugin(target);
     }
 
+    /**
+     * MyBatis 插件属性配置回调，本拦截器无配置项，空实现
+     * @param properties 插件配置的属性
+     */
     @Override
     public void setProperties(Properties properties) {
     }

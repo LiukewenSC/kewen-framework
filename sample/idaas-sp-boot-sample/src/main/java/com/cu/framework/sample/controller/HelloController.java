@@ -13,10 +13,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping
 public class HelloController {
+    /**
+     * 示例接口，返回固定问候语，用于验证接入 IDaaS 单点登录后应用可正常响应请求
+     * @return 固定字符串 hello
+     */
     @RequestMapping("/hello")
     public Result<String> hello() {
         return Result.success("hello");
     }
+    /**
+     * 根路径示例接口，返回固定字符串 index
+     * @return 固定字符串 index
+     */
     @RequestMapping("/")
     public Result<String> hello2() {
         return Result.success("index");

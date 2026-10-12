@@ -24,12 +24,20 @@ import java.util.List;
  */
 public class HeaderCookieHttpSessionIdResolver implements HttpSessionIdResolver {
 
+    /** 请求属性 key，记录本次请求 Session ID 的解析来源（Header 或 Cookie） */
     private static final String SESSION_RESOLVE_MODE = HeaderCookieHttpSessionIdResolver.class.getName() + ".MODE";
+    /** 解析来源标记值：Session ID 来自 Header */
     private static final String MODE_HEADER = "HEADER";
 
+    /** 基于请求头的 Session ID 解析器 */
     private final HeaderHttpSessionIdResolver headerResolver;
+    /** 基于 Cookie 的 Session ID 解析器 */
     private final CookieHttpSessionIdResolver cookieResolver;
 
+    /**
+     * 构造组合解析器，内部创建指定 Header 名的 HeaderHttpSessionIdResolver 与默认的 CookieHttpSessionIdResolver
+     * @param headerName 承载 Session ID 的请求头名称（如 Authorization）
+     */
     public HeaderCookieHttpSessionIdResolver(String headerName) {
         this.headerResolver = new HeaderHttpSessionIdResolver(headerName);
         this.cookieResolver = new CookieHttpSessionIdResolver();

@@ -44,12 +44,20 @@ import java.util.concurrent.ConcurrentHashMap;
 public class TokenSessionRequestFilter extends OncePerRequestFilter {
 
 
+    /** 承载 token 的请求头名称 */
     String tokenParameter;
 
+    /**
+     * 构造过滤器
+     * @param tokenParameter 承载 token 的请求头名称
+     */
     public TokenSessionRequestFilter(String tokenParameter) {
         this.tokenParameter = tokenParameter;
     }
 
+    /**
+     * 将原始请求包装为 TokenSessionHttpServletRequest 后传给过滤链，使请求头中的 token 可作为 session ID 使用
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         //封装 token的session
@@ -64,12 +72,16 @@ public class TokenSessionRequestFilter extends OncePerRequestFilter {
      */
     private static class TokenSessionHttpServletRequest extends HttpServletRequestWrapper {
 
+        /** 当前线程请求头中携带的 token，构造包装请求时写入 */
         private static final ThreadLocal<String> tokenThreadLocal = new ThreadLocal<>();
 
+        /** token 到 session 的本地缓存 */
         private static final ConcurrentHashMap<String, HttpSession> tokenMap = new ConcurrentHashMap<>();
 
+        /** 本次请求是否从请求头携带了 token */
         private final boolean isToken;
 
+        /** 承载 token 的请求头名称 */
         String tokenParameter;
 
         /**
@@ -85,6 +97,9 @@ public class TokenSessionRequestFilter extends OncePerRequestFilter {
             isToken = token != null;
         }
 
+        /**
+         * 请求头携带了非空 token 时以该 token 作为 session ID 返回，否则回退到容器原始解析结果
+         */
         @Override
         public String getRequestedSessionId() {
             if (!isToken) {
@@ -121,11 +136,20 @@ public class TokenSessionRequestFilter extends OncePerRequestFilter {
             super.setAttribute(name, o);
         }
 
+        /**
+         * 返回经 TokenSession 门面包装的 session，使会话失效时抛出 CredentialsExpiredException
+         */
         @Override
         public HttpSession getSession(boolean create) {
             HttpSession session = super.getSession(create);
             return new TokenSession(session);
         }
+        /**
+         * 按 token 从本地缓存 tokenMap 中查找 session；无 token 时创建新 session 并以 session ID 作为 token 缓存；
+         * 缓存未命中且 create 为 true 时同样创建并缓存
+         * @param create 缓存未命中时是否创建新 session
+         * @return 命中或新建的 session，未命中且不允许创建时返回 null
+         */
         public HttpSession getSessionInternal(boolean create) {
             String token = getToken();
             //没有token则生成一个
@@ -159,12 +183,20 @@ public class TokenSessionRequestFilter extends OncePerRequestFilter {
             return session;
         }
     }
+    /**
+     * session 门面，将读取属性时 session 已失效的 IllegalStateException 转为 CredentialsExpiredException
+     * @author kewen
+     * @since 2026-02-12
+     */
     static class TokenSession extends StandardSessionFacade {
 
         public TokenSession(HttpSession session) {
             super(session);
         }
 
+        /**
+         * 读取 session 属性，session 已失效时抛出“登录已过期”的 CredentialsExpiredException
+         */
         @Override
         public Object getAttribute(String name) {
             try {

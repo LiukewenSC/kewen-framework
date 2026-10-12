@@ -34,6 +34,7 @@ public class QiNiuStorageTemplate implements StorageTemplate {
      */
     private final String bucket;
 
+    /** 存储根目录，生成预上传 key 时作为前缀 */
     private final String rootPath;
 
     /**
@@ -45,9 +46,22 @@ public class QiNiuStorageTemplate implements StorageTemplate {
      */
     // "rtk99wucl.hd-bkt.clouddn.com"
     private final String downloadDomain;
+    /** 上传成功后七牛回调的地址，写入预上传凭证的 callbackUrl 策略 */
     private final String callbackUrl;
+    /** 七牛上传管理器，使用 V2 分片上传、非 https 域名配置构建 */
     private final UploadManager uploadManager;
 
+    /**
+     * 构造七牛云存储模板：创建鉴权对象与上传管理器（V2 分片上传、关闭 https 域名）
+     * @param accessKey 七牛 accessKey
+     * @param secretKey 七牛 secretKey
+     * @param region 存储区域
+     * @param bucket 存储桶空间名
+     * @param rootPath 存储根目录
+     * @param isPublic 是否公开空间
+     * @param downloadDomain 下载域名
+     * @param callbackUrl 上传成功回调地址
+     */
     public QiNiuStorageTemplate(String accessKey, String secretKey, Region region, String bucket, String rootPath, boolean isPublic, String downloadDomain, String callbackUrl) {
 
 
@@ -67,6 +81,15 @@ public class QiNiuStorageTemplate implements StorageTemplate {
         this.rootPath = rootPath;
     }
 
+    /**
+     * 服务端流式上传：生成有效期 20 秒的上传凭证（returnBody 返回 key/hash/size），
+     * 调用七牛 UploadManager 上传输入流，并把响应解析为 UploadBO
+     * @param stream 文件输入流
+     * @param relativeDirectory 相对目录
+     * @param fileName 文件名
+     * @param mimeType 文件 MIME 类型
+     * @return 上传结果（key、hash、size）
+     */
     @Override
     public UploadBO upload(InputStream stream, String relativeDirectory, String fileName, String mimeType) {
         StringMap policy = new StringMap();
@@ -94,6 +117,11 @@ public class QiNiuStorageTemplate implements StorageTemplate {
 
     }
 
+    /**
+     * 生成文件下载链接：公开空间直接构建 URL；私有空间用 auth 签名并附加 1 小时有效期
+     * @param key 文件在七牛云存储的 key
+     * @return 下载链接
+     */
     @Override
     public String downloadUrl(String key) {
         // domain   下载 domain, eg: qiniu.com【必须】
@@ -121,6 +149,13 @@ public class QiNiuStorageTemplate implements StorageTemplate {
 
     }
 
+    /**
+     * 生成客户端直传凭证：key 为 根目录/相对目录/文件名，策略中配置上传成功后的
+     * callbackUrl、callbackBody（JSON 回调内容）等，凭证有效期 120 秒
+     * @param relativeDirectory 相对目录
+     * @param fileName 文件名
+     * @return 预上传凭证（key 与 uploadToken）
+     */
     @Override
     public PreUploadTokenBO createPreUploadToken(String relativeDirectory, String fileName) {
 

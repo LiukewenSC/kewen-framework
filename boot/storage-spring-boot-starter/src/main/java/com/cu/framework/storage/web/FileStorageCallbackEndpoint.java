@@ -40,6 +40,11 @@ public class FileStorageCallbackEndpoint {
 
         return Result.success(req);
     }
+    /**
+     * 根据文件 ID 查询文件下载信息（GET /storage/getFileById）
+     * @param id 文件 ID
+     * @return 包含文件下载信息的成功结果
+     */
     @GetMapping("/getFileById")
     public Result getFileById(@RequestParam Long id){
         FileInfo downloadInfo = fileStorageProcessor.getDownloadInfo(id);

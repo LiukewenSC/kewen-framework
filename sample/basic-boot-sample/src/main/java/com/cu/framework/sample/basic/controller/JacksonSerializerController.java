@@ -23,19 +23,39 @@ import java.util.Map;
 public class JacksonSerializerController {
 
 
+    /**
+     * 测试 @RequestParam 形式的 LocalDate / LocalDateTime 参数反序列化，两个参数均非必传
+     * @param localDate 日期参数，格式由全局转换配置决定
+     * @param localDateTime 日期时间参数，格式由全局转换配置决定
+     * @return 成功响应
+     */
     @GetMapping("/paramSerializer")
     public Result<Void> paramSerializer(@RequestParam(required = false) LocalDate localDate, @RequestParam(required = false) LocalDateTime localDateTime){
         return Result.success();
     }
+    /**
+     * 测试以对象属性绑定方式（不加 @RequestBody）反序列化 LocalDateParam 中的日期字段
+     * @param req 含 LocalDate / LocalDateTime 字段的参数对象
+     * @return 成功响应
+     */
     @GetMapping("/paramSerializer2")
     public Result<Void> paramSerializer2(LocalDateParam req){
         return Result.success();
     }
 
+    /**
+     * 测试 @RequestBody JSON 请求体中日期字段的反序列化
+     * @param req 含 LocalDate / LocalDateTime 字段的参数对象
+     * @return 成功响应
+     */
     @GetMapping("/paramSerializer3")
     public Result<Void> paramSerializer3(@RequestBody LocalDateParam req){
         return Result.success();
     }
+    /**
+     * 返回包含 Date / LocalDateTime / LocalDate 三种日期类型的 Map，用于观察 JSON 序列化输出格式
+     * @return 含各类型当前时间的 Map
+     */
     @GetMapping("/deSerializerDate")
     public Result<Map<Object, Object>> deSerializerDate(){
         Map<Object, Object> build = MapUtil.builder()

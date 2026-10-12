@@ -4,6 +4,11 @@ import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 
+/**
+ * RBAC 通用分页请求参数，携带页码、页面大小与模糊搜索关键字
+ * @author kewen
+ * @since 2026-02-12
+ */
 @Data
 public class RbacPageReq {
 

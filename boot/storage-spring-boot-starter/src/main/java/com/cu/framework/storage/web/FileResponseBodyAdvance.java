@@ -36,11 +36,27 @@ public class FileResponseBodyAdvance implements ResponseBodyAdvice<Result> {
     @Autowired
     FileStorageProcessor fileStorageProcessor;
 
+    /**
+     * 仅拦截返回类型为 Result 及其子类的接口
+     * @param returnType 控制器方法返回类型
+     * @param converterType 消息转换器类型
+     * @return 返回类型可赋值给 Result 时为 true
+     */
     @Override
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
         return Result.class.isAssignableFrom(returnType.getParameterType());
     }
 
+    /**
+     * 响应体写出前回调：对 Result.data 执行文件信息填充后原样返回
+     * @param body 待写出的响应体
+     * @param returnType 控制器方法返回类型
+     * @param selectedContentType 响应内容类型
+     * @param selectedConverterType 选用的消息转换器类型
+     * @param request 当前请求
+     * @param response 当前响应
+     * @return 填充文件信息后的响应体
+     */
     @Override
     public Result beforeBodyWrite(Result body, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
 

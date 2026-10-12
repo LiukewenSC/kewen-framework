@@ -46,19 +46,31 @@ import java.util.stream.Collectors;
 public class Oauth2Config implements HttpSecurityCustomizer {
 
     private static final Logger log = LoggerFactory.getLogger(Oauth2Config.class);
+    /** OAuth2 登录成功处理器，配置到 oauth2Login 的 successHandler */
     @Autowired
     private SecurityAuthenticationSuccessHandler successHandler;
 
+    /** 认证异常处理器，配置到 oauth2Login 的 failureHandler */
     @Autowired
     private SecurityAuthenticationExceptionResolverHandler exceptionResolverHandler;
 
+    /** OAuth2/OIDC 配置属性（前缀 cu.security.login.oauth2） */
     @Autowired
     private Oauth2OidcProperties oauth2OidcProperties;
 
+    /**
+     * 授权请求仓库 Bean，基于 HttpSession 保存 OAuth2AuthorizationRequest（含 state 等），供回调时校验
+     * @return 基于 Session 的授权请求仓库
+     */
     @Bean
     public AuthorizationRequestRepository<OAuth2AuthorizationRequest> authorizationRequestRepository() {
         return new HttpSessionOAuth2AuthorizationRequestRepository();
     }
+
+    /**
+     * OAuth2 登录成功结果转换器 Bean，把 OAuth2User 属性转换为统一的登录成功响应
+     * @return OAuth2 认证成功结果转换器
+     */
     @Bean
     public Oauth2AuthenticationSuccessResultConverter oauth2JsonSuccessResultConverter(){
         return new Oauth2AuthenticationSuccessResultConverter();
@@ -85,6 +97,13 @@ public class Oauth2Config implements HttpSecurityCustomizer {
         return defaultOAuth2UserService;
     }
 
+    /**
+     * 定制 Spring Security 过滤器链的 oauth2Login 配置：设置登录成功/失败处理器、
+     * 授权端点 baseUri、令牌端点的 accessTokenResponseClient、用户信息端点的
+     * userService 与 oidcUserService、登录回调地址及客户端注册仓库
+     * @param http Spring Security 的 HttpSecurity 构建器
+     * @throws Exception 配置过滤器链失败时抛出
+     */
     @Override
     public void customizer(HttpSecurity http) throws Exception {
         ClientRegistrationRepository clientRegistrationRepository = clientRegistrationRepository();
@@ -121,6 +140,12 @@ public class Oauth2Config implements HttpSecurityCustomizer {
             ;
         });
     }
+    /**
+     * 根据配置的 clients 列表构建内存版客户端注册仓库：
+     * protocolType 为 OAUTH2 时按手动配置的端点创建，为 OIDC 时按 issuerUri 自动发现创建，
+     * 其他类型记录告警日志并跳过
+     * @return 客户端注册仓库
+     */
     private ClientRegistrationRepository clientRegistrationRepository(){
         List<ClientRegistration> registrationList = oauth2OidcProperties.getClients().stream().map(
                 client -> {

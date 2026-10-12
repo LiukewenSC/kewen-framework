@@ -18,6 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * 部门管理接口（/rbac/dept），提供部门的列表、分页、新增、修改与删除，方法上的 @AuthMenu 用于生成菜单权限标识
+ * @author kewen
+ * @since 2026-02-12
+ */
 @RestController
 @RequestMapping("/rbac/dept")
 public class RbacDeptController {
@@ -26,23 +31,42 @@ public class RbacDeptController {
     SysDeptMpService sysDeptMpService;
 
 
+    /**
+     * 查询全部部门列表（GET /rbac/dept/list，菜单权限"部门列表"）
+     * @return 部门列表
+     */
     @GetMapping("/list")
     @AuthMenu(name = "部门列表")
     public RbacResult<List<SysDept>> listDept(){
         List<SysDept> list = sysDeptMpService.list();
         return RbacResult.success(list);
     }
+    /**
+     * 分页查询部门（GET /rbac/dept/page，菜单权限"部门分页"）
+     * @param req 分页请求参数
+     * @return 部门分页结果
+     */
     @GetMapping("/page")
     @AuthMenu(name = "部门分页")
     public RbacResult<RbacPageResult<SysDept>> pageDept(@Validated RbacPageReq req){
         return RbacResult.success(RbacPageConverter.pageAndConvert(req, sysDeptMpService));
     }
+    /**
+     * 新增部门（POST /rbac/dept/add，菜单权限"添加部门"）
+     * @param sysDept 待新增的部门
+     * @return 是否新增成功
+     */
     @PostMapping("/add")
     @AuthMenu(name = "添加部门")
     public RbacResult<Boolean> add(@RequestBody SysDept sysDept){
         boolean b = sysDeptMpService.save(sysDept);
         return RbacResult.success(b);
     }
+    /**
+     * 按 ID 修改部门（POST /rbac/dept/update），请求体未携带 ID 时抛出异常
+     * @param sysDept 待更新的部门，ID 必填
+     * @return 是否修改成功
+     */
     @PostMapping("/update")
     @AuthMenu(name = "部门列表")
     public RbacResult<Boolean> update(@RequestBody SysDept sysDept){
@@ -52,6 +76,11 @@ public class RbacDeptController {
         boolean b = sysDeptMpService.updateById(sysDept);
         return RbacResult.success(b);
     }
+    /**
+     * 按 ID 删除部门（POST /rbac/dept/delete，菜单权限"删除部门"）
+     * @param rbacIdReq 携带部门 ID 的请求体
+     * @return 是否删除成功
+     */
     @PostMapping("/delete")
     @AuthMenu(name = "删除部门")
     public RbacResult<Boolean> delete(@RequestBody @Validated RbacIdReq rbacIdReq){

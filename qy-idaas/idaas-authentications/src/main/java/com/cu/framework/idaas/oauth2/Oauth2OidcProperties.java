@@ -49,6 +49,11 @@ public class Oauth2OidcProperties {
      */
     private List<Oauth2OidcRegistrationClientProperties> clients ;
 
+    /**
+     * 单个 OAuth2/OIDC 客户端的注册配置，对应 cu.security.login.oauth2.clients 列表元素
+     * @author kewen
+     * @since 2026-05-10
+     */
     @Data
     public static class Oauth2OidcRegistrationClientProperties {
 

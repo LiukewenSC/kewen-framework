@@ -28,6 +28,14 @@ public interface AuthDataHandler {
      * @return 是否有权限
      */
     boolean hasDataOperateAuths(Collection<BaseAuth> auths, String businessFunction, Object dataId,String operate);
+    /**
+     * 基于权限对象判断是否有某条数据的操作权限
+     * @param authObject 权限集合体，为 null 时直接返回 false
+     * @param businessFunction 模块
+     * @param dataId 业务id
+     * @param operate 操作
+     * @return 是否有权限
+     */
     default boolean hasDataOperateAuths(IAuthObject authObject, String businessFunction, Object dataId,String operate){
         if (authObject==null){
             logger.info("authObject is null");
@@ -47,6 +55,13 @@ public interface AuthDataHandler {
      * @param auths 权限结构
      */
     void editDataAuths(String businessFunction,Object dataId,  String operate, Collection<BaseAuth> auths);
+    /**
+     * 基于权限对象编辑某条数据的权限
+     * @param businessFunction 模块
+     * @param dataId 数据ID
+     * @param operate 操作
+     * @param authObject 权限集合体，为 null 时不做任何处理
+     */
     default void editDataAuths(String businessFunction,Object dataId,  String operate, IAuthObject authObject){
         if (authObject==null){
             logger.info("authObject is null");

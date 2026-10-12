@@ -25,6 +25,12 @@ public interface AuthMenuHandler {
      * @return
      */
     boolean hasMenuAccessAuth(Collection<BaseAuth> auths, String path) ;
+    /**
+     * 基于权限对象判断是否有菜单访问权限
+     * @param authObject 权限集合体，为 null 时直接返回 false
+     * @param path 菜单路径
+     * @return 是否有权限
+     */
     default boolean hasMenuAccessAuth(IAuthObject authObject, String path) {
         if (authObject==null){
             logger.info("authObject is null");

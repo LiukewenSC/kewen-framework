@@ -30,8 +30,10 @@ public class FangTangMessageClient {
 
     private static final Logger log = LoggerFactory.getLogger(FangTangMessageClient.class);
 
+    /** 方糖 SendKey，由外部通过 setter 注入 */
     String key;
 
+    /** 推送接口域名，与 key 拼成请求地址 {@code {domain}/{key}.send} */
     String domain;
 
 
@@ -41,6 +43,11 @@ public class FangTangMessageClient {
     }
 
 
+    /**
+     * 以 form 表单方式向方糖推送接口发送一条消息，仅 title 必填，其余参数为 null 时不参与提交
+     * <p>发送过程中的任何异常都只记录为 warn 日志并吞掉，不会向调用方抛出，因此消息推送失败不影响主流程</p>
+     * @param entity 待发送的消息内容
+     */
     public void sendMessage(FangTangMessageDTO entity) {
 
         try {

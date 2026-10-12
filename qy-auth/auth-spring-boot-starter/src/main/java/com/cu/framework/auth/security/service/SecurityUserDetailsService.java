@@ -5,6 +5,12 @@ import org.springframework.security.core.userdetails.UserDetailsPasswordService;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+/**
+ * 框架用户详情服务接口，组合 UserDetailsService 与 UserDetailsPasswordService，
+ * 统一提供按用户名加载用户与更新用户密码的能力
+ * @author kewen
+ * @since 2026-02-12
+ */
 public interface SecurityUserDetailsService extends UserDetailsService, UserDetailsPasswordService {
     @Override
     UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
