@@ -2,15 +2,15 @@
 
 <cite>
 **本文引用的文件**
-- [AuthUserContext.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthUserContext.java)
-- [CurrentUser.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/CurrentUser.java)
-- [IAuthObject.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/IAuthObject.java)
-- [BaseAuth.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/BaseAuth.java)
-- [AbstractAuthObject.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/AbstractAuthObject.java)
-- [SecurityUser.java](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/model/SecurityUser.java)
-- [AuthUserContextFilter.java](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/filter/AuthUserContextFilter.java)
-- [RabcCurrentUserController.java](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/controller/RabcCurrentUserController.java)
-- [AsyncConfig.java](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/AsyncConfig.java)
+- [AuthUserContext.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthUserContext.java)
+- [CurrentUser.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/CurrentUser.java)
+- [IAuthObject.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/IAuthObject.java)
+- [BaseAuth.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/BaseAuth.java)
+- [AbstractAuthObject.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/AbstractAuthObject.java)
+- [SecurityUser.java](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/model/SecurityUser.java)
+- [AuthUserContextFilter.java](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/filter/AuthUserContextFilter.java)
+- [RbacCurrentUserController.java](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/controller/RbacCurrentUserController.java)
+- [AsyncConfig.java](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/AsyncConfig.java)
 </cite>
 
 ## 目录
@@ -49,7 +49,7 @@ AUCF["AuthUserContextFilter<br/>请求过滤器"]
 SU["SecurityUser 实现类"]
 end
 subgraph "RBAC 示例(auth-rbac)"
-RCUC["RabcCurrentUserController<br/>控制器示例"]
+RCUC["RbacCurrentUserController<br/>控制器示例"]
 end
 subgraph "异步配置(basic-spring-boot-starter)"
 AC["AsyncConfig<br/>线程池配置"]
@@ -64,19 +64,19 @@ AC -.-> AUC
 ```
 
 图表来源
-- [AuthUserContext.java:16-31](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthUserContext.java#L16-L31)
-- [CurrentUser.java:9-14](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/CurrentUser.java#L9-L14)
-- [IAuthObject.java:14-31](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/IAuthObject.java#L14-L31)
-- [BaseAuth.java:12-60](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/BaseAuth.java#L12-L60)
-- [AbstractAuthObject.java:22-80](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/AbstractAuthObject.java#L22-L80)
-- [SecurityUser.java:19-141](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/model/SecurityUser.java#L19-L141)
-- [AuthUserContextFilter.java:31-84](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/filter/AuthUserContextFilter.java#L31-L84)
-- [RabcCurrentUserController.java:30-81](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/controller/RabcCurrentUserController.java#L30-L81)
-- [AsyncConfig.java:19-59](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/AsyncConfig.java#L19-L59)
+- [AuthUserContext.java:16-31](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthUserContext.java#L16-L31)
+- [CurrentUser.java:9-14](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/CurrentUser.java#L9-L14)
+- [IAuthObject.java:14-31](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/IAuthObject.java#L14-L31)
+- [BaseAuth.java:12-60](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/BaseAuth.java#L12-L60)
+- [AbstractAuthObject.java:22-80](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/AbstractAuthObject.java#L22-L80)
+- [SecurityUser.java:19-141](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/model/SecurityUser.java#L19-L141)
+- [AuthUserContextFilter.java:31-84](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/filter/AuthUserContextFilter.java#L31-L84)
+- [RbacCurrentUserController.java:30-81](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/controller/RbacCurrentUserController.java#L30-L81)
+- [AsyncConfig.java:19-59](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/AsyncConfig.java#L19-L59)
 
 章节来源
-- [AuthUserContext.java:16-31](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthUserContext.java#L16-L31)
-- [AuthUserContextFilter.java:31-84](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/filter/AuthUserContextFilter.java#L31-L84)
+- [AuthUserContext.java:16-31](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthUserContext.java#L16-L31)
+- [AuthUserContextFilter.java:31-84](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/filter/AuthUserContextFilter.java#L31-L84)
 
 ## 核心组件
 - AuthUserContext：基于 InheritableThreadLocal 的用户上下文容器，提供静态方法用于设置、获取与派生权限列表。
@@ -86,19 +86,19 @@ AC -.-> AUC
 - AbstractAuthObject：权限聚合体的通用实现，负责将 BaseAuth 解析为具体权限实体。
 - SecurityUser：Spring Security 集成的用户实现，同时满足 CurrentUser 与 UserDetails。
 - AuthUserContextFilter：在登录成功后将 SecurityUser 写入 AuthUserContext，并处理“获取当前用户”请求。
-- RabcCurrentUserController：控制器示例，演示在业务层读取 AuthUserContext 的权限与用户信息。
+- RbacCurrentUserController：控制器示例，演示在业务层读取 AuthUserContext 的权限与用户信息。
 - AsyncConfig：全局异步线程池配置，为异步与线程池场景提供上下文传递参考。
 
 章节来源
-- [AuthUserContext.java:16-31](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthUserContext.java#L16-L31)
-- [CurrentUser.java:9-14](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/CurrentUser.java#L9-L14)
-- [IAuthObject.java:14-31](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/IAuthObject.java#L14-L31)
-- [BaseAuth.java:12-60](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/BaseAuth.java#L12-L60)
-- [AbstractAuthObject.java:22-80](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/AbstractAuthObject.java#L22-L80)
-- [SecurityUser.java:19-141](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/model/SecurityUser.java#L19-L141)
-- [AuthUserContextFilter.java:31-84](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/filter/AuthUserContextFilter.java#L31-L84)
-- [RabcCurrentUserController.java:30-81](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/controller/RabcCurrentUserController.java#L30-L81)
-- [AsyncConfig.java:19-59](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/AsyncConfig.java#L19-L59)
+- [AuthUserContext.java:16-31](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthUserContext.java#L16-L31)
+- [CurrentUser.java:9-14](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/CurrentUser.java#L9-L14)
+- [IAuthObject.java:14-31](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/IAuthObject.java#L14-L31)
+- [BaseAuth.java:12-60](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/BaseAuth.java#L12-L60)
+- [AbstractAuthObject.java:22-80](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/AbstractAuthObject.java#L22-L80)
+- [SecurityUser.java:19-141](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/model/SecurityUser.java#L19-L141)
+- [AuthUserContextFilter.java:31-84](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/filter/AuthUserContextFilter.java#L31-L84)
+- [RbacCurrentUserController.java:30-81](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/controller/RbacCurrentUserController.java#L30-L81)
+- [AsyncConfig.java:19-59](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/AsyncConfig.java#L19-L59)
 
 ## 架构总览
 下图展示从请求进入、安全上下文建立、用户上下文写入、业务读取到响应返回的完整链路。
@@ -109,7 +109,7 @@ participant Client as "客户端"
 participant Filter as "AuthUserContextFilter"
 participant SecCtx as "SecurityContext"
 participant Ctx as "AuthUserContext"
-participant Ctrl as "RabcCurrentUserController"
+participant Ctrl as "RbacCurrentUserController"
 Client->>Filter : "HTTP 请求"
 Filter->>SecCtx : "读取 Authentication"
 Filter->>Filter : "转换为 SecurityUser"
@@ -125,9 +125,9 @@ end
 ```
 
 图表来源
-- [AuthUserContextFilter.java:49-75](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/filter/AuthUserContextFilter.java#L49-L75)
-- [AuthUserContext.java:18-29](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthUserContext.java#L18-L29)
-- [RabcCurrentUserController.java:41-48](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/controller/RabcCurrentUserController.java#L41-L48)
+- [AuthUserContextFilter.java:49-75](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/filter/AuthUserContextFilter.java#L49-L75)
+- [AuthUserContext.java:18-29](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthUserContext.java#L18-L29)
+- [RbacCurrentUserController.java:41-48](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/controller/RbacCurrentUserController.java#L41-L48)
 
 ## 组件详解
 
@@ -173,13 +173,13 @@ IAuthObject --> BaseAuth : "包含"
 ```
 
 图表来源
-- [AuthUserContext.java:16-31](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthUserContext.java#L16-L31)
-- [CurrentUser.java:9-14](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/CurrentUser.java#L9-L14)
-- [IAuthObject.java:14-31](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/IAuthObject.java#L14-L31)
-- [BaseAuth.java:12-60](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/BaseAuth.java#L12-L60)
+- [AuthUserContext.java:16-31](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthUserContext.java#L16-L31)
+- [CurrentUser.java:9-14](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/CurrentUser.java#L9-L14)
+- [IAuthObject.java:14-31](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/IAuthObject.java#L14-L31)
+- [BaseAuth.java:12-60](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/BaseAuth.java#L12-L60)
 
 章节来源
-- [AuthUserContext.java:16-31](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthUserContext.java#L16-L31)
+- [AuthUserContext.java:16-31](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthUserContext.java#L16-L31)
 
 ### CurrentUser：用户信息封装与权限聚合
 - 字段与职责
@@ -190,8 +190,8 @@ IAuthObject --> BaseAuth : "包含"
   - 通过 IAuthObject 的 listBaseAuth 暴露统一权限集合。
 
 章节来源
-- [CurrentUser.java:9-14](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/CurrentUser.java#L9-L14)
-- [IAuthObject.java:14-31](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/IAuthObject.java#L14-L31)
+- [CurrentUser.java:9-14](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/CurrentUser.java#L9-L14)
+- [IAuthObject.java:14-31](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/IAuthObject.java#L14-L31)
 
 ### BaseAuth 与 AbstractAuthObject：权限建模与解析
 - BaseAuth
@@ -212,12 +212,12 @@ ThrowErr --> Done
 ```
 
 图表来源
-- [AbstractAuthObject.java:53-68](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/AbstractAuthObject.java#L53-L68)
-- [BaseAuth.java:12-60](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/BaseAuth.java#L12-L60)
+- [AbstractAuthObject.java:53-68](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/AbstractAuthObject.java#L53-L68)
+- [BaseAuth.java:12-60](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/BaseAuth.java#L12-L60)
 
 章节来源
-- [BaseAuth.java:12-60](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/BaseAuth.java#L12-L60)
-- [AbstractAuthObject.java:22-80](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/AbstractAuthObject.java#L22-L80)
+- [BaseAuth.java:12-60](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/BaseAuth.java#L12-L60)
+- [AbstractAuthObject.java:22-80](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/AbstractAuthObject.java#L22-L80)
 
 ### SecurityUser：Spring Security 集成的用户实现
 - 继承关系
@@ -230,8 +230,8 @@ ThrowErr --> Done
   - getAuthorities 将 IAuthObject.listBaseAuth() 的权限字符串映射为 GrantedAuthority。
 
 章节来源
-- [SecurityUser.java:19-141](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/model/SecurityUser.java#L19-L141)
-- [IAuthObject.java:14-31](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/IAuthObject.java#L14-L31)
+- [SecurityUser.java:19-141](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/model/SecurityUser.java#L19-L141)
+- [IAuthObject.java:14-31](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/IAuthObject.java#L14-L31)
 
 ### AuthUserContextFilter：请求级上下文写入与“当前用户”响应
 - 职责
@@ -241,15 +241,15 @@ ThrowErr --> Done
   - 在 Spring Security 的 SessionManagementFilter 之后执行，确保 remember-me 等流程完成后写入上下文。
 
 章节来源
-- [AuthUserContextFilter.java:31-84](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/filter/AuthUserContextFilter.java#L31-L84)
+- [AuthUserContextFilter.java:31-84](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/filter/AuthUserContextFilter.java#L31-L84)
 
 ### 控制器示例：在业务层读取上下文
-- RabcCurrentUserController 展示了两种常见用法
+- RbacCurrentUserController 展示了两种常见用法
   - 读取权限集合：AuthUserContext.getAuths() 用于菜单树构建等。
   - 读取当前用户：AuthUserContext.getCurrentUser() 用于密码更新等操作。
 
 章节来源
-- [RabcCurrentUserController.java:41-48](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/controller/RabcCurrentUserController.java#L41-L48)
+- [RbacCurrentUserController.java:41-48](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/controller/RbacCurrentUserController.java#L41-L48)
 
 ## 依赖关系分析
 - 上下文依赖
@@ -258,7 +258,7 @@ ThrowErr --> Done
 - 过滤器依赖
   - AuthUserContextFilter 依赖 SecurityContext、AuthenticationSuccessResultConverter、UserDetailsService 等，完成用户对象转换与写入。
 - 控制器依赖
-  - RabcCurrentUserController 依赖 AuthUserContext 以获取权限与用户信息。
+  - RbacCurrentUserController 依赖 AuthUserContext 以获取权限与用户信息。
 
 ```mermaid
 graph LR
@@ -266,14 +266,14 @@ AUCF["AuthUserContextFilter"] --> AUC["AuthUserContext"]
 SU["SecurityUser"] --> CU["CurrentUser"]
 CU --> IAO["IAuthObject"]
 IAO --> BA["BaseAuth"]
-RCUC["RabcCurrentUserController"] --> AUC
+RCUC["RbacCurrentUserController"] --> AUC
 ```
 
 图表来源
-- [AuthUserContextFilter.java:31-84](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/filter/AuthUserContextFilter.java#L31-L84)
-- [AuthUserContext.java:16-31](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthUserContext.java#L16-L31)
-- [SecurityUser.java:19-141](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/model/SecurityUser.java#L19-L141)
-- [RabcCurrentUserController.java:30-81](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/controller/RabcCurrentUserController.java#L30-L81)
+- [AuthUserContextFilter.java:31-84](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/filter/AuthUserContextFilter.java#L31-L84)
+- [AuthUserContext.java:16-31](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthUserContext.java#L16-L31)
+- [SecurityUser.java:19-141](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/model/SecurityUser.java#L19-L141)
+- [RbacCurrentUserController.java:30-81](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/controller/RbacCurrentUserController.java#L30-L81)
 
 ## 性能与并发特性
 - 线程隔离与内存释放
@@ -286,8 +286,8 @@ RCUC["RabcCurrentUserController"] --> AUC
   - 在线程池执行任务时，若需访问 AuthUserContext，应采用上下文传递方案（例如手动传递 CurrentUser 或在提交任务前设置），避免跨线程丢失上下文。
 
 章节来源
-- [AuthUserContext.java:18-29](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthUserContext.java#L18-L29)
-- [AsyncConfig.java:19-59](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/AsyncConfig.java#L19-L59)
+- [AuthUserContext.java:18-29](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthUserContext.java#L18-L29)
+- [AsyncConfig.java:19-59](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/AsyncConfig.java#L19-L59)
 
 ## 故障排查指南
 - 现象：读取权限为空
@@ -302,8 +302,8 @@ RCUC["RabcCurrentUserController"] --> AUC
   - 检查 BaseAuth.auth 的权限标记是否正确注册到 AbstractAuthObject 的映射表。
 
 章节来源
-- [AuthUserContextFilter.java:49-75](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/filter/AuthUserContextFilter.java#L49-L75)
-- [AbstractAuthObject.java:53-68](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/AbstractAuthObject.java#L53-L68)
+- [AuthUserContextFilter.java:49-75](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/filter/AuthUserContextFilter.java#L49-L75)
+- [AbstractAuthObject.java:53-68](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/AbstractAuthObject.java#L53-L68)
 
 ## 结论
 AuthUserContext 通过 ThreadLocal 将用户上下文与请求线程绑定，结合 InheritableThreadLocal 支持父子线程继承，在请求级具备良好的线程安全与内存释放特性。配合 SecurityUser 与 IAuthObject，实现了认证与权限的清晰分离。在控制器与服务层中，可通过静态方法便捷地获取权限与用户信息。在线程池与异步场景中，需采用上下文传递策略以维持一致性。
@@ -312,11 +312,11 @@ AuthUserContext 通过 ThreadLocal 将用户上下文与请求线程绑定，结
 
 ### 使用示例清单
 - 控制器中读取权限集合
-  - 路径参考：[RabcCurrentUserController.java:41](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/controller/RabcCurrentUserController.java#L41)
+  - 路径参考：[RbacCurrentUserController.java:41](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/controller/RbacCurrentUserController.java#L41)
 - 控制器中读取当前用户并执行业务
-  - 路径参考：[RabcCurrentUserController.java:47](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/controller/RabcCurrentUserController.java#L47)
+  - 路径参考：[RbacCurrentUserController.java:47](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/controller/RbacCurrentUserController.java#L47)
 - 过滤器写入用户上下文
-  - 路径参考：[AuthUserContextFilter.java:56-64](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/filter/AuthUserContextFilter.java#L56-L64)
+  - 路径参考：[AuthUserContextFilter.java:56-64](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/filter/AuthUserContextFilter.java#L56-L64)
 
 ### 最佳实践
 - 在请求入口（如过滤器）完成 AuthUserContext 的写入。

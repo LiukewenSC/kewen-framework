@@ -6,9 +6,9 @@
 - [application.yml](file://application.yml)
 - [sample/auth-boot-sample/pom.xml](file://sample/auth-boot-sample/pom.xml)
 - [sample/auth-boot-sample/src/main/resources/application.yml](file://sample/auth-boot-sample/src/main/resources/application.yml)
-- [sample/auth-boot-sample/src/main/java/com/kewen/framework/auth/sample/AuthBootSampleApp.java](file://sample/auth-boot-sample/src/main/java/com/kewen/framework/auth/sample/AuthBootSampleApp.java)
+- [sample/auth-boot-sample/src/main/java/com/cu/framework/auth/sample/AuthBootSampleApp.java](file://sample/auth-boot-sample/src/main/java/com/cu/framework/auth/sample/AuthBootSampleApp.java)
 - [boot/magic-spring-boot-starter/pom.xml](file://boot/magic-spring-boot-starter/pom.xml)
-- [boot/magic-spring-boot-starter/src/main/java/com/kewen/framework/boot/magic/SampleMagicApiApp.java](file://boot/magic-spring-boot-starter/src/main/java/com/kewen/framework/boot/magic/SampleMagicApiApp.java)
+- [boot/magic-spring-boot-starter/src/main/java/com/cu/framework/boot/magic/SampleMagicApiApp.java](file://boot/magic-spring-boot-starter/src/main/java/com/cu/framework/boot/magic/SampleMagicApiApp.java)
 - [boot/basic-spring-boot-starter/pom.xml](file://boot/basic-spring-boot-starter/pom.xml)
 - [qy-auth/auth-spring-boot-starter/pom.xml](file://qy-auth/auth-spring-boot-starter/pom.xml)
 - [qy-idaas/README.md](file://qy-idaas/README.md)
@@ -27,7 +27,7 @@
 10. [附录](#附录)
 
 ## 简介
-本指南面向kewen-framework项目，提供完整的Docker容器化部署方案，涵盖以下要点：
+本指南面向cu-framework项目，提供完整的Docker容器化部署方案，涵盖以下要点：
 - 基于Maven构建的Spring Boot应用打包与运行时配置
 - 多阶段构建策略，降低镜像体积并提升构建效率
 - docker-compose服务编排、网络与卷挂载、环境变量设置
@@ -36,11 +36,11 @@
 - 安全加固最佳实践
 
 ## 项目结构
-kewen-framework采用多模块Maven聚合工程，核心业务与样例应用位于sample目录，启动器模块位于boot与qy-auth等模块。Spring Boot应用通过spring-boot-maven-plugin插件生成可执行的fat jar，并在容器内以Java进程方式运行。
+cu-framework采用多模块Maven聚合工程，核心业务与样例应用位于sample目录，启动器模块位于boot与qy-auth等模块。Spring Boot应用通过spring-boot-maven-plugin插件生成可执行的fat jar，并在容器内以Java进程方式运行。
 
 ```mermaid
 graph TB
-Root["根工程<br/>kewen-framework"] --> Boot["启动器模块<br/>boot/*"]
+Root["根工程<br/>cu-framework"] --> Boot["启动器模块<br/>boot/*"]
 Root --> QyAuth["认证模块<br/>qy-auth/*"]
 Root --> Sample["样例应用<br/>sample/*"]
 Boot --> BasicStarter["basic-spring-boot-starter"]
@@ -72,7 +72,7 @@ Sample --> BasicSample["basic-boot-sample"]
 章节来源
 - [sample/auth-boot-sample/pom.xml:76-99](file://sample/auth-boot-sample/pom.xml#L76-L99)
 - [sample/auth-boot-sample/src/main/resources/application.yml:1-55](file://sample/auth-boot-sample/src/main/resources/application.yml#L1-L55)
-- [sample/auth-boot-sample/src/main/java/com/kewen/framework/auth/sample/AuthBootSampleApp.java:1-13](file://sample/auth-boot-sample/src/main/java/com/kewen/framework/auth/sample/AuthBootSampleApp.java#L1-L13)
+- [sample/auth-boot-sample/src/main/java/com/cu/framework/auth/sample/AuthBootSampleApp.java:1-13](file://sample/auth-boot-sample/src/main/java/com/cu/framework/auth/sample/AuthBootSampleApp.java#L1-L13)
 - [qy-auth/auth-spring-boot-starter/pom.xml:1-68](file://qy-auth/auth-spring-boot-starter/pom.xml#L1-L68)
 - [application.yml:1-32](file://application.yml#L1-L32)
 
@@ -190,7 +190,7 @@ SessionOK -- 是 --> HCOK["标记健康"]
   - 使用环境变量或密钥管理服务注入数据库密码、认证密钥等敏感信息。
 
 ## 依赖关系分析
-kewen-framework的依赖关系主要体现在启动器模块对基础能力的封装，以及样例应用对启动器的依赖。下图展示了关键模块间的依赖关系。
+cu-framework的依赖关系主要体现在启动器模块对基础能力的封装，以及样例应用对启动器的依赖。下图展示了关键模块间的依赖关系。
 
 ```mermaid
 graph LR
@@ -234,7 +234,7 @@ AuthSample --> BasicStarter
   - 关注GC日志与线程池状态，评估JVM参数与并发配置是否合理。
 
 ## 结论
-通过多阶段构建与合理的容器编排，kewen-framework可在Docker环境中实现高效、稳定、安全的部署。结合健康检查、监控与日志采集，可进一步提升运维效率与可观测性。按需进行水平扩展与负载均衡，可满足高可用与弹性需求。
+通过多阶段构建与合理的容器编排，cu-framework可在Docker环境中实现高效、稳定、安全的部署。结合健康检查、监控与日志采集，可进一步提升运维效率与可观测性。按需进行水平扩展与负载均衡，可满足高可用与弹性需求。
 
 ## 附录
 - 端口与环境变量建议

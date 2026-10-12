@@ -5,12 +5,12 @@
 
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.kewen.framework</groupId>
-    <artifactId>kewen-framework</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <groupId>com.cu.framework</groupId>
+    <artifactId>cu-parent</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <properties>
-        <framework-version>1.0-SNAPSHOT</framework-version>
+        <framework-version>0.0.1-SNAPSHOT</framework-version>
         <mybaits-plus-version>3.5.8</mybaits-plus-version>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
@@ -43,27 +43,27 @@
 
             <!--************子工程模块************-->
             <dependency>
-                <groupId>com.kewen.framework.boot</groupId>
+                <groupId>com.cu.framework.boot</groupId>
                 <artifactId>storage-spring-boot-starter</artifactId>
                 <version>${framework-version}</version>
             </dependency>
             <dependency>
-                <groupId>com.kewen.framework.boot</groupId>
+                <groupId>com.cu.framework.boot</groupId>
                 <artifactId>basic-spring-boot-starter</artifactId>
                 <version>${framework-version}</version>
             </dependency>
             <dependency>
-                <groupId>com.kewen.framework.auth</groupId>
+                <groupId>com.cu.framework.auth</groupId>
                 <artifactId>auth-spring-boot-starter</artifactId>
                 <version>${framework-version}</version>
             </dependency>
             <dependency>
-                <groupId>com.kewen.framework</groupId>
+                <groupId>com.cu.framework</groupId>
                 <artifactId>idaas-authentications</artifactId>
                 <version>${framework-version}</version>
             </dependency>
             <dependency>
-                <groupId>com.kewen.framework</groupId>
+                <groupId>com.cu.framework</groupId>
                 <artifactId>basic</artifactId>
                 <version>${framework-version}</version>
             </dependency>
@@ -205,22 +205,22 @@
 
             <!-- 子工程模块 -->
             <dependency>
-                <groupId>com.kewen.framework.auth</groupId>
+                <groupId>com.cu.framework.auth</groupId>
                 <artifactId>auth-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.kewen.framework.auth</groupId>
+                <groupId>com.cu.framework.auth</groupId>
                 <artifactId>auth-core-spring-boot-starter</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.kewen.framework.auth</groupId>
+                <groupId>com.cu.framework.auth</groupId>
                 <artifactId>auth-rbac</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.kewen.framework.auth</groupId>
+                <groupId>com.cu.framework.auth</groupId>
                 <artifactId>auth-rbac-spring-boot-starter</artifactId>
                 <version>${project.version}</version>
             </dependency>

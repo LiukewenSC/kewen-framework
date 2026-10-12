@@ -1,19 +1,19 @@
 # 1. 说明
 
-此工程是[kewen-framework-auth](https://gitee.com/LiuKewenSc/kewen-framework-auth)框架的示例工程
+此工程是[cu-framework-auth](https://gitee.com/LiuKewenSc/cu-framework-auth)框架的示例工程
 
-API接口已经发布在**Apifox**上[kewen-framework-auth框架接口](https://apifox.com/apidoc/shared-56ea7395-f230-45b6-b650-14d27d36ce28/api-183461098)，可以配合使用
+API接口已经发布在**Apifox**上[cu-framework-auth框架接口](https://apifox.com/apidoc/shared-56ea7395-f230-45b6-b650-14d27d36ce28/api-183461098)，可以配合使用
 
 通过会议室管理这个具体的案例演示描述了权限框架的使用
 
-单独列出示例工程描述`kewen-framework-auth`的实际场景，一方面解决开源许可的冲突，一方面更能反映出对框架的引用，更具有独立性
+单独列出示例工程描述`cu-framework-auth`的实际场景，一方面解决开源许可的冲突，一方面更能反映出对框架的引用，更具有独立性
 
 本文以会议室、会议室预约功能举例说明
 
 # 2. 工程结构
 
 ```text
-kewen-framework-auth-sample
+cu-framework-auth-sample
 ├─java
 │    ├─config                       配置类
 │    ├─controller                   列表功能，对相关的注解有测试代码
@@ -39,7 +39,7 @@ kewen-framework-auth-sample
 ## 3.1. 初始化数据库
 
 框架默认给了MySQL的初始化脚本，并且添加了默认的一些数据供使用，方便一键启动项目并查看。
-初始化需要先将`kewen-framework-auth`框架下`./script/auth_full.sql`中的初始化SQL语句执行，用以建表，然后执行本工程下`./script/init.sql`初始化语句。
+初始化需要先将`cu-framework-auth`框架下`./script/auth_full.sql`中的初始化SQL语句执行，用以建表，然后执行本工程下`./script/init.sql`初始化语句。
 全量脚本的路径在框架目录下的`./script/sql/auth_full.sql`下，
 增量脚本在同级目录，带日期后缀，如 `auth_20240801.sql`
 
@@ -52,11 +52,11 @@ kewen-framework-auth-sample
 
 ```properties
 server.port=8081
-spring.datasource.url=jdbc:mysql://localhost:3306/kewen_framework_auth_template
+spring.datasource.url=jdbc:mysql://localhost:3306/cu_framework_auth_template
 spring.datasource.username=open_framework
 spring.datasource.password=Framework123456_
 #修改了P6Spy非要在链接上添加jdbc:p6spy前缀的问题
-spring.datasource.driver-class-name=com.kewen.framework.auth.sample.p6spy.KP6SpyDriver
+spring.datasource.driver-class-name=com.cu.framework.auth.sample.p6spy.KP6SpyDriver
 ```
 
 ## 3.3. 启动
@@ -65,7 +65,7 @@ spring.datasource.driver-class-name=com.kewen.framework.auth.sample.p6spy.KP6Spy
 
 启动后可以直接登录访问，默认账号密码 **admin/123456**
 
-示例项目中包含了基本的注解使用，可以登录后调用相关接口验证。API 接口已经发布到 **Apifox** [kewen-framework-auth框架接口](https://apifox.com/apidoc/shared-56ea7395-f230-45b6-b650-14d27d36ce28/api-183461098)，可以执行验证
+示例项目中包含了基本的注解使用，可以登录后调用相关接口验证。API 接口已经发布到 **Apifox** [cu-framework-auth框架接口](https://apifox.com/apidoc/shared-56ea7395-f230-45b6-b650-14d27d36ce28/api-183461098)，可以执行验证
 
 也可以配合[kewen-web-admin](https://gitee.com/LiuKewenSc/kewen-web-admin)工程启动登录之后在页面上验证查看。
 需要先下载nodejs（可以在官网下载，我下载的v18），配置好环境之后执行`npm install`安装依赖，然后执行 `npm run serve`
@@ -118,8 +118,8 @@ public Result add(@RequestBody MeetingRoomAddReq entity){
 @Transactional(rollbackFor = Exception.class)
 public Result add2(@RequestBody MeetingRoomAddReq entity){
    meetingRoomService.save(entity);
-   //引入 com.kewen.framework.auth.core.annotation.AuthDataService;
-   authDataService.editDataAuths("meeting_room",entity.getDataId(),"edit_info",entity.getAuthObject());
+   //引入 com.cu.framework.auth.core.AuthDataAdaptor;
+   authDataAdaptor.editDataAuths("meeting_room",entity.getDataId(),"edit_info",entity.getAuthObject());
    return Result.success();
 }
 ```

@@ -2,8 +2,8 @@ package extension;
 
 
 import com.alibaba.fastjson.JSONObject;
-import com.kewen.framework.auth.core.entity.BaseAuth;
-import com.kewen.framework.auth.rbac.composite.model.*;
+import com.cu.framework.auth.core.entity.BaseAuth;
+import com.cu.framework.auth.rbac.composite.model.*;
 import org.junit.Assert;
 import org.junit.Test;
 

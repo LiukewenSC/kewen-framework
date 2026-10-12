@@ -2,18 +2,18 @@
 
 <cite>
 **本文引用的文件**
-- [AuthDataAdaptor.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthDataAdaptor.java)
-- [AuthDataOperation.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthDataOperation.java)
-- [AuthDataDO.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataDO.java)
-- [AuthDataHandler.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataHandler.java)
-- [AuthDataTable.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataTable.java)
-- [JdbcAuthDataHandler.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/JdbcAuthDataHandler.java)
-- [JdbcAuthDataPersistent.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/JdbcAuthDataPersistent.java)
-- [BaseAuth.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/BaseAuth.java)
-- [IAuthObject.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/IAuthObject.java)
-- [IdDataEdit.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/edit/IdDataEdit.java)
-- [AuthDataTableProperties.java](file://qy-auth/auth-core-spring-boot-starter/src/main/java/com/kewen/framework/boot/auth/core/properties/AuthDataTableProperties.java)
-- [SysAuthData.java](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/mp/entity/SysAuthData.java)
+- [AuthDataAdaptor.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthDataAdaptor.java)
+- [AuthDataOperation.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthDataOperation.java)
+- [AuthDataDO.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataDO.java)
+- [AuthDataHandler.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataHandler.java)
+- [AuthDataTable.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataTable.java)
+- [JdbcAuthDataHandler.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/JdbcAuthDataHandler.java)
+- [JdbcAuthDataPersistent.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/JdbcAuthDataPersistent.java)
+- [BaseAuth.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/BaseAuth.java)
+- [IAuthObject.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/IAuthObject.java)
+- [IdDataEdit.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/edit/IdDataEdit.java)
+- [AuthDataTableProperties.java](file://qy-auth/auth-core-spring-boot-starter/src/main/java/com/cu/framework/boot/auth/core/properties/AuthDataTableProperties.java)
+- [SysAuthData.java](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/mp/entity/SysAuthData.java)
 </cite>
 
 ## 目录
@@ -64,30 +64,30 @@ R1 --> F
 ```
 
 图表来源
-- [AuthDataAdaptor.java:12-44](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthDataAdaptor.java#L12-L44)
-- [AuthDataHandler.java:16-77](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataHandler.java#L16-L77)
-- [JdbcAuthDataHandler.java:18-76](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/JdbcAuthDataHandler.java#L18-L76)
-- [JdbcAuthDataPersistent.java:32-203](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/JdbcAuthDataPersistent.java#L32-L203)
-- [AuthDataDO.java:13-51](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataDO.java#L13-L51)
-- [AuthDataTable.java:16-86](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataTable.java#L16-L86)
-- [AuthDataOperation.java:25-41](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthDataOperation.java#L25-L41)
-- [BaseAuth.java:12-61](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/BaseAuth.java#L12-L61)
-- [IAuthObject.java:14-32](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/IAuthObject.java#L14-L32)
-- [AuthDataTableProperties.java:14-110](file://qy-auth/auth-core-spring-boot-starter/src/main/java/com/kewen/framework/boot/auth/core/properties/AuthDataTableProperties.java#L14-L110)
-- [SysAuthData.java:26-85](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/mp/entity/SysAuthData.java#L26-L85)
+- [AuthDataAdaptor.java:12-44](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthDataAdaptor.java#L12-L44)
+- [AuthDataHandler.java:16-77](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataHandler.java#L16-L77)
+- [JdbcAuthDataHandler.java:18-76](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/JdbcAuthDataHandler.java#L18-L76)
+- [JdbcAuthDataPersistent.java:32-203](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/JdbcAuthDataPersistent.java#L32-L203)
+- [AuthDataDO.java:13-51](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataDO.java#L13-L51)
+- [AuthDataTable.java:16-86](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataTable.java#L16-L86)
+- [AuthDataOperation.java:25-41](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthDataOperation.java#L25-L41)
+- [BaseAuth.java:12-61](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/BaseAuth.java#L12-L61)
+- [IAuthObject.java:14-32](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/IAuthObject.java#L14-L32)
+- [AuthDataTableProperties.java:14-110](file://qy-auth/auth-core-spring-boot-starter/src/main/java/com/cu/framework/boot/auth/core/properties/AuthDataTableProperties.java#L14-L110)
+- [SysAuthData.java:26-85](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/mp/entity/SysAuthData.java#L26-L85)
 
 章节来源
-- [AuthDataAdaptor.java:12-44](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthDataAdaptor.java#L12-L44)
-- [AuthDataHandler.java:16-77](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataHandler.java#L16-L77)
-- [JdbcAuthDataHandler.java:18-76](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/JdbcAuthDataHandler.java#L18-L76)
-- [JdbcAuthDataPersistent.java:32-203](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/JdbcAuthDataPersistent.java#L32-L203)
-- [AuthDataDO.java:13-51](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataDO.java#L13-L51)
-- [AuthDataTable.java:16-86](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataTable.java#L16-L86)
-- [AuthDataOperation.java:25-41](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthDataOperation.java#L25-L41)
-- [BaseAuth.java:12-61](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/BaseAuth.java#L12-L61)
-- [IAuthObject.java:14-32](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/IAuthObject.java#L14-L32)
-- [AuthDataTableProperties.java:14-110](file://qy-auth/auth-core-spring-boot-starter/src/main/java/com/kewen/framework/boot/auth/core/properties/AuthDataTableProperties.java#L14-L110)
-- [SysAuthData.java:26-85](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/mp/entity/SysAuthData.java#L26-L85)
+- [AuthDataAdaptor.java:12-44](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthDataAdaptor.java#L12-L44)
+- [AuthDataHandler.java:16-77](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataHandler.java#L16-L77)
+- [JdbcAuthDataHandler.java:18-76](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/JdbcAuthDataHandler.java#L18-L76)
+- [JdbcAuthDataPersistent.java:32-203](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/JdbcAuthDataPersistent.java#L32-L203)
+- [AuthDataDO.java:13-51](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataDO.java#L13-L51)
+- [AuthDataTable.java:16-86](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataTable.java#L16-L86)
+- [AuthDataOperation.java:25-41](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthDataOperation.java#L25-L41)
+- [BaseAuth.java:12-61](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/BaseAuth.java#L12-L61)
+- [IAuthObject.java:14-32](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/IAuthObject.java#L14-L32)
+- [AuthDataTableProperties.java:14-110](file://qy-auth/auth-core-spring-boot-starter/src/main/java/com/cu/framework/boot/auth/core/properties/AuthDataTableProperties.java#L14-L110)
+- [SysAuthData.java:26-85](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/mp/entity/SysAuthData.java#L26-L85)
 
 ## 核心组件
 - 数据适配器：对外暴露简洁的编辑、填充、删除接口，屏蔽底层实现差异，便于在 Service 层直接调用。
@@ -100,15 +100,15 @@ R1 --> F
 - 权限载体：BaseAuth 与 IAuthObject 定义权限集合体的统一表示与填充方式。
 
 章节来源
-- [AuthDataAdaptor.java:12-44](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthDataAdaptor.java#L12-L44)
-- [AuthDataHandler.java:16-77](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataHandler.java#L16-L77)
-- [JdbcAuthDataHandler.java:18-76](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/JdbcAuthDataHandler.java#L18-L76)
-- [JdbcAuthDataPersistent.java:32-203](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/JdbcAuthDataPersistent.java#L32-L203)
-- [AuthDataDO.java:13-51](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataDO.java#L13-L51)
-- [AuthDataTable.java:16-86](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataTable.java#L16-L86)
-- [AuthDataOperation.java:25-41](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthDataOperation.java#L25-L41)
-- [BaseAuth.java:12-61](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/BaseAuth.java#L12-L61)
-- [IAuthObject.java:14-32](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/IAuthObject.java#L14-L32)
+- [AuthDataAdaptor.java:12-44](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthDataAdaptor.java#L12-L44)
+- [AuthDataHandler.java:16-77](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataHandler.java#L16-L77)
+- [JdbcAuthDataHandler.java:18-76](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/JdbcAuthDataHandler.java#L18-L76)
+- [JdbcAuthDataPersistent.java:32-203](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/JdbcAuthDataPersistent.java#L32-L203)
+- [AuthDataDO.java:13-51](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataDO.java#L13-L51)
+- [AuthDataTable.java:16-86](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataTable.java#L16-L86)
+- [AuthDataOperation.java:25-41](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthDataOperation.java#L25-L41)
+- [BaseAuth.java:12-61](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/BaseAuth.java#L12-L61)
+- [IAuthObject.java:14-32](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/IAuthObject.java#L14-L32)
 
 ## 架构总览
 整体采用“注解触发—适配器转发—处理器执行—持久化落库”的链路，JDBC 处理器通过持久化层构建 SQL 并执行，表映射由配置类与实体类共同决定。
@@ -142,10 +142,10 @@ Adaptor-->>Caller : "完成"
 ```
 
 图表来源
-- [AuthDataAdaptor.java:12-44](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthDataAdaptor.java#L12-L44)
-- [AuthDataHandler.java:16-77](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataHandler.java#L16-L77)
-- [JdbcAuthDataHandler.java:18-76](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/JdbcAuthDataHandler.java#L18-L76)
-- [JdbcAuthDataPersistent.java:32-203](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/JdbcAuthDataPersistent.java#L32-L203)
+- [AuthDataAdaptor.java:12-44](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthDataAdaptor.java#L12-L44)
+- [AuthDataHandler.java:16-77](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataHandler.java#L16-L77)
+- [JdbcAuthDataHandler.java:18-76](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/JdbcAuthDataHandler.java#L18-L76)
+- [JdbcAuthDataPersistent.java:32-203](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/JdbcAuthDataPersistent.java#L32-L203)
 
 ## 详细组件分析
 
@@ -158,7 +158,7 @@ Adaptor-->>Caller : "完成"
 - 适用场景：非注解场景下的权限维护、批量导入/导出、跨模块权限同步。
 
 章节来源
-- [AuthDataAdaptor.java:12-44](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthDataAdaptor.java#L12-L44)
+- [AuthDataAdaptor.java:12-44](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthDataAdaptor.java#L12-L44)
 
 ### 权限操作注解（AuthDataOperation）
 - 作用：在方法上声明业务功能与操作类型，框架可据此进行权限校验。
@@ -168,8 +168,8 @@ Adaptor-->>Caller : "完成"
   - 与 IdDataEdit 结合：通过 IdDataEdit 提供 dataId，形成“业务功能+数据ID+操作”的判定三元组。
 
 章节来源
-- [AuthDataOperation.java:25-41](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthDataOperation.java#L25-L41)
-- [IdDataEdit.java:8-15](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/edit/IdDataEdit.java#L8-L15)
+- [AuthDataOperation.java:25-41](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthDataOperation.java#L25-L41)
+- [IdDataEdit.java:8-15](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/edit/IdDataEdit.java#L8-L15)
 
 ### 数据传输对象（AuthDataDO）
 - 字段定义：
@@ -182,7 +182,7 @@ Adaptor-->>Caller : "完成"
 - 设计思路：最小可用结构，便于在处理器与持久化层之间传递；支持链式赋值提升可读性。
 
 章节来源
-- [AuthDataDO.java:13-51](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataDO.java#L13-L51)
+- [AuthDataDO.java:13-51](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataDO.java#L13-L51)
 
 ### 权限处理器接口（AuthDataHandler）
 - 职责边界：
@@ -194,9 +194,9 @@ Adaptor-->>Caller : "完成"
 - 泛型与默认实现：支持直接传入 IAuthObject，内部自动提取 BaseAuth 集合。
 
 章节来源
-- [AuthDataHandler.java:16-77](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataHandler.java#L16-L77)
-- [IAuthObject.java:14-32](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/IAuthObject.java#L14-L32)
-- [BaseAuth.java:12-61](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/BaseAuth.java#L12-L61)
+- [AuthDataHandler.java:16-77](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataHandler.java#L16-L77)
+- [IAuthObject.java:14-32](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/IAuthObject.java#L14-L32)
+- [BaseAuth.java:12-61](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/BaseAuth.java#L12-L61)
 
 ### 数据处理器（JdbcAuthDataHandler）
 - 实现模式：
@@ -223,17 +223,17 @@ SkipIns --> End
 ```
 
 图表来源
-- [JdbcAuthDataHandler.java:22-54](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/JdbcAuthDataHandler.java#L22-L54)
+- [JdbcAuthDataHandler.java:22-54](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/JdbcAuthDataHandler.java#L22-L54)
 
 章节来源
-- [JdbcAuthDataHandler.java:18-76](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/JdbcAuthDataHandler.java#L18-L76)
+- [JdbcAuthDataHandler.java:18-76](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/JdbcAuthDataHandler.java#L18-L76)
 
 ### 数据表映射（AuthDataTable）
 - 字段映射：将逻辑列名映射到物理表列，提供 Table 与 Column 的便捷构造。
 - 使用场景：与持久化层配合，生成标准 SQL 的表与列引用。
 
 章节来源
-- [AuthDataTable.java:16-86](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataTable.java#L16-L86)
+- [AuthDataTable.java:16-86](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataTable.java#L16-L86)
 
 ### JDBC 数据处理器（JdbcAuthDataPersistent）
 - 批量插入：使用 JsqlParser 组装多值 INSERT，减少网络往返。
@@ -281,34 +281,34 @@ JdbcAuthDataPersistent --> AuthDataDO : "读写"
 ```
 
 图表来源
-- [JdbcAuthDataPersistent.java:32-203](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/JdbcAuthDataPersistent.java#L32-L203)
-- [AuthDataTable.java:16-86](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataTable.java#L16-L86)
-- [AuthDataDO.java:13-51](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataDO.java#L13-L51)
+- [JdbcAuthDataPersistent.java:32-203](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/JdbcAuthDataPersistent.java#L32-L203)
+- [AuthDataTable.java:16-86](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataTable.java#L16-L86)
+- [AuthDataDO.java:13-51](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataDO.java#L13-L51)
 
 章节来源
-- [JdbcAuthDataPersistent.java:32-203](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/JdbcAuthDataPersistent.java#L32-L203)
+- [JdbcAuthDataPersistent.java:32-203](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/JdbcAuthDataPersistent.java#L32-L203)
 
 ### 权限载体（BaseAuth 与 IAuthObject）
 - BaseAuth：权限字符串与描述的载体，重写 equals/hashCode 以便集合比较。
 - IAuthObject：权限集合体接口，支持从 BaseAuth 集合填充属性。
 
 章节来源
-- [BaseAuth.java:12-61](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/BaseAuth.java#L12-L61)
-- [IAuthObject.java:14-32](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/IAuthObject.java#L14-L32)
+- [BaseAuth.java:12-61](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/BaseAuth.java#L12-L61)
+- [IAuthObject.java:14-32](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/IAuthObject.java#L14-L32)
 
 ### 表映射配置（AuthDataTableProperties）
 - 作用：通过配置文件注入表名与各列名，驱动 AuthDataTable 的列映射。
 - 默认值：提供常见字段默认名，便于快速接入。
 
 章节来源
-- [AuthDataTableProperties.java:14-110](file://qy-auth/auth-core-spring-boot-starter/src/main/java/com/kewen/framework/boot/auth/core/properties/AuthDataTableProperties.java#L14-L110)
+- [AuthDataTableProperties.java:14-110](file://qy-auth/auth-core-spring-boot-starter/src/main/java/com/cu/framework/boot/auth/core/properties/AuthDataTableProperties.java#L14-L110)
 
 ### RBAC 实体映射（SysAuthData）
 - 说明：RBAC 示例工程中的实体类，字段与 AuthDataDO 一一对应，便于 MyBatis-Plus 场景下的读写。
 - 用途：当业务采用 ORM 框架而非纯 JDBC 时，可参考该实体进行适配。
 
 章节来源
-- [SysAuthData.java:26-85](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/mp/entity/SysAuthData.java#L26-L85)
+- [SysAuthData.java:26-85](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/mp/entity/SysAuthData.java#L26-L85)
 
 ## 依赖分析
 - 组件耦合：
@@ -333,13 +333,13 @@ IdEdit["IdDataEdit"] --> Annotation
 ```
 
 图表来源
-- [AuthDataAdaptor.java:12-44](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthDataAdaptor.java#L12-L44)
-- [AuthDataHandler.java:16-77](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataHandler.java#L16-L77)
-- [JdbcAuthDataHandler.java:18-76](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/JdbcAuthDataHandler.java#L18-L76)
-- [JdbcAuthDataPersistent.java:32-203](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/JdbcAuthDataPersistent.java#L32-L203)
-- [AuthDataTable.java:16-86](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataTable.java#L16-L86)
-- [AuthDataOperation.java:25-41](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthDataOperation.java#L25-L41)
-- [IdDataEdit.java:8-15](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/edit/IdDataEdit.java#L8-L15)
+- [AuthDataAdaptor.java:12-44](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthDataAdaptor.java#L12-L44)
+- [AuthDataHandler.java:16-77](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataHandler.java#L16-L77)
+- [JdbcAuthDataHandler.java:18-76](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/JdbcAuthDataHandler.java#L18-L76)
+- [JdbcAuthDataPersistent.java:32-203](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/JdbcAuthDataPersistent.java#L32-L203)
+- [AuthDataTable.java:16-86](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataTable.java#L16-L86)
+- [AuthDataOperation.java:25-41](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthDataOperation.java#L25-L41)
+- [IdDataEdit.java:8-15](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/edit/IdDataEdit.java#L8-L15)
 
 ## 性能考虑
 - 批量操作：JdbcAuthDataHandler 在编辑权限时采用“先查后比对，再批量删与批量插”的策略，避免逐条更新带来的网络与锁竞争。
@@ -354,10 +354,10 @@ IdEdit["IdDataEdit"] --> Annotation
 - 配置不生效：检查 AuthDataTableProperties 的表名与列名是否与数据库一致。
 
 章节来源
-- [JdbcAuthDataPersistent.java:144-149](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/JdbcAuthDataPersistent.java#L144-L149)
-- [JdbcAuthDataPersistent.java:93-98](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/JdbcAuthDataPersistent.java#L93-L98)
-- [JdbcAuthDataPersistent.java:129-131](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/JdbcAuthDataPersistent.java#L129-L131)
-- [AuthDataTableProperties.java:14-110](file://qy-auth/auth-core-spring-boot-starter/src/main/java/com/kewen/framework/boot/auth/core/properties/AuthDataTableProperties.java#L14-L110)
+- [JdbcAuthDataPersistent.java:144-149](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/JdbcAuthDataPersistent.java#L144-L149)
+- [JdbcAuthDataPersistent.java:93-98](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/JdbcAuthDataPersistent.java#L93-L98)
+- [JdbcAuthDataPersistent.java:129-131](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/JdbcAuthDataPersistent.java#L129-L131)
+- [AuthDataTableProperties.java:14-110](file://qy-auth/auth-core-spring-boot-starter/src/main/java/com/cu/framework/boot/auth/core/properties/AuthDataTableProperties.java#L14-L110)
 
 ## 结论
 本模块通过“注解—适配器—处理器—持久化”的分层设计，提供了统一、可扩展且高性能的权限数据处理能力。JdbcAuthDataHandler 的差异对比与批量操作策略有效降低了并发冲突与数据库压力；配置化的表映射与清晰的 DTO 定义使得模块易于对接不同数据源与业务场景。

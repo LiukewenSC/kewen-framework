@@ -176,12 +176,12 @@ List<JWK> keys = jwkSource.get(JWKSelector.from(header), context);
 **最终解决方案**（配置层面解决，不改代码）：
 
 ```yaml
-kewen:
+cu:
   security:
     login:
       oauth2:
         clients:
-          - registration-id: kewen-local-oidc-registration
+          - registration-id: cu-local-oidc-registration
             protocol-type: oidc
             client-id: client_7f7c827b91224a9d
             client-secret: b54258d7b3e643b489859dec2eec95aaa16c1c701fd4470182b3d0e9926426c1
@@ -319,7 +319,7 @@ public class CustomOAuth2AuthorizationRequestResolver implements OAuth2Authoriza
 ### OIDC 自动发现（推荐）
 
 ```yaml
-kewen:
+cu:
   security:
     login:
       oauth2:
@@ -339,7 +339,7 @@ kewen:
 ### OAuth2 手动配置
 
 ```yaml
-kewen:
+cu:
   security:
     login:
       oauth2:
@@ -409,7 +409,7 @@ kewen:
 ## 六、配置文件示例
 
 ```yaml
-kewen:
+cu:
   security:
     login:
       oauth2:

@@ -61,55 +61,55 @@ INSERT INTO `sys_menu_api`
 VALUES (1818496367898750880, '/menu/route/tree', '菜单路由相关接口>路由菜单树列表', 1818496367898750879, NULL, 2,
         '2024-08-01 00:00:00', NULL, 0);
 INSERT INTO `sys_menu_api`
-VALUES (1818496367898750979, '/rabc/dept', '部门管理', 0, NULL, 1, '2024-08-01 00:00:00', NULL, 0);
+VALUES (1818496367898750979, '/rbac/dept', '部门管理', 0, NULL, 1, '2024-08-01 00:00:00', NULL, 0);
 INSERT INTO `sys_menu_api`
-VALUES (1818496367898750980, '/rabc/dept/add', '部门管理>添加部门', 1818496367898750979, NULL, 2, '2024-08-01 00:00:00',
+VALUES (1818496367898750980, '/rbac/dept/add', '部门管理>添加部门', 1818496367898750979, NULL, 2, '2024-08-01 00:00:00',
         NULL, 0);
 INSERT INTO `sys_menu_api`
-VALUES (1818496367898750981, '/rabc/dept/delete', '部门管理>删除部门', 1818496367898750979, NULL, 2,
+VALUES (1818496367898750981, '/rbac/dept/delete', '部门管理>删除部门', 1818496367898750979, NULL, 2,
         '2024-08-01 00:00:00', NULL, 0);
 INSERT INTO `sys_menu_api`
-VALUES (1818496367898750982, '/rabc/dept/list', '部门管理>部门列表', 1818496367898750979, NULL, 2,
+VALUES (1818496367898750982, '/rbac/dept/list', '部门管理>部门列表', 1818496367898750979, NULL, 2,
         '2024-08-01 00:00:00', NULL, 0);
 INSERT INTO `sys_menu_api`
-VALUES (1818496367898750983, '/rabc/dept/page', '部门管理>部门分页', 1818496367898750979, NULL, 2,
+VALUES (1818496367898750983, '/rbac/dept/page', '部门管理>部门分页', 1818496367898750979, NULL, 2,
         '2024-08-01 00:00:00', NULL, 0);
 INSERT INTO `sys_menu_api`
-VALUES (1818496367898750984, '/rabc/dept/update', '部门管理>部门列表', 1818496367898750979, NULL, 2,
+VALUES (1818496367898750984, '/rbac/dept/update', '部门管理>部门列表', 1818496367898750979, NULL, 2,
         '2024-08-01 00:00:00', NULL, 0);
 INSERT INTO `sys_menu_api`
-VALUES (1818496367898750985, '/rabc/role', '角色管理', 0, NULL, 1, '2024-08-01 00:00:00', NULL, 0);
+VALUES (1818496367898750985, '/rbac/role', '角色管理', 0, NULL, 1, '2024-08-01 00:00:00', NULL, 0);
 INSERT INTO `sys_menu_api`
-VALUES (1818496367898750986, '/rabc/role/add', '角色管理>添加角色', 1818496367898750985, NULL, 2, '2024-08-01 00:00:00',
+VALUES (1818496367898750986, '/rbac/role/add', '角色管理>添加角色', 1818496367898750985, NULL, 2, '2024-08-01 00:00:00',
         NULL, 0);
 INSERT INTO `sys_menu_api`
-VALUES (1818496367898750987, '/rabc/role/delete', '角色管理>删除角色', 1818496367898750985, NULL, 2,
+VALUES (1818496367898750987, '/rbac/role/delete', '角色管理>删除角色', 1818496367898750985, NULL, 2,
         '2024-08-01 00:00:00', NULL, 0);
 INSERT INTO `sys_menu_api`
-VALUES (1818496367898750988, '/rabc/role/list', '角色管理>角色列表', 1818496367898750985, NULL, 2,
+VALUES (1818496367898750988, '/rbac/role/list', '角色管理>角色列表', 1818496367898750985, NULL, 2,
         '2024-08-01 00:00:00', NULL, 0);
 INSERT INTO `sys_menu_api`
-VALUES (1818496367898750989, '/rabc/role/page', '角色管理>角色分页', 1818496367898750985, NULL, 2,
+VALUES (1818496367898750989, '/rbac/role/page', '角色管理>角色分页', 1818496367898750985, NULL, 2,
         '2024-08-01 00:00:00', NULL, 0);
 INSERT INTO `sys_menu_api`
-VALUES (1818496367898750990, '/rabc/role/update', '角色管理>修改角色', 1818496367898750985, NULL, 2,
+VALUES (1818496367898750990, '/rbac/role/update', '角色管理>修改角色', 1818496367898750985, NULL, 2,
         '2024-08-01 00:00:00', NULL, 0);
 INSERT INTO `sys_menu_api`
-VALUES (1818496367898750991, '/rabc/user', '用户相关', 0, NULL, 1, '2024-08-01 00:00:00', NULL, 0);
+VALUES (1818496367898750991, '/rbac/user', '用户相关', 0, NULL, 1, '2024-08-01 00:00:00', NULL, 0);
 INSERT INTO `sys_menu_api`
-VALUES (1818496367898750992, '/rabc/user/add', '用户相关>新增', 1818496367898750991, NULL, 2, '2024-08-01 00:00:00',
+VALUES (1818496367898750992, '/rbac/user/add', '用户相关>新增', 1818496367898750991, NULL, 2, '2024-08-01 00:00:00',
         NULL, 0);
 INSERT INTO `sys_menu_api`
-VALUES (1818496367898750993, '/rabc/user/delete', '用户相关>d删除用户', 1818496367898750991, NULL, 2,
+VALUES (1818496367898750993, '/rbac/user/delete', '用户相关>d删除用户', 1818496367898750991, NULL, 2,
         '2024-08-01 00:00:00', NULL, 0);
 INSERT INTO `sys_menu_api`
-VALUES (1818496367898750994, '/rabc/user/list', '用户相关>用户列表', 1818496367898750991, NULL, 2,
+VALUES (1818496367898750994, '/rbac/user/list', '用户相关>用户列表', 1818496367898750991, NULL, 2,
         '2024-08-01 00:00:00', NULL, 0);
 INSERT INTO `sys_menu_api`
-VALUES (1818496367898750995, '/rabc/user/page', '用户相关>分页', 1818496367898750991, NULL, 2, '2024-08-01 00:00:00',
+VALUES (1818496367898750995, '/rbac/user/page', '用户相关>分页', 1818496367898750991, NULL, 2, '2024-08-01 00:00:00',
         NULL, 0);
 INSERT INTO `sys_menu_api`
-VALUES (1818496367898750996, '/rabc/user/update', '用户相关>更新', 1818496367898750991, NULL, 2, '2024-08-01 00:00:00',
+VALUES (1818496367898750996, '/rbac/user/update', '用户相关>更新', 1818496367898750991, NULL, 2, '2024-08-01 00:00:00',
         NULL, 0);
 INSERT INTO `sys_menu_api`
 VALUES (1823284778685722623, '/meeting', '会议管理', 0, NULL, 1, '2024-08-01 00:00:00', NULL, 0);

@@ -2,11 +2,11 @@
 
 <cite>
 **本文档引用的文件**
-- [MagicResultConfig.java](file://boot/magic-spring-boot-starter/src/main/java/com/kewen/framework/boot/magic/config/MagicResultConfig.java)
-- [HelloController.java](file://boot/magic-spring-boot-starter/src/main/java/com/kewen/framework/boot/magic/controller/HelloController.java)
-- [SampleMagicApiApp.java](file://boot/magic-spring-boot-starter/src/main/java/com/kewen/framework/boot/magic/SampleMagicApiApp.java)
+- [MagicResultConfig.java](file://boot/magic-spring-boot-starter/src/main/java/com/cu/framework/boot/magic/config/MagicResultConfig.java)
+- [HelloController.java](file://boot/magic-spring-boot-starter/src/main/java/com/cu/framework/boot/magic/controller/HelloController.java)
+- [SampleMagicApiApp.java](file://boot/magic-spring-boot-starter/src/main/java/com/cu/framework/boot/magic/SampleMagicApiApp.java)
 - [pom.xml](file://boot/magic-spring-boot-starter/pom.xml)
-- [Result.java](file://basic/src/main/java/com/kewen/framework/basic/model/Result.java)
+- [Result.java](file://basic/src/main/java/com/cu/framework/basic/model/Result.java)
 </cite>
 
 ## 目录
@@ -54,8 +54,8 @@ G --> J
 ```
 
 **图表来源**
-- [MagicResultConfig.java:1-24](file://boot/magic-spring-boot-starter/src/main/java/com/kewen/framework/boot/magic/config/MagicResultConfig.java#L1-L24)
-- [HelloController.java:1-27](file://boot/magic-spring-boot-starter/src/main/java/com/kewen/framework/boot/magic/controller/HelloController.java#L1-L27)
+- [MagicResultConfig.java:1-24](file://boot/magic-spring-boot-starter/src/main/java/com/cu/framework/boot/magic/config/MagicResultConfig.java#L1-L24)
+- [HelloController.java:1-27](file://boot/magic-spring-boot-starter/src/main/java/com/cu/framework/boot/magic/controller/HelloController.java#L1-L27)
 
 **章节来源**
 - [pom.xml:1-44](file://boot/magic-spring-boot-starter/pom.xml#L1-L44)
@@ -77,9 +77,9 @@ HelloController展示了如何在实际应用中使用统一的响应格式。�
 SampleMagicApiApp是一个简单的Spring Boot应用程序入口点，用于演示启动器的基本使用。
 
 **章节来源**
-- [MagicResultConfig.java:1-24](file://boot/magic-spring-boot-starter/src/main/java/com/kewen/framework/boot/magic/config/MagicResultConfig.java#L1-L24)
-- [HelloController.java:1-27](file://boot/magic-spring-boot-starter/src/main/java/com/kewen/framework/boot/magic/controller/HelloController.java#L1-L27)
-- [SampleMagicApiApp.java:1-11](file://boot/magic-spring-boot-starter/src/main/java/com/kewen/framework/boot/magic/SampleMagicApiApp.java#L1-L11)
+- [MagicResultConfig.java:1-24](file://boot/magic-spring-boot-starter/src/main/java/com/cu/framework/boot/magic/config/MagicResultConfig.java#L1-L24)
+- [HelloController.java:1-27](file://boot/magic-spring-boot-starter/src/main/java/com/cu/framework/boot/magic/controller/HelloController.java#L1-L27)
+- [SampleMagicApiApp.java:1-11](file://boot/magic-spring-boot-starter/src/main/java/com/cu/framework/boot/magic/SampleMagicApiApp.java#L1-L11)
 
 ## 架构概览
 
@@ -117,8 +117,8 @@ G --> I
 ```
 
 **图表来源**
-- [MagicResultConfig.java:14-22](file://boot/magic-spring-boot-starter/src/main/java/com/kewen/framework/boot/magic/config/MagicResultConfig.java#L14-L22)
-- [Result.java:12-17](file://basic/src/main/java/com/kewen/framework/basic/model/Result.java#L12-L17)
+- [MagicResultConfig.java:14-22](file://boot/magic-spring-boot-starter/src/main/java/com/cu/framework/boot/magic/config/MagicResultConfig.java#L14-L22)
+- [Result.java:12-17](file://basic/src/main/java/com/cu/framework/basic/model/Result.java#L12-L17)
 
 ## 详细组件分析
 
@@ -153,8 +153,8 @@ MagicResultConfig --> Result : 创建
 ```
 
 **图表来源**
-- [MagicResultConfig.java:14-22](file://boot/magic-spring-boot-starter/src/main/java/com/kewen/framework/boot/magic/config/MagicResultConfig.java#L14-L22)
-- [Result.java:12-48](file://basic/src/main/java/com/kewen/framework/basic/model/Result.java#L12-L48)
+- [MagicResultConfig.java:14-22](file://boot/magic-spring-boot-starter/src/main/java/com/cu/framework/boot/magic/config/MagicResultConfig.java#L14-L22)
+- [Result.java:12-48](file://basic/src/main/java/com/cu/framework/basic/model/Result.java#L12-L48)
 
 #### 关键实现特性
 
@@ -164,7 +164,7 @@ MagicResultConfig --> Result : 创建
 4. **Spring集成**：作为@Configuration类自动注册到Spring容器中
 
 **章节来源**
-- [MagicResultConfig.java:1-24](file://boot/magic-spring-boot-starter/src/main/java/com/kewen/framework/boot/magic/config/MagicResultConfig.java#L1-L24)
+- [MagicResultConfig.java:1-24](file://boot/magic-spring-boot-starter/src/main/java/com/cu/framework/boot/magic/config/MagicResultConfig.java#L1-L24)
 
 ### HelloController示例控制器分析
 
@@ -187,8 +187,8 @@ Controller-->>Client : 统一格式的JSON响应
 ```
 
 **图表来源**
-- [HelloController.java:15-18](file://boot/magic-spring-boot-starter/src/main/java/com/kewen/framework/boot/magic/controller/HelloController.java#L15-L18)
-- [Result.java:26-32](file://basic/src/main/java/com/kewen/framework/basic/model/Result.java#L26-L32)
+- [HelloController.java:15-18](file://boot/magic-spring-boot-starter/src/main/java/com/cu/framework/boot/magic/controller/HelloController.java#L15-L18)
+- [Result.java:26-32](file://basic/src/main/java/com/cu/framework/basic/model/Result.java#L26-L32)
 
 #### 接口实现特点
 
@@ -198,7 +198,7 @@ Controller-->>Client : 统一格式的JSON响应
 4. **易于测试**：标准化的响应格式便于单元测试和集成测试
 
 **章节来源**
-- [HelloController.java:1-27](file://boot/magic-spring-boot-starter/src/main/java/com/kewen/framework/boot/magic/controller/HelloController.java#L1-L27)
+- [HelloController.java:1-27](file://boot/magic-spring-boot-starter/src/main/java/com/cu/framework/boot/magic/controller/HelloController.java#L1-L27)
 
 ### SampleMagicApiApp应用示例
 
@@ -218,10 +218,10 @@ G --> H[等待API请求]
 ```
 
 **图表来源**
-- [SampleMagicApiApp.java:6-10](file://boot/magic-spring-boot-starter/src/main/java/com/kewen/framework/boot/magic/SampleMagicApiApp.java#L6-L10)
+- [SampleMagicApiApp.java:6-10](file://boot/magic-spring-boot-starter/src/main/java/com/cu/framework/boot/magic/SampleMagicApiApp.java#L6-L10)
 
 **章节来源**
-- [SampleMagicApiApp.java:1-11](file://boot/magic-spring-boot-starter/src/main/java/com/kewen/framework/boot/magic/SampleMagicApiApp.java#L1-L11)
+- [SampleMagicApiApp.java:1-11](file://boot/magic-spring-boot-starter/src/main/java/com/cu/framework/boot/magic/SampleMagicApiApp.java#L1-L11)
 
 ## 依赖分析
 
@@ -325,8 +325,8 @@ Magic启动器在设计时充分考虑了性能优化：
 - 检查@SpringBootApplication注解
 
 **章节来源**
-- [MagicResultConfig.java:1-24](file://boot/magic-spring-boot-starter/src/main/java/com/kewen/framework/boot/magic/config/MagicResultConfig.java#L1-L24)
-- [HelloController.java:1-27](file://boot/magic-spring-boot-starter/src/main/java/com/kewen/framework/boot/magic/controller/HelloController.java#L1-L27)
+- [MagicResultConfig.java:1-24](file://boot/magic-spring-boot-starter/src/main/java/com/cu/framework/boot/magic/config/MagicResultConfig.java#L1-L24)
+- [HelloController.java:1-27](file://boot/magic-spring-boot-starter/src/main/java/com/cu/framework/boot/magic/controller/HelloController.java#L1-L27)
 
 ## 结论
 
@@ -348,7 +348,7 @@ Magic启动器通过提供统一的API结果格式化能力，显著简化了Spr
 
 ```xml
 <dependency>
-    <groupId>com.kewen.framework.boot</groupId>
+    <groupId>com.cu.framework.boot</groupId>
     <artifactId>magic-spring-boot-starter</artifactId>
     <version>1.0-SNAPSHOT</version>
 </dependency>

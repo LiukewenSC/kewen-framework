@@ -12,11 +12,11 @@
 - [tenant-spring-boot-starter/src/main/resources/META-INF/spring.factories](file://boot/tenant-spring-boot-starter/src/main/resources/META-INF/spring.factories)
 - [basic-spring-boot-starter/src/main/resources/META-INF/additional-spring-configuration-metadata.json](file://boot/basic-spring-boot-starter/src/main/resources/META-INF/additional-spring-configuration-metadata.json)
 - [tenant-spring-boot-starter/src/main/resources/META-INF/additional-spring-configuration-metadata.json](file://boot/tenant-spring-boot-starter/src/main/resources/META-INF/additional-spring-configuration-metadata.json)
-- [basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/AsyncConfig.java](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/AsyncConfig.java)
-- [basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/MybatisPlusConfig.java](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/MybatisPlusConfig.java)
-- [basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/RequestResponseFormatConfig.java](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/RequestResponseFormatConfig.java)
-- [storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/boot/StorageAutoConfiguration.java](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/boot/StorageAutoConfiguration.java)
-- [tenant-spring-boot-starter/src/main/java/com/kewen/framework/tenant/config/TenantConfig.java](file://boot/tenant-spring-boot-starter/src/main/java/com/kewen/framework/tenant/config/TenantConfig.java)
+- [basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/AsyncConfig.java](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/AsyncConfig.java)
+- [basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/MybatisPlusConfig.java](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/MybatisPlusConfig.java)
+- [basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/RequestResponseFormatConfig.java](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/RequestResponseFormatConfig.java)
+- [storage-spring-boot-starter/src/main/java/com/cu/framework/storage/boot/StorageAutoConfiguration.java](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/boot/StorageAutoConfiguration.java)
+- [tenant-spring-boot-starter/src/main/java/com/cu/framework/tenant/config/TenantConfig.java](file://boot/tenant-spring-boot-starter/src/main/java/com/cu/framework/tenant/config/TenantConfig.java)
 </cite>
 
 ## 目录
@@ -106,11 +106,11 @@ m_api --> |"外部集成"| m_api
 ```
 
 图表来源
-- [basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/AsyncConfig.java:19-59](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/AsyncConfig.java#L19-L59)
-- [basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/MybatisPlusConfig.java:9-23](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/MybatisPlusConfig.java#L9-L23)
-- [basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/RequestResponseFormatConfig.java:28-110](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/RequestResponseFormatConfig.java#L28-L110)
-- [storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/boot/StorageAutoConfiguration.java:23-70](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/boot/StorageAutoConfiguration.java#L23-L70)
-- [tenant-spring-boot-starter/src/main/java/com/kewen/framework/tenant/config/TenantConfig.java:14-22](file://boot/tenant-spring-boot-starter/src/main/java/com/kewen/framework/tenant/config/TenantConfig.java#L14-L22)
+- [basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/AsyncConfig.java:19-59](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/AsyncConfig.java#L19-L59)
+- [basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/MybatisPlusConfig.java:9-23](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/MybatisPlusConfig.java#L9-L23)
+- [basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/RequestResponseFormatConfig.java:28-110](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/RequestResponseFormatConfig.java#L28-L110)
+- [storage-spring-boot-starter/src/main/java/com/cu/framework/storage/boot/StorageAutoConfiguration.java:23-70](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/boot/StorageAutoConfiguration.java#L23-L70)
+- [tenant-spring-boot-starter/src/main/java/com/cu/framework/tenant/config/TenantConfig.java:14-22](file://boot/tenant-spring-boot-starter/src/main/java/com/cu/framework/tenant/config/TenantConfig.java#L14-L22)
 
 ## 详细组件分析
 
@@ -120,8 +120,8 @@ m_api --> |"外部集成"| m_api
   - MyBatis-Plus 分页插件：注册分页拦截器，支持 MySQL。
   - 请求/响应格式化与异常增强：统一 Jackson 序列化规则、日期时间转换器、异常统一处理与响应体追踪增强。
 - 属性配置
-  - kewen.request.persistent.database：控制请求日志是否持久化到数据库。
-  - kewen.request.message.fang-tang：控制请求 IP 是否发送至方糖消息通道。
+  - cu.request.persistent.database：控制请求日志是否持久化到数据库。
+  - cu.request.message.fang-tang：控制请求 IP 是否发送至方糖消息通道。
 - 使用场景
   - 快速搭建 Web 工程，统一异常与响应格式，启用异步任务与分页能力。
 - 配置示例与最佳实践
@@ -142,14 +142,14 @@ Init --> Return["返回 Executor"]
 ```
 
 图表来源
-- [basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/AsyncConfig.java:31-49](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/AsyncConfig.java#L31-L49)
+- [basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/AsyncConfig.java:31-49](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/AsyncConfig.java#L31-L49)
 
 章节来源
 - [basic-spring-boot-starter/src/main/resources/META-INF/spring.factories:1-7](file://boot/basic-spring-boot-starter/src/main/resources/META-INF/spring.factories#L1-L7)
 - [basic-spring-boot-starter/src/main/resources/META-INF/additional-spring-configuration-metadata.json:1-16](file://boot/basic-spring-boot-starter/src/main/resources/META-INF/additional-spring-configuration-metadata.json#L1-L16)
-- [basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/AsyncConfig.java:19-59](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/AsyncConfig.java#L19-L59)
-- [basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/MybatisPlusConfig.java:9-23](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/MybatisPlusConfig.java#L9-L23)
-- [basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/RequestResponseFormatConfig.java:28-110](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/RequestResponseFormatConfig.java#L28-L110)
+- [basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/AsyncConfig.java:19-59](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/AsyncConfig.java#L19-L59)
+- [basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/MybatisPlusConfig.java:9-23](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/MybatisPlusConfig.java#L9-L23)
+- [basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/RequestResponseFormatConfig.java:28-110](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/RequestResponseFormatConfig.java#L28-L110)
 
 ### storage-spring-boot-starter（文件存储启动器）
 - 自动配置类
@@ -176,17 +176,17 @@ Cfg->>Proc : 注册处理器
 ```
 
 图表来源
-- [storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/boot/StorageAutoConfiguration.java:23-70](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/boot/StorageAutoConfiguration.java#L23-L70)
+- [storage-spring-boot-starter/src/main/java/com/cu/framework/storage/boot/StorageAutoConfiguration.java:23-70](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/boot/StorageAutoConfiguration.java#L23-L70)
 
 章节来源
 - [storage-spring-boot-starter/src/main/resources/META-INF/spring.factories:1-2](file://boot/storage-spring-boot-starter/src/main/resources/META-INF/spring.factories#L1-L2)
-- [storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/boot/StorageAutoConfiguration.java:23-70](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/boot/StorageAutoConfiguration.java#L23-L70)
+- [storage-spring-boot-starter/src/main/java/com/cu/framework/storage/boot/StorageAutoConfiguration.java:23-70](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/boot/StorageAutoConfiguration.java#L23-L70)
 
 ### tenant-spring-boot-starter（多租户启动器）
 - 自动配置类
   - TenantConfig：基于属性开关条件启用租户过滤器；同时声明 Feign 头拦截器（当 Feign 存在时生效）。
 - 属性配置
-  - kewen.tenant.open：是否开启租户能力。
+  - cu.tenant.open：是否开启租户能力。
 - 使用场景
   - 需要按租户隔离数据或请求头透传的微服务或多租户应用。
 - 配置示例与最佳实践
@@ -194,7 +194,7 @@ Cfg->>Proc : 注册处理器
 - 条件启用流程
 ```mermaid
 flowchart TD
-Start(["启动"]) --> Check["检查属性 kewen.tenant.open"]
+Start(["启动"]) --> Check["检查属性 cu.tenant.open"]
 Check --> |true| Enable["注册 TenantRequestFilter"]
 Check --> |false| Skip["跳过注册"]
 Enable --> End(["完成"])
@@ -202,12 +202,12 @@ Skip --> End
 ```
 
 图表来源
-- [tenant-spring-boot-starter/src/main/java/com/kewen/framework/tenant/config/TenantConfig.java:14-22](file://boot/tenant-spring-boot-starter/src/main/java/com/kewen/framework/tenant/config/TenantConfig.java#L14-L22)
+- [tenant-spring-boot-starter/src/main/java/com/cu/framework/tenant/config/TenantConfig.java:14-22](file://boot/tenant-spring-boot-starter/src/main/java/com/cu/framework/tenant/config/TenantConfig.java#L14-L22)
 
 章节来源
 - [tenant-spring-boot-starter/src/main/resources/META-INF/spring.factories:1-3](file://boot/tenant-spring-boot-starter/src/main/resources/META-INF/spring.factories#L1-L3)
 - [tenant-spring-boot-starter/src/main/resources/META-INF/additional-spring-configuration-metadata.json:1-10](file://boot/tenant-spring-boot-starter/src/main/resources/META-INF/additional-spring-configuration-metadata.json#L1-L10)
-- [tenant-spring-boot-starter/src/main/java/com/kewen/framework/tenant/config/TenantConfig.java:14-22](file://boot/tenant-spring-boot-starter/src/main/java/com/kewen/framework/tenant/config/TenantConfig.java#L14-L22)
+- [tenant-spring-boot-starter/src/main/java/com/cu/framework/tenant/config/TenantConfig.java:14-22](file://boot/tenant-spring-boot-starter/src/main/java/com/cu/framework/tenant/config/TenantConfig.java#L14-L22)
 
 ### magic-spring-boot-starter（魔法API启动器）
 - 依赖与集成
@@ -284,28 +284,28 @@ magic --> dep_mysql2["mysql-connector-java"]
   - 现象：@Async 报错或未使用预期线程池。
   - 排查：确认 AsyncConfig 已被加载；检查是否存在多个 Executor 导致选择歧义。
   - 参考
-    - [basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/AsyncConfig.java:19-59](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/AsyncConfig.java#L19-L59)
+    - [basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/AsyncConfig.java:19-59](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/AsyncConfig.java#L19-L59)
 - 分页不生效
   - 现象：查询未分页或抛出插件顺序错误。
   - 排查：确保分页插件最后添加；多数据源场景可不指定 DbType。
   - 参考
-    - [basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/MybatisPlusConfig.java:9-23](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/MybatisPlusConfig.java#L9-L23)
+    - [basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/MybatisPlusConfig.java:9-23](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/MybatisPlusConfig.java#L9-L23)
 - 请求响应格式异常
   - 现象：日期字段格式不一致或 Long 精度丢失。
   - 排查：核对 Jackson 序列化规则与日期转换器；必要时调整 ObjectMapper 配置。
   - 参考
-    - [basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/RequestResponseFormatConfig.java:28-110](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/RequestResponseFormatConfig.java#L28-L110)
+    - [basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/RequestResponseFormatConfig.java:28-110](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/RequestResponseFormatConfig.java#L28-L110)
 - 文件上传回调失败
   - 现象：上传成功但回调未触发或失败。
   - 排查：确认回调地址可访问、签名与域名配置正确；查看回调端点日志。
   - 参考
-    - [storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/boot/StorageAutoConfiguration.java:23-70](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/boot/StorageAutoConfiguration.java#L23-L70)
+    - [storage-spring-boot-starter/src/main/java/com/cu/framework/storage/boot/StorageAutoConfiguration.java:23-70](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/boot/StorageAutoConfiguration.java#L23-L70)
 - 租户开关无效
-  - 现象：设置 kewen.tenant.open=true 后租户过滤器未生效。
+  - 现象：设置 cu.tenant.open=true 后租户过滤器未生效。
   - 排查：确认属性键值正确；若使用 Feign，确保依赖存在。
   - 参考
     - [tenant-spring-boot-starter/src/main/resources/META-INF/additional-spring-configuration-metadata.json:1-10](file://boot/tenant-spring-boot-starter/src/main/resources/META-INF/additional-spring-configuration-metadata.json#L1-L10)
-    - [tenant-spring-boot-starter/src/main/java/com/kewen/framework/tenant/config/TenantConfig.java:14-22](file://boot/tenant-spring-boot-starter/src/main/java/com/kewen/framework/tenant/config/TenantConfig.java#L14-L22)
+    - [tenant-spring-boot-starter/src/main/java/com/cu/framework/tenant/config/TenantConfig.java:14-22](file://boot/tenant-spring-boot-starter/src/main/java/com/cu/framework/tenant/config/TenantConfig.java#L14-L22)
 
 ## 结论
 boot 启动器模块通过自动配置与属性元数据，为不同业务场景提供了即插即用的能力：

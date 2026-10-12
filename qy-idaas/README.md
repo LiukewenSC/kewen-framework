@@ -37,7 +37,7 @@ OAuth2 认证基于 **授权码模式（Authorization Code）**，适用于 Web 
 #### 完整配置示例
 
 ```yaml
-kewen:
+cu:
   security:
     login:
       oauth2:
@@ -141,7 +141,7 @@ kewen:
 如果需要支持多个 OAuth2 提供商，可以配置多个客户端：
 
 ```yaml
-kewen:
+cu:
   security:
     login:
       oauth2:
@@ -193,7 +193,7 @@ SAML 2.0 是企业级单点登录的标准协议，支持 IdP 发起和 SP 发�
 #### 完整配置示例
 
 ```yaml
-kewen:
+cu:
   security:
     login:
       saml:
@@ -340,7 +340,7 @@ IdP Metadata 是一个 XML 文件，包含了 IdP 的配置信息（端点URL、
 支持配置多个 IdP，用户可以选择使用哪个 IdP 登录：
 
 ```yaml
-kewen:
+cu:
   security:
     login:
       saml:
@@ -437,7 +437,7 @@ keytool -exportcert \
 **A**: 测试环境可以临时关闭 SSL 验证（**生产环境严禁使用**）：
 
 ```yaml
-kewen:
+cu:
   security:
     login:
       oauth2:
@@ -495,7 +495,7 @@ logging:
 **A**: 直接在配置文件中同时配置两种方式：
 
 ```yaml
-kewen:
+cu:
   security:
     login:
       oauth2:
@@ -546,7 +546,7 @@ public public PublicController {
 或者在配置文件中配置：
 
 ```yaml
-kewen:
+cu:
   auth:
     permit-url: /api/public/**;/health;/actuator/**
 ```

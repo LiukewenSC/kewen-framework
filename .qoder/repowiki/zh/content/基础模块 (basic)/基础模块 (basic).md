@@ -2,22 +2,22 @@
 
 <cite>
 **本文引用的文件**
-- [Result.java](file://basic/src/main/java/com/kewen/framework/basic/model/Result.java)
-- [PageResult.java](file://basic/src/main/java/com/kewen/framework/basic/model/PageResult.java)
-- [BackendException.java](file://basic/src/main/java/com/kewen/framework/basic/exception/BackendException.java)
-- [BizException.java](file://basic/src/main/java/com/kewen/framework/basic/exception/BizException.java)
-- [ExceptionHandlerAdvice.java](file://basic/src/main/java/com/kewen/framework/basic/exception/ExceptionHandlerAdvice.java)
-- [ExceptionConstant.java](file://basic/src/main/java/com/kewen/framework/basic/exception/ExceptionConstant.java)
-- [BeanUtil.java](file://basic/src/main/java/com/kewen/framework/basic/utils/BeanUtil.java)
-- [TreeUtil.java](file://basic/src/main/java/com/kewen/framework/basic/utils/TreeUtil.java)
-- [RegUtil.java](file://basic/src/main/java/com/kewen/framework/basic/utils/RegUtil.java)
-- [FileUtils.java](file://basic/src/main/java/com/kewen/framework/basic/utils/FileUtils.java)
-- [LoggerConstant.java](file://basic/src/main/java/com/kewen/framework/basic/logger/LoggerConstant.java)
-- [TraceContext.java](file://basic/src/main/java/com/kewen/framework/basic/logger/trace/TraceContext.java)
-- [HeaderTraceIdProcessor.java](file://basic/src/main/java/com/kewen/framework/basic/logger/trace/HeaderTraceIdProcessor.java)
-- [TraceIdProcessor.java](file://basic/src/main/java/com/kewen/framework/basic/logger/trace/TraceIdProcessor.java)
-- [RequestLogger.java](file://basic/src/main/java/com/kewen/framework/basic/logger/request/RequestLogger.java)
-- [EarlyRequestFilter.java](file://basic/src/main/java/com/kewen/framework/basic/filter/EarlyRequestFilter.java)
+- [Result.java](file://basic/src/main/java/com/cu/framework/basic/model/Result.java)
+- [PageResult.java](file://basic/src/main/java/com/cu/framework/basic/model/PageResult.java)
+- [BackendException.java](file://basic/src/main/java/com/cu/framework/basic/exception/BackendException.java)
+- [BizException.java](file://basic/src/main/java/com/cu/framework/basic/exception/BizException.java)
+- [ExceptionHandlerAdvice.java](file://basic/src/main/java/com/cu/framework/basic/exception/ExceptionHandlerAdvice.java)
+- [ExceptionConstant.java](file://basic/src/main/java/com/cu/framework/basic/exception/ExceptionConstant.java)
+- [BeanUtil.java](file://basic/src/main/java/com/cu/framework/basic/utils/BeanUtil.java)
+- [TreeUtil.java](file://basic/src/main/java/com/cu/framework/basic/utils/TreeUtil.java)
+- [RegUtil.java](file://basic/src/main/java/com/cu/framework/basic/utils/RegUtil.java)
+- [FileUtils.java](file://basic/src/main/java/com/cu/framework/basic/utils/FileUtils.java)
+- [LoggerConstant.java](file://basic/src/main/java/com/cu/framework/basic/logger/LoggerConstant.java)
+- [TraceContext.java](file://basic/src/main/java/com/cu/framework/basic/logger/trace/TraceContext.java)
+- [HeaderTraceIdProcessor.java](file://basic/src/main/java/com/cu/framework/basic/logger/trace/HeaderTraceIdProcessor.java)
+- [TraceIdProcessor.java](file://basic/src/main/java/com/cu/framework/basic/logger/trace/TraceIdProcessor.java)
+- [RequestLogger.java](file://basic/src/main/java/com/cu/framework/basic/logger/request/RequestLogger.java)
+- [EarlyRequestFilter.java](file://basic/src/main/java/com/cu/framework/basic/filter/EarlyRequestFilter.java)
 </cite>
 
 ## 目录
@@ -85,39 +85,39 @@ TC --> LC
 ```
 
 图表来源
-- [Result.java:11-48](file://basic/src/main/java/com/kewen/framework/basic/model/Result.java#L11-L48)
-- [PageResult.java:14-31](file://basic/src/main/java/com/kewen/framework/basic/model/PageResult.java#L14-L31)
-- [BackendException.java:8-30](file://basic/src/main/java/com/kewen/framework/basic/exception/BackendException.java#L8-L30)
-- [BizException.java:8-27](file://basic/src/main/java/com/kewen/framework/basic/exception/BizException.java#L8-L27)
-- [ExceptionHandlerAdvice.java:20-78](file://basic/src/main/java/com/kewen/framework/basic/exception/ExceptionHandlerAdvice.java#L20-L78)
-- [ExceptionConstant.java](file://basic/src/main/java/com/kewen/framework/basic/exception/ExceptionConstant.java)
-- [BeanUtil.java:22-103](file://basic/src/main/java/com/kewen/framework/basic/utils/BeanUtil.java#L22-L103)
-- [TreeUtil.java:14-241](file://basic/src/main/java/com/kewen/framework/basic/utils/TreeUtil.java#L14-L241)
-- [RegUtil.java:15-106](file://basic/src/main/java/com/kewen/framework/basic/utils/RegUtil.java#L15-L106)
-- [FileUtils.java:21-76](file://basic/src/main/java/com/kewen/framework/basic/utils/FileUtils.java#L21-L76)
-- [LoggerConstant.java:8-10](file://basic/src/main/java/com/kewen/framework/basic/logger/LoggerConstant.java#L8-L10)
-- [TraceContext.java:11-22](file://basic/src/main/java/com/kewen/framework/basic/logger/trace/TraceContext.java#L11-L22)
-- [TraceIdProcessor.java:11-18](file://basic/src/main/java/com/kewen/framework/basic/logger/trace/TraceIdProcessor.java#L11-L18)
-- [HeaderTraceIdProcessor.java:15-27](file://basic/src/main/java/com/kewen/framework/basic/logger/trace/HeaderTraceIdProcessor.java#L15-L27)
-- [RequestLogger.java:13-26](file://basic/src/main/java/com/kewen/framework/basic/logger/request/RequestLogger.java#L13-L26)
-- [EarlyRequestFilter.java:14-23](file://basic/src/main/java/com/kewen/framework/basic/filter/EarlyRequestFilter.java#L14-L23)
+- [Result.java:11-48](file://basic/src/main/java/com/cu/framework/basic/model/Result.java#L11-L48)
+- [PageResult.java:14-31](file://basic/src/main/java/com/cu/framework/basic/model/PageResult.java#L14-L31)
+- [BackendException.java:8-30](file://basic/src/main/java/com/cu/framework/basic/exception/BackendException.java#L8-L30)
+- [BizException.java:8-27](file://basic/src/main/java/com/cu/framework/basic/exception/BizException.java#L8-L27)
+- [ExceptionHandlerAdvice.java:20-78](file://basic/src/main/java/com/cu/framework/basic/exception/ExceptionHandlerAdvice.java#L20-L78)
+- [ExceptionConstant.java](file://basic/src/main/java/com/cu/framework/basic/exception/ExceptionConstant.java)
+- [BeanUtil.java:22-103](file://basic/src/main/java/com/cu/framework/basic/utils/BeanUtil.java#L22-L103)
+- [TreeUtil.java:14-241](file://basic/src/main/java/com/cu/framework/basic/utils/TreeUtil.java#L14-L241)
+- [RegUtil.java:15-106](file://basic/src/main/java/com/cu/framework/basic/utils/RegUtil.java#L15-L106)
+- [FileUtils.java:21-76](file://basic/src/main/java/com/cu/framework/basic/utils/FileUtils.java#L21-L76)
+- [LoggerConstant.java:8-10](file://basic/src/main/java/com/cu/framework/basic/logger/LoggerConstant.java#L8-L10)
+- [TraceContext.java:11-22](file://basic/src/main/java/com/cu/framework/basic/logger/trace/TraceContext.java#L11-L22)
+- [TraceIdProcessor.java:11-18](file://basic/src/main/java/com/cu/framework/basic/logger/trace/TraceIdProcessor.java#L11-L18)
+- [HeaderTraceIdProcessor.java:15-27](file://basic/src/main/java/com/cu/framework/basic/logger/trace/HeaderTraceIdProcessor.java#L15-L27)
+- [RequestLogger.java:13-26](file://basic/src/main/java/com/cu/framework/basic/logger/request/RequestLogger.java#L13-L26)
+- [EarlyRequestFilter.java:14-23](file://basic/src/main/java/com/cu/framework/basic/filter/EarlyRequestFilter.java#L14-L23)
 
 章节来源
-- [Result.java:11-48](file://basic/src/main/java/com/kewen/framework/basic/model/Result.java#L11-L48)
-- [PageResult.java:14-31](file://basic/src/main/java/com/kewen/framework/basic/model/PageResult.java#L14-L31)
-- [BackendException.java:8-30](file://basic/src/main/java/com/kewen/framework/basic/exception/BackendException.java#L8-L30)
-- [BizException.java:8-27](file://basic/src/main/java/com/kewen/framework/basic/exception/BizException.java#L8-L27)
-- [ExceptionHandlerAdvice.java:20-78](file://basic/src/main/java/com/kewen/framework/basic/exception/ExceptionHandlerAdvice.java#L20-L78)
-- [BeanUtil.java:22-103](file://basic/src/main/java/com/kewen/framework/basic/utils/BeanUtil.java#L22-L103)
-- [TreeUtil.java:14-241](file://basic/src/main/java/com/kewen/framework/basic/utils/TreeUtil.java#L14-L241)
-- [RegUtil.java:15-106](file://basic/src/main/java/com/kewen/framework/basic/utils/RegUtil.java#L15-L106)
-- [FileUtils.java:21-76](file://basic/src/main/java/com/kewen/framework/basic/utils/FileUtils.java#L21-L76)
-- [LoggerConstant.java:8-10](file://basic/src/main/java/com/kewen/framework/basic/logger/LoggerConstant.java#L8-L10)
-- [TraceContext.java:11-22](file://basic/src/main/java/com/kewen/framework/basic/logger/trace/TraceContext.java#L11-L22)
-- [TraceIdProcessor.java:11-18](file://basic/src/main/java/com/kewen/framework/basic/logger/trace/TraceIdProcessor.java#L11-L18)
-- [HeaderTraceIdProcessor.java:15-27](file://basic/src/main/java/com/kewen/framework/basic/logger/trace/HeaderTraceIdProcessor.java#L15-L27)
-- [RequestLogger.java:13-26](file://basic/src/main/java/com/kewen/framework/basic/logger/request/RequestLogger.java#L13-L26)
-- [EarlyRequestFilter.java:14-23](file://basic/src/main/java/com/kewen/framework/basic/filter/EarlyRequestFilter.java#L14-L23)
+- [Result.java:11-48](file://basic/src/main/java/com/cu/framework/basic/model/Result.java#L11-L48)
+- [PageResult.java:14-31](file://basic/src/main/java/com/cu/framework/basic/model/PageResult.java#L14-L31)
+- [BackendException.java:8-30](file://basic/src/main/java/com/cu/framework/basic/exception/BackendException.java#L8-L30)
+- [BizException.java:8-27](file://basic/src/main/java/com/cu/framework/basic/exception/BizException.java#L8-L27)
+- [ExceptionHandlerAdvice.java:20-78](file://basic/src/main/java/com/cu/framework/basic/exception/ExceptionHandlerAdvice.java#L20-L78)
+- [BeanUtil.java:22-103](file://basic/src/main/java/com/cu/framework/basic/utils/BeanUtil.java#L22-L103)
+- [TreeUtil.java:14-241](file://basic/src/main/java/com/cu/framework/basic/utils/TreeUtil.java#L14-L241)
+- [RegUtil.java:15-106](file://basic/src/main/java/com/cu/framework/basic/utils/RegUtil.java#L15-L106)
+- [FileUtils.java:21-76](file://basic/src/main/java/com/cu/framework/basic/utils/FileUtils.java#L21-L76)
+- [LoggerConstant.java:8-10](file://basic/src/main/java/com/cu/framework/basic/logger/LoggerConstant.java#L8-L10)
+- [TraceContext.java:11-22](file://basic/src/main/java/com/cu/framework/basic/logger/trace/TraceContext.java#L11-L22)
+- [TraceIdProcessor.java:11-18](file://basic/src/main/java/com/cu/framework/basic/logger/trace/TraceIdProcessor.java#L11-L18)
+- [HeaderTraceIdProcessor.java:15-27](file://basic/src/main/java/com/cu/framework/basic/logger/trace/HeaderTraceIdProcessor.java#L15-L27)
+- [RequestLogger.java:13-26](file://basic/src/main/java/com/cu/framework/basic/logger/request/RequestLogger.java#L13-L26)
+- [EarlyRequestFilter.java:14-23](file://basic/src/main/java/com/cu/framework/basic/filter/EarlyRequestFilter.java#L14-L23)
 
 ## 核心组件
 本节对统一响应、异常处理、工具类与日志追踪进行深入解析。
@@ -143,21 +143,21 @@ TC --> LC
   - RequestLogger：请求日志载体，记录 URL、方法、参数、Body、IP、Headers 与执行耗时。
 
 章节来源
-- [Result.java:11-48](file://basic/src/main/java/com/kewen/framework/basic/model/Result.java#L11-L48)
-- [PageResult.java:14-31](file://basic/src/main/java/com/kewen/framework/basic/model/PageResult.java#L14-L31)
-- [BackendException.java:8-30](file://basic/src/main/java/com/kewen/framework/basic/exception/BackendException.java#L8-L30)
-- [BizException.java:8-27](file://basic/src/main/java/com/kewen/framework/basic/exception/BizException.java#L8-L27)
-- [ExceptionHandlerAdvice.java:20-78](file://basic/src/main/java/com/kewen/framework/basic/exception/ExceptionHandlerAdvice.java#L20-L78)
-- [ExceptionConstant.java](file://basic/src/main/java/com/kewen/framework/basic/exception/ExceptionConstant.java)
-- [BeanUtil.java:22-103](file://basic/src/main/java/com/kewen/framework/basic/utils/BeanUtil.java#L22-L103)
-- [TreeUtil.java:14-241](file://basic/src/main/java/com/kewen/framework/basic/utils/TreeUtil.java#L14-L241)
-- [RegUtil.java:15-106](file://basic/src/main/java/com/kewen/framework/basic/utils/RegUtil.java#L15-L106)
-- [FileUtils.java:21-76](file://basic/src/main/java/com/kewen/framework/basic/utils/FileUtils.java#L21-L76)
-- [LoggerConstant.java:8-10](file://basic/src/main/java/com/kewen/framework/basic/logger/LoggerConstant.java#L8-L10)
-- [TraceContext.java:11-22](file://basic/src/main/java/com/kewen/framework/basic/logger/trace/TraceContext.java#L11-L22)
-- [TraceIdProcessor.java:11-18](file://basic/src/main/java/com/kewen/framework/basic/logger/trace/TraceIdProcessor.java#L11-L18)
-- [HeaderTraceIdProcessor.java:15-27](file://basic/src/main/java/com/kewen/framework/basic/logger/trace/HeaderTraceIdProcessor.java#L15-L27)
-- [RequestLogger.java:13-26](file://basic/src/main/java/com/kewen/framework/basic/logger/request/RequestLogger.java#L13-L26)
+- [Result.java:11-48](file://basic/src/main/java/com/cu/framework/basic/model/Result.java#L11-L48)
+- [PageResult.java:14-31](file://basic/src/main/java/com/cu/framework/basic/model/PageResult.java#L14-L31)
+- [BackendException.java:8-30](file://basic/src/main/java/com/cu/framework/basic/exception/BackendException.java#L8-L30)
+- [BizException.java:8-27](file://basic/src/main/java/com/cu/framework/basic/exception/BizException.java#L8-L27)
+- [ExceptionHandlerAdvice.java:20-78](file://basic/src/main/java/com/cu/framework/basic/exception/ExceptionHandlerAdvice.java#L20-L78)
+- [ExceptionConstant.java](file://basic/src/main/java/com/cu/framework/basic/exception/ExceptionConstant.java)
+- [BeanUtil.java:22-103](file://basic/src/main/java/com/cu/framework/basic/utils/BeanUtil.java#L22-L103)
+- [TreeUtil.java:14-241](file://basic/src/main/java/com/cu/framework/basic/utils/TreeUtil.java#L14-L241)
+- [RegUtil.java:15-106](file://basic/src/main/java/com/cu/framework/basic/utils/RegUtil.java#L15-L106)
+- [FileUtils.java:21-76](file://basic/src/main/java/com/cu/framework/basic/utils/FileUtils.java#L21-L76)
+- [LoggerConstant.java:8-10](file://basic/src/main/java/com/cu/framework/basic/logger/LoggerConstant.java#L8-L10)
+- [TraceContext.java:11-22](file://basic/src/main/java/com/cu/framework/basic/logger/trace/TraceContext.java#L11-L22)
+- [TraceIdProcessor.java:11-18](file://basic/src/main/java/com/cu/framework/basic/logger/trace/TraceIdProcessor.java#L11-L18)
+- [HeaderTraceIdProcessor.java:15-27](file://basic/src/main/java/com/cu/framework/basic/logger/trace/HeaderTraceIdProcessor.java#L15-L27)
+- [RequestLogger.java:13-26](file://basic/src/main/java/com/cu/framework/basic/logger/request/RequestLogger.java#L13-L26)
 
 ## 架构总览
 下图展示基础模块在 Web 层的典型交互：控制器返回 Result，异常由全局 Advice 统一捕获并转为 Result，日志追踪通过 TraceId 实现跨服务链路串联。
@@ -188,12 +188,12 @@ TC --> LC
 ```
 
 图表来源
-- [ExceptionHandlerAdvice.java:20-78](file://basic/src/main/java/com/kewen/framework/basic/exception/ExceptionHandlerAdvice.java#L20-L78)
-- [BackendException.java:8-30](file://basic/src/main/java/com/kewen/framework/basic/exception/BackendException.java#L8-L30)
-- [BizException.java:8-27](file://basic/src/main/java/com/kewen/framework/basic/exception/BizException.java#L8-L27)
-- [LoggerConstant.java:8-10](file://basic/src/main/java/com/kewen/framework/basic/logger/LoggerConstant.java#L8-L10)
-- [TraceContext.java:11-22](file://basic/src/main/java/com/kewen/framework/basic/logger/trace/TraceContext.java#L11-L22)
-- [HeaderTraceIdProcessor.java:15-27](file://basic/src/main/java/com/kewen/framework/basic/logger/trace/HeaderTraceIdProcessor.java#L15-L27)
+- [ExceptionHandlerAdvice.java:20-78](file://basic/src/main/java/com/cu/framework/basic/exception/ExceptionHandlerAdvice.java#L20-L78)
+- [BackendException.java:8-30](file://basic/src/main/java/com/cu/framework/basic/exception/BackendException.java#L8-L30)
+- [BizException.java:8-27](file://basic/src/main/java/com/cu/framework/basic/exception/BizException.java#L8-L27)
+- [LoggerConstant.java:8-10](file://basic/src/main/java/com/cu/framework/basic/logger/LoggerConstant.java#L8-L10)
+- [TraceContext.java:11-22](file://basic/src/main/java/com/cu/framework/basic/logger/trace/TraceContext.java#L11-L22)
+- [HeaderTraceIdProcessor.java:15-27](file://basic/src/main/java/com/cu/framework/basic/logger/trace/HeaderTraceIdProcessor.java#L15-L27)
 
 ## 详细组件分析
 
@@ -230,12 +230,12 @@ class PageResult_T_ {
 ```
 
 图表来源
-- [Result.java:11-48](file://basic/src/main/java/com/kewen/framework/basic/model/Result.java#L11-L48)
-- [PageResult.java:14-31](file://basic/src/main/java/com/kewen/framework/basic/model/PageResult.java#L14-L31)
+- [Result.java:11-48](file://basic/src/main/java/com/cu/framework/basic/model/Result.java#L11-L48)
+- [PageResult.java:14-31](file://basic/src/main/java/com/cu/framework/basic/model/PageResult.java#L14-L31)
 
 章节来源
-- [Result.java:11-48](file://basic/src/main/java/com/kewen/framework/basic/model/Result.java#L11-L48)
-- [PageResult.java:14-31](file://basic/src/main/java/com/kewen/framework/basic/model/PageResult.java#L14-L31)
+- [Result.java:11-48](file://basic/src/main/java/com/cu/framework/basic/model/Result.java#L11-L48)
+- [PageResult.java:14-31](file://basic/src/main/java/com/cu/framework/basic/model/PageResult.java#L14-L31)
 
 ### 异常处理体系：异常类与全局处理
 - 异常类层次
@@ -276,15 +276,15 @@ ExceptionHandlerAdvice ..> BizException : "捕获"
 ```
 
 图表来源
-- [BackendException.java:8-30](file://basic/src/main/java/com/kewen/framework/basic/exception/BackendException.java#L8-L30)
-- [BizException.java:8-27](file://basic/src/main/java/com/kewen/framework/basic/exception/BizException.java#L8-L27)
-- [ExceptionHandlerAdvice.java:20-78](file://basic/src/main/java/com/kewen/framework/basic/exception/ExceptionHandlerAdvice.java#L20-L78)
+- [BackendException.java:8-30](file://basic/src/main/java/com/cu/framework/basic/exception/BackendException.java#L8-L30)
+- [BizException.java:8-27](file://basic/src/main/java/com/cu/framework/basic/exception/BizException.java#L8-L27)
+- [ExceptionHandlerAdvice.java:20-78](file://basic/src/main/java/com/cu/framework/basic/exception/ExceptionHandlerAdvice.java#L20-L78)
 
 章节来源
-- [BackendException.java:8-30](file://basic/src/main/java/com/kewen/framework/basic/exception/BackendException.java#L8-L30)
-- [BizException.java:8-27](file://basic/src/main/java/com/kewen/framework/basic/exception/BizException.java#L8-L27)
-- [ExceptionHandlerAdvice.java:20-78](file://basic/src/main/java/com/kewen/framework/basic/exception/ExceptionHandlerAdvice.java#L20-L78)
-- [ExceptionConstant.java](file://basic/src/main/java/com/kewen/framework/basic/exception/ExceptionConstant.java)
+- [BackendException.java:8-30](file://basic/src/main/java/com/cu/framework/basic/exception/BackendException.java#L8-L30)
+- [BizException.java:8-27](file://basic/src/main/java/com/cu/framework/basic/exception/BizException.java#L8-L27)
+- [ExceptionHandlerAdvice.java:20-78](file://basic/src/main/java/com/cu/framework/basic/exception/ExceptionHandlerAdvice.java#L20-L78)
+- [ExceptionConstant.java](file://basic/src/main/java/com/cu/framework/basic/exception/ExceptionConstant.java)
 
 ### 工具类库：BeanUtil、TreeUtil、RegUtil、FileUtils
 - BeanUtil
@@ -314,13 +314,13 @@ Build --> End(["输出树形结构"])
 ```
 
 图表来源
-- [TreeUtil.java:28-60](file://basic/src/main/java/com/kewen/framework/basic/utils/TreeUtil.java#L28-L60)
+- [TreeUtil.java:28-60](file://basic/src/main/java/com/cu/framework/basic/utils/TreeUtil.java#L28-L60)
 
 章节来源
-- [BeanUtil.java:22-103](file://basic/src/main/java/com/kewen/framework/basic/utils/BeanUtil.java#L22-L103)
-- [TreeUtil.java:14-241](file://basic/src/main/java/com/kewen/framework/basic/utils/TreeUtil.java#L14-L241)
-- [RegUtil.java:15-106](file://basic/src/main/java/com/kewen/framework/basic/utils/RegUtil.java#L15-L106)
-- [FileUtils.java:21-76](file://basic/src/main/java/com/kewen/framework/basic/utils/FileUtils.java#L21-L76)
+- [BeanUtil.java:22-103](file://basic/src/main/java/com/cu/framework/basic/utils/BeanUtil.java#L22-L103)
+- [TreeUtil.java:14-241](file://basic/src/main/java/com/cu/framework/basic/utils/TreeUtil.java#L14-L241)
+- [RegUtil.java:15-106](file://basic/src/main/java/com/cu/framework/basic/utils/RegUtil.java#L15-L106)
+- [FileUtils.java:21-76](file://basic/src/main/java/com/cu/framework/basic/utils/FileUtils.java#L21-L76)
 
 ### 日志追踪：TraceId 生成、传播与请求日志记录
 - TraceId 生成与传播
@@ -348,17 +348,17 @@ F->>Ctx : remove(traceId)
 ```
 
 图表来源
-- [HeaderTraceIdProcessor.java:15-27](file://basic/src/main/java/com/kewen/framework/basic/logger/trace/HeaderTraceIdProcessor.java#L15-L27)
-- [TraceContext.java:11-22](file://basic/src/main/java/com/kewen/framework/basic/logger/trace/TraceContext.java#L11-L22)
-- [LoggerConstant.java:8-10](file://basic/src/main/java/com/kewen/framework/basic/logger/LoggerConstant.java#L8-L10)
+- [HeaderTraceIdProcessor.java:15-27](file://basic/src/main/java/com/cu/framework/basic/logger/trace/HeaderTraceIdProcessor.java#L15-L27)
+- [TraceContext.java:11-22](file://basic/src/main/java/com/cu/framework/basic/logger/trace/TraceContext.java#L11-L22)
+- [LoggerConstant.java:8-10](file://basic/src/main/java/com/cu/framework/basic/logger/LoggerConstant.java#L8-L10)
 
 章节来源
-- [LoggerConstant.java:8-10](file://basic/src/main/java/com/kewen/framework/basic/logger/LoggerConstant.java#L8-L10)
-- [TraceContext.java:11-22](file://basic/src/main/java/com/kewen/framework/basic/logger/trace/TraceContext.java#L11-L22)
-- [TraceIdProcessor.java:11-18](file://basic/src/main/java/com/kewen/framework/basic/logger/trace/TraceIdProcessor.java#L11-L18)
-- [HeaderTraceIdProcessor.java:15-27](file://basic/src/main/java/com/kewen/framework/basic/logger/trace/HeaderTraceIdProcessor.java#L15-L27)
-- [RequestLogger.java:13-26](file://basic/src/main/java/com/kewen/framework/basic/logger/request/RequestLogger.java#L13-L26)
-- [EarlyRequestFilter.java:14-23](file://basic/src/main/java/com/kewen/framework/basic/filter/EarlyRequestFilter.java#L14-L23)
+- [LoggerConstant.java:8-10](file://basic/src/main/java/com/cu/framework/basic/logger/LoggerConstant.java#L8-L10)
+- [TraceContext.java:11-22](file://basic/src/main/java/com/cu/framework/basic/logger/trace/TraceContext.java#L11-L22)
+- [TraceIdProcessor.java:11-18](file://basic/src/main/java/com/cu/framework/basic/logger/trace/TraceIdProcessor.java#L11-L18)
+- [HeaderTraceIdProcessor.java:15-27](file://basic/src/main/java/com/cu/framework/basic/logger/trace/HeaderTraceIdProcessor.java#L15-L27)
+- [RequestLogger.java:13-26](file://basic/src/main/java/com/cu/framework/basic/logger/request/RequestLogger.java#L13-L26)
+- [EarlyRequestFilter.java:14-23](file://basic/src/main/java/com/cu/framework/basic/filter/EarlyRequestFilter.java#L14-L23)
 
 ## 依赖分析
 - 组件内聚与耦合
@@ -379,24 +379,24 @@ HT["HeaderTraceIdProcessor"] --> TP["TraceIdProcessor"]
 ```
 
 图表来源
-- [ExceptionHandlerAdvice.java:20-78](file://basic/src/main/java/com/kewen/framework/basic/exception/ExceptionHandlerAdvice.java#L20-L78)
-- [Result.java:11-48](file://basic/src/main/java/com/kewen/framework/basic/model/Result.java#L11-L48)
-- [ExceptionConstant.java](file://basic/src/main/java/com/kewen/framework/basic/exception/ExceptionConstant.java)
-- [TreeUtil.java:174-184](file://basic/src/main/java/com/kewen/framework/basic/utils/TreeUtil.java#L174-L184)
-- [BeanUtil.java:31-34](file://basic/src/main/java/com/kewen/framework/basic/utils/BeanUtil.java#L31-L34)
-- [TraceContext.java:11-22](file://basic/src/main/java/com/kewen/framework/basic/logger/trace/TraceContext.java#L11-L22)
-- [LoggerConstant.java:8-10](file://basic/src/main/java/com/kewen/framework/basic/logger/LoggerConstant.java#L8-L10)
-- [HeaderTraceIdProcessor.java:15-27](file://basic/src/main/java/com/kewen/framework/basic/logger/trace/HeaderTraceIdProcessor.java#L15-L27)
-- [TraceIdProcessor.java:11-18](file://basic/src/main/java/com/kewen/framework/basic/logger/trace/TraceIdProcessor.java#L11-L18)
+- [ExceptionHandlerAdvice.java:20-78](file://basic/src/main/java/com/cu/framework/basic/exception/ExceptionHandlerAdvice.java#L20-L78)
+- [Result.java:11-48](file://basic/src/main/java/com/cu/framework/basic/model/Result.java#L11-L48)
+- [ExceptionConstant.java](file://basic/src/main/java/com/cu/framework/basic/exception/ExceptionConstant.java)
+- [TreeUtil.java:174-184](file://basic/src/main/java/com/cu/framework/basic/utils/TreeUtil.java#L174-L184)
+- [BeanUtil.java:31-34](file://basic/src/main/java/com/cu/framework/basic/utils/BeanUtil.java#L31-L34)
+- [TraceContext.java:11-22](file://basic/src/main/java/com/cu/framework/basic/logger/trace/TraceContext.java#L11-L22)
+- [LoggerConstant.java:8-10](file://basic/src/main/java/com/cu/framework/basic/logger/LoggerConstant.java#L8-L10)
+- [HeaderTraceIdProcessor.java:15-27](file://basic/src/main/java/com/cu/framework/basic/logger/trace/HeaderTraceIdProcessor.java#L15-L27)
+- [TraceIdProcessor.java:11-18](file://basic/src/main/java/com/cu/framework/basic/logger/trace/TraceIdProcessor.java#L11-L18)
 
 章节来源
-- [ExceptionHandlerAdvice.java:20-78](file://basic/src/main/java/com/kewen/framework/basic/exception/ExceptionHandlerAdvice.java#L20-L78)
-- [TreeUtil.java:174-184](file://basic/src/main/java/com/kewen/framework/basic/utils/TreeUtil.java#L174-L184)
-- [BeanUtil.java:31-34](file://basic/src/main/java/com/kewen/framework/basic/utils/BeanUtil.java#L31-L34)
-- [TraceContext.java:11-22](file://basic/src/main/java/com/kewen/framework/basic/logger/trace/TraceContext.java#L11-L22)
-- [HeaderTraceIdProcessor.java:15-27](file://basic/src/main/java/com/kewen/framework/basic/logger/trace/HeaderTraceIdProcessor.java#L15-L27)
-- [TraceIdProcessor.java:11-18](file://basic/src/main/java/com/kewen/framework/basic/logger/trace/TraceIdProcessor.java#L11-L18)
-- [LoggerConstant.java:8-10](file://basic/src/main/java/com/kewen/framework/basic/logger/LoggerConstant.java#L8-L10)
+- [ExceptionHandlerAdvice.java:20-78](file://basic/src/main/java/com/cu/framework/basic/exception/ExceptionHandlerAdvice.java#L20-L78)
+- [TreeUtil.java:174-184](file://basic/src/main/java/com/cu/framework/basic/utils/TreeUtil.java#L174-L184)
+- [BeanUtil.java:31-34](file://basic/src/main/java/com/cu/framework/basic/utils/BeanUtil.java#L31-L34)
+- [TraceContext.java:11-22](file://basic/src/main/java/com/cu/framework/basic/logger/trace/TraceContext.java#L11-L22)
+- [HeaderTraceIdProcessor.java:15-27](file://basic/src/main/java/com/cu/framework/basic/logger/trace/HeaderTraceIdProcessor.java#L15-L27)
+- [TraceIdProcessor.java:11-18](file://basic/src/main/java/com/cu/framework/basic/logger/trace/TraceIdProcessor.java#L11-L18)
+- [LoggerConstant.java:8-10](file://basic/src/main/java/com/cu/framework/basic/logger/LoggerConstant.java#L8-L10)
 
 ## 性能考虑
 - 结果序列化
@@ -423,10 +423,10 @@ HT["HeaderTraceIdProcessor"] --> TP["TraceIdProcessor"]
   - 查看 FileUtils 抛出的业务异常信息，确认父目录权限与磁盘空间。
 
 章节来源
-- [ExceptionHandlerAdvice.java:20-78](file://basic/src/main/java/com/kewen/framework/basic/exception/ExceptionHandlerAdvice.java#L20-L78)
-- [FileUtils.java:60-74](file://basic/src/main/java/com/kewen/framework/basic/utils/FileUtils.java#L60-L74)
-- [TraceContext.java:11-22](file://basic/src/main/java/com/kewen/framework/basic/logger/trace/TraceContext.java#L11-L22)
-- [HeaderTraceIdProcessor.java:15-27](file://basic/src/main/java/com/kewen/framework/basic/logger/trace/HeaderTraceIdProcessor.java#L15-L27)
+- [ExceptionHandlerAdvice.java:20-78](file://basic/src/main/java/com/cu/framework/basic/exception/ExceptionHandlerAdvice.java#L20-L78)
+- [FileUtils.java:60-74](file://basic/src/main/java/com/cu/framework/basic/utils/FileUtils.java#L60-L74)
+- [TraceContext.java:11-22](file://basic/src/main/java/com/cu/framework/basic/logger/trace/TraceContext.java#L11-L22)
+- [HeaderTraceIdProcessor.java:15-27](file://basic/src/main/java/com/cu/framework/basic/logger/trace/HeaderTraceIdProcessor.java#L15-L27)
 
 ## 结论
 basic 模块通过统一响应、异常处理、实用工具与日志追踪，为上层应用提供了稳定的基础能力。遵循本文档的最佳实践，可在保证一致性的同时提升开发效率与系统可观测性。

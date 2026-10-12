@@ -2,21 +2,21 @@
 
 <cite>
 **本文档引用的文件**
-- [StorageAutoConfiguration.java](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/boot/StorageAutoConfiguration.java)
-- [StorageProperties.java](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/boot/StorageProperties.java)
-- [StorageTemplate.java](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/core/StorageTemplate.java)
-- [QiNiuStorageTemplate.java](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/core/qiniu/QiNiuStorageTemplate.java)
-- [PreUploadTokenBO.java](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/core/model/PreUploadTokenBO.java)
-- [UploadBO.java](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/core/model/UploadBO.java)
-- [FileInfo.java](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/core/model/FileInfo.java)
-- [FileStorageEndpoint.java](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/web/FileStorageEndpoint.java)
-- [FileStorageCallbackEndpoint.java](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/web/FileStorageCallbackEndpoint.java)
-- [FileStorageProcessor.java](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/web/FileStorageProcessor.java)
-- [DefaultFileStorageProcessor.java](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/web/impl/DefaultFileStorageProcessor.java)
-- [PreUploadTokenReq.java](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/web/model/PreUploadTokenReq.java)
-- [PreUploadTokenResp.java](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/web/model/PreUploadTokenResp.java)
-- [SysStorageFileMpService.java](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/web/mp/service/SysStorageFileMpService.java)
-- [SysStorageFile.java](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/web/mp/entity/SysStorageFile.java)
+- [StorageAutoConfiguration.java](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/boot/StorageAutoConfiguration.java)
+- [StorageProperties.java](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/boot/StorageProperties.java)
+- [StorageTemplate.java](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/core/StorageTemplate.java)
+- [QiNiuStorageTemplate.java](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/core/qiniu/QiNiuStorageTemplate.java)
+- [PreUploadTokenBO.java](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/core/model/PreUploadTokenBO.java)
+- [UploadBO.java](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/core/model/UploadBO.java)
+- [FileInfo.java](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/core/model/FileInfo.java)
+- [FileStorageEndpoint.java](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/web/FileStorageEndpoint.java)
+- [FileStorageCallbackEndpoint.java](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/web/FileStorageCallbackEndpoint.java)
+- [FileStorageProcessor.java](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/web/FileStorageProcessor.java)
+- [DefaultFileStorageProcessor.java](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/web/impl/DefaultFileStorageProcessor.java)
+- [PreUploadTokenReq.java](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/web/model/PreUploadTokenReq.java)
+- [PreUploadTokenResp.java](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/web/model/PreUploadTokenResp.java)
+- [SysStorageFileMpService.java](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/web/mp/service/SysStorageFileMpService.java)
+- [SysStorageFile.java](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/web/mp/entity/SysStorageFile.java)
 - [spring.factories](file://boot/storage-spring-boot-starter/src/main/resources/META-INF/spring.factories)
 - [application.yml](file://sample/storage-boot-sample/src/main/resources/application.yml)
 </cite>
@@ -86,18 +86,18 @@ SSS --> SSF
 ```
 
 **图表来源**
-- [StorageAutoConfiguration.java:23-70](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/boot/StorageAutoConfiguration.java#L23-L70)
-- [StorageTemplate.java:14-23](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/core/StorageTemplate.java#L14-L23)
-- [QiNiuStorageTemplate.java:23-68](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/core/qiniu/QiNiuStorageTemplate.java#L23-L68)
-- [FileStorageEndpoint.java:25-87](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/web/FileStorageEndpoint.java#L25-L87)
-- [FileStorageCallbackEndpoint.java:19-65](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/web/FileStorageCallbackEndpoint.java#L19-L65)
-- [FileStorageProcessor.java:15-54](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/web/FileStorageProcessor.java#L15-L54)
-- [DefaultFileStorageProcessor.java:24-122](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/web/impl/DefaultFileStorageProcessor.java#L24-L122)
-- [SysStorageFile.java](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/web/mp/entity/SysStorageFile.java)
-- [SysStorageFileMpService.java](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/web/mp/service/SysStorageFileMpService.java)
+- [StorageAutoConfiguration.java:23-70](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/boot/StorageAutoConfiguration.java#L23-L70)
+- [StorageTemplate.java:14-23](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/core/StorageTemplate.java#L14-L23)
+- [QiNiuStorageTemplate.java:23-68](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/core/qiniu/QiNiuStorageTemplate.java#L23-L68)
+- [FileStorageEndpoint.java:25-87](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/web/FileStorageEndpoint.java#L25-L87)
+- [FileStorageCallbackEndpoint.java:19-65](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/web/FileStorageCallbackEndpoint.java#L19-L65)
+- [FileStorageProcessor.java:15-54](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/web/FileStorageProcessor.java#L15-L54)
+- [DefaultFileStorageProcessor.java:24-122](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/web/impl/DefaultFileStorageProcessor.java#L24-L122)
+- [SysStorageFile.java](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/web/mp/entity/SysStorageFile.java)
+- [SysStorageFileMpService.java](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/web/mp/service/SysStorageFileMpService.java)
 
 **章节来源**
-- [StorageAutoConfiguration.java:23-70](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/boot/StorageAutoConfiguration.java#L23-L70)
+- [StorageAutoConfiguration.java:23-70](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/boot/StorageAutoConfiguration.java#L23-L70)
 - [spring.factories:1-2](file://boot/storage-spring-boot-starter/src/main/resources/META-INF/spring.factories#L1-L2)
 
 ## 核心组件
@@ -109,16 +109,16 @@ SSS --> SSF
 - 持久化服务：文件元数据的保存与更新
 
 **章节来源**
-- [StorageAutoConfiguration.java:23-70](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/boot/StorageAutoConfiguration.java#L23-L70)
-- [StorageProperties.java:14-44](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/boot/StorageProperties.java#L14-L44)
-- [StorageTemplate.java:14-23](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/core/StorageTemplate.java#L14-L23)
-- [QiNiuStorageTemplate.java:23-149](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/core/qiniu/QiNiuStorageTemplate.java#L23-L149)
-- [FileStorageEndpoint.java:25-87](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/web/FileStorageEndpoint.java#L25-L87)
-- [FileStorageProcessor.java:15-54](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/web/FileStorageProcessor.java#L15-L54)
-- [DefaultFileStorageProcessor.java:24-122](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/web/impl/DefaultFileStorageProcessor.java#L24-L122)
-- [FileInfo.java:10-24](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/core/model/FileInfo.java#L10-L24)
-- [PreUploadTokenBO.java:14-17](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/core/model/PreUploadTokenBO.java#L14-L17)
-- [UploadBO.java:11-16](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/core/model/UploadBO.java#L11-L16)
+- [StorageAutoConfiguration.java:23-70](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/boot/StorageAutoConfiguration.java#L23-L70)
+- [StorageProperties.java:14-44](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/boot/StorageProperties.java#L14-L44)
+- [StorageTemplate.java:14-23](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/core/StorageTemplate.java#L14-L23)
+- [QiNiuStorageTemplate.java:23-149](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/core/qiniu/QiNiuStorageTemplate.java#L23-L149)
+- [FileStorageEndpoint.java:25-87](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/web/FileStorageEndpoint.java#L25-L87)
+- [FileStorageProcessor.java:15-54](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/web/FileStorageProcessor.java#L15-L54)
+- [DefaultFileStorageProcessor.java:24-122](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/web/impl/DefaultFileStorageProcessor.java#L24-L122)
+- [FileInfo.java:10-24](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/core/model/FileInfo.java#L10-L24)
+- [PreUploadTokenBO.java:14-17](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/core/model/PreUploadTokenBO.java#L14-L17)
+- [UploadBO.java:11-16](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/core/model/UploadBO.java#L11-L16)
 
 ## 架构总览
 存储启动器通过 Spring Boot 自动装配机制，将七牛云 SDK 与内部业务处理器整合为统一的文件存储能力。核心交互链路如下：
@@ -143,10 +143,10 @@ Proc->>Proc : 更新文件状态与元数据
 ```
 
 **图表来源**
-- [FileStorageEndpoint.java:40-47](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/web/FileStorageEndpoint.java#L40-L47)
-- [DefaultFileStorageProcessor.java:34-53](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/web/impl/DefaultFileStorageProcessor.java#L34-L53)
-- [QiNiuStorageTemplate.java:124-149](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/core/qiniu/QiNiuStorageTemplate.java#L124-L149)
-- [FileStorageCallbackEndpoint.java:33-42](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/web/FileStorageCallbackEndpoint.java#L33-L42)
+- [FileStorageEndpoint.java:40-47](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/web/FileStorageEndpoint.java#L40-L47)
+- [DefaultFileStorageProcessor.java:34-53](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/web/impl/DefaultFileStorageProcessor.java#L34-L53)
+- [QiNiuStorageTemplate.java:124-149](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/core/qiniu/QiNiuStorageTemplate.java#L124-L149)
+- [FileStorageCallbackEndpoint.java:33-42](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/web/FileStorageCallbackEndpoint.java#L33-L42)
 
 ## 详细组件分析
 
@@ -184,12 +184,12 @@ StorageAutoConfiguration --> StorageProperties : "依赖"
 ```
 
 **图表来源**
-- [StorageAutoConfiguration.java:23-70](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/boot/StorageAutoConfiguration.java#L23-L70)
-- [StorageProperties.java:14-44](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/boot/StorageProperties.java#L14-L44)
+- [StorageAutoConfiguration.java:23-70](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/boot/StorageAutoConfiguration.java#L23-L70)
+- [StorageProperties.java:14-44](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/boot/StorageProperties.java#L14-L44)
 
 **章节来源**
-- [StorageAutoConfiguration.java:23-70](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/boot/StorageAutoConfiguration.java#L23-L70)
-- [StorageProperties.java:14-44](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/boot/StorageProperties.java#L14-L44)
+- [StorageAutoConfiguration.java:23-70](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/boot/StorageAutoConfiguration.java#L23-L70)
+- [StorageProperties.java:14-44](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/boot/StorageProperties.java#L14-L44)
 
 ### 配置项详解（StorageProperties）
 - 字段说明
@@ -201,10 +201,10 @@ StorageAutoConfiguration --> StorageProperties : "依赖"
   - downloadDomain：下载域名
   - uploadCallbackUrl：上传回调地址
 - 示例配置
-  - 参考样例 application.yml 中的 kewen.storage.* 配置项
+  - 参考样例 application.yml 中的 cu.storage.* 配置项
 
 **章节来源**
-- [StorageProperties.java:14-44](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/boot/StorageProperties.java#L14-L44)
+- [StorageProperties.java:14-44](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/boot/StorageProperties.java#L14-L44)
 - [application.yml:9-17](file://sample/storage-boot-sample/src/main/resources/application.yml#L9-L17)
 
 ### 接口设计（StorageTemplate 与 QiNiuStorageTemplate）
@@ -241,12 +241,12 @@ StorageTemplate <|.. QiNiuStorageTemplate
 ```
 
 **图表来源**
-- [StorageTemplate.java:14-23](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/core/StorageTemplate.java#L14-L23)
-- [QiNiuStorageTemplate.java:23-149](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/core/qiniu/QiNiuStorageTemplate.java#L23-L149)
+- [StorageTemplate.java:14-23](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/core/StorageTemplate.java#L14-L23)
+- [QiNiuStorageTemplate.java:23-149](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/core/qiniu/QiNiuStorageTemplate.java#L23-L149)
 
 **章节来源**
-- [StorageTemplate.java:14-23](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/core/StorageTemplate.java#L14-L23)
-- [QiNiuStorageTemplate.java:23-149](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/core/qiniu/QiNiuStorageTemplate.java#L23-L149)
+- [StorageTemplate.java:14-23](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/core/StorageTemplate.java#L14-L23)
+- [QiNiuStorageTemplate.java:23-149](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/core/qiniu/QiNiuStorageTemplate.java#L23-L149)
 
 ### 文件上传流程（客户端直传 + 回调）
 - 预上传阶段
@@ -269,14 +269,14 @@ UpdateMeta --> End(["结束"])
 ```
 
 **图表来源**
-- [DefaultFileStorageProcessor.java:34-67](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/web/impl/DefaultFileStorageProcessor.java#L34-L67)
-- [QiNiuStorageTemplate.java:124-149](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/core/qiniu/QiNiuStorageTemplate.java#L124-L149)
-- [FileStorageCallbackEndpoint.java:33-42](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/web/FileStorageCallbackEndpoint.java#L33-L42)
+- [DefaultFileStorageProcessor.java:34-67](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/web/impl/DefaultFileStorageProcessor.java#L34-L67)
+- [QiNiuStorageTemplate.java:124-149](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/core/qiniu/QiNiuStorageTemplate.java#L124-L149)
+- [FileStorageCallbackEndpoint.java:33-42](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/web/FileStorageCallbackEndpoint.java#L33-L42)
 
 **章节来源**
-- [FileStorageEndpoint.java:40-47](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/web/FileStorageEndpoint.java#L40-L47)
-- [DefaultFileStorageProcessor.java:34-67](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/web/impl/DefaultFileStorageProcessor.java#L34-L67)
-- [FileStorageCallbackEndpoint.java:33-42](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/web/FileStorageCallbackEndpoint.java#L33-L42)
+- [FileStorageEndpoint.java:40-47](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/web/FileStorageEndpoint.java#L40-L47)
+- [DefaultFileStorageProcessor.java:34-67](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/web/impl/DefaultFileStorageProcessor.java#L34-L67)
+- [FileStorageCallbackEndpoint.java:33-42](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/web/FileStorageCallbackEndpoint.java#L33-L42)
 
 ### Web 层与处理器（FileStorageEndpoint、FileStorageProcessor、DefaultFileStorageProcessor）
 - FileStorageEndpoint
@@ -313,14 +313,14 @@ E-->>C : 上传结果
 ```
 
 **图表来源**
-- [FileStorageEndpoint.java:40-84](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/web/FileStorageEndpoint.java#L40-L84)
-- [DefaultFileStorageProcessor.java:34-98](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/web/impl/DefaultFileStorageProcessor.java#L34-L98)
-- [StorageTemplate.java:14-23](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/core/StorageTemplate.java#L14-L23)
+- [FileStorageEndpoint.java:40-84](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/web/FileStorageEndpoint.java#L40-L84)
+- [DefaultFileStorageProcessor.java:34-98](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/web/impl/DefaultFileStorageProcessor.java#L34-L98)
+- [StorageTemplate.java:14-23](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/core/StorageTemplate.java#L14-L23)
 
 **章节来源**
-- [FileStorageEndpoint.java:25-87](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/web/FileStorageEndpoint.java#L25-L87)
-- [FileStorageProcessor.java:15-54](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/web/FileStorageProcessor.java#L15-L54)
-- [DefaultFileStorageProcessor.java:24-122](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/web/impl/DefaultFileStorageProcessor.java#L24-L122)
+- [FileStorageEndpoint.java:25-87](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/web/FileStorageEndpoint.java#L25-L87)
+- [FileStorageProcessor.java:15-54](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/web/FileStorageProcessor.java#L15-L54)
+- [DefaultFileStorageProcessor.java:24-122](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/web/impl/DefaultFileStorageProcessor.java#L24-L122)
 
 ### 数据模型
 - FileInfo：封装文件下载信息（fileId、fileName、url、size）
@@ -328,9 +328,9 @@ E-->>C : 上传结果
 - UploadBO：封装上传返回（key、hash、size）
 
 **章节来源**
-- [FileInfo.java:10-24](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/core/model/FileInfo.java#L10-L24)
-- [PreUploadTokenBO.java:14-17](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/core/model/PreUploadTokenBO.java#L14-L17)
-- [UploadBO.java:11-16](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/core/model/UploadBO.java#L11-L16)
+- [FileInfo.java:10-24](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/core/model/FileInfo.java#L10-L24)
+- [PreUploadTokenBO.java:14-17](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/core/model/PreUploadTokenBO.java#L14-L17)
+- [UploadBO.java:11-16](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/core/model/UploadBO.java#L11-L16)
 
 ## 依赖关系分析
 - 组件耦合
@@ -341,7 +341,7 @@ E-->>C : 上传结果
   - 七牛云 SDK（Auth、UploadManager、Region 等）
   - MyBatis-Plus（Mapper 与 Service）
 - 自动装配
-  - spring.factories 声明 EnableAutoConfiguration=com.kewen.framework.storage.boot.StorageAutoConfiguration
+  - spring.factories 声明 EnableAutoConfiguration=com.cu.framework.storage.boot.StorageAutoConfiguration
 
 ```mermaid
 graph LR
@@ -359,9 +359,9 @@ SSS --> SSF["SysStorageFile"]
 ```
 
 **图表来源**
-- [StorageAutoConfiguration.java:23-70](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/boot/StorageAutoConfiguration.java#L23-L70)
-- [DefaultFileStorageProcessor.java:24-122](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/web/impl/DefaultFileStorageProcessor.java#L24-L122)
-- [QiNiuStorageTemplate.java:23-149](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/core/qiniu/QiNiuStorageTemplate.java#L23-L149)
+- [StorageAutoConfiguration.java:23-70](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/boot/StorageAutoConfiguration.java#L23-L70)
+- [DefaultFileStorageProcessor.java:24-122](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/web/impl/DefaultFileStorageProcessor.java#L24-L122)
+- [QiNiuStorageTemplate.java:23-149](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/core/qiniu/QiNiuStorageTemplate.java#L23-L149)
 - [spring.factories:1-2](file://boot/storage-spring-boot-starter/src/main/resources/META-INF/spring.factories#L1-L2)
 
 **章节来源**
@@ -389,8 +389,8 @@ SSS --> SSF["SysStorageFile"]
   - 确认 mimeType 与实际文件类型匹配
 
 **章节来源**
-- [DefaultFileStorageProcessor.java:56-67](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/web/impl/DefaultFileStorageProcessor.java#L56-L67)
-- [QiNiuStorageTemplate.java:70-94](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/core/qiniu/QiNiuStorageTemplate.java#L70-L94)
+- [DefaultFileStorageProcessor.java:56-67](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/web/impl/DefaultFileStorageProcessor.java#L56-L67)
+- [QiNiuStorageTemplate.java:70-94](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/core/qiniu/QiNiuStorageTemplate.java#L70-L94)
 
 ## 结论
 存储启动器以自动配置为核心，将七牛云存储能力与业务处理器解耦，提供统一的文件上传、下载与回调处理能力。通过预上传令牌与回调机制，既保证了上传效率，又确保了元数据一致性与安全性。建议在生产环境中完善监控与告警，并结合业务场景优化 CDN 与缓存策略。
@@ -430,12 +430,12 @@ SSS --> SSF["SysStorageFile"]
   - 响应体：Result
 
 **章节来源**
-- [FileStorageEndpoint.java:40-84](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/web/FileStorageEndpoint.java#L40-L84)
-- [FileStorageCallbackEndpoint.java:33-63](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/web/FileStorageCallbackEndpoint.java#L33-L63)
+- [FileStorageEndpoint.java:40-84](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/web/FileStorageEndpoint.java#L40-L84)
+- [FileStorageCallbackEndpoint.java:33-63](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/web/FileStorageCallbackEndpoint.java#L33-L63)
 
 ### 使用示例（基于样例配置）
 - 配置示例
-  - 参考 application.yml 中 kewen.storage.* 字段
+  - 参考 application.yml 中 cu.storage.* 字段
 - 前端直传流程
   - 调用 /storage/genUploadToken 获取 uploadToken 与 key
   - 使用七牛云 JS SDK 或表单直传到七牛云
@@ -446,5 +446,5 @@ SSS --> SSF["SysStorageFile"]
 
 **章节来源**
 - [application.yml:9-17](file://sample/storage-boot-sample/src/main/resources/application.yml#L9-L17)
-- [FileStorageEndpoint.java:56-73](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/web/FileStorageEndpoint.java#L56-L73)
-- [DefaultFileStorageProcessor.java:82-98](file://boot/storage-spring-boot-starter/src/main/java/com/kewen/framework/storage/web/impl/DefaultFileStorageProcessor.java#L82-L98)
+- [FileStorageEndpoint.java:56-73](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/web/FileStorageEndpoint.java#L56-L73)
+- [DefaultFileStorageProcessor.java:82-98](file://boot/storage-spring-boot-starter/src/main/java/com/cu/framework/storage/web/impl/DefaultFileStorageProcessor.java#L82-L98)

@@ -1,7 +1,7 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.kewen.framework.boot.basic.config.AsyncConfig,\
-  com.kewen.framework.boot.basic.config.BasicSupportConfig,\
-  com.kewen.framework.boot.basic.config.EarlyFilterConfig,\
-  com.kewen.framework.boot.basic.config.MessageConfig,\
-  com.kewen.framework.boot.basic.config.MybatisPlusConfig,\
-  com.kewen.framework.boot.basic.config.RequestResponseFormatConfig
+  com.cu.framework.boot.basic.config.AsyncConfig,\
+  com.cu.framework.boot.basic.config.BasicSupportConfig,\
+  com.cu.framework.boot.basic.config.EarlyFilterConfig,\
+  com.cu.framework.boot.basic.config.MessageConfig,\
+  com.cu.framework.boot.basic.config.MybatisPlusConfig,\
+  com.cu.framework.boot.basic.config.RequestResponseFormatConfig

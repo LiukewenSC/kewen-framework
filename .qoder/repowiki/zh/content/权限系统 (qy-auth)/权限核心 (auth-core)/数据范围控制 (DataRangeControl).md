@@ -2,20 +2,20 @@
 
 <cite>
 **本文引用的文件**
-- [DataRangeContext.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/DataRangeContext.java)
-- [DataRangeAspect.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/DataRangeAspect.java)
-- [AuthRange.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/AuthRange.java)
-- [MatchMethod.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/MatchMethod.java)
-- [MybatisDataRangeInterceptor.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/MybatisDataRangeInterceptor.java)
-- [SqlAuthInject.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/SqlAuthInject.java)
-- [AuthDataRange.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthDataRange.java)
-- [AuthUserContext.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthUserContext.java)
-- [BaseAuth.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/BaseAuth.java)
-- [AuthDataTable.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataTable.java)
-- [AuthCoreConfig.java](file://qy-auth/auth-core-spring-boot-starter/src/main/java/com/kewen/framework/boot/auth/core/config/AuthCoreConfig.java)
-- [AuthDataTableProperties.java](file://qy-auth/auth-core-spring-boot-starter/src/main/java/com/kewen/framework/boot/auth/core/properties/AuthDataTableProperties.java)
-- [AuthUserContextFilter.java](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/filter/AuthUserContextFilter.java)
-- [MybatisAuthSqlInjectTest.java](file://qy-auth/auth-core/src/test/java/com/kewen/framework/auth/core/data/range/MybatisAuthSqlInjectTest.java)
+- [DataRangeContext.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/DataRangeContext.java)
+- [DataRangeAspect.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/DataRangeAspect.java)
+- [AuthRange.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/AuthRange.java)
+- [MatchMethod.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/MatchMethod.java)
+- [MybatisDataRangeInterceptor.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/MybatisDataRangeInterceptor.java)
+- [SqlAuthInject.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/SqlAuthInject.java)
+- [AuthDataRange.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthDataRange.java)
+- [AuthUserContext.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthUserContext.java)
+- [BaseAuth.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/BaseAuth.java)
+- [AuthDataTable.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataTable.java)
+- [AuthCoreConfig.java](file://qy-auth/auth-core-spring-boot-starter/src/main/java/com/cu/framework/boot/auth/core/config/AuthCoreConfig.java)
+- [AuthDataTableProperties.java](file://qy-auth/auth-core-spring-boot-starter/src/main/java/com/cu/framework/boot/auth/core/properties/AuthDataTableProperties.java)
+- [AuthUserContextFilter.java](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/filter/AuthUserContextFilter.java)
+- [MybatisAuthSqlInjectTest.java](file://qy-auth/auth-core/src/test/java/com/cu/framework/auth/core/data/range/MybatisAuthSqlInjectTest.java)
 - [README_Auth.md](file://README_Auth.md)
 </cite>
 
@@ -69,20 +69,20 @@ DRC --> MDR --> SAI --> ADT
 ```
 
 图表来源
-- [AuthUserContext.java:16-31](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthUserContext.java#L16-L31)
-- [AuthUserContextFilter.java:31-84](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/filter/AuthUserContextFilter.java#L31-L84)
-- [AuthDataRange.java:27-72](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthDataRange.java#L27-L72)
-- [DataRangeAspect.java:19-51](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/DataRangeAspect.java#L19-L51)
-- [DataRangeContext.java:9-24](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/DataRangeContext.java#L9-L24)
-- [MybatisDataRangeInterceptor.java:36-121](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/MybatisDataRangeInterceptor.java#L36-L121)
-- [SqlAuthInject.java:47-374](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/SqlAuthInject.java#L47-L374)
-- [AuthDataTable.java:14-86](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataTable.java#L14-L86)
+- [AuthUserContext.java:16-31](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthUserContext.java#L16-L31)
+- [AuthUserContextFilter.java:31-84](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/filter/AuthUserContextFilter.java#L31-L84)
+- [AuthDataRange.java:27-72](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthDataRange.java#L27-L72)
+- [DataRangeAspect.java:19-51](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/DataRangeAspect.java#L19-L51)
+- [DataRangeContext.java:9-24](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/DataRangeContext.java#L9-L24)
+- [MybatisDataRangeInterceptor.java:36-121](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/MybatisDataRangeInterceptor.java#L36-L121)
+- [SqlAuthInject.java:47-374](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/SqlAuthInject.java#L47-L374)
+- [AuthDataTable.java:14-86](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataTable.java#L14-L86)
 
 章节来源
-- [AuthDataRange.java:11-72](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthDataRange.java#L11-L72)
-- [DataRangeAspect.java:14-51](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/DataRangeAspect.java#L14-L51)
-- [MybatisDataRangeInterceptor.java:22-121](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/MybatisDataRangeInterceptor.java#L22-L121)
-- [SqlAuthInject.java:23-374](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/SqlAuthInject.java#L23-L374)
+- [AuthDataRange.java:11-72](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthDataRange.java#L11-L72)
+- [DataRangeAspect.java:14-51](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/DataRangeAspect.java#L14-L51)
+- [MybatisDataRangeInterceptor.java:22-121](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/MybatisDataRangeInterceptor.java#L22-L121)
+- [SqlAuthInject.java:23-374](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/SqlAuthInject.java#L23-L374)
 
 ## 核心组件
 - DataRangeContext：基于 InheritableThreadLocal 的线程上下文，承载一次请求内的权限范围信息
@@ -96,15 +96,15 @@ DRC --> MDR --> SAI --> ADT
 - AuthDataTable：权限表字段映射，提供权限表、业务功能、操作、权限列等名称
 
 章节来源
-- [DataRangeContext.java:9-24](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/DataRangeContext.java#L9-L24)
-- [DataRangeAspect.java:19-51](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/DataRangeAspect.java#L19-L51)
-- [AuthRange.java:14-49](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/AuthRange.java#L14-L49)
-- [MatchMethod.java:10-23](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/MatchMethod.java#L10-L23)
-- [MybatisDataRangeInterceptor.java:36-121](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/MybatisDataRangeInterceptor.java#L36-L121)
-- [SqlAuthInject.java:47-374](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/SqlAuthInject.java#L47-L374)
-- [AuthDataRange.java:27-72](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthDataRange.java#L27-L72)
-- [AuthUserContext.java:16-31](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthUserContext.java#L16-L31)
-- [AuthDataTable.java:14-86](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataTable.java#L14-L86)
+- [DataRangeContext.java:9-24](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/DataRangeContext.java#L9-L24)
+- [DataRangeAspect.java:19-51](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/DataRangeAspect.java#L19-L51)
+- [AuthRange.java:14-49](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/AuthRange.java#L14-L49)
+- [MatchMethod.java:10-23](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/MatchMethod.java#L10-L23)
+- [MybatisDataRangeInterceptor.java:36-121](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/MybatisDataRangeInterceptor.java#L36-L121)
+- [SqlAuthInject.java:47-374](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/SqlAuthInject.java#L47-L374)
+- [AuthDataRange.java:27-72](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthDataRange.java#L27-L72)
+- [AuthUserContext.java:16-31](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthUserContext.java#L16-L31)
+- [AuthDataTable.java:14-86](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataTable.java#L14-L86)
 
 ## 架构总览
 整体流程：控制器方法标注 AuthDataRange → AOP 切面将权限范围写入 DataRangeContext → MyBatis 拦截器读取上下文 → SqlAuthInject 解析 SQL 并注入权限条件 → 执行 SQL。
@@ -130,10 +130,10 @@ A->>CTX : "清理上下文"
 ```
 
 图表来源
-- [DataRangeAspect.java:27-48](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/DataRangeAspect.java#L27-L48)
-- [DataRangeContext.java:13-21](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/DataRangeContext.java#L13-L21)
-- [MybatisDataRangeInterceptor.java:82-108](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/MybatisDataRangeInterceptor.java#L82-L108)
-- [SqlAuthInject.java:60-78](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/SqlAuthInject.java#L60-L78)
+- [DataRangeAspect.java:27-48](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/DataRangeAspect.java#L27-L48)
+- [DataRangeContext.java:13-21](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/DataRangeContext.java#L13-L21)
+- [MybatisDataRangeInterceptor.java:82-108](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/MybatisDataRangeInterceptor.java#L82-L108)
+- [SqlAuthInject.java:60-78](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/SqlAuthInject.java#L60-L78)
 
 ## 组件详解
 
@@ -146,7 +146,7 @@ A->>CTX : "清理上下文"
   - MyBatis 拦截器在 SQL 执行前读取上下文决定是否注入
 
 章节来源
-- [DataRangeContext.java:9-24](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/DataRangeContext.java#L9-L24)
+- [DataRangeContext.java:9-24](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/DataRangeContext.java#L9-L24)
 
 ### DataRangeAspect 数据范围切面
 - 功能
@@ -159,9 +159,9 @@ A->>CTX : "清理上下文"
   - 与 AuthUserContext 协作获取权限集合
 
 章节来源
-- [DataRangeAspect.java:19-51](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/DataRangeAspect.java#L19-L51)
-- [AuthDataRange.java:36-70](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthDataRange.java#L36-L70)
-- [AuthUserContext.java:18-23](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthUserContext.java#L18-L23)
+- [DataRangeAspect.java:19-51](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/DataRangeAspect.java#L19-L51)
+- [AuthDataRange.java:36-70](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthDataRange.java#L36-L70)
+- [AuthUserContext.java:18-23](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthUserContext.java#L18-L23)
 
 ### AuthRange 权限范围模型
 - 字段说明
@@ -173,7 +173,7 @@ A->>CTX : "清理上下文"
   - matchMethod：匹配方式（IN/EXISTS）
 
 章节来源
-- [AuthRange.java:14-49](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/AuthRange.java#L14-L49)
+- [AuthRange.java:14-49](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/AuthRange.java#L14-L49)
 
 ### MatchMethod 匹配方法
 - IN：适用于权限集合较小的情况，权限表数据量远小于业务表
@@ -181,7 +181,7 @@ A->>CTX : "清理上下文"
 - 选择原则：小表驱动大表
 
 章节来源
-- [MatchMethod.java:10-23](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/MatchMethod.java#L10-L23)
+- [MatchMethod.java:10-23](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/MatchMethod.java#L10-L23)
 
 ### MybatisDataRangeInterceptor 拦截器
 - 拦截点：StatementHandler.prepare
@@ -194,7 +194,7 @@ A->>CTX : "清理上下文"
   - MyBatis 插件早于 Spring 完成初始化，采用双重检查懒加载获取 SqlAuthInject Bean
 
 章节来源
-- [MybatisDataRangeInterceptor.java:36-121](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/MybatisDataRangeInterceptor.java#L36-L121)
+- [MybatisDataRangeInterceptor.java:36-121](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/MybatisDataRangeInterceptor.java#L36-L121)
 
 ### SqlAuthInject SQL 注入器
 - 解析与改写
@@ -210,8 +210,8 @@ A->>CTX : "清理上下文"
   - operate = 参数
 
 章节来源
-- [SqlAuthInject.java:47-374](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/SqlAuthInject.java#L47-L374)
-- [AuthDataTable.java:14-86](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataTable.java#L14-L86)
+- [SqlAuthInject.java:47-374](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/SqlAuthInject.java#L47-L374)
+- [AuthDataTable.java:14-86](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataTable.java#L14-L86)
 
 ### AuthDataRange 注解与配置
 - 作用域：方法级
@@ -226,7 +226,7 @@ A->>CTX : "清理上下文"
   - 与 MyBatis Mapper 查询配合使用
 
 章节来源
-- [AuthDataRange.java:27-72](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthDataRange.java#L27-L72)
+- [AuthDataRange.java:27-72](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthDataRange.java#L27-L72)
 - [README_Auth.md:292-448](file://README_Auth.md#L292-L448)
 
 ### 用户上下文与权限集合
@@ -235,9 +235,9 @@ A->>CTX : "清理上下文"
 - AuthUserContextFilter 在请求进入时设置当前用户上下文
 
 章节来源
-- [AuthUserContext.java:16-31](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthUserContext.java#L16-L31)
-- [BaseAuth.java:12-61](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/BaseAuth.java#L12-L61)
-- [AuthUserContextFilter.java:31-84](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/filter/AuthUserContextFilter.java#L31-L84)
+- [AuthUserContext.java:16-31](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthUserContext.java#L16-L31)
+- [BaseAuth.java:12-61](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/BaseAuth.java#L12-L61)
+- [AuthUserContextFilter.java:31-84](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/filter/AuthUserContextFilter.java#L31-L84)
 
 ### 权限表字段映射
 - AuthDataTable 定义权限表的列名映射，包括：
@@ -245,7 +245,7 @@ A->>CTX : "清理上下文"
 - 用于 SqlAuthInject 构造权限表查询条件
 
 章节来源
-- [AuthDataTable.java:14-86](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataTable.java#L14-L86)
+- [AuthDataTable.java:14-86](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataTable.java#L14-L86)
 
 ## 依赖关系分析
 - 组件耦合
@@ -281,12 +281,12 @@ AuthRange --> BaseAuth : "权限集合"
 ```
 
 图表来源
-- [DataRangeAspect.java:27-48](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/DataRangeAspect.java#L27-L48)
-- [DataRangeContext.java:13-21](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/DataRangeContext.java#L13-L21)
-- [MybatisDataRangeInterceptor.java:82-108](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/MybatisDataRangeInterceptor.java#L82-L108)
-- [SqlAuthInject.java:60-78](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/SqlAuthInject.java#L60-L78)
-- [AuthRange.java:14-49](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/AuthRange.java#L14-L49)
-- [AuthDataTable.java:14-86](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataTable.java#L14-L86)
+- [DataRangeAspect.java:27-48](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/DataRangeAspect.java#L27-L48)
+- [DataRangeContext.java:13-21](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/DataRangeContext.java#L13-L21)
+- [MybatisDataRangeInterceptor.java:82-108](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/MybatisDataRangeInterceptor.java#L82-L108)
+- [SqlAuthInject.java:60-78](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/SqlAuthInject.java#L60-L78)
+- [AuthRange.java:14-49](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/AuthRange.java#L14-L49)
+- [AuthDataTable.java:14-86](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataTable.java#L14-L86)
 
 ## 性能考量
 - 匹配策略选择
@@ -315,10 +315,10 @@ AuthRange --> BaseAuth : "权限集合"
   - 优化权限表索引与统计信息
 
 章节来源
-- [MybatisDataRangeInterceptor.java:82-108](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/MybatisDataRangeInterceptor.java#L82-L108)
-- [SqlAuthInject.java:127-153](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/SqlAuthInject.java#L127-L153)
-- [AuthDataTable.java:62-82](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataTable.java#L62-L82)
-- [AuthUserContext.java:18-23](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthUserContext.java#L18-L23)
+- [MybatisDataRangeInterceptor.java:82-108](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/MybatisDataRangeInterceptor.java#L82-L108)
+- [SqlAuthInject.java:127-153](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/SqlAuthInject.java#L127-L153)
+- [AuthDataTable.java:62-82](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataTable.java#L62-L82)
+- [AuthUserContext.java:18-23](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthUserContext.java#L18-L23)
 
 ## 结论
 数据范围控制模块通过注解声明、AOP 注入、MyBatis 拦截与 SQL 改写形成闭环，既保证了业务代码的简洁性，又实现了细粒度的数据权限控制。合理选择匹配策略、正确配置权限表字段映射与注解参数，是发挥该模块能力的关键。
@@ -332,8 +332,8 @@ AuthRange --> BaseAuth : "权限集合"
 - 步骤四：验证 SQL 改写结果与权限效果
 
 参考路径
-- [AuthDataRange.java:27-72](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthDataRange.java#L27-L72)
-- [AuthUserContextFilter.java:31-84](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/filter/AuthUserContextFilter.java#L31-L84)
+- [AuthDataRange.java:27-72](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthDataRange.java#L27-L72)
+- [AuthUserContextFilter.java:31-84](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/filter/AuthUserContextFilter.java#L31-L84)
 - [README_Auth.md:372-394](file://README_Auth.md#L372-L394)
 
 ### SQL 改写流程图
@@ -351,13 +351,13 @@ ThrowErr --> End
 ```
 
 图表来源
-- [SqlAuthInject.java:60-78](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/SqlAuthInject.java#L60-L78)
-- [SqlAuthInject.java:127-243](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/SqlAuthInject.java#L127-L243)
+- [SqlAuthInject.java:60-78](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/SqlAuthInject.java#L60-L78)
+- [SqlAuthInject.java:127-243](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/SqlAuthInject.java#L127-L243)
 
 ### 配置与扩展
 - 权限表字段映射可通过 AuthDataTableProperties 与 AuthCoreConfig 进行配置
 - 若需自定义权限表列名，可在 AuthDataTable 中调整字段映射
 
 章节来源
-- [AuthCoreConfig.java:66-78](file://qy-auth/auth-core-spring-boot-starter/src/main/java/com/kewen/framework/boot/auth/core/config/AuthCoreConfig.java#L66-L78)
-- [AuthDataTableProperties.java:14-109](file://qy-auth/auth-core-spring-boot-starter/src/main/java/com/kewen/framework/boot/auth/core/properties/AuthDataTableProperties.java#L14-L109)
+- [AuthCoreConfig.java:66-78](file://qy-auth/auth-core-spring-boot-starter/src/main/java/com/cu/framework/boot/auth/core/config/AuthCoreConfig.java#L66-L78)
+- [AuthDataTableProperties.java:14-109](file://qy-auth/auth-core-spring-boot-starter/src/main/java/com/cu/framework/boot/auth/core/properties/AuthDataTableProperties.java#L14-L109)

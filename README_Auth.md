@@ -1,11 +1,11 @@
 
 # 1. 框架简介
 
-**kewen-framework-auth** 是一个基于注解实现的权限控制和验证的Java后端多模块的框架，通过引入对应的模块功能快速引入一整套权限系统开发业务功能，避免了业务上重新再设计权限体系。
+**cu-framework-auth** 是一个基于注解实现的权限控制和验证的Java后端多模块的框架，通过引入对应的模块功能快速引入一整套权限系统开发业务功能，避免了业务上重新再设计权限体系。
 
 在普通的项目中，权限往往是项目的基础功能，业务的运行离不开权限的配合使用，因此每个系统都去搭建自己的一套权限体系，而且每个业务中都需要维护一套权限的系列表，业务中的各个地方还需要在服务中进行一系列的校验。这样做的结果就是花了很多时间来解决权限的问题，而且每个业务自行维护的表无法进行公共的抽象，将出现了很多的相同逻辑的冗余代码。
 
-目前大部分的权限体系其实都是基于RABC思想（用户-部门-角色-岗位）来设计，通过对业务与用户组织信息建立对应的映射关系来实现权限控制，其实有非常大的共有特点，而且由于权限本身对于一个项目来说的话就是公共的部分，因此本项目从常用的RABC权限体系入手，通过设计来实现统一的权限管理。
+目前大部分的权限体系其实都是基于RBAC思想（用户-部门-角色-岗位）来设计，通过对业务与用户组织信息建立对应的映射关系来实现权限控制，其实有非常大的共有特点，而且由于权限本身对于一个项目来说的话就是公共的部分，因此本项目从常用的RBAC权限体系入手，通过设计来实现统一的权限管理。
 
 本框架主要是用`Java+Maven+Spring+SpringMVC+SpringBoot+SpringSecurity+MybatisPlus+Mysql`来搭建的，主要基于Spring5和SpringBoot2搭建。
 
@@ -17,7 +17,7 @@
 
 ## 基于用户-角色-部门的默认实现
 
-实现了用户-角色-部门的rabc用户体系的实现
+实现了用户-角色-部门的rbac用户体系的实现
 
 ## 整合SpringSecurity加强安全
 
@@ -67,14 +67,14 @@
 
 ```xml
 <parent>
-   <groupId>com.kewen.framework.auth</groupId>
+   <groupId>com.cu.framework.auth</groupId>
    <artifactId>auth-parent</artifactId>
    <version>1.0.1-SNAPSHOT</version>
 </parent>
 
 <dependencies>
    <dependency>
-      <groupId>com.kewen.framework.auth</groupId>
+      <groupId>com.cu.framework.auth</groupId>
       <artifactId>auth-spring-boot-starter</artifactId>
    </dependency>
 </dependencies>
@@ -82,13 +82,13 @@
 
 ## 4.1. 启动示例工程
 
-框架配置了一个示例工程，受mysql开源协议影响，示例工程已经移动至[kewen-framework-auth-sample](https://gitee.com/LiuKewenSc/kewen-framework-auth-sample)下，可以查看其**README.md**文档
+框架配置了一个示例工程，受mysql开源协议影响，示例工程已经移动至[cu-framework-auth-sample](https://gitee.com/LiuKewenSc/cu-framework-auth-sample)下，可以查看其**README.md**文档
 
 此外，框架还搭配了我的另外一个前端模板项目[kewen-web-admin](https://gitee.com/LiuKewenSc/kewen-web-admin)，可以fork到自己工程中也可以复制下来，然后启动。
 
 ## 4.2. 引入到自己的工程
 
-框架自带了一套基于RABC(User-Dept-Role)的权限实现，同时配置了安全模块，可以直接引入依赖即可完成，下面说一下快速启动的步骤
+框架自带了一套基于RBAC(User-Dept-Role)的权限实现，同时配置了安全模块，可以直接引入依赖即可完成，下面说一下快速启动的步骤
 
 - 初始化数据库
 - 引入依赖
@@ -97,18 +97,18 @@
 - 启动
 
 **引入依赖**：引入相关的依赖
-需要把`auth-starter-security-web`和`auth-starter-rabc`都引进，前者有安全和登录相关的，后台有基于RABC的权限实现
+需要把`auth-starter-security-web`和`auth-starter-rbac`都引进，前者有安全和登录相关的，后台有基于RBAC的权限实现
 
 ```xml
 <dependencies>
    <dependency>
-      <groupId>com.kewen.framework.auth</groupId>
+      <groupId>com.cu.framework.auth</groupId>
       <artifactId>auth-spring-boot-starter</artifactId>
       <version>1.0.1-SNAPSHOT</version>
    </dependency>
    <dependency>
-      <groupId>com.kewen.framework.auth</groupId>
-      <artifactId>auth-rabc-spring-boot-starter</artifactId>
+      <groupId>com.cu.framework.auth</groupId>
+      <artifactId>auth-rbac-spring-boot-starter</artifactId>
       <version>1.0.1-SNAPSHOT</version>
    </dependency>
    <dependency>
@@ -124,7 +124,7 @@
 
 ```properties
 server.port=8081
-spring.datasource.url=jdbc:mysql://liukewensc.mysql.rds.aliyuncs.com:3306/kewen_framework_auth_template
+spring.datasource.url=jdbc:mysql://liukewensc.mysql.rds.aliyuncs.com:3306/cu_framework_auth_template
 spring.datasource.username=open_framework
 spring.datasource.password=framework123456_
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
@@ -132,7 +132,7 @@ spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 
 ## 4.3. 应用可选配置
 
-然后应用中有部分可选配置，可以参考`kewen-framework-auth-sample`启动示例工程选择使用
+然后应用中有部分可选配置，可以参考`cu-framework-auth-sample`启动示例工程选择使用
 `ExceptionAdviceHandler`主要用于返回异常，方便在报错时可以准确处理异常
 `SampleResponseBodyResultResolver`，认证成功返回的结构处理，可以匹配成和自己项目中一致的统一返回，不配置则使用默认的
 
@@ -147,7 +147,7 @@ spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 # 5. 项目结构
 
 ```txt
-kewen-framework-auth
+cu-framework-auth
 ├─auth-core                         核心模块
 │    ├─annotation                   注解相关包
 │    │    ├─data                    数据相关注解
@@ -167,23 +167,23 @@ kewen-framework-auth
 │         ├─AbstractIdNameFlagAuthEntity  id+name结构的权限实体实现，内部实现获取和填充属性的方法
 │         └─IFlagAuthEntity         带标记的权限实体， 比如 ROLE_1  USER_1 这种结构标记
 │
-├─auth-rabc                         RABC权限实现模块
-│    ├─RabcAnnotationAuthHandler    RABC权限相关实现接口，完成注解的实际功能逻辑
-│    ├─model                        RABC相关的基础模型
-│    ├─mp                           RABC持久层逻辑代码，mybatisplus代码生成器相关服务
+├─auth-rbac                         RBAC权限实现模块
+│    ├─RbacAnnotationAuthHandler    RBAC权限相关实现接口，完成注解的实际功能逻辑
+│    ├─model                        RBAC相关的基础模型
+│    ├─mp                           RBAC持久层逻辑代码，mybatisplus代码生成器相关服务
 │    ├─utils                        树形工具和对象转换拷贝工具
 │    ├─composite                    拆分服务，根据数据、菜单、登录人维度各自完成对应的服务
-│    └─controller                   RABC用户、部门、角色相关的业务逻辑，方便维护
+│    └─controller                   RBAC用户、部门、角色相关的业务逻辑，方便维护
 |
 ├─auth-core-spring-boot-starter   
 │    ├─config                       核心注解相关的启动类，主要是注解及其依赖相关的配置
 │    ├─init                         初始化菜单API并入库
 │    └─properties                   表结构相关的参数定义
 |
-├─auth-rabc-spring-boot-starter                 RABC快速配置模块，以SpringBoot方式配置
+├─auth-rbac-spring-boot-starter                 RBAC快速配置模块，以SpringBoot方式配置
 │    └─config                       配置
-│         ├─AuthRabcConfig          默认的对象配置，配置auth-rabc模块的相关的Bean
-│         └─AuthRabcScanConfig      RABC配置扫描，配置相关Bean
+│         ├─AuthRbacConfig          默认的对象配置，配置auth-rbac模块的相关的Bean
+│         └─AuthRbacScanConfig      RBAC配置扫描，配置相关Bean
 |
 ├─auth-spring-boot-starter         框架安全相关的配置，同时包括登录
 │    ├─annotation
@@ -203,11 +203,11 @@ kewen-framework-auth
 │    │    └─ResponseBodyResultResolver 成功登录之后的转换结构，方便统一返回
 │    └─service
 │         ├─SecurityUserDetailsService 用户登录相关需要实现的类
-│         └─RabcSecurityUserDetailsService RABC方式默认实现的类
+│         └─RbacSecurityUserDetailsService RBAC方式默认实现的类
 |
 └─docs(文件夹)
      ├─properties                   示例配置文件
-     └─sql                          RABC初始化数据库脚本文件
+     └─sql                          RBAC初始化数据库脚本文件
      
 ```
 
@@ -453,7 +453,7 @@ LEFT JOIN (select * from dept d  where
 ```java
 /**
  * @descrpition 校验是否有编辑单条数据的权限
- * dataId需要关联获取 {@link com.kewen.framework.auth.core.annotation.data.edit。IdDataEdit}
+ * dataId需要关联获取 {@link com.cu.framework.auth.core.data.edit.IdDataEdit}
  * @author kewen
  * @since 2022-11-23
  */
@@ -588,11 +588,11 @@ public class AuthDataAdaptor<ID> {
 
 # 8. 示例案例
 
-示例案例新建工程`kewen-framework-auth-sample`中，可以参考此工程来引入及配置
+示例案例新建工程`cu-framework-auth-sample`中，可以参考此工程来引入及配置
 
 # 9. 高级配置扩展
 
-框架实现了基于RABC的权限体系，同时也预留了很多扩展点，这其实也是一个框架应该具有的基本要求。
+框架实现了基于RBAC的权限体系，同时也预留了很多扩展点，这其实也是一个框架应该具有的基本要求。
 这里将从基础到复杂进行配置说明
 
 ## 9.1. 安全登录相关
@@ -605,7 +605,7 @@ public class AuthDataAdaptor<ID> {
 可以自定义登录的API请求地址、username参数、password参数、token头参数、当前登录人接口、最大session数量、是否可以挤下线
 
 ```yml
-kewen-framework:
+cu-framework:
    security:
       login:
          login-url: /login                 #登录地址
@@ -696,7 +696,7 @@ public class ExceptionAdviceHandler {
 }
 ```
 
-也可以参考 **kewen-framework-auth-sample**下的`ExceptionAdviceHandler`
+也可以参考 **cu-framework-auth-sample**下的`ExceptionAdviceHandler`
 
 ## 9.2. 注解权限相关
 
@@ -705,8 +705,8 @@ public class ExceptionAdviceHandler {
 ### 9.2.1. 权限处理器`AnnotationAuthHandler`
 
 `AnnotationAuthHandler`是权限校验和配置的实现类，它主要包含四个注解对应的校验方法。
-框架默认在auth-rabc中对其有一个RABC框架的实现，如果不需要的话也可以自己定义实现
-但是这里需要注意，如果自定义了`AnnotationAuthHandler`那么后续`auth-rabc`和`auth-starter-rabc`就不再应该引入了，因为`auth-rabc`的目的就是实现默认的`AnnotationAuthHandler`
+框架默认在auth-rbac中对其有一个RBAC框架的实现，如果不需要的话也可以自己定义实现
+但是这里需要注意，如果自定义了`AnnotationAuthHandler`那么后续`auth-rbac`和`auth-starter-rbac`就不再应该引入了，因为`auth-rbac`的目的就是实现默认的`AnnotationAuthHandler`
 
 实现默认的需要实现4个方法，如下：
 
@@ -765,22 +765,22 @@ public interface AnnotationAuthHandler<ID> {
 }
 ```
 
-因此，如果用RABC权限体系的话一般不建议实现此接口，如有自定义的可以修改`RabcAnnotationAuthHandler`内部的一些逻辑
+因此，如果用RBAC权限体系的话一般不建议实现此接口，如有自定义的可以修改`RbacAnnotationAuthHandler`内部的一些逻辑
 
 ### 9.2.2. `AbstractAuthDatraAnnotationAuthHandler`扩展
 
 AbstractAuthDatraAnnotationAuthHandler 本身实现了数据权限的相关操作功能，使用的是jdbcTemplate操作数据库。
 此类的配置主要是权限数据表的定义可以自己指定，并且全局统一
 
-### 9.2.3. `RabcAnnotationAuthHandler`内部的扩展
+### 9.2.3. `RbacAnnotationAuthHandler`内部的扩展
 
 内部扩展主要是在`SysAuthMenuComposite`和`SysAuthDataComposite`两个。
 
 - `SysAuthMenuComposite`承载了菜单相关的逻辑，默认实现是基于内存的菜单管理关系，这里可以扩展将其修改为基于redis的等。后续看情况单独抽离一个存储容器让其可以自定义
 
-## 9.3. RABC默认权限结构体的扩展
+## 9.3. RBAC默认权限结构体的扩展
 
-RABC默认目前只实现了基于部门-用户-角色的三个维度的权限，且没有完成上下级的相关（后续拟加入上下级和复杂组合的权限实现）
+RBAC默认目前只实现了基于部门-用户-角色的三个维度的权限，且没有完成上下级的相关（后续拟加入上下级和复杂组合的权限实现）
 如果目前不满足也可以自行扩展基础类
 
 比如，我们新增加一个岗位维度的

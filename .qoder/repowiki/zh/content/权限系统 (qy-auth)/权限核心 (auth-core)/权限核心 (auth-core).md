@@ -2,21 +2,21 @@
 
 <cite>
 **本文引用的文件**
-- [AuthUserContext.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthUserContext.java)
-- [AuthDataAdaptor.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthDataAdaptor.java)
-- [AuthDataOperation.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthDataOperation.java)
-- [AuthMenuHandler.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/menu/AuthMenuHandler.java)
-- [MenuAccessInterceptor.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/menu/MenuAccessInterceptor.java)
-- [DataRangeContext.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/DataRangeContext.java)
-- [DataRangeAspect.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/DataRangeAspect.java)
-- [MybatisDataRangeInterceptor.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/MybatisDataRangeInterceptor.java)
-- [AuthDataHandler.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataHandler.java)
-- [AuthDataDO.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataDO.java)
-- [AuthDataTable.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataTable.java)
-- [AuthRange.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/AuthRange.java)
-- [DataCheckAspect.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/edit/DataCheckAspect.java)
-- [CurrentUser.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/CurrentUser.java)
-- [BaseAuth.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/BaseAuth.java)
+- [AuthUserContext.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthUserContext.java)
+- [AuthDataAdaptor.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthDataAdaptor.java)
+- [AuthDataOperation.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthDataOperation.java)
+- [AuthMenuHandler.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/menu/AuthMenuHandler.java)
+- [MenuAccessInterceptor.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/menu/MenuAccessInterceptor.java)
+- [DataRangeContext.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/DataRangeContext.java)
+- [DataRangeAspect.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/DataRangeAspect.java)
+- [MybatisDataRangeInterceptor.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/MybatisDataRangeInterceptor.java)
+- [AuthDataHandler.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataHandler.java)
+- [AuthDataDO.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataDO.java)
+- [AuthDataTable.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataTable.java)
+- [AuthRange.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/AuthRange.java)
+- [DataCheckAspect.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/edit/DataCheckAspect.java)
+- [CurrentUser.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/CurrentUser.java)
+- [BaseAuth.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/BaseAuth.java)
 </cite>
 
 ## 目录
@@ -84,38 +84,38 @@ DT --> DO
 ```
 
 图表来源
-- [AuthUserContext.java:1-32](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthUserContext.java#L1-L32)
-- [AuthDataAdaptor.java:1-44](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthDataAdaptor.java#L1-L44)
-- [AuthDataOperation.java:1-41](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthDataOperation.java#L1-L41)
-- [AuthMenuHandler.java:1-36](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/menu/AuthMenuHandler.java#L1-L36)
-- [MenuAccessInterceptor.java:1-72](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/menu/MenuAccessInterceptor.java#L1-L72)
-- [DataRangeContext.java:1-24](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/DataRangeContext.java#L1-L24)
-- [DataRangeAspect.java:1-51](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/DataRangeAspect.java#L1-L51)
-- [MybatisDataRangeInterceptor.java:1-121](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/MybatisDataRangeInterceptor.java#L1-L121)
-- [AuthDataHandler.java:1-77](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataHandler.java#L1-L77)
-- [AuthDataDO.java:1-51](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataDO.java#L1-L51)
-- [AuthDataTable.java:1-86](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataTable.java#L1-L86)
-- [AuthRange.java:1-49](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/AuthRange.java#L1-L49)
-- [DataCheckAspect.java:1-59](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/edit/DataCheckAspect.java#L1-L59)
-- [CurrentUser.java:1-15](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/CurrentUser.java#L1-L15)
-- [BaseAuth.java:1-61](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/BaseAuth.java#L1-L61)
+- [AuthUserContext.java:1-32](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthUserContext.java#L1-L32)
+- [AuthDataAdaptor.java:1-44](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthDataAdaptor.java#L1-L44)
+- [AuthDataOperation.java:1-41](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthDataOperation.java#L1-L41)
+- [AuthMenuHandler.java:1-36](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/menu/AuthMenuHandler.java#L1-L36)
+- [MenuAccessInterceptor.java:1-72](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/menu/MenuAccessInterceptor.java#L1-L72)
+- [DataRangeContext.java:1-24](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/DataRangeContext.java#L1-L24)
+- [DataRangeAspect.java:1-51](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/DataRangeAspect.java#L1-L51)
+- [MybatisDataRangeInterceptor.java:1-121](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/MybatisDataRangeInterceptor.java#L1-L121)
+- [AuthDataHandler.java:1-77](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataHandler.java#L1-L77)
+- [AuthDataDO.java:1-51](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataDO.java#L1-L51)
+- [AuthDataTable.java:1-86](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataTable.java#L1-L86)
+- [AuthRange.java:1-49](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/AuthRange.java#L1-L49)
+- [DataCheckAspect.java:1-59](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/edit/DataCheckAspect.java#L1-L59)
+- [CurrentUser.java:1-15](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/CurrentUser.java#L1-L15)
+- [BaseAuth.java:1-61](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/BaseAuth.java#L1-L61)
 
 章节来源
-- [AuthUserContext.java:1-32](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthUserContext.java#L1-L32)
-- [AuthDataAdaptor.java:1-44](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthDataAdaptor.java#L1-L44)
-- [AuthDataOperation.java:1-41](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthDataOperation.java#L1-L41)
-- [AuthMenuHandler.java:1-36](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/menu/AuthMenuHandler.java#L1-L36)
-- [MenuAccessInterceptor.java:1-72](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/menu/MenuAccessInterceptor.java#L1-L72)
-- [DataRangeContext.java:1-24](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/DataRangeContext.java#L1-L24)
-- [DataRangeAspect.java:1-51](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/DataRangeAspect.java#L1-L51)
-- [MybatisDataRangeInterceptor.java:1-121](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/MybatisDataRangeInterceptor.java#L1-L121)
-- [AuthDataHandler.java:1-77](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataHandler.java#L1-L77)
-- [AuthDataDO.java:1-51](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataDO.java#L1-L51)
-- [AuthDataTable.java:1-86](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataTable.java#L1-L86)
-- [AuthRange.java:1-49](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/AuthRange.java#L1-L49)
-- [DataCheckAspect.java:1-59](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/edit/DataCheckAspect.java#L1-L59)
-- [CurrentUser.java:1-15](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/CurrentUser.java#L1-L15)
-- [BaseAuth.java:1-61](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/BaseAuth.java#L1-L61)
+- [AuthUserContext.java:1-32](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthUserContext.java#L1-L32)
+- [AuthDataAdaptor.java:1-44](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthDataAdaptor.java#L1-L44)
+- [AuthDataOperation.java:1-41](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthDataOperation.java#L1-L41)
+- [AuthMenuHandler.java:1-36](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/menu/AuthMenuHandler.java#L1-L36)
+- [MenuAccessInterceptor.java:1-72](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/menu/MenuAccessInterceptor.java#L1-L72)
+- [DataRangeContext.java:1-24](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/DataRangeContext.java#L1-L24)
+- [DataRangeAspect.java:1-51](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/DataRangeAspect.java#L1-L51)
+- [MybatisDataRangeInterceptor.java:1-121](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/MybatisDataRangeInterceptor.java#L1-L121)
+- [AuthDataHandler.java:1-77](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataHandler.java#L1-L77)
+- [AuthDataDO.java:1-51](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataDO.java#L1-L51)
+- [AuthDataTable.java:1-86](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataTable.java#L1-L86)
+- [AuthRange.java:1-49](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/AuthRange.java#L1-L49)
+- [DataCheckAspect.java:1-59](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/edit/DataCheckAspect.java#L1-L59)
+- [CurrentUser.java:1-15](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/CurrentUser.java#L1-L15)
+- [BaseAuth.java:1-61](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/BaseAuth.java#L1-L61)
 
 ## 核心组件
 - 用户上下文：AuthUserContext 使用 InheritableThreadLocal 存储 CurrentUser，提供获取当前用户与权限集合的静态入口
@@ -126,20 +126,20 @@ DT --> DO
 - 实体模型：BaseAuth、CurrentUser、AuthDataDO、AuthDataTable、AuthRange 统一权限与范围的表达
 
 章节来源
-- [AuthUserContext.java:16-31](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthUserContext.java#L16-L31)
-- [AuthDataAdaptor.java:12-43](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthDataAdaptor.java#L12-L43)
-- [AuthDataOperation.java:22-40](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthDataOperation.java#L22-L40)
-- [AuthMenuHandler.java:16-35](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/menu/AuthMenuHandler.java#L16-L35)
-- [MenuAccessInterceptor.java:23-71](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/menu/MenuAccessInterceptor.java#L23-L71)
-- [DataRangeContext.java:9-23](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/DataRangeContext.java#L9-L23)
-- [DataRangeAspect.java:20-50](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/DataRangeAspect.java#L20-L50)
-- [MybatisDataRangeInterceptor.java:34-120](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/MybatisDataRangeInterceptor.java#L34-L120)
-- [AuthDataHandler.java:16-76](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataHandler.java#L16-L76)
-- [AuthDataDO.java:11-50](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataDO.java#L11-L50)
-- [AuthDataTable.java:14-85](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataTable.java#L14-L85)
-- [AuthRange.java:14-48](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/AuthRange.java#L14-L48)
-- [CurrentUser.java:9-14](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/CurrentUser.java#L9-L14)
-- [BaseAuth.java:12-60](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/BaseAuth.java#L12-L60)
+- [AuthUserContext.java:16-31](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthUserContext.java#L16-L31)
+- [AuthDataAdaptor.java:12-43](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthDataAdaptor.java#L12-L43)
+- [AuthDataOperation.java:22-40](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthDataOperation.java#L22-L40)
+- [AuthMenuHandler.java:16-35](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/menu/AuthMenuHandler.java#L16-L35)
+- [MenuAccessInterceptor.java:23-71](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/menu/MenuAccessInterceptor.java#L23-L71)
+- [DataRangeContext.java:9-23](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/DataRangeContext.java#L9-L23)
+- [DataRangeAspect.java:20-50](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/DataRangeAspect.java#L20-L50)
+- [MybatisDataRangeInterceptor.java:34-120](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/MybatisDataRangeInterceptor.java#L34-L120)
+- [AuthDataHandler.java:16-76](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataHandler.java#L16-L76)
+- [AuthDataDO.java:11-50](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataDO.java#L11-L50)
+- [AuthDataTable.java:14-85](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataTable.java#L14-L85)
+- [AuthRange.java:14-48](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/AuthRange.java#L14-L48)
+- [CurrentUser.java:9-14](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/CurrentUser.java#L9-L14)
+- [BaseAuth.java:12-60](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/BaseAuth.java#L12-L60)
 
 ## 架构总览
 下图展示从请求到 SQL 执行的权限贯穿链路：拦截器/切面负责上下文注入与权限校验，处理器负责权限判断与数据填充，拦截器在 SQL 层面注入数据范围。
@@ -168,11 +168,11 @@ S-->>C : "响应"
 ```
 
 图表来源
-- [MenuAccessInterceptor.java:23-71](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/menu/MenuAccessInterceptor.java#L23-L71)
-- [DataCheckAspect.java:24-58](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/edit/DataCheckAspect.java#L24-L58)
-- [AuthUserContext.java:16-31](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthUserContext.java#L16-L31)
-- [AuthDataHandler.java:16-76](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataHandler.java#L16-L76)
-- [MybatisDataRangeInterceptor.java:34-120](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/MybatisDataRangeInterceptor.java#L34-L120)
+- [MenuAccessInterceptor.java:23-71](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/menu/MenuAccessInterceptor.java#L23-L71)
+- [DataCheckAspect.java:24-58](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/edit/DataCheckAspect.java#L24-L58)
+- [AuthUserContext.java:16-31](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthUserContext.java#L16-L31)
+- [AuthDataHandler.java:16-76](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataHandler.java#L16-L76)
+- [MybatisDataRangeInterceptor.java:34-120](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/MybatisDataRangeInterceptor.java#L34-L120)
 
 ## 组件详解
 
@@ -210,12 +210,12 @@ CurrentUser --> IAuthObject : "提供权限集合"
 ```
 
 图表来源
-- [AuthUserContext.java:16-31](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthUserContext.java#L16-L31)
-- [CurrentUser.java:9-14](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/CurrentUser.java#L9-L14)
+- [AuthUserContext.java:16-31](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthUserContext.java#L16-L31)
+- [CurrentUser.java:9-14](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/CurrentUser.java#L9-L14)
 
 章节来源
-- [AuthUserContext.java:16-31](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthUserContext.java#L16-L31)
-- [CurrentUser.java:9-14](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/CurrentUser.java#L9-L14)
+- [AuthUserContext.java:16-31](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthUserContext.java#L16-L31)
+- [CurrentUser.java:9-14](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/CurrentUser.java#L9-L14)
 
 ### 权限数据适配器：AuthDataAdaptor
 - 角色定位
@@ -249,12 +249,12 @@ AuthDataAdaptor --> AuthDataHandler : "委托"
 ```
 
 图表来源
-- [AuthDataAdaptor.java:12-43](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthDataAdaptor.java#L12-L43)
-- [AuthDataHandler.java:16-76](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataHandler.java#L16-L76)
+- [AuthDataAdaptor.java:12-43](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthDataAdaptor.java#L12-L43)
+- [AuthDataHandler.java:16-76](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataHandler.java#L16-L76)
 
 章节来源
-- [AuthDataAdaptor.java:12-43](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthDataAdaptor.java#L12-L43)
-- [AuthDataHandler.java:16-76](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataHandler.java#L16-L76)
+- [AuthDataAdaptor.java:12-43](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthDataAdaptor.java#L12-L43)
+- [AuthDataHandler.java:16-76](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataHandler.java#L16-L76)
 
 ### 权限操作注解：AuthDataOperation
 - 作用
@@ -281,12 +281,12 @@ Pass --> |是| Proceed["继续执行业务逻辑"]
 ```
 
 图表来源
-- [DataCheckAspect.java:24-58](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/edit/DataCheckAspect.java#L24-L58)
-- [AuthDataOperation.java:22-40](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthDataOperation.java#L22-L40)
+- [DataCheckAspect.java:24-58](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/edit/DataCheckAspect.java#L24-L58)
+- [AuthDataOperation.java:22-40](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthDataOperation.java#L22-L40)
 
 章节来源
-- [AuthDataOperation.java:22-40](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthDataOperation.java#L22-L40)
-- [DataCheckAspect.java:24-58](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/edit/DataCheckAspect.java#L24-L58)
+- [AuthDataOperation.java:22-40](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthDataOperation.java#L22-L40)
+- [DataCheckAspect.java:24-58](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/edit/DataCheckAspect.java#L24-L58)
 
 ### 菜单权限处理器与拦截器：AuthMenuHandler 与 MenuAccessInterceptor
 - AuthMenuHandler
@@ -315,12 +315,12 @@ end
 ```
 
 图表来源
-- [MenuAccessInterceptor.java:23-71](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/menu/MenuAccessInterceptor.java#L23-L71)
-- [AuthMenuHandler.java:16-35](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/menu/AuthMenuHandler.java#L16-L35)
+- [MenuAccessInterceptor.java:23-71](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/menu/MenuAccessInterceptor.java#L23-L71)
+- [AuthMenuHandler.java:16-35](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/menu/AuthMenuHandler.java#L16-L35)
 
 章节来源
-- [AuthMenuHandler.java:16-35](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/menu/AuthMenuHandler.java#L16-L35)
-- [MenuAccessInterceptor.java:23-71](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/menu/MenuAccessInterceptor.java#L23-L71)
+- [AuthMenuHandler.java:16-35](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/menu/AuthMenuHandler.java#L16-L35)
+- [MenuAccessInterceptor.java:23-71](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/menu/MenuAccessInterceptor.java#L23-L71)
 
 ### 数据范围控制：DataRangeContext、DataRangeAspect 与 MyBatis 拦截器
 - DataRangeContext
@@ -348,16 +348,16 @@ Clear --> Exit(["返回结果"])
 ```
 
 图表来源
-- [DataRangeAspect.java:20-50](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/DataRangeAspect.java#L20-L50)
-- [MybatisDataRangeInterceptor.java:34-120](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/MybatisDataRangeInterceptor.java#L34-L120)
-- [DataRangeContext.java:9-23](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/DataRangeContext.java#L9-L23)
-- [AuthRange.java:14-48](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/AuthRange.java#L14-L48)
+- [DataRangeAspect.java:20-50](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/DataRangeAspect.java#L20-L50)
+- [MybatisDataRangeInterceptor.java:34-120](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/MybatisDataRangeInterceptor.java#L34-L120)
+- [DataRangeContext.java:9-23](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/DataRangeContext.java#L9-L23)
+- [AuthRange.java:14-48](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/AuthRange.java#L14-L48)
 
 章节来源
-- [DataRangeContext.java:9-23](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/DataRangeContext.java#L9-L23)
-- [DataRangeAspect.java:20-50](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/DataRangeAspect.java#L20-L50)
-- [MybatisDataRangeInterceptor.java:34-120](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/MybatisDataRangeInterceptor.java#L34-L120)
-- [AuthRange.java:14-48](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/AuthRange.java#L14-L48)
+- [DataRangeContext.java:9-23](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/DataRangeContext.java#L9-L23)
+- [DataRangeAspect.java:20-50](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/DataRangeAspect.java#L20-L50)
+- [MybatisDataRangeInterceptor.java:34-120](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/MybatisDataRangeInterceptor.java#L34-L120)
+- [AuthRange.java:14-48](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/AuthRange.java#L14-L48)
 
 ### 权限实体模型与接口规范
 - BaseAuth
@@ -412,18 +412,18 @@ AuthRange --> BaseAuth : "权限集合"
 ```
 
 图表来源
-- [BaseAuth.java:12-60](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/BaseAuth.java#L12-L60)
-- [CurrentUser.java:9-14](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/CurrentUser.java#L9-L14)
-- [AuthDataDO.java:11-50](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataDO.java#L11-L50)
-- [AuthDataTable.java:14-85](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataTable.java#L14-L85)
-- [AuthRange.java:14-48](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/AuthRange.java#L14-L48)
+- [BaseAuth.java:12-60](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/BaseAuth.java#L12-L60)
+- [CurrentUser.java:9-14](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/CurrentUser.java#L9-L14)
+- [AuthDataDO.java:11-50](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataDO.java#L11-L50)
+- [AuthDataTable.java:14-85](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataTable.java#L14-L85)
+- [AuthRange.java:14-48](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/AuthRange.java#L14-L48)
 
 章节来源
-- [BaseAuth.java:12-60](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/BaseAuth.java#L12-L60)
-- [CurrentUser.java:9-14](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/CurrentUser.java#L9-L14)
-- [AuthDataDO.java:11-50](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataDO.java#L11-L50)
-- [AuthDataTable.java:14-85](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataTable.java#L14-L85)
-- [AuthRange.java:14-48](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/AuthRange.java#L14-L48)
+- [BaseAuth.java:12-60](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/BaseAuth.java#L12-L60)
+- [CurrentUser.java:9-14](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/CurrentUser.java#L9-L14)
+- [AuthDataDO.java:11-50](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataDO.java#L11-L50)
+- [AuthDataTable.java:14-85](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataTable.java#L14-L85)
+- [AuthRange.java:14-48](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/AuthRange.java#L14-L48)
 
 ## 依赖关系分析
 - 组件内聚与耦合
@@ -448,17 +448,17 @@ AR["AuthRange"] --> BA
 ```
 
 图表来源
-- [AuthUserContext.java:16-31](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthUserContext.java#L16-L31)
-- [AuthDataAdaptor.java:12-43](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthDataAdaptor.java#L12-L43)
-- [DataRangeAspect.java:20-50](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/DataRangeAspect.java#L20-L50)
-- [MybatisDataRangeInterceptor.java:34-120](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/MybatisDataRangeInterceptor.java#L34-L120)
-- [MenuAccessInterceptor.java:23-71](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/menu/MenuAccessInterceptor.java#L23-L71)
-- [AuthDataHandler.java:16-76](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataHandler.java#L16-L76)
-- [AuthDataDO.java:11-50](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataDO.java#L11-L50)
-- [AuthDataTable.java:14-85](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataTable.java#L14-L85)
-- [AuthRange.java:14-48](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/AuthRange.java#L14-L48)
-- [CurrentUser.java:9-14](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/CurrentUser.java#L9-L14)
-- [BaseAuth.java:12-60](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/BaseAuth.java#L12-L60)
+- [AuthUserContext.java:16-31](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthUserContext.java#L16-L31)
+- [AuthDataAdaptor.java:12-43](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthDataAdaptor.java#L12-L43)
+- [DataRangeAspect.java:20-50](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/DataRangeAspect.java#L20-L50)
+- [MybatisDataRangeInterceptor.java:34-120](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/MybatisDataRangeInterceptor.java#L34-L120)
+- [MenuAccessInterceptor.java:23-71](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/menu/MenuAccessInterceptor.java#L23-L71)
+- [AuthDataHandler.java:16-76](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataHandler.java#L16-L76)
+- [AuthDataDO.java:11-50](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataDO.java#L11-L50)
+- [AuthDataTable.java:14-85](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataTable.java#L14-L85)
+- [AuthRange.java:14-48](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/AuthRange.java#L14-L48)
+- [CurrentUser.java:9-14](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/CurrentUser.java#L9-L14)
+- [BaseAuth.java:12-60](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/BaseAuth.java#L12-L60)
 
 ## 性能与并发特性
 - 线程安全
@@ -483,9 +483,9 @@ AR["AuthRange"] --> BA
   - 验证权限集合是否为空或缺失必要权限字符串
 
 章节来源
-- [DataCheckAspect.java:24-58](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/edit/DataCheckAspect.java#L24-L58)
-- [MenuAccessInterceptor.java:23-71](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/menu/MenuAccessInterceptor.java#L23-L71)
-- [MybatisDataRangeInterceptor.java:82-108](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/MybatisDataRangeInterceptor.java#L82-L108)
+- [DataCheckAspect.java:24-58](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/edit/DataCheckAspect.java#L24-L58)
+- [MenuAccessInterceptor.java:23-71](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/menu/MenuAccessInterceptor.java#L23-L71)
+- [MybatisDataRangeInterceptor.java:82-108](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/MybatisDataRangeInterceptor.java#L82-L108)
 
 ## 结论
 auth-core 通过“上下文 + 注解 + 切面 + 拦截器 + 实体模型”的组合，构建了从请求到 SQL 的全链路权限控制体系。其关键优势在于：
@@ -500,7 +500,7 @@ auth-core 通过“上下文 + 注解 + 切面 + 拦截器 + 实体模型”的�
   - 注册拦截器：将 MenuAccessInterceptor 注册到 Spring MVC 拦截器链
   - MyBatis 插件：将 MybatisDataRangeInterceptor 作为插件注册至 MyBatis
 - 使用示例（路径指引）
-  - 在方法上添加 @AuthDataOperation，参见 [AuthDataOperation.java:22-40](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthDataOperation.java#L22-L40)
-  - 在方法上添加 @AuthDataRange，参见 [DataRangeAspect.java:20-50](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/DataRangeAspect.java#L20-L50)
-  - 在 Controller 上添加 @AuthMenu，参见 [MenuAccessInterceptor.java:23-71](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/menu/MenuAccessInterceptor.java#L23-L71)
-  - 在 Service 层直接调用 AuthDataAdaptor，参见 [AuthDataAdaptor.java:12-43](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthDataAdaptor.java#L12-L43)
+  - 在方法上添加 @AuthDataOperation，参见 [AuthDataOperation.java:22-40](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthDataOperation.java#L22-L40)
+  - 在方法上添加 @AuthDataRange，参见 [DataRangeAspect.java:20-50](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/DataRangeAspect.java#L20-L50)
+  - 在 Controller 上添加 @AuthMenu，参见 [MenuAccessInterceptor.java:23-71](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/menu/MenuAccessInterceptor.java#L23-L71)
+  - 在 Service 层直接调用 AuthDataAdaptor，参见 [AuthDataAdaptor.java:12-43](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthDataAdaptor.java#L12-L43)

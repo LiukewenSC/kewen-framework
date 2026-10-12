@@ -2,14 +2,14 @@
 
 <cite>
 **本文引用的文件列表**
-- [SamlConfig.java](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/SamlConfig.java)
-- [IdpMetadataParser.java](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/IdpMetadataParser.java)
-- [SamlAuthenticationSuccessResultConverter.java](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/SamlAuthenticationSuccessResultConverter.java)
-- [SamlLogoutController.java](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/SamlLogoutController.java)
-- [SamlProperties.java](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/properties/SamlProperties.java)
+- [SamlConfig.java](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/SamlConfig.java)
+- [IdpMetadataParser.java](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/IdpMetadataParser.java)
+- [SamlAuthenticationSuccessResultConverter.java](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/SamlAuthenticationSuccessResultConverter.java)
+- [SamlLogoutController.java](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/SamlLogoutController.java)
+- [SamlProperties.java](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/properties/SamlProperties.java)
 - [spring.factories](file://qy-idaas/idaas-authentications/src/main/resources/META-INF/spring.factories)
 - [application.yml（示例）](file://sample/idaas-sp-boot-sample/src/main/resources/application.yml)
-- [kewen-local-metadata.xml（示例）](file://sample/idaas-sp-boot-sample/src/main/resources/saml/metadata/kewen-local-metadata.xml)
+- [cu-local-metadata.xml（示例）](file://sample/idaas-sp-boot-sample/src/main/resources/saml/metadata/cu-local-metadata.xml)
 - [pom.xml（idaas-authentications）](file://qy-idaas/idaas-authentications/pom.xml)
 </cite>
 
@@ -69,15 +69,15 @@ SC --> AUTH
 ```
 
 图表来源
-- [SamlConfig.java:42-196](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/SamlConfig.java#L42-L196)
-- [IdpMetadataParser.java:36-216](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/IdpMetadataParser.java#L36-L216)
-- [SamlAuthenticationSuccessResultConverter.java:16-37](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/SamlAuthenticationSuccessResultConverter.java#L16-L37)
-- [SamlLogoutController.java:22-49](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/SamlLogoutController.java#L22-L49)
-- [SamlProperties.java:22-129](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/properties/SamlProperties.java#L22-L129)
+- [SamlConfig.java:42-196](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/SamlConfig.java#L42-L196)
+- [IdpMetadataParser.java:36-216](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/IdpMetadataParser.java#L36-L216)
+- [SamlAuthenticationSuccessResultConverter.java:16-37](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/SamlAuthenticationSuccessResultConverter.java#L16-L37)
+- [SamlLogoutController.java:22-49](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/SamlLogoutController.java#L22-L49)
+- [SamlProperties.java:22-129](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/properties/SamlProperties.java#L22-L129)
 - [spring.factories:1-3](file://qy-idaas/idaas-authentications/src/main/resources/META-INF/spring.factories#L1-L3)
 
 章节来源
-- [SamlConfig.java:42-196](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/SamlConfig.java#L42-L196)
+- [SamlConfig.java:42-196](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/SamlConfig.java#L42-L196)
 - [spring.factories:1-3](file://qy-idaas/idaas-authentications/src/main/resources/META-INF/spring.factories#L1-L3)
 
 ## 核心组件
@@ -88,10 +88,10 @@ SC --> AUTH
 - SamlLogoutController：提供 GET /saml2/logout 接口，返回自动提交表单以触发 POST /logout，从而进入 SAML SLO 流程。
 
 章节来源
-- [SamlConfig.java:42-196](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/SamlConfig.java#L42-L196)
-- [IdpMetadataParser.java:36-216](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/IdpMetadataParser.java#L36-L216)
-- [SamlAuthenticationSuccessResultConverter.java:16-37](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/SamlAuthenticationSuccessResultConverter.java#L16-L37)
-- [SamlLogoutController.java:22-49](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/SamlLogoutController.java#L22-L49)
+- [SamlConfig.java:42-196](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/SamlConfig.java#L42-L196)
+- [IdpMetadataParser.java:36-216](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/IdpMetadataParser.java#L36-L216)
+- [SamlAuthenticationSuccessResultConverter.java:16-37](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/SamlAuthenticationSuccessResultConverter.java#L16-L37)
+- [SamlLogoutController.java:22-49](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/SamlLogoutController.java#L22-L49)
 
 ## 架构总览
 SAML 集成的整体工作流如下：
@@ -123,10 +123,10 @@ SPR-->>Client : 完成单点登出
 ```
 
 图表来源
-- [SamlConfig.java:62-88](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/SamlConfig.java#L62-L88)
-- [IdpMetadataParser.java:48-70](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/IdpMetadataParser.java#L48-L70)
-- [SamlAuthenticationSuccessResultConverter.java:17-29](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/SamlAuthenticationSuccessResultConverter.java#L17-L29)
-- [SamlLogoutController.java:28-49](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/SamlLogoutController.java#L28-L49)
+- [SamlConfig.java:62-88](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/SamlConfig.java#L62-L88)
+- [IdpMetadataParser.java:48-70](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/IdpMetadataParser.java#L48-L70)
+- [SamlAuthenticationSuccessResultConverter.java:17-29](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/SamlAuthenticationSuccessResultConverter.java#L17-L29)
+- [SamlLogoutController.java:28-49](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/SamlLogoutController.java#L28-L49)
 
 ## 详细组件分析
 
@@ -176,14 +176,14 @@ SamlConfig --> SamlLogoutController : "注册控制器"
 ```
 
 图表来源
-- [SamlConfig.java:42-196](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/SamlConfig.java#L42-L196)
-- [SamlProperties.java:22-129](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/properties/SamlProperties.java#L22-L129)
-- [IdpMetadataParser.java:36-216](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/IdpMetadataParser.java#L36-L216)
-- [SamlAuthenticationSuccessResultConverter.java:16-37](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/SamlAuthenticationSuccessResultConverter.java#L16-L37)
-- [SamlLogoutController.java:22-49](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/SamlLogoutController.java#L22-L49)
+- [SamlConfig.java:42-196](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/SamlConfig.java#L42-L196)
+- [SamlProperties.java:22-129](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/properties/SamlProperties.java#L22-L129)
+- [IdpMetadataParser.java:36-216](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/IdpMetadataParser.java#L36-L216)
+- [SamlAuthenticationSuccessResultConverter.java:16-37](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/SamlAuthenticationSuccessResultConverter.java#L16-L37)
+- [SamlLogoutController.java:22-49](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/SamlLogoutController.java#L22-L49)
 
 章节来源
-- [SamlConfig.java:62-196](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/SamlConfig.java#L62-L196)
+- [SamlConfig.java:62-196](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/SamlConfig.java#L62-L196)
 
 ### IdpMetadataParser 元数据解析器
 IdpMetadataParser 负责从 IdP 的 metadata.xml 中解析关键信息：
@@ -208,10 +208,10 @@ BuildMeta --> End(["结束"])
 ```
 
 图表来源
-- [IdpMetadataParser.java:48-164](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/IdpMetadataParser.java#L48-L164)
+- [IdpMetadataParser.java:48-164](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/IdpMetadataParser.java#L48-L164)
 
 章节来源
-- [IdpMetadataParser.java:48-164](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/IdpMetadataParser.java#L48-L164)
+- [IdpMetadataParser.java:48-164](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/IdpMetadataParser.java#L48-L164)
 
 ### SamlAuthenticationSuccessResultConverter 认证成功结果转换器
 该转换器用于将 Spring Security 的 SAML 认证结果转换为统一的成功响应模型：
@@ -234,10 +234,10 @@ SAC-->>Client : 返回 SecurityUser
 ```
 
 图表来源
-- [SamlAuthenticationSuccessResultConverter.java:17-36](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/SamlAuthenticationSuccessResultConverter.java#L17-L36)
+- [SamlAuthenticationSuccessResultConverter.java:17-36](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/SamlAuthenticationSuccessResultConverter.java#L17-L36)
 
 章节来源
-- [SamlAuthenticationSuccessResultConverter.java:16-37](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/SamlAuthenticationSuccessResultConverter.java#L16-L37)
+- [SamlAuthenticationSuccessResultConverter.java:16-37](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/SamlAuthenticationSuccessResultConverter.java#L16-L37)
 
 ### SamlLogoutController 登出控制器
 SamlLogoutController 提供 GET /saml2/logout 接口，返回自动提交的 POST 表单页面，使浏览器在加载后自动 POST 到 /logout，从而触发 Spring Security 的登出流程与 SAML SLO：
@@ -256,10 +256,10 @@ SPR-->>Client : 执行登出并返回登出结果
 ```
 
 图表来源
-- [SamlLogoutController.java:28-49](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/SamlLogoutController.java#L28-L49)
+- [SamlLogoutController.java:28-49](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/SamlLogoutController.java#L28-L49)
 
 章节来源
-- [SamlLogoutController.java:22-49](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/SamlLogoutController.java#L22-L49)
+- [SamlLogoutController.java:22-49](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/SamlLogoutController.java#L22-L49)
 
 ### SamlProperties 属性配置类
 SamlProperties 提供 SAML 配置的集中管理，关键项包括：
@@ -267,12 +267,12 @@ SamlProperties 提供 SAML 配置的集中管理，关键项包括：
 - registrations：多注册实例列表，每个实例包含：
   - metadataResource：IdP 元数据资源路径，默认 classpath:saml/idp-metadata.xml。
   - registrationId：注册 ID，用于标识当前 SAML 配置。
-  - spEntityId：SP 实体 ID，默认值为 “kewen-saml”，需与 IdP 配置一致。
+  - spEntityId：SP 实体 ID，默认值为 “cu-saml”，需与 IdP 配置一致。
 - spSigningKeystore：SP 签名密钥库配置，用于对 AuthnRequest 与 LogoutRequest 签名，包含 keystoreResource、keystorePassword、keyAlias、keyPassword。
 - logoutRequestUrl、logoutResponseUrl：SAML SLO 请求与响应 URL，默认均为 “/logout/saml2/slo”。
 
 章节来源
-- [SamlProperties.java:22-129](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/properties/SamlProperties.java#L22-L129)
+- [SamlProperties.java:22-129](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/properties/SamlProperties.java#L22-L129)
 
 ## 依赖关系分析
 模块依赖关系如下：
@@ -314,32 +314,32 @@ IAS --> OPEN
 - 元数据解析失败
   - 现象：抛出“解析 IdP metadata.xml 失败”异常。
   - 排查：确认 metadataResource 路径正确、文件可读；检查根元素是否为 EntityDescriptor；确认 IDPSSODescriptor 存在且包含 SingleSignOnService。
-  - 参考：[IdpMetadataParser.java:48-70](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/IdpMetadataParser.java#L48-L70)
+  - 参考：[IdpMetadataParser.java:48-70](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/IdpMetadataParser.java#L48-L70)
 - 未找到签名证书
   - 现象：抛出“未找到签名证书”异常。
   - 排查：确认 KeyDescriptor.use=signing 的 KeyInfo 下存在 X509Data 与 X509Certificate。
-  - 参考：[IdpMetadataParser.java:132-150](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/IdpMetadataParser.java#L132-L150)
+  - 参考：[IdpMetadataParser.java:132-150](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/IdpMetadataParser.java#L132-L150)
 - SSO URL 未找到
   - 现象：抛出“未找到 SingleSignOnService”异常。
   - 排查：确认元数据中至少存在一种绑定类型的 SingleSignOnService（优先 HTTP-POST，其次 HTTP-Redirect）。
-  - 参考：[IdpMetadataParser.java:96-113](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/IdpMetadataParser.java#L96-L113)
+  - 参考：[IdpMetadataParser.java:96-113](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/IdpMetadataParser.java#L96-L113)
 - SLO 绑定或 URL 为空导致校验失败
   - 现象：SAML SLO 校验失败或空指针异常。
   - 排查：确保 SamlConfig 在构建 RelyingPartyRegistration 时设置了 singleLogoutServiceLocation 与 singleLogoutServiceResponseLocation；若元数据中无 SLO，应显式配置。
-  - 参考：[SamlConfig.java:136-154](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/SamlConfig.java#L136-L154)
+  - 参考：[SamlConfig.java:136-154](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/SamlConfig.java#L136-L154)
 - 登出 GET 接口无效
   - 现象：/saml2/logout 无法触发 POST /logout。
   - 排查：确认 SamlLogoutController 已注册；若启用 CSRF，确保表单包含 CSRF 参数。
-  - 参考：[SamlLogoutController.java:28-49](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/SamlLogoutController.java#L28-L49)
+  - 参考：[SamlLogoutController.java:28-49](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/SamlLogoutController.java#L28-L49)
 - SP 签名凭证加载失败
   - 现象：抛出“加载 SP 签名密钥库失败”异常。
   - 排查：确认 keystoreResource 可读、keystorePassword 与 keyAlias/keyPassword 正确；检查密钥库类型为 JKS。
-  - 参考：[SamlConfig.java:170-189](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/SamlConfig.java#L170-L189)
+  - 参考：[SamlConfig.java:170-189](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/SamlConfig.java#L170-L189)
 
 章节来源
-- [IdpMetadataParser.java:48-150](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/IdpMetadataParser.java#L48-L150)
-- [SamlConfig.java:136-189](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/SamlConfig.java#L136-L189)
-- [SamlLogoutController.java:28-49](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/SamlLogoutController.java#L28-L49)
+- [IdpMetadataParser.java:48-150](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/IdpMetadataParser.java#L48-L150)
+- [SamlConfig.java:136-189](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/SamlConfig.java#L136-L189)
+- [SamlLogoutController.java:28-49](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/SamlLogoutController.java#L28-L49)
 
 ## 结论
 SAML 集成模块通过 SamlConfig、IdpMetadataParser、SamlAuthenticationSuccessResultConverter 与 SamlLogoutController 协同工作，实现了从元数据解析、认证处理到登出流程的完整闭环。SamlProperties 提供了灵活的配置选项，支持多注册实例与 SP 签名凭证管理。结合示例配置与故障排除指南，开发者可快速完成 SAML 协议的集成与运维。
@@ -353,13 +353,13 @@ SAML 集成模块通过 SamlConfig、IdpMetadataParser、SamlAuthenticationSucce
   - 包含 SP 签名密钥库配置与多注册实例（registrationId、spEntityId、metadataResource）。
   - 参考：[application.yml（示例）:62-88](file://sample/idaas-sp-boot-sample/src/main/resources/application.yml#L62-L88)
 - 元数据文件示例
-  - kewen-local-metadata.xml 展示了基本的 EntityDescriptor、KeyDescriptor、NameIDFormat 与 SingleSignOnService。
-  - 参考：[kewen-local-metadata.xml（示例）:1-19](file://sample/idaas-sp-boot-sample/src/main/resources/saml/metadata/kewen-local-metadata.xml#L1-L19)
+  - cu-local-metadata.xml 展示了基本的 EntityDescriptor、KeyDescriptor、NameIDFormat 与 SingleSignOnService。
+  - 参考：[cu-local-metadata.xml（示例）:1-19](file://sample/idaas-sp-boot-sample/src/main/resources/saml/metadata/cu-local-metadata.xml#L1-L19)
 - 自动装配入口
   - spring.factories 指定 SamlConfig 为自动装配类。
   - 参考：[spring.factories:1-3](file://qy-idaas/idaas-authentications/src/main/resources/META-INF/spring.factories#L1-L3)
 
 章节来源
 - [application.yml（示例）:62-88](file://sample/idaas-sp-boot-sample/src/main/resources/application.yml#L62-L88)
-- [kewen-local-metadata.xml（示例）:1-19](file://sample/idaas-sp-boot-sample/src/main/resources/saml/metadata/kewen-local-metadata.xml#L1-L19)
+- [cu-local-metadata.xml（示例）:1-19](file://sample/idaas-sp-boot-sample/src/main/resources/saml/metadata/cu-local-metadata.xml#L1-L19)
 - [spring.factories:1-3](file://qy-idaas/idaas-authentications/src/main/resources/META-INF/spring.factories#L1-L3)
