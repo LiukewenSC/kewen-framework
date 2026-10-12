@@ -14,7 +14,7 @@ public class FangTangProperties {
     /**
      * 秘钥
      */
-    private String key = "SCT248328TA-iYbvN5Vab4ixXBUOqA60fLY5";
+    private String key;
     /**
      * 链接
      */

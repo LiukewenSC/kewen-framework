@@ -25,8 +25,8 @@ public class QiNiuStorageTemplate implements StorageTemplate {
     /**
      * 权限对象（估计要改，分片不是这样用的，要new出来传参）
      */
-    //private String accessKey = "qYUhPA6FvZ29dQ4pz1BgLwHaTcV2vt_rD-GoEEFB";
-    //private String secretKey = "eyihg0gLAyHd2j08geDCCWdI0UHOfhxzpjFpKso1";
+    //private String accessKey = "qYUhPA6F******************oEEFB";
+    //private String secretKey = "eyihg0gLA******************zpjFpKso1";
     private final Auth auth;
     /**
      * 存储桶空间
