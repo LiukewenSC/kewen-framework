@@ -1,4 +1,4 @@
-package com.kewen.framework.basic.utils;
+package com.kewen.framework.basic.support.utils;
 
 import java.net.NetworkInterface;
 import java.security.SecureRandom;
