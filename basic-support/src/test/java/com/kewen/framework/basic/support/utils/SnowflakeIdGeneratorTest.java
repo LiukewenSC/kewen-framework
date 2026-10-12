@@ -1,4 +1,4 @@
-package com.kewen.framework.basic.utils;
+package com.kewen.framework.basic.support.utils;
 
 import org.junit.Before;
 import org.junit.Test;
