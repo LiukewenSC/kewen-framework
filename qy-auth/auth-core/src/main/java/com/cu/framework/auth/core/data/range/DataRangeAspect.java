@@ -19,11 +19,23 @@ import java.util.Collection;
 @Aspect
 public class DataRangeAspect {
 
+    /**
+     * 切入标注了 {@link AuthDataRange} 注解的方法
+     */
     @Pointcut("@annotation(com.cu.framework.auth.core.AuthDataRange)")
     public void jointPoint() {
 
     }
 
+    /**
+     * 将注解属性与当前登录用户的权限组装成 {@link AuthRange} 写入 {@link DataRangeContext}，
+     * 供目标方法执行期间的 {@link MybatisDataRangeInterceptor} 做 SQL 增强，
+     * 目标方法结束后（含异常）清理上下文
+     * @param proceedingJoinPoint 被拦截的方法
+     * @param checkAuthDataRange 方法上的 @AuthDataRange 注解
+     * @return 目标方法的返回值
+     * @throws Throwable 目标方法抛出的异常
+     */
     @Around("jointPoint() && @annotation(checkAuthDataRange)")
     public Object around(ProceedingJoinPoint proceedingJoinPoint, AuthDataRange checkAuthDataRange) throws Throwable {
 

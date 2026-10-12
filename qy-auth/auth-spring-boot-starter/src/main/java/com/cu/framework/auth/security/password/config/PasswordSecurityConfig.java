@@ -28,11 +28,18 @@ public class PasswordSecurityConfig implements HttpSecurityCustomizer {
     @Autowired
     SecurityAuthenticationExceptionResolverHandler exceptionResolverHandler;
 
+    /**
+     * HttpSecurityCustomizer 入口，将 JSON 登录配置应用到 HttpSecurity
+     */
     @Override
     public void customizer(HttpSecurity http) throws Exception {
         configure(http);
     }
 
+    /**
+     * 注册 JsonLoginAuthenticationFilterConfigurer：登录 URL、用户名/密码字段名取自 SecurityLoginProperties，
+     * 登录成功由 successHandler 输出 JSON，失败由 exceptionResolverHandler 解析异常
+     */
     protected void configure(HttpSecurity http) throws Exception {
         http.apply(new JsonLoginAuthenticationFilterConfigurer<>())
                 .loginProcessingUrl(loginProperties.getLoginUrl())

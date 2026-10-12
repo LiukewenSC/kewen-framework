@@ -35,8 +35,11 @@ import java.util.List;
  */
 public class IdpMetadataParser {
 
+    /** SAML 2.0 协议命名空间 URN，用于查找 IDPSSODescriptor */
     private static final String SAML2_PROTOCOL = "urn:oasis:names:tc:SAML:2.0:protocol";
+    /** SAML 2.0 HTTP-POST 绑定 URN */
     private static final String HTTP_POST_BINDING = "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST";
+    /** SAML 2.0 HTTP-Redirect 绑定 URN */
     private static final String HTTP_REDIRECT_BINDING = "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect";
 
     /**
@@ -111,6 +114,12 @@ public class IdpMetadataParser {
         }*/
         throw new IllegalStateException("metadata.xml 中未找到 SingleSignOnService");
     }
+    /**
+     * 从 IDPSSODescriptor 中提取单点登出（SingleLogoutService）URL 及其绑定方式，
+     * 优先 HTTP-POST 绑定，其次 HTTP-Redirect
+     * @param idpDescriptor IdP 的 SSO 描述符
+     * @return 登出 URL 与绑定方式的键值对；未找到任何登出端点时返回 null
+     */
     private Pair<Saml2MessageBinding,String> extractLogoutUrl(IDPSSODescriptor idpDescriptor) {
         List<SingleLogoutService> ssoServices = idpDescriptor.getSingleLogoutServices();
 
@@ -167,12 +176,19 @@ public class IdpMetadataParser {
      * IdP 元数据解析结果，包含 entityId、ssoUrl 和签名证书
      */
     public static class IdpMetadata {
+        /** IdP 实体标识（Entity ID） */
         private final String entityId;
+        /** 单点登录服务 URL */
         private final String ssoUrl;
+        /** 单点登录服务的消息绑定方式（POST / REDIRECT） */
         private final Saml2MessageBinding ssoBinding;
+        /** IdP 签名验证证书 */
         private final X509Certificate signingCertificate;
+        /** IdP 是否要求 AuthnRequest 签名，取自元数据的 WantAuthnRequestsSigned */
         private final boolean wantAuthnRequestsSigned;
+        /** 单点登出服务 URL，元数据中不存在时为 null */
         private final String logoutUrl;
+        /** 单点登出服务的消息绑定方式，无登出端点时为 null */
         private final Saml2MessageBinding logoutBinding;
 
         public IdpMetadata(String entityId, String ssoUrl, Saml2MessageBinding ssoBinding, X509Certificate signingCertificate, boolean wantAuthnRequestsSigned, String logoutUrl, Saml2MessageBinding logoutBinding) {

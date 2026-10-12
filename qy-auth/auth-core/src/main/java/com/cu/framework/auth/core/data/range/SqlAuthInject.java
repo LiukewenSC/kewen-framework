@@ -48,6 +48,7 @@ public class SqlAuthInject {
 
     private static final Logger log = LoggerFactory.getLogger(SqlAuthInject.class);
 
+    /** 数据权限表的表名与字段名映射配置，注入的权限子查询以此表构造 */
     AuthDataTable authDataTable;
 
     public SqlAuthInject(AuthDataTable authDataTable) {
@@ -152,6 +153,15 @@ public class SqlAuthInject {
 
     }
 
+    /**
+     * 在条件表达式中递归查找包含目标表的 PlainSelect：
+     * Select 子查询直接递归；And / Or 依次查找左右表达式；In / EqualsTo 查找右侧表达式；
+     * 其他表达式类型不做处理
+     * @param expression 待查找的条件表达式
+     * @param paramTable 目标表（可带别名）
+     * @return 命中的 PlainSelect 与表的组合，未找到返回 null
+     * @throws JSQLParserException 递归解析子查询出错时抛出
+     */
     private PlainSelectAndTable parseExpression(Expression expression, Table paramTable) throws JSQLParserException {
         PlainSelectAndTable psat = null;
         if (expression instanceof Select) {
@@ -241,6 +251,12 @@ public class SqlAuthInject {
         }
         return null;
     }
+    /**
+     * 判断当前表与目标表是否匹配：表名相等即匹配；目标表带别名时还要求别名相等
+     * @param current SQL 中的当前表
+     * @param paramTable 注解配置构造的目标表
+     * @return 是否匹配
+     */
     private boolean matchesTable(Table current, Table paramTable) {
         String name = paramTable.getName();
         String alias = paramTable.getAlias() == null ? null : paramTable.getAlias().getName();
@@ -320,6 +336,11 @@ public class SqlAuthInject {
         return existsExpression;
     }
 
+    /**
+     * 取表的别名用于拼接列前缀，无别名时返回表名
+     * @param table 目标表
+     * @return 别名或表名
+     */
     private String parseAliseOrTableName(Table table) {
         return Optional.ofNullable(table).map(Table::getAlias).map(Alias::getName).orElse(table.getName());
     }

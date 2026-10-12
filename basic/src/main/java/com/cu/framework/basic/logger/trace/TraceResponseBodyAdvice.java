@@ -18,11 +18,22 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 @RestControllerAdvice
 @Order(9000)
 public class TraceResponseBodyAdvice implements ResponseBodyAdvice<Result> {
+    /**
+     * 仅拦截返回值类型为 Result 及其子类的接口
+     * @param returnType 控制器方法返回类型
+     * @param converterType 消息转换器类型
+     * @return 返回类型可赋值给 Result 时为 true
+     */
     @Override
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
         return Result.class.isAssignableFrom(returnType.getParameterType());
     }
 
+    /**
+     * 响应体写出前，将 Result 包装为携带当前 TraceContext 流水号的 TraceResult
+     * @param body 控制器返回的原始 Result
+     * @return 附带 traceId 的 TraceResult
+     */
     @Override
     public Result beforeBodyWrite(Result body, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
         return TraceResult.of(body, TraceContext.get());

@@ -8,6 +8,12 @@ import com.cu.framework.auth.sample.mp.entity.MeetingRoom;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/**
+ * 编辑会议室的请求体示例，实现 IdDataEdit 提供业务数据 ID，
+ * 供 @AuthDataOperation 切面校验编辑权限，并在编辑时通过 AuthDataAdaptor 更新预约权限
+ * @author kewen
+ * @since 2026-02-12
+ */
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class MeetingRoomUpdateReq extends MeetingRoom implements IdDataEdit<Long> {

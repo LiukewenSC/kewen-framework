@@ -32,10 +32,21 @@ public class FileUtils {
         createDirForLoop(file, chmod777());
     }
 
+    /**
+     * 递归创建 file 自身及其所有缺失的父级文件夹，并为每层目录设置指定的 POSIX 权限
+     * @param file 待创建的文件夹
+     * @param permissions 需要设置的 POSIX 文件权限集合
+     * @throws BizException 文件夹创建失败（mkdir 返回 false）时抛出
+     * @throws IOException 设置 POSIX 权限失败时抛出
+     */
     public void createDirForLoop(File file, Set<PosixFilePermission> permissions) throws BizException, IOException {
         createParentDirWithPermission(file, permissions);
     }
 
+    /**
+     * 构建 777 权限集合，即所有者/组/其他用户均具备读、写、执行权限
+     * @return 包含全部九项 POSIX 权限的集合
+     */
     private Set<PosixFilePermission> chmod777() {
         Set<PosixFilePermission> perms = new HashSet<>();
         perms.add(PosixFilePermission.OWNER_READ);

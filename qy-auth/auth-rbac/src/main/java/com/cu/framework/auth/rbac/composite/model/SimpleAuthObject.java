@@ -51,6 +51,11 @@ public class SimpleAuthObject extends AbstractAuthObject {
     }
 
 
+    /**
+     * 将 users、roles、depts、deptRoles 中所有权限实体的权限字符串汇总为 BaseAuth 集合（Set 去重），
+     * 并回调 addAnotherBashAuth 供子类追加其他权限
+     * @return 汇总后的基础权限集合
+     */
     @Override
     public Collection<BaseAuth> listBaseAuth() {
         Collection<BaseAuth> baseAuths = new HashSet<>();

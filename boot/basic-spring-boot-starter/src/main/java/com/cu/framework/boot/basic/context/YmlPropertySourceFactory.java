@@ -15,6 +15,13 @@ import java.util.Properties;
  * @since 2022-12-13 14:27
  */
 public class YmlPropertySourceFactory  extends DefaultPropertySourceFactory {
+    /**
+     * 创建属性源：资源不存在时返回空属性源；.yml/.yaml 文件用 YmlUtils 解析为 Properties；其余交给父类默认处理
+     * @param name 属性源名称，为 null 时取资源文件名
+     * @param resource 待解析的编码资源
+     * @return 解析后的属性源
+     * @throws IOException 读取资源失败时抛出
+     */
     @Override
     public PropertySource<?> createPropertySource(String name, EncodedResource resource) throws IOException {
         String sourceName = name != null ? name : resource.getResource().getFilename();

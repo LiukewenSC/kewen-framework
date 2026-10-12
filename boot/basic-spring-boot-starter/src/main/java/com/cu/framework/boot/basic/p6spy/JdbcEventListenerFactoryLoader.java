@@ -14,6 +14,7 @@ import java.util.ServiceLoader;
  */
 class JdbcEventListenerFactoryLoader {
 
+    /** 单例工厂：优先取 ServiceLoader（SPI）加载到的第一个实现，没有则退回 DefaultJdbcEventListenerFactory */
     private static final JdbcEventListenerFactory jdbcEventListenerFactory;
 
     static {
@@ -27,9 +28,16 @@ class JdbcEventListenerFactoryLoader {
         }
     }
 
+    /**
+     * 私有构造器，防止实例化
+     */
     private JdbcEventListenerFactoryLoader() {
     }
 
+    /**
+     * 获取已加载的 JdbcEventListenerFactory 单例
+     * @return JDBC 事件监听器工厂
+     */
     static JdbcEventListenerFactory load() {
         return jdbcEventListenerFactory;
     }

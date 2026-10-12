@@ -32,11 +32,17 @@ import java.util.stream.Collectors;
 @Slf4j
 public class PropertiesUrlSecurityCustomizer implements ApplicationContextAware, UrlSecurityCustomizer {
 
+    /** 配置项 cu.auth.permit-url 指定的放行 URL，多个以分号或逗号分隔 */
     @Value("${cu.auth.permit-url:}")
     private String permitUrl;
 
+    /** 容器启动时从标注 @SecurityIgnore 的 Controller 类/方法上收集到的 URL 模式 */
     private final List<String> annotationPermits=new ArrayList<>();
 
+    /**
+     * 汇总注解收集与配置项 cu.auth.permit-url 两部分的放行 URL，去重后返回
+     * @return 放行 URL 数组
+     */
     public String[] getPermitUrls() {
 
         Collection<String> list = new HashSet<>();
@@ -48,6 +54,10 @@ public class PropertiesUrlSecurityCustomizer implements ApplicationContextAware,
         }
         return list.toArray(new String[0]);
     }
+    /**
+     * 容器注入回调：扫描 RequestMappingHandlerMapping 中所有映射方法，
+     * 将方法或其所在类标注了 @SecurityIgnore 的 URL 收集到放行列表
+     */
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         //从RequestMappingHandlerMapping中找到Controller中的方法，提取加了SecurityIgnore注解的以从security中放开不进行登录验证
@@ -81,6 +91,10 @@ public class PropertiesUrlSecurityCustomizer implements ApplicationContextAware,
         return Collections.emptySet();
     }
 
+    /**
+     * UrlSecurityCustomizer 实现，返回全部放行 URL 供安全过滤链 permitAll
+     * @return 放行 URL 列表
+     */
     @Override
     public List<String> permitAll()  {
         return Arrays.asList(getPermitUrls());

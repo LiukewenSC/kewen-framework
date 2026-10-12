@@ -12,8 +12,10 @@ import javax.validation.constraints.NotBlank;
  */
 @Data
 public class UpdatePasswordReq {
+    /** 旧密码，未加密，必填 */
     @NotBlank
     private String oldPassword;
+    /** 新密码，未加密，必填 */
     @NotBlank
     private String newPassword;
 }

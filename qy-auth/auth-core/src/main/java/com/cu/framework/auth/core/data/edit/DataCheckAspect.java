@@ -26,13 +26,25 @@ public class DataCheckAspect {
 
     private static final Logger log = LoggerFactory.getLogger(DataCheckAspect.class);
 
+    /** 数据权限处理器，用于校验当前用户对数据的操作权限 */
     private AuthDataHandler annotationAuthHandler;
 
 
 
+    /**
+     * 切入标注了 {@link com.cu.framework.auth.core.AuthDataOperation} 注解的方法
+     */
     @Pointcut("@annotation(com.cu.framework.auth.core.AuthDataOperation)")
     public void pointcut(){}
 
+    /**
+     * 目标方法执行前校验数据操作权限：
+     * 从方法参数中找到 {@link IdDataEdit} 实现取其业务数据ID，
+     * 结合注解声明的业务功能与操作类型，校验当前登录用户是否有权限
+     * @param joinPoint 被拦截的方法
+     * @param authAnn 方法上的 @AuthDataOperation 注解
+     * @throws AuthException 参数中没有 IdDataEdit 实现或权限校验不通过时抛出
+     */
     @Before(value = "pointcut() && @annotation(authAnn)", argNames = "joinPoint,authAnn")
     public void before(JoinPoint joinPoint, AuthDataOperation authAnn){
         log.info("校验用户权限，拦截方法:{}",joinPoint.toString());

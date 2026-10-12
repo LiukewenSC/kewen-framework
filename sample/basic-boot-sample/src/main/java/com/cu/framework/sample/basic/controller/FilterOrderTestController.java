@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class FilterOrderTestController {
 
+    /**
+     * 过滤器执行顺序测试接口，请求经过各过滤器后仅返回成功结果，无业务逻辑
+     * @return 成功响应
+     */
     @RequestMapping("/filter/hello")
     public Result<?> filter(){
         //IUser iUser = UserContext.get();

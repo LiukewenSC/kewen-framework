@@ -7,6 +7,7 @@ package com.cu.framework.basic.exception;
  */
 public class BackendException extends RuntimeException{
 
+    /** 异常错误码，默认 500 */
     protected Integer code = 500;
 
     public BackendException() {

@@ -21,8 +21,11 @@ import java.time.LocalDateTime;
 public class JsonAuthenticationSuccessHandler implements SecurityAuthenticationSuccessHandler {
 
     private static final Logger log = LoggerFactory.getLogger(JsonAuthenticationSuccessHandler.class);
+    /** 写出 JSON 响应体所用的序列化器 */
     private ObjectMapper objectMapper;
+    /** 认证成功结果解析器，将响应体包装为最终返回结构 */
     private AuthenticationSuccessResultResolver resultResolver;
+    /** Authentication 转登录成功响应体的转换器提供者 */
     private ObjectProvider<AuthenticationSuccessResultConverter> jsonSuccessResultConverter;
 
     public JsonAuthenticationSuccessHandler(AuthenticationSuccessResultResolver resultResolver , ObjectMapper objectMapper, ObjectProvider<AuthenticationSuccessResultConverter> jsonSuccessResultConverter) {
@@ -61,6 +64,9 @@ public class JsonAuthenticationSuccessHandler implements SecurityAuthenticationS
         Object result =  resultResolver.resolver(request,response,jsonSuccessResult);
         writeResponseBody(response, result);
     }
+    /**
+     * 将结果对象序列化为 JSON 并以 UTF-8 写入响应体
+     */
     private void writeResponseBody(HttpServletResponse response,Object result) throws IOException {
         response.setContentType("application/json;charset=utf-8");
         PrintWriter out = response.getWriter();

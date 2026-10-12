@@ -12,6 +12,9 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class AuthDataDO {
 
+    /**
+     * 数据权限记录的主键ID
+     */
     private Object id;
     /**
      * 业务功能

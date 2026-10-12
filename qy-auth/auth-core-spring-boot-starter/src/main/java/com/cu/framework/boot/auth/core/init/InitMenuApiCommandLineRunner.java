@@ -16,6 +16,9 @@ public class InitMenuApiCommandLineRunner implements CommandLineRunner {
 
     private static final Logger log = LoggerFactory.getLogger(InitMenuApiCommandLineRunner.class);
     MenuApiGeneratorProcessor menuApiGeneratorProcessor;
+    /**
+     * 应用启动后新开名为 init menu auth 的线程异步执行菜单 API 生成任务，线程异常仅记录日志不中断应用
+     */
     @Override
     public void run(String... args) throws Exception {
         Thread thread = new Thread(menuApiGeneratorProcessor);

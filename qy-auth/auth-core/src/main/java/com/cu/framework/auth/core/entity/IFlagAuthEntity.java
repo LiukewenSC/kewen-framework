@@ -55,6 +55,12 @@ public interface IFlagAuthEntity<ID> extends IAuthEntity {
      */
     void deSerialize(int pos, String posAuth, String posDescription);
 
+    /**
+     * 将权限实体组装为 BaseAuth 通用权限：
+     * 按 AUTH_SPLIT / AUTH_SUB_SPLIT 拼接为 标记__各位置ID 与 标记__各位置名字 两个字符串，
+     * 如 DEPT_ROLE__1_1 与 DEPT_ROLE__根部门_超级管理员
+     * @return 组装后的基础权限对象
+     */
     @Override
     default BaseAuth getAuth() {
         String flag = flag();

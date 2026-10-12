@@ -59,24 +59,52 @@ public class AuthDataTable {
         this.descriptionColumn = descriptionColumn;
     }
 
+    /**
+     * 以业务关联表名构造 JSqlParser 表对象
+     * @return 权限数据所在的表
+     */
     public Table getTable(){
         return new Table(tableName);
     }
+    /**
+     * 以 id 字段名构造 JSqlParser 列对象
+     * @return 主键列
+     */
     public Column getIdColumn(){
         return new Column(idColumn);
     }
+    /**
+     * 以业务功能字段名构造 JSqlParser 列对象
+     * @return 业务功能列
+     */
     public Column getBusinessFunctionColumn(){
         return new Column(businessFunctionColumn);
     }
+    /**
+     * 以业务ID字段名构造 JSqlParser 列对象
+     * @return 业务ID列
+     */
     public Column getDataIdColumn(){
         return new Column(dataIdColumn);
     }
+    /**
+     * 以操作字段名构造 JSqlParser 列对象
+     * @return 操作列
+     */
     public Column getOperateColumn(){
         return new Column(operateColumn);
     }
+    /**
+     * 以权限存储字段名构造 JSqlParser 列对象
+     * @return 权限列
+     */
     public Column getAuthorityColumn(){
         return new Column(authorityColumn);
     }
+    /**
+     * 以权限描述字段名构造 JSqlParser 列对象
+     * @return 权限描述列
+     */
     public Column getDescriptionColumn(){
         return new Column(descriptionColumn);
     }

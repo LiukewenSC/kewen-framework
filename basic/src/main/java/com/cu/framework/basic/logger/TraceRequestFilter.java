@@ -24,8 +24,13 @@ import java.io.IOException;
 @Order(1)
 public class TraceRequestFilter implements EarlyRequestFilter {
 
+    /** 流水号处理器，容器中无 TraceIdProcessor 时默认为基于请求头的 HeaderTraceIdProcessor */
     private TraceIdProcessor traceIdProcessor;
 
+    /**
+     * 构造过滤器，优先使用容器中的 TraceIdProcessor，未注册时回退到 HeaderTraceIdProcessor
+     * @param traceIdProcessor 容器中 TraceIdProcessor 的 ObjectProvider
+     */
     public TraceRequestFilter(ObjectProvider<TraceIdProcessor> traceIdProcessor) {
         TraceIdProcessor processor = traceIdProcessor.getIfAvailable();
         if (processor == null) {
@@ -35,6 +40,10 @@ public class TraceRequestFilter implements EarlyRequestFilter {
         }
     }
 
+    /**
+     * 通过流水号处理器获取本次请求的流水号并写入 TraceContext（MDC），
+     * 放行后续过滤器链，请求处理结束后在 finally 中调用 TraceContext.remove(traceId)
+     */
     @Override
     public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 

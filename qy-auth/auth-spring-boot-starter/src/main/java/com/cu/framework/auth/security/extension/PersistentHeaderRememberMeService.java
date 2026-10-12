@@ -21,9 +21,13 @@ import java.util.Date;
 @Deprecated
 public class PersistentHeaderRememberMeService extends AbstractHeaderRememberMeServices {
 
+    /** 持久化 token 仓库，默认使用内存实现 InMemoryTokenRepositoryImpl */
     private PersistentTokenRepository tokenRepository = new InMemoryTokenRepositoryImpl();
+    /** 生成 series 与 token 随机数所用的安全随机数生成器 */
     private SecureRandom random = new SecureRandom();
+    /** 生成 series 时随机字节数组的长度，默认 16 */
     private int seriesLength = 16;
+    /** 生成 token 时随机字节数组的长度，默认 16 */
     private int tokenLength = 16;
 
     /**
@@ -84,6 +88,9 @@ public class PersistentHeaderRememberMeService extends AbstractHeaderRememberMeS
     }
 
 
+    /**
+     * 登录成功后签发新的持久化 token：生成 series 与 token 存入仓库，并写回响应头；保存失败仅记录日志不中断登录
+     */
     @Override
     protected void onLoginSuccess(HttpServletRequest request, HttpServletResponse response, Authentication successfulAuthentication) {
         String username = successfulAuthentication.getName();
@@ -100,6 +107,9 @@ public class PersistentHeaderRememberMeService extends AbstractHeaderRememberMeS
             logger.error("Failed to save persistent token ", e);
         }
     }
+    /**
+     * 登出：在父类清除响应头的基础上，删除该用户在仓库中的所有持久化 token
+     */
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response,
                        Authentication authentication) {
@@ -112,12 +122,20 @@ public class PersistentHeaderRememberMeService extends AbstractHeaderRememberMeS
 
     }
 
+    /**
+     * 生成 seriesLength 长度随机字节并 Base64 编码，作为 token 系列号
+     * @return Base64 编码的 series 字符串
+     */
     protected String generateSeriesData() {
         byte[] newSeries = new byte[seriesLength];
         random.nextBytes(newSeries);
         return new String(Base64.getEncoder().encode(newSeries));
     }
 
+    /**
+     * 生成 tokenLength 长度随机字节并 Base64 编码，作为 token 值
+     * @return Base64 编码的 token 字符串
+     */
     protected String generateTokenData() {
         byte[] newToken = new byte[tokenLength];
         random.nextBytes(newToken);

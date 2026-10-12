@@ -37,16 +37,21 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class DefaultSysAuthMenuComposite implements SysAuthMenuComposite {
+    /** 菜单API（sys_menu_api 表）数据服务 */
     @Autowired
     private SysMenuApiMpService sysMenuPathMpService;
+    /** 菜单路由（sys_menu_route 表）数据服务 */
     @Autowired
     private SysMenuRouteMpService sysMenuRouteMpService;
+    /** 菜单权限（sys_auth_menu 表）数据服务 */
     @Autowired
     private SysAuthMenuMpService menuAuthService;
 
+    /** 是否缓存菜单与权限数据，读取配置 cu.auth.cache-auth，默认 false（每次直接查库） */
     @Value("${cu.auth.cache-auth:false}")
     private boolean isCache = false;
 
+    /** 菜单缓存存储，isCache 为 true 时经由它读写菜单与权限数据 */
     @Autowired
     private AuthMenuStore authMenuStore;
 
@@ -163,6 +168,10 @@ public class DefaultSysAuthMenuComposite implements SysAuthMenuComposite {
         }
     }
 
+    /**
+     * 更新菜单：先按 ID 更新 sys_menu_api 记录，再以请求中的权限集合体为准同步编辑该菜单的权限
+     * @param req 菜单保存请求，需携带菜单 ID 与权限集合体
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateMenu(MenuApiSaveReq req) {

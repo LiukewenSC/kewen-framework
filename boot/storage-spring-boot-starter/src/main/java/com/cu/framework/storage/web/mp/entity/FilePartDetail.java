@@ -25,6 +25,7 @@ import lombok.experimental.Accessors;
 @TableName("file_part_detail")
 public class FilePartDetail extends Model<FilePartDetail> {
 
+    /** 序列化版本号 */
     private static final long serialVersionUID = 1L;
 
     /**

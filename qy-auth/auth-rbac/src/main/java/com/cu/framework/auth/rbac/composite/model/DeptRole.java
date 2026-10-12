@@ -20,7 +20,9 @@ public class DeptRole implements IFlagAuthEntity<Long> {
 
     private static final long serialVersionUID = 1243051459093859539L;
     private static final Logger log = LoggerFactory.getLogger(DeptRole.class);
+    /** 组合权限中的部门部分，序列化时位于权限字符串位置 0 */
     private Dept dept;
+    /** 组合权限中的角色部分，序列化时位于权限字符串位置 1 */
     private Role role;
 
     public DeptRole() {

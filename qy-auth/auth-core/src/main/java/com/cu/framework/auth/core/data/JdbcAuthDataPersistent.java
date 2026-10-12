@@ -32,8 +32,10 @@ import java.util.stream.Collectors;
 public class JdbcAuthDataPersistent implements InitializingBean {
 
     private static final Logger log = LoggerFactory.getLogger(JdbcAuthDataPersistent.class);
+    /** 执行数据权限 SQL 的 JdbcTemplate */
     private JdbcTemplate jdbcTemplate;
 
+    /** 数据权限表的表名与字段名映射配置 */
     private AuthDataTable authDataTable;
 
     /**
@@ -48,6 +50,11 @@ public class JdbcAuthDataPersistent implements InitializingBean {
         return update > 0;
     }
 
+    /**
+     * 构造批量插入 SQL：向权限表插入 businessFunction、dataId、operate、authority、description 五列
+     * @param datas 待插入的数据权限记录
+     * @return 拼接完成的 insert 语句
+     */
     private String buildInsertBatchSql(Collection<AuthDataDO> datas) {
         Insert insert = new Insert();
         insert.withTable(authDataTable.getTable())
@@ -81,6 +88,12 @@ public class JdbcAuthDataPersistent implements InitializingBean {
         return jdbcTemplate.update(sql);
     }
 
+    /**
+     * 构造按主键批量删除的 SQL（id IN (...)），Long / Integer 转为数值字面量，StringValue 转为字符串字面量，其余类型抛出异常
+     * @param ids 主键列表
+     * @return 拼接完成的 delete 语句
+     * @throws RuntimeException ID 类型不受支持时抛出
+     */
     private  String removeByIdsSql(List ids) {
         ArrayList<Expression> expressions = new ArrayList<>();
         for (Object id : ids) {
@@ -116,6 +129,13 @@ public class JdbcAuthDataPersistent implements InitializingBean {
         String sql = removeBusinessFunctionDataIdSql(businessFunction,dataId);
         return jdbcTemplate.update(sql);
     }
+    /**
+     * 构造按 业务功能 + 数据ID 删除权限记录的 SQL
+     * @param businessFunction 业务功能
+     * @param dataId 数据ID，仅支持 String / Long / Integer 类型
+     * @return 拼接完成的 delete 语句
+     * @throws AuthServiceException dataId 类型不受支持时抛出
+     */
     private <Object> String removeBusinessFunctionDataIdSql(String businessFunction, Object dataId) {
         Delete delete = new Delete();
 
@@ -141,6 +161,10 @@ public class JdbcAuthDataPersistent implements InitializingBean {
     }
 
 
+    /**
+     * 校验依赖是否已注入，jdbcTemplate 或 authDataTable 为空时启动失败
+     * @throws Exception 依赖缺失时抛出 RuntimeException
+     */
     @Override
     public void afterPropertiesSet() throws Exception {
         if (jdbcTemplate == null || authDataTable == null) {
@@ -181,6 +205,13 @@ public class JdbcAuthDataPersistent implements InitializingBean {
 
     }
 
+    /**
+     * 构造按 业务功能 + 数据ID + 操作类型 查询权限的 SQL，只查询 id、authority、description 三列
+     * @param businessFunction 业务功能
+     * @param dataId 数据ID
+     * @param operate 操作类型
+     * @return 拼接完成的 select 语句
+     */
     private <Object> String listAuthDataSql(String businessFunction, Object dataId, String operate) {
         PlainSelect plainSelect = SelectUtils.buildSelectFromTable(authDataTable.getTable()).getPlainSelect();
         plainSelect.withWhere(

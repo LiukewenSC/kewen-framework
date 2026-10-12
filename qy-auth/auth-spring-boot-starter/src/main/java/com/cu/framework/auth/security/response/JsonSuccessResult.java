@@ -15,6 +15,9 @@ import java.time.LocalDateTime;
 public class JsonSuccessResult {
 
 
+    /**
+     * 登录成功后返回的会话 token，取值为当前 Session ID（见 JsonAuthenticationSuccessHandler）
+     */
     private String token;
 
     /**
@@ -62,5 +65,8 @@ public class JsonSuccessResult {
      */
     private IAuthObject authObject;
 
+    /**
+     * 本次登录时间，认证成功时取当前时间写入
+     */
     private LocalDateTime loginTime;
 }

@@ -36,12 +36,21 @@ public class RbacCurrentUserController implements ApplicationContextAware {
 
     RbacCurrentUserService rbacCurrentUserService;
 
+    /**
+     * 获取当前登录人有权限的路由菜单树（GET /currentUser/routeMenus），基于当前用户权限集合过滤
+     * @return 路由菜单树
+     */
     @GetMapping("/routeMenus")
     public RbacResult<List<MenuRouteResp>> routeTrees(){
         Collection<BaseAuth> auths = AuthUserContext.getAuths();
         List<MenuRouteResp> menuTree = sysAuthMenuComposite.getRouteAuthMenuTree(auths);
         return RbacResult.success(menuTree);
     }
+    /**
+     * 当前登录人修改自己的密码（POST /currentUser/updatePassword），委托给容器中的 RbacCurrentUserService 处理
+     * @param req 修改密码请求，携带旧密码与新密码
+     * @return 操作结果
+     */
     @PostMapping("/updatePassword")
     public RbacResult<Void> updatePassword(@RequestBody @Validated UpdatePasswordReq req){
         rbacCurrentUserService.updatePassword(AuthUserContext.getCurrentUser(),req.getOldPassword(), req.getNewPassword());
@@ -56,6 +65,10 @@ public class RbacCurrentUserController implements ApplicationContextAware {
 
 
 
+    /**
+     * 注入 RbacCurrentUserService，容器中不存在时降级为不支持修改密码的默认实现
+     * @param applicationContext Spring 应用上下文
+     */
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         ObjectProvider<RbacCurrentUserService> beanProvider = applicationContext.getBeanProvider(RbacCurrentUserService.class);

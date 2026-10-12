@@ -34,6 +34,12 @@ public class CodeGenerator {
 
     private static Properties properties = new Properties();
 
+    /**
+     * 代码生成入口：确定工程路径（优先取配置的 absolutePath，否则从 classpath 截取 /target/classes 之前的路径），
+     * 查询数据源 Schema 下需生成的表名，再按 Properties 配置构建 FastAutoGenerator 并执行生成
+     * @param args 启动参数，未使用
+     * @throws SQLException 查询表名时数据库访问失败抛出
+     */
     public static void main(String[] args) throws SQLException {
 
         //工程路径
@@ -59,6 +65,16 @@ public class CodeGenerator {
         autoGenerator.execute();
     }
 
+    /**
+     * 构建 MyBatis-Plus 代码生成器：配置全局项（作者、输出目录、注释日期、是否启用 swagger）、
+     * 包路径（父包为 basePackage.mp，xml 输出到 resources/mapper/mp）、
+     * entity/mapper/service/controller 的命名格式与自定义 Velocity 模板，
+     * 并注入模板变量 orderByDescProperty
+     * @param dataSourceConfigBuilder 数据源配置
+     * @param projectPath 工程根路径
+     * @param tableNames 待生成的表名列表
+     * @return 配置完成的代码生成器
+     */
     private static FastAutoGenerator createAutoGenerator(DataSourceConfig.Builder dataSourceConfigBuilder, String projectPath,List<String> tableNames) {
         return FastAutoGenerator.create(dataSourceConfigBuilder)
                 .globalConfig(builder -> {

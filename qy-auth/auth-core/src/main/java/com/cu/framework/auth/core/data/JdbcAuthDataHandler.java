@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 @Setter
 public class JdbcAuthDataHandler implements AuthDataHandler {
 
+    /** 数据权限持久化组件，执行权限表的增删查 SQL */
     protected JdbcAuthDataPersistent jdbcAuthDataPersistent;
 
     @Override

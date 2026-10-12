@@ -24,8 +24,13 @@ import java.util.stream.Collectors;
 @Order(-101)
 public class EarlyRequestFilterProxy extends OncePerRequestFilter {
 
+    /** 容器中所有 EarlyRequestFilter，按 Order 排序收集；容器中不存在时保持为 null */
     List<EarlyRequestFilter> filters;
 
+    /**
+     * 构造代理，从容器中按 Order 顺序收集所有 EarlyRequestFilter
+     * @param earlyRequestFilters 容器中 EarlyRequestFilter 的 ObjectProvider
+     */
     public EarlyRequestFilterProxy(ObjectProvider<EarlyRequestFilter> earlyRequestFilters) {
         List<EarlyRequestFilter> collect = earlyRequestFilters.orderedStream().collect(Collectors.toList());
         if (!collect.isEmpty()) {
@@ -33,6 +38,10 @@ public class EarlyRequestFilterProxy extends OncePerRequestFilter {
         }
     }
 
+    /**
+     * 没有任何早期过滤器时直接放行原始过滤器链；否则构造虚拟过滤器链，
+     * 先于 Spring Security 依次执行各 EarlyRequestFilter，再进入原始过滤器链
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         if (filters == null || filters.isEmpty()) {
@@ -49,6 +58,7 @@ public class EarlyRequestFilterProxy extends OncePerRequestFilter {
      */
     static class BeforeVirtualFilterChain implements FilterChain {
 
+        /** 下一个待执行过滤器的下标 */
         private int pos = 0;
         private final int size;
         List<EarlyRequestFilter> filters;
@@ -60,6 +70,10 @@ public class EarlyRequestFilterProxy extends OncePerRequestFilter {
             size = filters.size();
         }
 
+        /**
+         * 按下标依次执行各早期过滤器，全部执行完后委托给原始过滤器链；
+         * 非 HTTP 请求/响应时跳过当前过滤器，直接递归处理下一个
+         */
         @Override
         public void doFilter(ServletRequest request, ServletResponse response) throws IOException, ServletException {
             if (pos == size){

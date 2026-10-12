@@ -97,8 +97,8 @@ public class SnowflakeIdGenerator {
     /**
      * 位移量
      */
-    private static final long MACHINE_ID_SHIFT = SEQUENCE_BITS;
-    private static final long TIMESTAMP_SHIFT = SEQUENCE_BITS + MACHINE_ID_BITS;
+    private static final long MACHINE_ID_SHIFT = SEQUENCE_BITS;            // 机器ID左移12位，让出低12位给序列号
+    private static final long TIMESTAMP_SHIFT = SEQUENCE_BITS + MACHINE_ID_BITS;  // 时间戳左移22位(12+10)，让出低位给机器ID和序列号
     
     /**
      * 扩展序列号位数（用于EXTEND_SEQUENCE策略）

@@ -73,18 +73,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new HttpSessionEventPublisher();
     }
 
+    /**
+     * 放行静态资源路径（/static、/js、/css、/image 及 html 页面），使其不经过安全过滤器链
+     */
     @Override
     public void configure(WebSecurity web) throws Exception {
         //不拦截静态文件
         web.ignoring().antMatchers("/static/**", "/js/**", "/css/**", "/image/**", "/**/**.html");
     }
 
+    /**
+     * 向认证管理器注册 SecurityUserDetailsService，作为用户名密码认证的用户来源
+     */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(securityUserDetailsService);
         super.configure(auth);
     }
 
+    /**
+     * 构建安全过滤链：汇总所有 UrlSecurityCustomizer 的放行 URL 后其余请求需认证；
+     * 登出成功走 successHandler，认证入口与访问拒绝走 exceptionResolverHandler；禁用 csrf；
+     * 在 SessionManagementFilter 之后注册 AuthUserContextFilter；
+     * 最后依次应用容器中所有 HttpSecurityCustomizer（可覆盖以上配置）
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         List<String> permitList = new ArrayList<>();

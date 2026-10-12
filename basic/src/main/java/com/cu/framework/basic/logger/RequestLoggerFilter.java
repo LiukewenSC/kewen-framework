@@ -33,6 +33,11 @@ public class RequestLoggerFilter implements EarlyRequestFilter , ApplicationEven
 
     ApplicationEventPublisher applicationEventPublisher;
 
+    /**
+     * 解析请求头、param 参数与 JSON body，组装 RequestLogger 并打印请求日志；
+     * 将请求包装为 BodyHttpServletRequest 以支持 body 重复读取；
+     * 放行后统计执行耗时，并在 finally 中发布 RequestLoggerEvent 供监听方持久化
+     */
     @Override
     public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 

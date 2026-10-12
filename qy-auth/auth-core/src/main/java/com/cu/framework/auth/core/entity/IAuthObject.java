@@ -13,6 +13,10 @@ import java.util.Collection;
  */
 public interface IAuthObject extends Serializable {
 
+    /**
+     * 判断权限集合体中是否没有任何基础权限
+     * @return listBaseAuth 为空时返回 true
+     */
     default boolean isEmpty(){
         return CollectionUtils.isEmpty(listBaseAuth());
     }

@@ -31,6 +31,11 @@ public class ExceptionHandlerAdvice {
         log.error("bizException >> ",e);
         return Result.failed(ExceptionConstant.BIZ_FAILED,e.getMessage());
     }
+    /**
+     * 空指针异常，按业务异常处理，记录日志并返回 BIZ_FAILED 错误码
+     * @param e 空指针异常
+     * @return 携带异常信息的失败响应
+     */
     @ExceptionHandler(NullPointerException.class)
     public Result<Void> bizException(NullPointerException e){
         log.error("nullPointerException >> ",e);

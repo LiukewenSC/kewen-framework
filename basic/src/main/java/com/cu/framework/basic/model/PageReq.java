@@ -5,6 +5,11 @@ import lombok.Data;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+/**
+ * 分页请求参数，包含页码、页面大小与模糊搜索关键字，并提供从 0 开始的偏移量计算
+ * @author kewen
+ * @since 2024-08-29
+ */
 @Data
 public class PageReq {
     /**

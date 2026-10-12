@@ -5,6 +5,11 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+/**
+ * 方糖（Server 酱）消息推送的请求参数，字段与方糖 send 接口的入参一一对应，各字段的取值约束见字段注释
+ * @author kewen
+ * @since 2024-08-30
+ */
 @Getter
 @Setter
 @Accessors(chain = true)

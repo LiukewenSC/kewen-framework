@@ -29,11 +29,18 @@ import java.util.stream.StreamSupport;
 public class MenuApiGeneratorProcessor implements ApplicationContextAware,Runnable {
 
     private static final Logger log = LoggerFactory.getLogger(MenuApiGeneratorProcessor.class);
+    /** 菜单API入库服务，容器中不存在时 run 不执行生成 */
     private MenuApiService menuApiService;
+    /** 容器中全部 Controller 请求方法与映射信息的对应关系 */
     private Map<RequestMappingInfo, HandlerMethod> handlerMethods;
 
+    /** 本次扫描收集到的 路径->菜单实体 映射，key 为请求路径 */
     private final Map<String, MenuApiEntity> menuApiMap = new ConcurrentHashMap<>();
 
+    /**
+     * 从容器中获取 RequestMappingHandlerMapping 的全部请求方法映射，
+     * 并获取可选的 MenuApiService（容器中不存在时保持为 null）
+     */
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         RequestMappingHandlerMapping handlerMapping = applicationContext.getBean(RequestMappingHandlerMapping.class);
@@ -44,6 +51,11 @@ public class MenuApiGeneratorProcessor implements ApplicationContextAware,Runnab
         }
     }
 
+    /**
+     * 菜单API生成主流程：扫描 @AuthMenu 相关的 Controller 构建 路径->菜单 映射，
+     * 过滤掉数据库中已存在的路径，为新菜单生成ID并按 parentPath 组装 parentId，
+     * 最后批量入库；MenuApiService 不存在时直接跳过
+     */
     @Override
     public void run() {
         //处理对应关系，找到路径信息，在此处处理不会引发系统启动的问题

@@ -19,6 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * API 菜单管理接口（/menu/api），提供菜单 API 树查询与菜单更新，类上 @AuthMenu 名称为"菜单路径相关接口"
+ * @author kewen
+ * @since 2026-02-12
+ */
 @RestController
 @RequestMapping("/menu/api")
 @AuthMenu(name = "菜单路径相关接口")
@@ -28,11 +33,21 @@ public class RbacMenuApiController {
     SysAuthMenuComposite sysAuthMenuComposite;
 
 
+    /**
+     * 获取全部 API 菜单树（GET /menu/api/tree），包含已删除的菜单
+     * @return API 菜单树，节点上附带各自的权限集合体
+     */
     @GetMapping("/tree")
     public RbacResult<List<MenuApiAndAuthResp>> menuTree(){
         List<MenuApiAndAuthResp> menuTree = sysAuthMenuComposite.getApiAuthMenuTree(true);
         return RbacResult.success(menuTree);
     }
+    /**
+     * 更新菜单 API 及其权限集合体（POST /menu/api/update）；
+     * 权限类型为 OWNER（基于自身权限）时要求权限集合体非空，否则抛出异常
+     * @param req 菜单保存请求，继承 SysMenuApi 并携带权限集合体
+     * @return 操作结果，data 恒为 null
+     */
     @PostMapping("/update")
     public RbacResult<List<MenuApiResp>> updateMenu(@RequestBody MenuApiSaveReq req){
         if (req.getAuthType()== MenuTypeConstant.AUTH_TYPE.OWNER && (req.getAuthObject()==null || req.getAuthObject().isEmpty())){

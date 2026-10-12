@@ -16,8 +16,16 @@ import lombok.Setter;
 @Getter
 public class TraceResult<T> extends Result<T> {
 
+    /** 交易流水号 */
     private String traceId;
 
+    /**
+     * 将原始 Result 的 code、message、success、data 复制到新的 TraceResult，并附带流水号
+     * @param result 原始返回结果
+     * @param traceId 交易流水号
+     * @param <T> 业务数据类型
+     * @return 携带流水号的新返回结构
+     */
     public static <T> TraceResult<T> of(Result<T> result,String traceId) {
         //坑爹的fastjson
         TraceResult<T> traceResult = new TraceResult<>();

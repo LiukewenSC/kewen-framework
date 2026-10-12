@@ -32,6 +32,9 @@ public class StorageProperties {
      * 存储根目录
      */
     private String rootPath ="";
+    /**
+     * 存储桶是否为公开空间；为 false 时生成的下载链接会带有效期签名
+     */
     private Boolean isPublic = true;
     /**
      * 下载域，即下载图片时访问的域名地址

@@ -50,6 +50,14 @@ public abstract class AbstractAuthObject implements IAuthObject {
             throw new RuntimeException(e);
         }
     }
+    /**
+     * 将 BaseAuth 解析为对应的权限实体：
+     * 取权限字符串中 AUTH_SPLIT 之前的部分作为权限标记 flag，
+     * 从启动时扫描注册的 authEntityMap 中找到实体类，实例化并填充属性值
+     * @param baseAuth 基础权限
+     * @return 解析出的权限实体
+     * @throws AuthEntityException 权限标记未注册或实体实例化失败时抛出
+     */
     public IFlagAuthEntity parseBaseAuth(BaseAuth baseAuth) {
         String[] strings = baseAuth.getAuth().split(AuthConstant.AUTH_SPLIT);
         String flag = strings[0];
@@ -76,5 +84,9 @@ public abstract class AbstractAuthObject implements IAuthObject {
         setBaseAuth(abstractAuthEntities);
     }
 
+    /**
+     * 子类实现的回调钩子，将解析完成的权限实体列表设置到具体的权限集合体上
+     * @param abstractAuthEntities 由 BaseAuth 解析出的权限实体列表
+     */
     protected abstract void setBaseAuth(List<IFlagAuthEntity> abstractAuthEntities);
 }

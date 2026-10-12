@@ -72,11 +72,22 @@ public class FileStorageEndpoint {
         }
     }
 
+    /**
+     * 获取单个文件的下载信息（GET /storage/getDownloadUrl）
+     * @param fileId 文件 ID
+     * @return 包含文件下载链接等信息的成功结果
+     */
     @GetMapping("/getDownloadUrl")
     public Result<FileInfo> getDownloadUrl(@RequestParam("fileId") Long fileId) {
         FileInfo result = fileStorageProcessor.getDownloadInfo(fileId);
         return Result.success(result);
     }
+
+    /**
+     * 批量获取文件的下载信息（GET /storage/listDownloadUrl）
+     * @param fileIds 文件 ID 列表
+     * @return 包含各文件下载链接等信息的成功结果
+     */
     @GetMapping("/listDownloadUrl")
     public Result<List<FileInfo>> listDownloadUrl(List<Long> fileIds) {
         List<FileInfo> result = fileStorageProcessor.listDownloadInfo(fileIds);

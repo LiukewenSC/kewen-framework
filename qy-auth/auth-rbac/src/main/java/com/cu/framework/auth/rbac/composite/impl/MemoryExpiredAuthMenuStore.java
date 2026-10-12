@@ -25,6 +25,11 @@ public class MemoryExpiredAuthMenuStore implements AuthMenuStore {
     private static final Cache<String, Object> cache = CacheBuilder.newBuilder().expireAfterWrite(10, TimeUnit.MINUTES).build();
 
 
+    /**
+     * 获取菜单API列表，优先读缓存，未命中时通过 callable 加载并写入缓存（写入后 10 分钟过期）
+     * @param callable 缓存未命中时的数据加载回调
+     * @return 菜单API列表
+     */
     @Override
     public List<SysMenuApi> getApiMenus(Callable<List<SysMenuApi>> callable) {
         try {
@@ -34,6 +39,11 @@ public class MemoryExpiredAuthMenuStore implements AuthMenuStore {
         }
     }
 
+    /**
+     * 获取菜单路由列表，优先读缓存，未命中时通过 callable 加载并写入缓存（写入后 10 分钟过期）
+     * @param callable 缓存未命中时的数据加载回调
+     * @return 菜单路由列表
+     */
     @Override
     public List<SysMenuRoute> getRouteMenus(Callable<List<SysMenuRoute>> callable) {
         try {
@@ -43,6 +53,11 @@ public class MemoryExpiredAuthMenuStore implements AuthMenuStore {
         }
     }
 
+    /**
+     * 获取菜单权限列表，优先读缓存，未命中时通过 callable 加载并写入缓存（写入后 10 分钟过期）
+     * @param callable 缓存未命中时的数据加载回调
+     * @return 菜单权限列表
+     */
     @Override
     public List<SysAuthMenu> getAuthMenus(Callable<List<SysAuthMenu>> callable) {
         try {

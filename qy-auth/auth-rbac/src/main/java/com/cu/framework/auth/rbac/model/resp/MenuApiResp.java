@@ -20,8 +20,13 @@ import java.util.List;
 @Data
 public class MenuApiResp extends SysMenuApi implements TreeUtil.TreeBase<MenuApiResp,Long>{
 
+    /** 子菜单节点 */
     protected List<MenuApiResp> children;
 
+    /**
+     * 转换为 SysMenuApi 实体（JSON 序列化再反序列化）
+     * @return 菜单 API 实体
+     */
     public SysMenuApi toSysMenuRequest() {
         return BeanUtil.toBean(this, SysMenuApi.class);
     }
