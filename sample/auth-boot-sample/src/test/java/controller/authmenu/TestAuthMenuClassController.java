@@ -1,6 +1,6 @@
 package controller.authmenu;
 
-import com.kewen.framework.auth.core.AuthMenu;
+import com.cu.framework.auth.core.AuthMenu;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

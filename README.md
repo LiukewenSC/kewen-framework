@@ -82,13 +82,13 @@ Kewen Framework 是一个基于 Java + Spring Boot 的企业级后端框架，�
 ## 📁 项目结构
 
 ```
-kewen-framework/
+cu-framework/
 ├── .gitee/                             # Gitee 相关配置
 │   ├── ISSUE_TEMPLATE.zh-CN.md         # Issue 模板
 │   └── PULL_REQUEST_TEMPLATE.zh-CN.md  # PR 模板
 │
 ├── basic/                              # 基础模块
-│   └── src/main/java/com/kewen/framework/basic/
+│   └── src/main/java/com/cu/framework/basic/
 │       ├── exception/                  # 异常处理（BizException, BackendException等）
 │       ├── filter/                     # 过滤器（EarlyRequestFilter, TraceRequestFilter等）
 │       ├── logger/                     # 日志管理（请求日志、追踪日志）
@@ -96,7 +96,7 @@ kewen-framework/
 │       └── utils/                      # 工具类（BeanUtil, TreeUtil, FileUtils等）
 │
 ├── basic-support/                      # 基础支持模块
-│   └── src/main/java/com/kewen/framework/basic/support/
+│   └── src/main/java/com/cu/framework/basic/support/
 │       ├── log/                        # 日志持久化支持
 │       ├── message/                    # 消息推送支持（方糖等）
 │       ├── mp/                         # MyBatis-Plus 支持
@@ -105,7 +105,7 @@ kewen-framework/
 │
 ├── boot/                               # Spring Boot Starter 模块
 │   ├── basic-spring-boot-starter/      # 基础功能 Starter
-│   │   └── src/main/java/com/kewen/framework/boot/basic/
+│   │   └── src/main/java/com/cu/framework/boot/basic/
 │   │       ├── config/                 # 自动配置类（Async, MyBatis-Plus, Filter等）
 │   │       ├── context/                # 上下文管理
 │   │       ├── handler/                # 处理器
@@ -118,7 +118,7 @@ kewen-framework/
 │
 ├── qy-auth/                            # 权限认证模块
 │   ├── auth-core/                      # 权限核心（注解、模型、实体）
-│   │   └── src/main/java/com/kewen/framework/auth/core/
+│   │   └── src/main/java/com/cu/framework/auth/core/
 │   │       ├── annotation/             # 权限注解（@AuthMenu, @AuthDataRange等）
 │   │       ├── data/                   # 数据权限相关
 │   │       ├── entity/                 # 基础实体（BaseAuth等）
@@ -128,7 +128,7 @@ kewen-framework/
 │   │
 │   ├── auth-core-spring-boot-starter/  # 权限核心 Starter
 │   ├── auth-rbac/                      # RBAC 权限实现
-│   │   └── src/main/java/com/kewen/framework/auth/rabc/
+│   │   └── src/main/java/com/cu/framework/auth/rbac/
 │   │       ├── composite/              # 复合用户对象
 │   │       ├── controller/             # RBAC 控制器（用户、角色、部门等）
 │   │       ├── extension/              # 扩展服务
@@ -138,7 +138,7 @@ kewen-framework/
 │   │
 │   ├── auth-rbac-spring-boot-starter/  # RBAC Starter
 │   ├── auth-spring-boot-starter/       # 安全认证 Starter
-│   │   └── src/main/java/com/kewen/framework/auth/security/
+│   │   └── src/main/java/com/cu/framework/auth/security/
 │   │       ├── annotation/             # 安全注解
 │   │       ├── config/                 # 安全配置（SecurityConfig, SessionConfig等）
 │   │       ├── exception/              # 安全异常处理
@@ -157,7 +157,7 @@ kewen-framework/
 │
 ├── qy-idaas/                           # IDaaS 统一认证模块
 │   ├── idaas-authentications/          # SAML/OIDC 等认证集成
-│   │   └── src/main/java/com/kewen/framework/idaas/
+│   │   └── src/main/java/com/cu/framework/idaas/
 │   │       ├── oauth2/                 # OAuth2/OIDC 集成
 │   │       └── saml/                   # SAML 协议集成
 │   └── README.md                       # IDaaS 使用说明
@@ -206,8 +206,8 @@ kewen-framework/
 ### 1. 安装框架到本地仓库
 
 ```bash
-git clone https://gitee.com/LiuKewenSc/kewen-framework.git
-cd kewen-framework
+git clone https://gitee.com/LiuKewenSc/cu-framework.git
+cd cu-framework
 mvn clean install
 ```
 
@@ -232,21 +232,21 @@ mysql -u root -p your_database < docs/sql/sys_request_log.sql
 
 ```xml
 <parent>
-    <groupId>com.kewen.framework</groupId>
-    <artifactId>kewen-framework</artifactId>
+    <groupId>com.cu.framework</groupId>
+    <artifactId>cu-framework</artifactId>
     <version>1.0-SNAPSHOT</version>
 </parent>
 
 <dependencies>
     <!-- 权限认证模块 -->
     <dependency>
-        <groupId>com.kewen.framework.auth</groupId>
+        <groupId>com.cu.framework.auth</groupId>
         <artifactId>auth-spring-boot-starter</artifactId>
     </dependency>
     
     <!-- RBAC 权限实现 -->
     <dependency>
-        <groupId>com.kewen.framework.auth</groupId>
+        <groupId>com.cu.framework.auth</groupId>
         <artifactId>auth-rbac-spring-boot-starter</artifactId>
     </dependency>
     
@@ -456,7 +456,7 @@ public void editDataAuths(Long dataId) {
 文件存储模块，支持七牛云等平台。
 
 ```yaml
-kewen:
+cu:
   storage:
     qiniu:
       access-key: your-access-key
@@ -468,7 +468,7 @@ kewen:
 多租户支持模块，实现数据隔离。
 
 ```yaml
-kewen:
+cu:
   tenant:
     open: true
 ```
@@ -516,7 +516,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/kewen_framework?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://localhost:3306/cu_framework?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -525,7 +525,7 @@ spring:
 ### 权限模块配置
 
 ```yaml
-kewen:
+cu:
   auth:
     auth-data-table:
       table-name: sys_auth_data
@@ -535,7 +535,7 @@ kewen:
 ### 安全配置
 
 ```yaml
-kewen:
+cu:
   security:
     login:
       login-url: /login                 # 登录地址
@@ -555,7 +555,7 @@ kewen:
 ### 请求日志配置
 
 ```yaml
-kewen:
+cu:
   request:
     persistent:
       database: true   # 是否持久化到数据库
@@ -566,7 +566,7 @@ kewen:
 ### 消息通知配置
 
 ```yaml
-kewen:
+cu:
   message:
     fang-tang:
       key: ''           # 方糖推送 Key
@@ -576,7 +576,7 @@ kewen:
 ### 多租户配置
 
 ```yaml
-kewen:
+cu:
   tenant:
     open: false  # 是否开启多租户
 ```
@@ -776,7 +776,7 @@ public Result publicInfo() {
 ## 📧 联系方式
 
 - 作者：kewen
-- Gitee：https://gitee.com/LiuKewenSc/kewen-framework
+- Gitee：https://gitee.com/LiuKewenSc/cu-framework
 
 ---
 

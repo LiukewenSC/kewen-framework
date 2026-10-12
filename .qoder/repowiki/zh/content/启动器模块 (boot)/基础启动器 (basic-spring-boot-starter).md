@@ -2,21 +2,21 @@
 
 <cite>
 **本文档引用的文件**
-- [BasicSupportConfig.java](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/BasicSupportConfig.java)
-- [AsyncConfig.java](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/AsyncConfig.java)
-- [EarlyFilterConfig.java](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/EarlyFilterConfig.java)
-- [MybatisPlusConfig.java](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/MybatisPlusConfig.java)
-- [RequestResponseFormatConfig.java](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/RequestResponseFormatConfig.java)
-- [MessageConfig.java](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/MessageConfig.java)
-- [FangTangProperties.java](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/properties/FangTangProperties.java)
+- [BasicSupportConfig.java](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/BasicSupportConfig.java)
+- [AsyncConfig.java](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/AsyncConfig.java)
+- [EarlyFilterConfig.java](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/EarlyFilterConfig.java)
+- [MybatisPlusConfig.java](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/MybatisPlusConfig.java)
+- [RequestResponseFormatConfig.java](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/RequestResponseFormatConfig.java)
+- [MessageConfig.java](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/MessageConfig.java)
+- [FangTangProperties.java](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/properties/FangTangProperties.java)
 - [spring.factories](file://boot/basic-spring-boot-starter/src/main/resources/META-INF/spring.factories)
 - [additional-spring-configuration-metadata.json](file://boot/basic-spring-boot-starter/src/main/resources/META-INF/additional-spring-configuration-metadata.json)
 - [pom.xml](file://boot/basic-spring-boot-starter/pom.xml)
-- [EarlyRequestFilter.java](file://basic/src/main/java/com/kewen/framework/basic/filter/EarlyRequestFilter.java)
-- [RequestLoggerFilter.java](file://basic/src/main/java/com/kewen/framework/basic/logger/RequestLoggerFilter.java)
-- [TraceRequestFilter.java](file://basic/src/main/java/com/kewen/framework/basic/logger/TraceRequestFilter.java)
-- [TraceIdProcessor.java](file://basic/src/main/java/com/kewen/framework/basic/logger/trace/TraceIdProcessor.java)
-- [HeaderTraceIdProcessor.java](file://basic/src/main/java/com/kewen/framework/basic/logger/trace/HeaderTraceIdProcessor.java)
+- [EarlyRequestFilter.java](file://basic/src/main/java/com/cu/framework/basic/filter/EarlyRequestFilter.java)
+- [RequestLoggerFilter.java](file://basic/src/main/java/com/cu/framework/basic/logger/RequestLoggerFilter.java)
+- [TraceRequestFilter.java](file://basic/src/main/java/com/cu/framework/basic/logger/TraceRequestFilter.java)
+- [TraceIdProcessor.java](file://basic/src/main/java/com/cu/framework/basic/logger/trace/TraceIdProcessor.java)
+- [HeaderTraceIdProcessor.java](file://basic/src/main/java/com/cu/framework/basic/logger/trace/HeaderTraceIdProcessor.java)
 - [application.yml](file://sample/basic-boot-sample/src/main/resources/application.yml)
 </cite>
 
@@ -106,13 +106,13 @@ POM --> BS
 - FangTangProperties：方糖消息客户端的 key 与 domain 配置项。
 
 章节来源
-- [AsyncConfig.java:1-60](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/AsyncConfig.java#L1-L60)
-- [BasicSupportConfig.java:1-45](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/BasicSupportConfig.java#L1-L45)
-- [EarlyFilterConfig.java:1-48](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/EarlyFilterConfig.java#L1-L48)
-- [MybatisPlusConfig.java:1-24](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/MybatisPlusConfig.java#L1-L24)
-- [RequestResponseFormatConfig.java:1-111](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/RequestResponseFormatConfig.java#L1-L111)
-- [MessageConfig.java:1-35](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/MessageConfig.java#L1-L35)
-- [FangTangProperties.java:1-40](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/properties/FangTangProperties.java#L1-L40)
+- [AsyncConfig.java:1-60](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/AsyncConfig.java#L1-L60)
+- [BasicSupportConfig.java:1-45](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/BasicSupportConfig.java#L1-L45)
+- [EarlyFilterConfig.java:1-48](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/EarlyFilterConfig.java#L1-L48)
+- [MybatisPlusConfig.java:1-24](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/MybatisPlusConfig.java#L1-L24)
+- [RequestResponseFormatConfig.java:1-111](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/RequestResponseFormatConfig.java#L1-L111)
+- [MessageConfig.java:1-35](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/MessageConfig.java#L1-L35)
+- [FangTangProperties.java:1-40](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/properties/FangTangProperties.java#L1-L40)
 
 ## 架构总览
 基础启动器通过 Spring Boot 自动装配机制加载多个配置类，形成“过滤器链 + 持久化 + 消息通知 + ORM + 异步 + 格式化”的一体化基础设施。
@@ -143,12 +143,12 @@ RESP --> MP
 
 图表来源
 - [spring.factories:1-7](file://boot/basic-spring-boot-starter/src/main/resources/META-INF/spring.factories#L1-L7)
-- [AsyncConfig.java:19-59](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/AsyncConfig.java#L19-L59)
-- [MybatisPlusConfig.java:9-23](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/MybatisPlusConfig.java#L9-L23)
-- [RequestResponseFormatConfig.java:28-111](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/RequestResponseFormatConfig.java#L28-L111)
-- [MessageConfig.java:15-34](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/MessageConfig.java#L15-L34)
-- [FangTangProperties.java:12-39](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/properties/FangTangProperties.java#L12-L39)
-- [BasicSupportConfig.java:18-44](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/BasicSupportConfig.java#L18-L44)
+- [AsyncConfig.java:19-59](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/AsyncConfig.java#L19-L59)
+- [MybatisPlusConfig.java:9-23](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/MybatisPlusConfig.java#L9-L23)
+- [RequestResponseFormatConfig.java:28-111](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/RequestResponseFormatConfig.java#L28-L111)
+- [MessageConfig.java:15-34](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/MessageConfig.java#L15-L34)
+- [FangTangProperties.java:12-39](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/properties/FangTangProperties.java#L12-L39)
+- [BasicSupportConfig.java:18-44](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/BasicSupportConfig.java#L18-L44)
 
 ## 详细组件分析
 
@@ -187,18 +187,18 @@ AsyncConfig ..> ThreadPoolTaskExecutor : "创建并配置"
 ```
 
 图表来源
-- [AsyncConfig.java:19-59](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/AsyncConfig.java#L19-L59)
+- [AsyncConfig.java:19-59](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/AsyncConfig.java#L19-L59)
 
 章节来源
-- [AsyncConfig.java:1-60](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/AsyncConfig.java#L1-L60)
+- [AsyncConfig.java:1-60](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/AsyncConfig.java#L1-L60)
 
 ### BasicSupportConfig（基础支持装配）
 - 功能要点
-  - 组件扫描：com.kewen.framework.basic.support
-  - Mapper 扫描：com.kewen.framework.basic.support.**.mapper
+  - 组件扫描：com.cu.framework.basic.support
+  - Mapper 扫描：com.cu.framework.basic.support.**.mapper
   - 条件化 Bean：
-    - 数据库持久化监听器：kewen.request.persistent.database=true
-    - 方糖消息监听器：kewen.request.message.fang-tang=true
+    - 数据库持久化监听器：cu.request.persistent.database=true
+    - 方糖消息监听器：cu.request.message.fang-tang=true
 - 依赖关系
   - 依赖 basic-support 模块中的监听器与 Mapper
 - 使用建议
@@ -222,10 +222,10 @@ FangTangRequestMessageListener --> FangTangMessageClient : "依赖"
 ```
 
 图表来源
-- [BasicSupportConfig.java:18-44](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/BasicSupportConfig.java#L18-L44)
+- [BasicSupportConfig.java:18-44](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/BasicSupportConfig.java#L18-L44)
 
 章节来源
-- [BasicSupportConfig.java:1-45](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/BasicSupportConfig.java#L1-L45)
+- [BasicSupportConfig.java:1-45](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/BasicSupportConfig.java#L1-L45)
 - [additional-spring-configuration-metadata.json:1-16](file://boot/basic-spring-boot-starter/src/main/resources/META-INF/additional-spring-configuration-metadata.json#L1-L16)
 
 ### EarlyFilterConfig（早期过滤器装配）
@@ -260,16 +260,16 @@ T-->>C : "返回响应"
 ```
 
 图表来源
-- [EarlyFilterConfig.java:20-47](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/EarlyFilterConfig.java#L20-L47)
-- [TraceRequestFilter.java:24-51](file://basic/src/main/java/com/kewen/framework/basic/logger/TraceRequestFilter.java#L24-L51)
-- [RequestLoggerFilter.java:30-74](file://basic/src/main/java/com/kewen/framework/basic/logger/RequestLoggerFilter.java#L30-L74)
-- [EarlyRequestFilter.java:14-23](file://basic/src/main/java/com/kewen/framework/basic/filter/EarlyRequestFilter.java#L14-L23)
+- [EarlyFilterConfig.java:20-47](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/EarlyFilterConfig.java#L20-L47)
+- [TraceRequestFilter.java:24-51](file://basic/src/main/java/com/cu/framework/basic/logger/TraceRequestFilter.java#L24-L51)
+- [RequestLoggerFilter.java:30-74](file://basic/src/main/java/com/cu/framework/basic/logger/RequestLoggerFilter.java#L30-L74)
+- [EarlyRequestFilter.java:14-23](file://basic/src/main/java/com/cu/framework/basic/filter/EarlyRequestFilter.java#L14-L23)
 
 章节来源
-- [EarlyFilterConfig.java:1-48](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/EarlyFilterConfig.java#L1-L48)
-- [TraceRequestFilter.java:1-52](file://basic/src/main/java/com/kewen/framework/basic/logger/TraceRequestFilter.java#L1-L52)
-- [RequestLoggerFilter.java:1-125](file://basic/src/main/java/com/kewen/framework/basic/logger/RequestLoggerFilter.java#L1-L125)
-- [EarlyRequestFilter.java:1-24](file://basic/src/main/java/com/kewen/framework/basic/filter/EarlyRequestFilter.java#L1-L24)
+- [EarlyFilterConfig.java:1-48](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/EarlyFilterConfig.java#L1-L48)
+- [TraceRequestFilter.java:1-52](file://basic/src/main/java/com/cu/framework/basic/logger/TraceRequestFilter.java#L1-L52)
+- [RequestLoggerFilter.java:1-125](file://basic/src/main/java/com/cu/framework/basic/logger/RequestLoggerFilter.java#L1-L125)
+- [EarlyRequestFilter.java:1-24](file://basic/src/main/java/com/cu/framework/basic/filter/EarlyRequestFilter.java#L1-L24)
 
 ### MybatisPlusConfig（MyBatis Plus 分页插件）
 - 功能要点
@@ -294,10 +294,10 @@ MybatisPlusInterceptor --> PaginationInnerInterceptor : "添加分页插件"
 ```
 
 图表来源
-- [MybatisPlusConfig.java:9-23](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/MybatisPlusConfig.java#L9-L23)
+- [MybatisPlusConfig.java:9-23](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/MybatisPlusConfig.java#L9-L23)
 
 章节来源
-- [MybatisPlusConfig.java:1-24](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/MybatisPlusConfig.java#L1-L24)
+- [MybatisPlusConfig.java:1-24](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/MybatisPlusConfig.java#L1-L24)
 
 ### RequestResponseFormatConfig（请求响应格式化）
 - 功能要点
@@ -332,10 +332,10 @@ RequestResponseFormatConfig --> Converter : "注册日期转换器"
 ```
 
 图表来源
-- [RequestResponseFormatConfig.java:28-111](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/RequestResponseFormatConfig.java#L28-L111)
+- [RequestResponseFormatConfig.java:28-111](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/RequestResponseFormatConfig.java#L28-L111)
 
 章节来源
-- [RequestResponseFormatConfig.java:1-111](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/RequestResponseFormatConfig.java#L1-L111)
+- [RequestResponseFormatConfig.java:1-111](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/RequestResponseFormatConfig.java#L1-L111)
 
 ### MessageConfig（方糖消息装配）
 - 功能要点
@@ -362,17 +362,17 @@ MessageConfig --> FangTangMessageClient : "装配并注入属性"
 ```
 
 图表来源
-- [MessageConfig.java:15-34](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/MessageConfig.java#L15-L34)
-- [FangTangProperties.java:12-39](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/properties/FangTangProperties.java#L12-L39)
+- [MessageConfig.java:15-34](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/MessageConfig.java#L15-L34)
+- [FangTangProperties.java:12-39](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/properties/FangTangProperties.java#L12-L39)
 
 章节来源
-- [MessageConfig.java:1-35](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/MessageConfig.java#L1-L35)
-- [FangTangProperties.java:1-40](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/properties/FangTangProperties.java#L1-L40)
+- [MessageConfig.java:1-35](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/MessageConfig.java#L1-L35)
+- [FangTangProperties.java:1-40](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/properties/FangTangProperties.java#L1-L40)
 
 ### FangTangProperties（方糖消息配置）
 - 配置项
-  - kewen.message.fang-tang.key：方糖密钥，默认值见属性类
-  - kewen.message.fang-tang.domain：方糖域名，默认值见属性类
+  - cu.message.fang-tang.key：方糖密钥，默认值见属性类
+  - cu.message.fang-tang.domain：方糖域名，默认值见属性类
 - 用途
   - 作为 MessageConfig 装配 FangTangMessageClient 的输入
 - 最佳实践
@@ -380,8 +380,8 @@ MessageConfig --> FangTangMessageClient : "装配并注入属性"
   - 密钥应妥善保管，避免泄露
 
 章节来源
-- [FangTangProperties.java:1-40](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/properties/FangTangProperties.java#L1-L40)
-- [MessageConfig.java:15-34](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/MessageConfig.java#L15-L34)
+- [FangTangProperties.java:1-40](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/properties/FangTangProperties.java#L1-L40)
+- [MessageConfig.java:15-34](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/MessageConfig.java#L15-L34)
 
 ## 依赖分析
 - 自动装配入口
@@ -441,7 +441,7 @@ POM --> MYSQL["mysql-connector-java"]
 - 线程池拒绝策略导致主线程阻塞
   - CallerRunsPolicy 会在高负载下让调用线程执行任务，检查业务是否可接受
 - 请求日志未落库或未发消息
-  - 确认相应开关已开启：kewen.request.persistent.database 与 kewen.request.message.fang-tang
+  - 确认相应开关已开启：cu.request.persistent.database 与 cu.request.message.fang-tang
   - 确认 basic-support 模块依赖与 Mapper 扫描路径正确
 - 方糖消息未发送
   - 检查 FangTangProperties 的 key 与 domain 是否正确配置
@@ -451,12 +451,12 @@ POM --> MYSQL["mysql-connector-java"]
   - 检查请求日期格式是否与转换器匹配（yyyy-MM-dd 或 yyyy-MM-dd HH:mm:ss）
 
 章节来源
-- [AsyncConfig.java:19-59](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/AsyncConfig.java#L19-L59)
-- [BasicSupportConfig.java:18-44](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/BasicSupportConfig.java#L18-L44)
-- [MessageConfig.java:15-34](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/MessageConfig.java#L15-L34)
-- [FangTangProperties.java:12-39](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/properties/FangTangProperties.java#L12-L39)
-- [EarlyFilterConfig.java:20-47](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/EarlyFilterConfig.java#L20-L47)
-- [RequestResponseFormatConfig.java:75-111](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/config/RequestResponseFormatConfig.java#L75-L111)
+- [AsyncConfig.java:19-59](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/AsyncConfig.java#L19-L59)
+- [BasicSupportConfig.java:18-44](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/BasicSupportConfig.java#L18-L44)
+- [MessageConfig.java:15-34](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/MessageConfig.java#L15-L34)
+- [FangTangProperties.java:12-39](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/properties/FangTangProperties.java#L12-L39)
+- [EarlyFilterConfig.java:20-47](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/EarlyFilterConfig.java#L20-L47)
+- [RequestResponseFormatConfig.java:75-111](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/config/RequestResponseFormatConfig.java#L75-L111)
 
 ## 结论
 基础启动器通过自动装配将“过滤器链、ORM 分页、异步线程池、请求响应格式化、消息通知与数据库持久化”整合为一套即插即用的基础能力，开发者可通过少量配置即可启用所需功能。建议在生产环境结合实际负载调优线程池与连接池参数，并合理开启日志与消息功能，以获得稳定与高性能的服务体验。
@@ -465,11 +465,11 @@ POM --> MYSQL["mysql-connector-java"]
 
 ### 配置项与示例
 - 基础开关
-  - kewen.request.persistent.database：是否开启请求日志持久化到数据库
-  - kewen.request.message.fang-tang：是否开启请求消息方糖渠道通知
+  - cu.request.persistent.database：是否开启请求日志持久化到数据库
+  - cu.request.message.fang-tang：是否开启请求消息方糖渠道通知
 - 方糖消息
-  - kewen.message.fang-tang.key：方糖密钥
-  - kewen.message.fang-tang.domain：方糖域名
+  - cu.message.fang-tang.key：方糖密钥
+  - cu.message.fang-tang.domain：方糖域名
 - 示例配置（来自样例工程）
   - 数据源与 P6Spy 驱动
   - HikariCP 连接池参数
@@ -477,5 +477,5 @@ POM --> MYSQL["mysql-connector-java"]
 
 章节来源
 - [additional-spring-configuration-metadata.json:1-16](file://boot/basic-spring-boot-starter/src/main/resources/META-INF/additional-spring-configuration-metadata.json#L1-L16)
-- [FangTangProperties.java:12-39](file://boot/basic-spring-boot-starter/src/main/java/com/kewen/framework/boot/basic/properties/FangTangProperties.java#L12-L39)
+- [FangTangProperties.java:12-39](file://boot/basic-spring-boot-starter/src/main/java/com/cu/framework/boot/basic/properties/FangTangProperties.java#L12-L39)
 - [application.yml:1-30](file://sample/basic-boot-sample/src/main/resources/application.yml#L1-L30)

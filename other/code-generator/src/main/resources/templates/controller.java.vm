@@ -21,9 +21,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.validation.annotation.Validated;
 import org.apache.commons.lang3.StringUtils;
 
-import com.kewen.framework.auth.core.annotation.AuthMenu;
-import com.kewen.framework.basic.model.*;
-import com.kewen.framework.basic.support.utils.PageUtil;
+import com.cu.framework.auth.core.AuthMenu;
+import com.cu.framework.basic.model.*;
+import com.cu.framework.basic.support.utils.PageUtil;
 
 #if(${swagger})
 import io.swagger.annotations.Api;

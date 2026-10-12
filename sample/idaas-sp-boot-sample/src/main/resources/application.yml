@@ -7,7 +7,7 @@ spring:
     active: dev
 
   datasource:
-    url: jdbc:mysql://localhost:3306/kewen_framework_auth_template
+    url: jdbc:mysql://localhost:3306/cu_framework_auth_template
     username: open_framework
     password: Framework123456_
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -34,7 +34,7 @@ logging:
     name: auth-sample
     path: ./logs
 
-kewen:
+cu:
   auth:
     auth-data-table:
       table-name: sys_auth_data
@@ -67,37 +67,37 @@ kewen:
           key-password: changeit
         registrations:
           -
-            registration-id: kewen-local-registration
-            sp-entity-id: kewen-loc
-            metadata-resource: classpath:saml/metadata/kewen-local-metadata.xml
+            registration-id: cu-local-registration
+            sp-entity-id: cu-loc
+            metadata-resource: classpath:saml/metadata/cu-local-metadata.xml
           -
-            registration-id: idp4-test-kewen-loc-registration          # relying party registration id
-            sp-entity-id: idp4-test-kewen-loc     # your app entity id
+            registration-id: idp4-test-cu-loc-registration          # relying party registration id
+            sp-entity-id: idp4-test-cu-loc     # your app entity id
             #use-metadata: true
             #web-sso-url: "https://idp4-test.alibaba.net/sso/saml" # your idp sso url
             #idp-certificate-resource: classpath:saml/idp-certificate.crt # your idp certificate resource
             metadata-resource: classpath:saml/metadata/idaas-idp4-test-metadata.xml
           -
-            registration-id: idp4-dev-kewen-loc-registration
-            sp-entity-id: idp4-dev-kewen-loc
+            registration-id: idp4-dev-cu-loc-registration
+            sp-entity-id: idp4-dev-cu-loc
             metadata-resource: classpath:saml/metadata/idaas-idp4-dev-metadata.xml
           -
-            registration-id: idp4-loc-kewen-loc-registration
-            sp-entity-id: idp4-loc-kewen-loc
+            registration-id: idp4-loc-cu-loc-registration
+            sp-entity-id: idp4-loc-cu-loc
             metadata-resource: classpath:saml/metadata/idaas-idp4-loc-metadata.xml
 
       oauth2:
         sso-authorization-uri: /oauth2/authorize
         clients:
           -
-            registration-id: kewen-local-oidc-registration
+            registration-id: cu-local-oidc-registration
             protocol-type: oidc
             client-id: client_7f7c827b91224a9d
             client-secret: b54258d7b3e643b489859dec2eec95aaa16c1c701fd4470182b3d0e9926426c1
             issuer-uri: http://localhost:9010
             #jwk-set-uri: http://localhost:9010/oidc/jwks?client_id=client_7f7c827b91224a9d
           -
-            registration-id: kewen-local-oauth-registration
+            registration-id: cu-local-oauth-registration
             protocol-type: oauth2
             client-id: client_7f7c827b91224a9d
             client-secret: b54258d7b3e643b489859dec2eec95aaa16c1c701fd4470182b3d0e9926426c1
@@ -113,7 +113,7 @@ kewen:
             redirect-uri-template: "{baseUrl}/login/oauth2/code/{registrationId}"
             ignore-ssl: true
           -
-            registration-id: idp4-test-kewen-loc-registration
+            registration-id: idp4-test-cu-loc-registration
             client-id: your_idp4_client_id
             client-secret: your_idp4_client_secret
             authorization-uri: http://idp4-test.example.net/oauth/authorize

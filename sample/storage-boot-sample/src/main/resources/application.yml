@@ -5,8 +5,8 @@ spring:
     url: jdbc:mysql://localhost:3306/your_database
     username: your_username
     password: your_password
-    driver-class-name: com.kewen.framework.boot.basic.p6spy.KP6SpyDriver
-kewen:
+    driver-class-name: com.cu.framework.boot.basic.p6spy.KP6SpyDriver
+cu:
   storage:
     type: qiniu
     access-key: your_qiniu_access_key

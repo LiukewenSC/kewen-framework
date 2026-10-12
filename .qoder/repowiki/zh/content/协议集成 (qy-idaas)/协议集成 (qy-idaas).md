@@ -3,16 +3,16 @@
 <cite>
 **本文引用的文件**
 - [README.md](file://qy-idaas/README.md)
-- [Oauth2Config.java](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/Oauth2Config.java)
-- [Oauth2OidcProperties.java](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/Oauth2OidcProperties.java)
-- [OauthProtocolType.java](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/OauthProtocolType.java)
-- [RestOperationBuilder.java](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/RestOperationBuilder.java)
-- [Oauth2AuthenticationSuccessResultConverter.java](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/result/Oauth2AuthenticationSuccessResultConverter.java)
-- [SamlConfig.java](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/SamlConfig.java)
-- [SamlProperties.java](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/properties/SamlProperties.java)
-- [IdpMetadataParser.java](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/IdpMetadataParser.java)
-- [SamlAuthenticationSuccessResultConverter.java](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/SamlAuthenticationSuccessResultConverter.java)
-- [SamlLogoutController.java](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/SamlLogoutController.java)
+- [Oauth2Config.java](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/Oauth2Config.java)
+- [Oauth2OidcProperties.java](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/Oauth2OidcProperties.java)
+- [OauthProtocolType.java](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/OauthProtocolType.java)
+- [RestOperationBuilder.java](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/RestOperationBuilder.java)
+- [Oauth2AuthenticationSuccessResultConverter.java](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/result/Oauth2AuthenticationSuccessResultConverter.java)
+- [SamlConfig.java](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/SamlConfig.java)
+- [SamlProperties.java](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/properties/SamlProperties.java)
+- [IdpMetadataParser.java](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/IdpMetadataParser.java)
+- [SamlAuthenticationSuccessResultConverter.java](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/SamlAuthenticationSuccessResultConverter.java)
+- [SamlLogoutController.java](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/SamlLogoutController.java)
 - [application.yml](file://sample/idaas-sp-boot-sample/src/main/resources/application.yml)
 - [idaas-idp4-dev-metadata.xml](file://sample/idaas-sp-boot-sample/src/main/resources/saml/metadata/idaas-idp4-dev-metadata.xml)
 - [spring.factories](file://qy-idaas/idaas-authentications/src/main/resources/META-INF/spring.factories)
@@ -75,15 +75,15 @@ SA --> RES
   - SamlLogoutController：提供 GET /saml2/logout，自动提交 POST 触发 SAML2 SLO
 
 章节来源
-- [Oauth2Config.java:46-225](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/Oauth2Config.java#L46-L225)
-- [Oauth2OidcProperties.java:24-251](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/Oauth2OidcProperties.java#L24-L251)
-- [RestOperationBuilder.java:30-93](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/RestOperationBuilder.java#L30-L93)
-- [Oauth2AuthenticationSuccessResultConverter.java:16-44](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/result/Oauth2AuthenticationSuccessResultConverter.java#L16-L44)
-- [SamlConfig.java:42-197](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/SamlConfig.java#L42-L197)
-- [SamlProperties.java:22-130](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/properties/SamlProperties.java#L22-L130)
-- [IdpMetadataParser.java:36-217](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/IdpMetadataParser.java#L36-L217)
-- [SamlAuthenticationSuccessResultConverter.java:16-38](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/SamlAuthenticationSuccessResultConverter.java#L16-L38)
-- [SamlLogoutController.java:22-51](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/SamlLogoutController.java#L22-L51)
+- [Oauth2Config.java:46-225](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/Oauth2Config.java#L46-L225)
+- [Oauth2OidcProperties.java:24-251](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/Oauth2OidcProperties.java#L24-L251)
+- [RestOperationBuilder.java:30-93](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/RestOperationBuilder.java#L30-L93)
+- [Oauth2AuthenticationSuccessResultConverter.java:16-44](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/result/Oauth2AuthenticationSuccessResultConverter.java#L16-L44)
+- [SamlConfig.java:42-197](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/SamlConfig.java#L42-L197)
+- [SamlProperties.java:22-130](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/properties/SamlProperties.java#L22-L130)
+- [IdpMetadataParser.java:36-217](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/IdpMetadataParser.java#L36-L217)
+- [SamlAuthenticationSuccessResultConverter.java:16-38](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/SamlAuthenticationSuccessResultConverter.java#L16-L38)
+- [SamlLogoutController.java:22-51](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/SamlLogoutController.java#L22-L51)
 
 ## 架构总览
 qy-idaas 通过 Spring Security 的 OAuth2/SAML2 支持，结合自定义配置类与结果转换器，将外部 IdP 的认证流程无缝集成到应用中。
@@ -112,8 +112,8 @@ SLO --> SEC
 ```
 
 图表来源
-- [Oauth2Config.java:90-125](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/Oauth2Config.java#L90-L125)
-- [SamlConfig.java:62-88](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/SamlConfig.java#L62-L88)
+- [Oauth2Config.java:90-125](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/Oauth2Config.java#L90-L125)
+- [SamlConfig.java:62-88](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/SamlConfig.java#L62-L88)
 
 ## 详细组件分析
 
@@ -154,10 +154,10 @@ Oauth2Config --> Oauth2AuthenticationSuccessResultConverter : "注入结果转�
 ```
 
 图表来源
-- [Oauth2Config.java:46-225](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/Oauth2Config.java#L46-L225)
-- [Oauth2OidcProperties.java:24-251](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/Oauth2OidcProperties.java#L24-L251)
-- [RestOperationBuilder.java:30-93](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/RestOperationBuilder.java#L30-L93)
-- [Oauth2AuthenticationSuccessResultConverter.java:16-44](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/result/Oauth2AuthenticationSuccessResultConverter.java#L16-L44)
+- [Oauth2Config.java:46-225](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/Oauth2Config.java#L46-L225)
+- [Oauth2OidcProperties.java:24-251](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/Oauth2OidcProperties.java#L24-L251)
+- [RestOperationBuilder.java:30-93](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/RestOperationBuilder.java#L30-L93)
+- [Oauth2AuthenticationSuccessResultConverter.java:16-44](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/result/Oauth2AuthenticationSuccessResultConverter.java#L16-L44)
 
 - OAuth2 认证流程（授权码模式）
 ```mermaid
@@ -180,15 +180,15 @@ APP-->>U : 创建会话并返回登录结果
 
 图表来源
 - [README.md:101-138](file://qy-idaas/README.md#L101-L138)
-- [Oauth2Config.java:90-125](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/Oauth2Config.java#L90-L125)
+- [Oauth2Config.java:90-125](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/Oauth2Config.java#L90-L125)
 
 - OIDC 自动发现与登出
   - 通过 issuer-uri 自动发现端点与 JWKS
   - OIDC RP-Initiated Logout：使用 OidcClientInitiatedLogoutSuccessHandler 处理登出重定向
 
 章节来源
-- [Oauth2Config.java:166-225](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/Oauth2Config.java#L166-L225)
-- [Oauth2OidcProperties.java:131-147](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/Oauth2OidcProperties.java#L131-L147)
+- [Oauth2Config.java:166-225](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/Oauth2Config.java#L166-L225)
+- [Oauth2OidcProperties.java:131-147](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/Oauth2OidcProperties.java#L131-L147)
 
 ### SAML2 组件分析
 - 配置类 SamlConfig
@@ -235,11 +235,11 @@ SamlConfig --> SamlLogoutController : "提供登出控制器"
 ```
 
 图表来源
-- [SamlConfig.java:42-197](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/SamlConfig.java#L42-L197)
-- [SamlProperties.java:22-130](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/properties/SamlProperties.java#L22-L130)
-- [IdpMetadataParser.java:36-217](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/IdpMetadataParser.java#L36-L217)
-- [SamlAuthenticationSuccessResultConverter.java:16-38](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/SamlAuthenticationSuccessResultConverter.java#L16-L38)
-- [SamlLogoutController.java:22-51](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/SamlLogoutController.java#L22-L51)
+- [SamlConfig.java:42-197](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/SamlConfig.java#L42-L197)
+- [SamlProperties.java:22-130](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/properties/SamlProperties.java#L22-L130)
+- [IdpMetadataParser.java:36-217](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/IdpMetadataParser.java#L36-L217)
+- [SamlAuthenticationSuccessResultConverter.java:16-38](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/SamlAuthenticationSuccessResultConverter.java#L16-L38)
+- [SamlLogoutController.java:22-51](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/SamlLogoutController.java#L22-L51)
 
 - SAML2 认证流程（SP 发起）
 ```mermaid
@@ -259,7 +259,7 @@ ACS-->>U : 创建会话并返回登录结果
 
 图表来源
 - [README.md:242-298](file://qy-idaas/README.md#L242-L298)
-- [SamlConfig.java:62-88](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/SamlConfig.java#L62-L88)
+- [SamlConfig.java:62-88](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/SamlConfig.java#L62-L88)
 
 - SAML2 元数据解析流程
 ```mermaid
@@ -276,8 +276,8 @@ BuildRP --> End(["结束"])
 ```
 
 图表来源
-- [IdpMetadataParser.java:48-91](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/IdpMetadataParser.java#L48-L91)
-- [IdpMetadataParser.java:96-150](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/IdpMetadataParser.java#L96-L150)
+- [IdpMetadataParser.java:48-91](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/IdpMetadataParser.java#L48-L91)
+- [IdpMetadataParser.java:96-150](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/IdpMetadataParser.java#L96-L150)
 
 - SAML2 登出流程
 ```mermaid
@@ -294,8 +294,8 @@ APP-->>U : 清理会话并重定向
 ```
 
 图表来源
-- [SamlLogoutController.java:28-50](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/SamlLogoutController.java#L28-L50)
-- [SamlConfig.java:78-84](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/SamlConfig.java#L78-L84)
+- [SamlLogoutController.java:28-50](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/SamlLogoutController.java#L28-L50)
+- [SamlConfig.java:78-84](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/SamlConfig.java#L78-L84)
 
 ## 依赖关系分析
 - 自动装配入口
@@ -321,8 +321,8 @@ SC --> SLC["SamlLogoutController"]
 
 图表来源
 - [spring.factories:1-3](file://qy-idaas/idaas-authentications/src/main/resources/META-INF/spring.factories#L1-L3)
-- [Oauth2Config.java:46-225](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/Oauth2Config.java#L46-L225)
-- [SamlConfig.java:42-197](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/saml/SamlConfig.java#L42-L197)
+- [Oauth2Config.java:46-225](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/Oauth2Config.java#L46-L225)
+- [SamlConfig.java:42-197](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/saml/SamlConfig.java#L42-L197)
 
 章节来源
 - [spring.factories:1-3](file://qy-idaas/idaas-authentications/src/main/resources/META-INF/spring.factories#L1-L3)

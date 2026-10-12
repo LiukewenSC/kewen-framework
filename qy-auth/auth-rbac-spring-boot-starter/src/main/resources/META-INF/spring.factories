@@ -1,3 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration= \
-  com.kewen.framework.boot.auth.rabc.config.AuthRabcConfig,\
-  com.kewen.framework.boot.auth.rabc.config.AuthRabcScanConfig
+  com.cu.framework.boot.auth.rbac.config.AuthRbacConfig,\
+  com.cu.framework.boot.auth.rbac.config.AuthRbacScanConfig

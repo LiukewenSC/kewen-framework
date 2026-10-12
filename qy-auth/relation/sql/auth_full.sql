@@ -5,7 +5,7 @@
  Source Server Type    : MySQL
  Source Server Version : 80036 (8.0.36)
  Source Host           : liukewensc.mysql.rds.aliyuncs.com:3306
- Source Schema         : kewen_framework_auth_template
+ Source Schema         : cu_framework_auth_template
 
  Target Server Type    : MySQL
  Target Server Version : 80036 (8.0.36)

@@ -2,20 +2,20 @@
 
 <cite>
 **本文引用的文件**
-- [AuthCoreConfig.java](file://qy-auth/auth-core-spring-boot-starter/src/main/java/com/kewen/framework/boot/auth/core/config/AuthCoreConfig.java)
-- [AuthWebConfig.java](file://qy-auth/auth-core-spring-boot-starter/src/main/java/com/kewen/framework/boot/auth/core/config/AuthWebConfig.java)
-- [AuthRabcConfig.java](file://qy-auth/auth-rbac-spring-boot-starter/src/main/java/com/kewen/framework/boot/auth/rabc/config/AuthRabcConfig.java)
-- [AuthRabcScanConfig.java](file://qy-auth/auth-rbac-spring-boot-starter/src/main/java/com/kewen/framework/boot/auth/rabc/config/AuthRabcScanConfig.java)
-- [AuthDataTableProperties.java](file://qy-auth/auth-core-spring-boot-starter/src/main/java/com/kewen/framework/boot/auth/core/properties/AuthDataTableProperties.java)
+- [AuthCoreConfig.java](file://qy-auth/auth-core-spring-boot-starter/src/main/java/com/cu/framework/boot/auth/core/config/AuthCoreConfig.java)
+- [AuthWebConfig.java](file://qy-auth/auth-core-spring-boot-starter/src/main/java/com/cu/framework/boot/auth/core/config/AuthWebConfig.java)
+- [AuthRbacConfig.java](file://qy-auth/auth-rbac-spring-boot-starter/src/main/java/com/cu/framework/boot/auth/rbac/config/AuthRbacConfig.java)
+- [AuthRbacScanConfig.java](file://qy-auth/auth-rbac-spring-boot-starter/src/main/java/com/cu/framework/boot/auth/rbac/config/AuthRbacScanConfig.java)
+- [AuthDataTableProperties.java](file://qy-auth/auth-core-spring-boot-starter/src/main/java/com/cu/framework/boot/auth/core/properties/AuthDataTableProperties.java)
 - [additional-spring-configuration-metadata.json](file://qy-auth/auth-core-spring-boot-starter/src/main/resources/META-INF/additional-spring-configuration-metadata.json)
 - [spring.factories（core）](file://qy-auth/auth-core-spring-boot-starter/src/main/resources/META-INF/spring.factories)
-- [spring.factories（rabc）](file://qy-auth/auth-rbac-spring-boot-starter/src/main/resources/META-INF/spring.factories)
+- [spring.factories（rbac）](file://qy-auth/auth-rbac-spring-boot-starter/src/main/resources/META-INF/spring.factories)
 - [auth-core-spring-boot-starter/pom.xml](file://qy-auth/auth-core-spring-boot-starter/pom.xml)
 - [auth-rbac-spring-boot-starter/pom.xml](file://qy-auth/auth-rbac-spring-boot-starter/pom.xml)
 - [auth-spring-boot-starter/pom.xml](file://qy-auth/auth-spring-boot-starter/pom.xml)
-- [AuthDataAdaptor.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthDataAdaptor.java)
-- [AuthDataHandler.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/AuthDataHandler.java)
-- [RabcAnnotationAuthHandler.java](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/RabcAnnotationAuthHandler.java)
+- [AuthDataAdaptor.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthDataAdaptor.java)
+- [AuthDataHandler.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/AuthDataHandler.java)
+- [RbacAnnotationAuthHandler.java](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/RbacAnnotationAuthHandler.java)
 </cite>
 
 ## 目录
@@ -33,8 +33,8 @@
 ## 简介
 本技术文档面向“权限启动器”模块，系统性阐述以下内容：
 - AuthCoreConfig 自动配置类的实现原理：权限核心功能的自动装配与初始化流程。
-- AuthRabcConfig 的 RBAC 自动配置机制：实体扫描、Mapper 注册、服务层自动配置等。
-- AuthRabcScanConfig 的包扫描与组件注册机制。
+- AuthRbacConfig 的 RBAC 自动配置机制：实体扫描、Mapper 注册、服务层自动配置等。
+- AuthRbacScanConfig 的包扫描与组件注册机制。
 - 启动器的配置属性与默认行为：启用条件、依赖关系与配置优先级。
 - 使用指南与集成示例：Maven 依赖配置与基本使用方法。
 - 与 Spring Boot 自动配置机制的集成方式与扩展点。
@@ -52,35 +52,35 @@ subgraph "核心启动器"
 CORE["auth-core-spring-boot-starter<br/>核心自动装配与Web配置"]
 end
 subgraph "RBAC启动器"
-RABC["auth-rbac-spring-boot-starter<br/>RBAC自动装配与包扫描"]
+RBAC["auth-rbac-spring-boot-starter<br/>RBAC自动装配与包扫描"]
 end
 subgraph "安全启动器"
 SEC["auth-spring-boot-starter<br/>整合Spring Security与Web"]
 end
-CORE --> RABC
-RABC --> SEC
+CORE --> RBAC
+RBAC --> SEC
 ```
 
 图表来源
 - [spring.factories（core）](file://qy-auth/auth-core-spring-boot-starter/src/main/resources/META-INF/spring.factories)
-- [spring.factories（rabc）](file://qy-auth/auth-rbac-spring-boot-starter/src/main/resources/META-INF/spring.factories)
+- [spring.factories（rbac）](file://qy-auth/auth-rbac-spring-boot-starter/src/main/resources/META-INF/spring.factories)
 
 章节来源
 - [spring.factories（core）](file://qy-auth/auth-core-spring-boot-starter/src/main/resources/META-INF/spring.factories)
-- [spring.factories（rabc）](file://qy-auth/auth-rbac-spring-boot-starter/src/main/resources/META-INF/spring.factories)
+- [spring.factories（rbac）](file://qy-auth/auth-rbac-spring-boot-starter/src/main/resources/META-INF/spring.factories)
 
 ## 核心组件
 本节聚焦于三个关键自动配置类及其职责：
 - AuthCoreConfig：负责权限核心 Bean 的装配（数据权限、SQL 注入、MyBatis 拦截器、菜单拦截器、菜单 API 初始化等）。
 - AuthWebConfig：注册 Web 层菜单访问拦截器。
-- AuthRabcConfig：在引入 RBAC 实现后，装配注解权限处理器、菜单 API 服务与菜单存储等。
-- AuthRabcScanConfig：声明 Mapper 扫描与组件扫描路径，确保 MyBatis Mapper 与服务实现被正确注册。
+- AuthRbacConfig：在引入 RBAC 实现后，装配注解权限处理器、菜单 API 服务与菜单存储等。
+- AuthRbacScanConfig：声明 Mapper 扫描与组件扫描路径，确保 MyBatis Mapper 与服务实现被正确注册。
 
 章节来源
-- [AuthCoreConfig.java](file://qy-auth/auth-core-spring-boot-starter/src/main/java/com/kewen/framework/boot/auth/core/config/AuthCoreConfig.java)
-- [AuthWebConfig.java](file://qy-auth/auth-core-spring-boot-starter/src/main/java/com/kewen/framework/boot/auth/core/config/AuthWebConfig.java)
-- [AuthRabcConfig.java](file://qy-auth/auth-rbac-spring-boot-starter/src/main/java/com/kewen/framework/boot/auth/rabc/config/AuthRabcConfig.java)
-- [AuthRabcScanConfig.java](file://qy-auth/auth-rbac-spring-boot-starter/src/main/java/com/kewen/framework/boot/auth/rabc/config/AuthRabcScanConfig.java)
+- [AuthCoreConfig.java](file://qy-auth/auth-core-spring-boot-starter/src/main/java/com/cu/framework/boot/auth/core/config/AuthCoreConfig.java)
+- [AuthWebConfig.java](file://qy-auth/auth-core-spring-boot-starter/src/main/java/com/cu/framework/boot/auth/core/config/AuthWebConfig.java)
+- [AuthRbacConfig.java](file://qy-auth/auth-rbac-spring-boot-starter/src/main/java/com/cu/framework/boot/auth/rbac/config/AuthRbacConfig.java)
+- [AuthRbacScanConfig.java](file://qy-auth/auth-rbac-spring-boot-starter/src/main/java/com/cu/framework/boot/auth/rbac/config/AuthRbacScanConfig.java)
 
 ## 架构总览
 权限启动器通过 Spring Boot 的自动配置机制在应用启动时按需装配核心权限能力与 RBAC 能力，并提供 Web 层拦截与菜单 API 初始化。
@@ -94,22 +94,22 @@ CONFIG_CORE --> BEAN_MYBATIS["MybatisDataRangeInterceptor"]
 CONFIG_CORE --> BEAN_MENU_INT["MenuAccessInterceptor"]
 CONFIG_CORE --> BEAN_TABLE["AuthDataTable"]
 CONFIG_CORE --> BEAN_RUNNER["InitMenuApiCommandLineRunner"]
-APP --> FACTORY_RABC["spring.factories(rabc)<br/>加载AuthRabcConfig/ScanConfig"]
-FACTORY_RABC --> CONFIG_RABC["AuthRabcConfig<br/>装配RBAC Bean"]
-CONFIG_RABC --> BEAN_ADAPTOR["AuthDataAdaptor"]
-CONFIG_RABC --> BEAN_STORE["AuthMenuStore(默认MemoryExpired)"]
-CONFIG_RABC --> BEAN_HANDLER["RabcAnnotationAuthHandler(条件装配)"]
-CONFIG_RABC -.-> SCAN["AuthRabcScanConfig<br/>Mapper与组件扫描"]
+APP --> FACTORY_RBAC["spring.factories(rbac)<br/>加载AuthRbacConfig/ScanConfig"]
+FACTORY_RBAC --> CONFIG_RBAC["AuthRbacConfig<br/>装配RBAC Bean"]
+CONFIG_RBAC --> BEAN_ADAPTOR["AuthDataAdaptor"]
+CONFIG_RBAC --> BEAN_STORE["AuthMenuStore(默认MemoryExpired)"]
+CONFIG_RBAC --> BEAN_HANDLER["RbacAnnotationAuthHandler(条件装配)"]
+CONFIG_RBAC -.-> SCAN["AuthRbacScanConfig<br/>Mapper与组件扫描"]
 SCAN --> MAPPER["MapperScan: **.mapper"]
 SCAN --> COMP["ComponentScan: service.impl, composite, controller"]
 ```
 
 图表来源
 - [spring.factories（core）](file://qy-auth/auth-core-spring-boot-starter/src/main/resources/META-INF/spring.factories)
-- [spring.factories（rabc）](file://qy-auth/auth-rbac-spring-boot-starter/src/main/resources/META-INF/spring.factories)
-- [AuthCoreConfig.java](file://qy-auth/auth-core-spring-boot-starter/src/main/java/com/kewen/framework/boot/auth/core/config/AuthCoreConfig.java)
-- [AuthRabcConfig.java](file://qy-auth/auth-rbac-spring-boot-starter/src/main/java/com/kewen/framework/boot/auth/rabc/config/AuthRabcConfig.java)
-- [AuthRabcScanConfig.java](file://qy-auth/auth-rbac-spring-boot-starter/src/main/java/com/kewen/framework/boot/auth/rabc/config/AuthRabcScanConfig.java)
+- [spring.factories（rbac）](file://qy-auth/auth-rbac-spring-boot-starter/src/main/resources/META-INF/spring.factories)
+- [AuthCoreConfig.java](file://qy-auth/auth-core-spring-boot-starter/src/main/java/com/cu/framework/boot/auth/core/config/AuthCoreConfig.java)
+- [AuthRbacConfig.java](file://qy-auth/auth-rbac-spring-boot-starter/src/main/java/com/cu/framework/boot/auth/rbac/config/AuthRbacConfig.java)
+- [AuthRbacScanConfig.java](file://qy-auth/auth-rbac-spring-boot-starter/src/main/java/com/cu/framework/boot/auth/rbac/config/AuthRbacScanConfig.java)
 
 ## 详细组件分析
 
@@ -161,17 +161,17 @@ AuthCoreConfig --> InitMenuApiCommandLineRunner : "创建"
 ```
 
 图表来源
-- [AuthCoreConfig.java](file://qy-auth/auth-core-spring-boot-starter/src/main/java/com/kewen/framework/boot/auth/core/config/AuthCoreConfig.java)
-- [AuthDataTableProperties.java](file://qy-auth/auth-core-spring-boot-starter/src/main/java/com/kewen/framework/boot/auth/core/properties/AuthDataTableProperties.java)
+- [AuthCoreConfig.java](file://qy-auth/auth-core-spring-boot-starter/src/main/java/com/cu/framework/boot/auth/core/config/AuthCoreConfig.java)
+- [AuthDataTableProperties.java](file://qy-auth/auth-core-spring-boot-starter/src/main/java/com/cu/framework/boot/auth/core/properties/AuthDataTableProperties.java)
 
 章节来源
-- [AuthCoreConfig.java](file://qy-auth/auth-core-spring-boot-starter/src/main/java/com/kewen/framework/boot/auth/core/config/AuthCoreConfig.java)
-- [AuthWebConfig.java](file://qy-auth/auth-core-spring-boot-starter/src/main/java/com/kewen/framework/boot/auth/core/config/AuthWebConfig.java)
+- [AuthCoreConfig.java](file://qy-auth/auth-core-spring-boot-starter/src/main/java/com/cu/framework/boot/auth/core/config/AuthCoreConfig.java)
+- [AuthWebConfig.java](file://qy-auth/auth-core-spring-boot-starter/src/main/java/com/cu/framework/boot/auth/core/config/AuthWebConfig.java)
 
-### AuthRabcConfig RBAC 自动配置机制
+### AuthRbacConfig RBAC 自动配置机制
 - 功能定位：在引入 RBAC 实现后，装配注解权限处理器、菜单 API 服务与菜单存储；提供数据权限适配器以支持在 Service 层直接调用。
 - 关键 Bean：
-  - 注解权限处理器：当系统中不存在自定义 AuthMenuHandler 时，自动装配默认的 RabcAnnotationAuthHandler。
+  - 注解权限处理器：当系统中不存在自定义 AuthMenuHandler 时，自动装配默认的 RbacAnnotationAuthHandler。
   - 数据权限适配器：提供在 Service 层直接编辑/填充/删除数据权限的能力。
   - 菜单 API 服务：封装菜单 API 的持久化与查询。
   - 菜单存储：默认装配基于内存的带过期策略的菜单存储，可通过条件装配替换为其他实现。
@@ -179,13 +179,13 @@ AuthCoreConfig --> InitMenuApiCommandLineRunner : "创建"
 
 ```mermaid
 classDiagram
-class AuthRabcConfig {
+class AuthRbacConfig {
 +annotationAuthHandler(composite)
 +authDateAdaptor()
-+rabcMenuApiStore()
++rbacMenuApiStore()
 +authMenuStore()
 }
-class RabcAnnotationAuthHandler {
+class RbacAnnotationAuthHandler {
 +hasMenuAccessAuth(auths,path)
 }
 class AuthDataAdaptor {
@@ -195,22 +195,22 @@ class AuthDataAdaptor {
 }
 class AuthMenuStore
 class MemoryExpiredAuthMenuStore
-AuthRabcConfig --> RabcAnnotationAuthHandler : "条件装配"
-AuthRabcConfig --> AuthDataAdaptor : "装配"
-AuthRabcConfig --> AuthMenuStore : "条件装配"
+AuthRbacConfig --> RbacAnnotationAuthHandler : "条件装配"
+AuthRbacConfig --> AuthDataAdaptor : "装配"
+AuthRbacConfig --> AuthMenuStore : "条件装配"
 AuthMenuStore <|-- MemoryExpiredAuthMenuStore : "默认实现"
 ```
 
 图表来源
-- [AuthRabcConfig.java](file://qy-auth/auth-rbac-spring-boot-starter/src/main/java/com/kewen/framework/boot/auth/rabc/config/AuthRabcConfig.java)
-- [RabcAnnotationAuthHandler.java](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/RabcAnnotationAuthHandler.java)
-- [AuthDataAdaptor.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthDataAdaptor.java)
+- [AuthRbacConfig.java](file://qy-auth/auth-rbac-spring-boot-starter/src/main/java/com/cu/framework/boot/auth/rbac/config/AuthRbacConfig.java)
+- [RbacAnnotationAuthHandler.java](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/RbacAnnotationAuthHandler.java)
+- [AuthDataAdaptor.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthDataAdaptor.java)
 
 章节来源
-- [AuthRabcConfig.java](file://qy-auth/auth-rbac-spring-boot-starter/src/main/java/com/kewen/framework/boot/auth/rabc/config/AuthRabcConfig.java)
+- [AuthRbacConfig.java](file://qy-auth/auth-rbac-spring-boot-starter/src/main/java/com/cu/framework/boot/auth/rbac/config/AuthRbacConfig.java)
 
-### AuthRabcScanConfig 包扫描与组件注册
-- Mapper 扫描：对 com.kewen.framework.auth.rbac.**.mapper 包下的 Mapper 接口进行扫描。
+### AuthRbacScanConfig 包扫描与组件注册
+- Mapper 扫描：对 com.cu.framework.auth.rbac.**.mapper 包下的 Mapper 接口进行扫描。
 - 组件扫描：对 service.impl、composite、controller 三个包进行组件扫描，确保服务实现、组合器与控制器被注册为 Spring Bean。
 - 作用：保证引入 RBAC 启动器后，业务侧的 Mapper 与服务实现能被自动发现与装配。
 
@@ -223,15 +223,15 @@ COMP_SCAN --> END2(["组件注册完成"])
 ```
 
 图表来源
-- [AuthRabcScanConfig.java](file://qy-auth/auth-rbac-spring-boot-starter/src/main/java/com/kewen/framework/boot/auth/rabc/config/AuthRabcScanConfig.java)
+- [AuthRbacScanConfig.java](file://qy-auth/auth-rbac-spring-boot-starter/src/main/java/com/cu/framework/boot/auth/rbac/config/AuthRbacScanConfig.java)
 
 章节来源
-- [AuthRabcScanConfig.java](file://qy-auth/auth-rbac-spring-boot-starter/src/main/java/com/kewen/framework/boot/auth/rabc/config/AuthRabcScanConfig.java)
+- [AuthRbacScanConfig.java](file://qy-auth/auth-rbac-spring-boot-starter/src/main/java/com/cu/framework/boot/auth/rbac/config/AuthRbacScanConfig.java)
 
 ### 配置属性与默认行为
 - 核心配置属性：
-  - 表结构定义：通过 kewen.auth.auth-data-table.* 命名空间下的属性映射到权限表字段，包含表名、主键列、业务功能列、数据 ID 列、操作列、权限列与描述列。
-  - 元数据声明：additional-spring-configuration-metadata.json 中声明了 kewen-framework.auth.cache-auth 的布尔型配置项与默认值。
+  - 表结构定义：通过 cu.auth.auth-data-table.* 命名空间下的属性映射到权限表字段，包含表名、主键列、业务功能列、数据 ID 列、操作列、权限列与描述列。
+  - 元数据声明：additional-spring-configuration-metadata.json 中声明了 cu-framework.auth.cache-auth 的布尔型配置项与默认值。
 - 默认行为：
   - 若未显式配置权限表字段，则采用默认字段名。
   - 菜单存储默认使用内存实现（带过期策略），可在应用侧替换为 Redis 等实现。
@@ -242,7 +242,7 @@ COMP_SCAN --> END2(["组件注册完成"])
   - 运行时通过环境变量或命令行参数覆盖配置亦可生效（遵循 Spring Boot 配置优先级）。
 
 章节来源
-- [AuthDataTableProperties.java](file://qy-auth/auth-core-spring-boot-starter/src/main/java/com/kewen/framework/boot/auth/core/properties/AuthDataTableProperties.java)
+- [AuthDataTableProperties.java](file://qy-auth/auth-core-spring-boot-starter/src/main/java/com/cu/framework/boot/auth/core/properties/AuthDataTableProperties.java)
 - [additional-spring-configuration-metadata.json](file://qy-auth/auth-core-spring-boot-starter/src/main/resources/META-INF/additional-spring-configuration-metadata.json)
 
 ### 使用指南与集成示例
@@ -265,7 +265,7 @@ COMP_SCAN --> END2(["组件注册完成"])
 ### 与 Spring Boot 自动配置的集成与扩展点
 - 集成方式：
   - 通过 spring.factories 声明 EnableAutoConfiguration，使 Spring Boot 在启动时加载 AuthCoreConfig 与 AuthWebConfig。
-  - 通过 spring.factories 声明 AuthRabcConfig 与 AuthRabcScanConfig，使 RBAC 能力按需装配。
+  - 通过 spring.factories 声明 AuthRbacConfig 与 AuthRbacScanConfig，使 RBAC 能力按需装配。
 - 扩展点：
   - 自定义 AuthMenuHandler：通过 @ConditionalOnMissingBean 机制，若应用提供自定义实现则不会装配默认处理器。
   - 替换菜单存储：通过 @ConditionalOnMissingBean 提供自定义 AuthMenuStore 实现。
@@ -273,8 +273,8 @@ COMP_SCAN --> END2(["组件注册完成"])
 
 章节来源
 - [spring.factories（core）](file://qy-auth/auth-core-spring-boot-starter/src/main/resources/META-INF/spring.factories)
-- [spring.factories（rabc）](file://qy-auth/auth-rbac-spring-boot-starter/src/main/resources/META-INF/spring.factories)
-- [AuthRabcConfig.java](file://qy-auth/auth-rbac-spring-boot-starter/src/main/java/com/kewen/framework/boot/auth/rabc/config/AuthRabcConfig.java)
+- [spring.factories（rbac）](file://qy-auth/auth-rbac-spring-boot-starter/src/main/resources/META-INF/spring.factories)
+- [AuthRbacConfig.java](file://qy-auth/auth-rbac-spring-boot-starter/src/main/java/com/cu/framework/boot/auth/rbac/config/AuthRbacConfig.java)
 
 ## 依赖分析
 - 启动器间依赖：
@@ -288,10 +288,10 @@ COMP_SCAN --> END2(["组件注册完成"])
 ```mermaid
 graph LR
 CORE_POM["auth-core-spring-boot-starter/pom.xml"] --> DEP_CORE["spring-boot-starter<br/>spring-boot-starter-jdbc"]
-RABC_POM["auth-rbac-spring-boot-starter/pom.xml"] --> DEP_RABC["spring-boot-starter<br/>mybatis-plus-boot-starter"]
+RBAC_POM["auth-rbac-spring-boot-starter/pom.xml"] --> DEP_RBAC["spring-boot-starter<br/>mybatis-plus-boot-starter"]
 SEC_POM["auth-spring-boot-starter/pom.xml"] --> DEP_SEC["spring-boot-starter-security<br/>spring-boot-starter-web<br/>spring-session-jdbc"]
-RABC_POM --> CORE_POM
-SEC_POM --> RABC_POM
+RBAC_POM --> CORE_POM
+SEC_POM --> RBAC_POM
 ```
 
 图表来源
@@ -325,17 +325,17 @@ SEC_POM --> RABC_POM
   - 如需分布式共享，请提供 Redis 实现并确保连接正常。
 
 章节来源
-- [AuthWebConfig.java](file://qy-auth/auth-core-spring-boot-starter/src/main/java/com/kewen/framework/boot/auth/core/config/AuthWebConfig.java)
-- [AuthRabcConfig.java](file://qy-auth/auth-rbac-spring-boot-starter/src/main/java/com/kewen/framework/boot/auth/rabc/config/AuthRabcConfig.java)
-- [AuthDataTableProperties.java](file://qy-auth/auth-core-spring-boot-starter/src/main/java/com/kewen/framework/boot/auth/core/properties/AuthDataTableProperties.java)
+- [AuthWebConfig.java](file://qy-auth/auth-core-spring-boot-starter/src/main/java/com/cu/framework/boot/auth/core/config/AuthWebConfig.java)
+- [AuthRbacConfig.java](file://qy-auth/auth-rbac-spring-boot-starter/src/main/java/com/cu/framework/boot/auth/rbac/config/AuthRbacConfig.java)
+- [AuthDataTableProperties.java](file://qy-auth/auth-core-spring-boot-starter/src/main/java/com/cu/framework/boot/auth/core/properties/AuthDataTableProperties.java)
 
 ## 结论
 权限启动器通过清晰的自动配置分层与条件装配机制，实现了从核心权限能力到 RBAC 能力的平滑集成。开发者只需引入相应启动器并按需配置，即可快速获得菜单拦截、数据权限、RBAC 注解与菜单 API 初始化等能力。通过扩展点与默认实现的结合，既能满足通用场景，也能灵活适配复杂需求。
 
 ## 附录
 - 配置项参考（示例命名空间）
-  - 权限表字段映射：kewen.auth.auth-data-table.*
-  - 菜单缓存开关：kewen-framework.auth.cache-auth
+  - 权限表字段映射：cu.auth.auth-data-table.*
+  - 菜单缓存开关：cu-framework.auth.cache-auth
 - 常见目录与包
-  - Mapper 扫描：com.kewen.framework.auth.rbac.**.mapper
+  - Mapper 扫描：com.cu.framework.auth.rbac.**.mapper
   - 组件扫描：service.impl、composite、controller

@@ -2,25 +2,25 @@
 
 <cite>
 **本文引用的文件**
-- [SysUserCompositeImpl.java](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/composite/impl/SysUserCompositeImpl.java)
-- [SysUserComposite.java](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/composite/SysUserComposite.java)
-- [SysUserUnionCompositeMapper.java](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/composite/mapper/SysUserUnionCompositeMapper.java)
+- [SysUserCompositeImpl.java](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/composite/impl/SysUserCompositeImpl.java)
+- [SysUserComposite.java](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/composite/SysUserComposite.java)
+- [SysUserUnionCompositeMapper.java](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/composite/mapper/SysUserUnionCompositeMapper.java)
 - [SysUserUnionCompositeMapper.xml](file://qy-auth/auth-rbac/src/main/resources/mapper/SysUserUnionCompositeMapper.xml)
-- [UserAuthObject.java](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/model/UserAuthObject.java)
-- [SimpleAuthObject.java](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/composite/model/SimpleAuthObject.java)
-- [CurrentUserSimpleAuthObject.java](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/composite/model/CurrentUserSimpleAuthObject.java)
-- [RabcUserController.java](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/controller/RabcUserController.java)
-- [RabcRoleController.java](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/controller/RabcRoleController.java)
-- [RabcDeptController.java](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/controller/RabcDeptController.java)
-- [RabcMenuApiController.java](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/controller/RabcMenuApiController.java)
-- [RabcMenuRouteController.java](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/controller/RabcMenuRouteController.java)
-- [SysUser.java](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/mp/entity/SysUser.java)
-- [SysRole.java](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/mp/entity/SysRole.java)
-- [SysDept.java](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/mp/entity/SysDept.java)
-- [SysUserDept.java](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/mp/entity/SysUserDept.java)
-- [SysUserRole.java](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/mp/entity/SysUserRole.java)
-- [SysMenuApi.java](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/mp/entity/SysMenuApi.java)
-- [SysMenuRoute.java](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/mp/entity/SysMenuRoute.java)
+- [UserAuthObject.java](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/model/UserAuthObject.java)
+- [SimpleAuthObject.java](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/composite/model/SimpleAuthObject.java)
+- [CurrentUserSimpleAuthObject.java](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/composite/model/CurrentUserSimpleAuthObject.java)
+- [RbacUserController.java](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/controller/RbacUserController.java)
+- [RbacRoleController.java](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/controller/RbacRoleController.java)
+- [RbacDeptController.java](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/controller/RbacDeptController.java)
+- [RbacMenuApiController.java](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/controller/RbacMenuApiController.java)
+- [RbacMenuRouteController.java](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/controller/RbacMenuRouteController.java)
+- [SysUser.java](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/mp/entity/SysUser.java)
+- [SysRole.java](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/mp/entity/SysRole.java)
+- [SysDept.java](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/mp/entity/SysDept.java)
+- [SysUserDept.java](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/mp/entity/SysUserDept.java)
+- [SysUserRole.java](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/mp/entity/SysUserRole.java)
+- [SysMenuApi.java](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/mp/entity/SysMenuApi.java)
+- [SysMenuRoute.java](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/mp/entity/SysMenuRoute.java)
 </cite>
 
 ## 目录
@@ -50,11 +50,11 @@ auth-rbac模块采用按功能域分层的组织方式，核心目录如下：
 ```mermaid
 graph TB
 subgraph "控制器层"
-C1["RabcUserController"]
-C2["RabcRoleController"]
-C3["RabcDeptController"]
-C4["RabcMenuApiController"]
-C5["RabcMenuRouteController"]
+C1["RbacUserController"]
+C2["RbacRoleController"]
+C3["RbacDeptController"]
+C4["RbacMenuApiController"]
+C5["RbacMenuRouteController"]
 end
 subgraph "复合模型"
 F1["SysUserComposite 接口"]
@@ -91,32 +91,32 @@ F2 --> E7
 ```
 
 图表来源
-- [RabcUserController.java:26-66](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/controller/RabcUserController.java#L26-L66)
-- [RabcRoleController.java:21-63](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/controller/RabcRoleController.java#L21-L63)
-- [RabcDeptController.java:21-62](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/controller/RabcDeptController.java#L21-L62)
-- [RabcMenuApiController.java:22-46](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/controller/RabcMenuApiController.java#L22-L46)
-- [RabcMenuRouteController.java:14-33](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/controller/RabcMenuRouteController.java#L14-L33)
-- [SysUserComposite.java:1-18](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/composite/SysUserComposite.java#L1-L18)
-- [SysUserCompositeImpl.java:24-93](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/composite/impl/SysUserCompositeImpl.java#L24-L93)
-- [SysUserUnionCompositeMapper.java:13-22](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/composite/mapper/SysUserUnionCompositeMapper.java#L13-L22)
+- [RbacUserController.java:26-66](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/controller/RbacUserController.java#L26-L66)
+- [RbacRoleController.java:21-63](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/controller/RbacRoleController.java#L21-L63)
+- [RbacDeptController.java:21-62](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/controller/RbacDeptController.java#L21-L62)
+- [RbacMenuApiController.java:22-46](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/controller/RbacMenuApiController.java#L22-L46)
+- [RbacMenuRouteController.java:14-33](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/controller/RbacMenuRouteController.java#L14-L33)
+- [SysUserComposite.java:1-18](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/composite/SysUserComposite.java#L1-L18)
+- [SysUserCompositeImpl.java:24-93](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/composite/impl/SysUserCompositeImpl.java#L24-L93)
+- [SysUserUnionCompositeMapper.java:13-22](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/composite/mapper/SysUserUnionCompositeMapper.java#L13-L22)
 - [SysUserUnionCompositeMapper.xml:1-30](file://qy-auth/auth-rbac/src/main/resources/mapper/SysUserUnionCompositeMapper.xml#L1-L30)
-- [UserAuthObject.java:12-18](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/model/UserAuthObject.java#L12-L18)
-- [SimpleAuthObject.java:17-114](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/composite/model/SimpleAuthObject.java#L17-L114)
-- [CurrentUserSimpleAuthObject.java:11-27](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/composite/model/CurrentUserSimpleAuthObject.java#L11-L27)
-- [SysUser.java:22-97](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/mp/entity/SysUser.java#L22-L97)
-- [SysRole.java:22-61](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/mp/entity/SysRole.java#L22-L61)
-- [SysDept.java:22-67](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/mp/entity/SysDept.java#L22-L67)
-- [SysUserDept.java:22-73](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/mp/entity/SysUserDept.java#L22-L73)
-- [SysUserRole.java:22-67](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/mp/entity/SysUserRole.java#L22-L67)
-- [SysMenuApi.java:25-95](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/mp/entity/SysMenuApi.java#L25-L95)
-- [SysMenuRoute.java:25-130](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/mp/entity/SysMenuRoute.java#L25-L130)
+- [UserAuthObject.java:12-18](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/model/UserAuthObject.java#L12-L18)
+- [SimpleAuthObject.java:17-114](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/composite/model/SimpleAuthObject.java#L17-L114)
+- [CurrentUserSimpleAuthObject.java:11-27](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/composite/model/CurrentUserSimpleAuthObject.java#L11-L27)
+- [SysUser.java:22-97](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/mp/entity/SysUser.java#L22-L97)
+- [SysRole.java:22-61](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/mp/entity/SysRole.java#L22-L61)
+- [SysDept.java:22-67](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/mp/entity/SysDept.java#L22-L67)
+- [SysUserDept.java:22-73](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/mp/entity/SysUserDept.java#L22-L73)
+- [SysUserRole.java:22-67](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/mp/entity/SysUserRole.java#L22-L67)
+- [SysMenuApi.java:25-95](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/mp/entity/SysMenuApi.java#L25-L95)
+- [SysMenuRoute.java:25-130](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/mp/entity/SysMenuRoute.java#L25-L130)
 
 章节来源
-- [RabcUserController.java:26-66](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/controller/RabcUserController.java#L26-L66)
-- [RabcRoleController.java:21-63](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/controller/RabcRoleController.java#L21-L63)
-- [RabcDeptController.java:21-62](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/controller/RabcDeptController.java#L21-L62)
-- [RabcMenuApiController.java:22-46](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/controller/RabcMenuApiController.java#L22-L46)
-- [RabcMenuRouteController.java:14-33](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/controller/RabcMenuRouteController.java#L14-L33)
+- [RbacUserController.java:26-66](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/controller/RbacUserController.java#L26-L66)
+- [RbacRoleController.java:21-63](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/controller/RbacRoleController.java#L21-L63)
+- [RbacDeptController.java:21-62](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/controller/RbacDeptController.java#L21-L62)
+- [RbacMenuApiController.java:22-46](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/controller/RbacMenuApiController.java#L22-L46)
+- [RbacMenuRouteController.java:14-33](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/controller/RbacMenuRouteController.java#L14-L33)
 
 ## 核心组件
 - 复合用户模型与权限聚合
@@ -126,29 +126,29 @@ F2 --> E7
   - UserAuthObject：用户认证与权限对象载体
   - SimpleAuthObject/CurrentUserSimpleAuthObject：权限集合体与当前用户权限体，支持用户+角色+部门+部门角色的组合权限计算
 - 控制器层
-  - RabcUserController：用户增删改查、分页与列表
-  - RabcRoleController：角色增删改查、分页与列表
-  - RabcDeptController：部门增删改查、分页与列表
-  - RabcMenuApiController：菜单API树形结构与权限范围更新
-  - RabcMenuRouteController：菜单路由树形结构
+  - RbacUserController：用户增删改查、分页与列表
+  - RbacRoleController：角色增删改查、分页与列表
+  - RbacDeptController：部门增删改查、分页与列表
+  - RbacMenuApiController：菜单API树形结构与权限范围更新
+  - RbacMenuRouteController：菜单路由树形结构
 - 实体模型
   - SysUser、SysRole、SysDept：基础实体
   - SysUserDept、SysUserRole：用户-部门、用户-角色关联表
   - SysMenuApi、SysMenuRoute：菜单API与前端路由元数据
 
 章节来源
-- [SysUserComposite.java:5-17](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/composite/SysUserComposite.java#L5-L17)
-- [SysUserCompositeImpl.java:24-93](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/composite/impl/SysUserCompositeImpl.java#L24-L93)
-- [SysUserUnionCompositeMapper.java:13-22](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/composite/mapper/SysUserUnionCompositeMapper.java#L13-L22)
+- [SysUserComposite.java:5-17](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/composite/SysUserComposite.java#L5-L17)
+- [SysUserCompositeImpl.java:24-93](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/composite/impl/SysUserCompositeImpl.java#L24-L93)
+- [SysUserUnionCompositeMapper.java:13-22](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/composite/mapper/SysUserUnionCompositeMapper.java#L13-L22)
 - [SysUserUnionCompositeMapper.xml:1-30](file://qy-auth/auth-rbac/src/main/resources/mapper/SysUserUnionCompositeMapper.xml#L1-L30)
-- [UserAuthObject.java:12-18](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/model/UserAuthObject.java#L12-L18)
-- [SimpleAuthObject.java:17-114](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/composite/model/SimpleAuthObject.java#L17-L114)
-- [CurrentUserSimpleAuthObject.java:11-27](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/composite/model/CurrentUserSimpleAuthObject.java#L11-L27)
-- [RabcUserController.java:26-66](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/controller/RabcUserController.java#L26-L66)
-- [RabcRoleController.java:21-63](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/controller/RabcRoleController.java#L21-L63)
-- [RabcDeptController.java:21-62](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/controller/RabcDeptController.java#L21-L62)
-- [RabcMenuApiController.java:22-46](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/controller/RabcMenuApiController.java#L22-L46)
-- [RabcMenuRouteController.java:14-33](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/controller/RabcMenuRouteController.java#L14-L33)
+- [UserAuthObject.java:12-18](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/model/UserAuthObject.java#L12-L18)
+- [SimpleAuthObject.java:17-114](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/composite/model/SimpleAuthObject.java#L17-L114)
+- [CurrentUserSimpleAuthObject.java:11-27](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/composite/model/CurrentUserSimpleAuthObject.java#L11-L27)
+- [RbacUserController.java:26-66](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/controller/RbacUserController.java#L26-L66)
+- [RbacRoleController.java:21-63](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/controller/RbacRoleController.java#L21-L63)
+- [RbacDeptController.java:21-62](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/controller/RbacDeptController.java#L21-L62)
+- [RbacMenuApiController.java:22-46](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/controller/RbacMenuApiController.java#L22-L46)
+- [RbacMenuRouteController.java:14-33](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/controller/RbacMenuRouteController.java#L14-L33)
 
 ## 架构总览
 下图展示从控制器到复合模型与持久层的调用链路与数据流向：
@@ -156,7 +156,7 @@ F2 --> E7
 ```mermaid
 sequenceDiagram
 participant Client as "客户端"
-participant Ctrl as "Rabc*Controller"
+participant Ctrl as "Rbac*Controller"
 participant Comp as "SysUserCompositeImpl"
 participant Mapper as "SysUserUnionCompositeMapper"
 participant XML as "SysUserUnionCompositeMapper.xml"
@@ -184,12 +184,12 @@ Ctrl-->>Client : 返回统一结果包装
 ```
 
 图表来源
-- [SysUserCompositeImpl.java:36-91](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/composite/impl/SysUserCompositeImpl.java#L36-L91)
-- [SysUserUnionCompositeMapper.java:13-22](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/composite/mapper/SysUserUnionCompositeMapper.java#L13-L22)
+- [SysUserCompositeImpl.java:36-91](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/composite/impl/SysUserCompositeImpl.java#L36-L91)
+- [SysUserUnionCompositeMapper.java:13-22](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/composite/mapper/SysUserUnionCompositeMapper.java#L13-L22)
 - [SysUserUnionCompositeMapper.xml:19-27](file://qy-auth/auth-rbac/src/main/resources/mapper/SysUserUnionCompositeMapper.xml#L19-L27)
-- [RabcUserController.java:34-64](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/controller/RabcUserController.java#L34-L64)
-- [RabcRoleController.java:29-61](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/controller/RabcRoleController.java#L29-L61)
-- [RabcDeptController.java:29-60](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/controller/RabcDeptController.java#L29-L60)
+- [RbacUserController.java:34-64](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/controller/RbacUserController.java#L34-L64)
+- [RbacRoleController.java:29-61](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/controller/RbacRoleController.java#L29-L61)
+- [RbacDeptController.java:29-60](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/controller/RbacDeptController.java#L29-L60)
 
 ## 详细组件分析
 
@@ -238,15 +238,15 @@ SimpleAuthObject <|-- CurrentUserSimpleAuthObject
 ```
 
 图表来源
-- [SysUserComposite.java:5-17](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/composite/SysUserComposite.java#L5-L17)
-- [SysUserCompositeImpl.java:24-93](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/composite/impl/SysUserCompositeImpl.java#L24-L93)
-- [UserAuthObject.java:12-18](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/model/UserAuthObject.java#L12-L18)
-- [SimpleAuthObject.java:17-114](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/composite/model/SimpleAuthObject.java#L17-L114)
-- [CurrentUserSimpleAuthObject.java:11-27](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/composite/model/CurrentUserSimpleAuthObject.java#L11-L27)
+- [SysUserComposite.java:5-17](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/composite/SysUserComposite.java#L5-L17)
+- [SysUserCompositeImpl.java:24-93](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/composite/impl/SysUserCompositeImpl.java#L24-L93)
+- [UserAuthObject.java:12-18](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/model/UserAuthObject.java#L12-L18)
+- [SimpleAuthObject.java:17-114](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/composite/model/SimpleAuthObject.java#L17-L114)
+- [CurrentUserSimpleAuthObject.java:11-27](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/composite/model/CurrentUserSimpleAuthObject.java#L11-L27)
 
 章节来源
-- [SysUserCompositeImpl.java:36-91](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/composite/impl/SysUserCompositeImpl.java#L36-L91)
-- [CurrentUserSimpleAuthObject.java:17-25](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/composite/model/CurrentUserSimpleAuthObject.java#L17-L25)
+- [SysUserCompositeImpl.java:36-91](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/composite/impl/SysUserCompositeImpl.java#L36-L91)
+- [CurrentUserSimpleAuthObject.java:17-25](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/composite/model/CurrentUserSimpleAuthObject.java#L17-L25)
 
 ### 联合查询与权限体映射（SysUserUnionCompositeMapper）
 - Mapper接口声明了按用户ID查询权限体的方法
@@ -263,7 +263,7 @@ OA --> End(["结束"])
 ```
 
 图表来源
-- [SysUserUnionCompositeMapper.java:13-22](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/composite/mapper/SysUserUnionCompositeMapper.java#L13-L22)
+- [SysUserUnionCompositeMapper.java:13-22](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/composite/mapper/SysUserUnionCompositeMapper.java#L13-L22)
 - [SysUserUnionCompositeMapper.xml:5-27](file://qy-auth/auth-rbac/src/main/resources/mapper/SysUserUnionCompositeMapper.xml#L5-L27)
 
 章节来源
@@ -271,23 +271,23 @@ OA --> End(["结束"])
 
 ### 控制器层与REST API设计
 - 用户管理
-  - GET /rabc/user/list：获取用户列表
-  - GET /rabc/user/page：分页查询
-  - POST /rabc/user/add：新增用户
-  - POST /rabc/user/update：更新用户（需提供ID）
-  - POST /rabc/user/delete：删除用户（接收ID）
+  - GET /rbac/user/list：获取用户列表
+  - GET /rbac/user/page：分页查询
+  - POST /rbac/user/add：新增用户
+  - POST /rbac/user/update：更新用户（需提供ID）
+  - POST /rbac/user/delete：删除用户（接收ID）
 - 角色管理
-  - GET /rabc/role/list：获取角色列表
-  - GET /rabc/role/page：分页查询
-  - POST /rabc/role/add：新增角色
-  - POST /rabc/role/update：更新角色（需提供ID）
-  - POST /rabc/role/delete：删除角色（接收ID）
+  - GET /rbac/role/list：获取角色列表
+  - GET /rbac/role/page：分页查询
+  - POST /rbac/role/add：新增角色
+  - POST /rbac/role/update：更新角色（需提供ID）
+  - POST /rbac/role/delete：删除角色（接收ID）
 - 部门管理
-  - GET /rabc/dept/list：获取部门列表
-  - GET /rabc/dept/page：分页查询
-  - POST /rabc/dept/add：新增部门
-  - POST /rabc/dept/update：更新部门（需提供ID）
-  - POST /rabc/dept/delete：删除部门（接收ID）
+  - GET /rbac/dept/list：获取部门列表
+  - GET /rbac/dept/page：分页查询
+  - POST /rbac/dept/add：新增部门
+  - POST /rbac/dept/update：更新部门（需提供ID）
+  - POST /rbac/dept/delete：删除部门（接收ID）
 - 菜单API与权限范围
   - GET /menu/api/tree：获取API菜单树
   - POST /menu/api/update：更新菜单权限范围（当权限类型为“仅拥有者”时，必须提供授权对象集合）
@@ -295,11 +295,11 @@ OA --> End(["结束"])
   - GET /menu/route/tree：获取路由菜单树
 
 章节来源
-- [RabcUserController.java:34-64](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/controller/RabcUserController.java#L34-L64)
-- [RabcRoleController.java:29-61](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/controller/RabcRoleController.java#L29-L61)
-- [RabcDeptController.java:29-60](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/controller/RabcDeptController.java#L29-L60)
-- [RabcMenuApiController.java:31-44](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/controller/RabcMenuApiController.java#L31-L44)
-- [RabcMenuRouteController.java:26-30](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/controller/RabcMenuRouteController.java#L26-L30)
+- [RbacUserController.java:34-64](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/controller/RbacUserController.java#L34-L64)
+- [RbacRoleController.java:29-61](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/controller/RbacRoleController.java#L29-L61)
+- [RbacDeptController.java:29-60](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/controller/RbacDeptController.java#L29-L60)
+- [RbacMenuApiController.java:31-44](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/controller/RbacMenuApiController.java#L31-L44)
+- [RbacMenuRouteController.java:26-30](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/controller/RbacMenuRouteController.java#L26-L30)
 
 ### MyBatis Plus实体模型与关系映射
 - SysUser：用户基本信息（姓名、昵称、用户名、手机号、邮箱、头像、性别、时间戳）
@@ -388,22 +388,22 @@ SYS_MENU_ROUTE }o--|| SYS_MENU_API : "对应"
 ```
 
 图表来源
-- [SysUser.java:22-97](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/mp/entity/SysUser.java#L22-L97)
-- [SysRole.java:22-61](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/mp/entity/SysRole.java#L22-L61)
-- [SysDept.java:22-67](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/mp/entity/SysDept.java#L22-L67)
-- [SysUserDept.java:22-73](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/mp/entity/SysUserDept.java#L22-L73)
-- [SysUserRole.java:22-67](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/mp/entity/SysUserRole.java#L22-L67)
-- [SysMenuApi.java:25-95](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/mp/entity/SysMenuApi.java#L25-L95)
-- [SysMenuRoute.java:25-130](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/mp/entity/SysMenuRoute.java#L25-L130)
+- [SysUser.java:22-97](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/mp/entity/SysUser.java#L22-L97)
+- [SysRole.java:22-61](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/mp/entity/SysRole.java#L22-L61)
+- [SysDept.java:22-67](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/mp/entity/SysDept.java#L22-L67)
+- [SysUserDept.java:22-73](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/mp/entity/SysUserDept.java#L22-L73)
+- [SysUserRole.java:22-67](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/mp/entity/SysUserRole.java#L22-L67)
+- [SysMenuApi.java:25-95](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/mp/entity/SysMenuApi.java#L25-L95)
+- [SysMenuRoute.java:25-130](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/mp/entity/SysMenuRoute.java#L25-L130)
 
 章节来源
-- [SysUser.java:22-97](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/mp/entity/SysUser.java#L22-L97)
-- [SysRole.java:22-61](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/mp/entity/SysRole.java#L22-L61)
-- [SysDept.java:22-67](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/mp/entity/SysDept.java#L22-L67)
-- [SysUserDept.java:22-73](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/mp/entity/SysUserDept.java#L22-L73)
-- [SysUserRole.java:22-67](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/mp/entity/SysUserRole.java#L22-L67)
-- [SysMenuApi.java:25-95](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/mp/entity/SysMenuApi.java#L25-L95)
-- [SysMenuRoute.java:25-130](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/mp/entity/SysMenuRoute.java#L25-L130)
+- [SysUser.java:22-97](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/mp/entity/SysUser.java#L22-L97)
+- [SysRole.java:22-61](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/mp/entity/SysRole.java#L22-L61)
+- [SysDept.java:22-67](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/mp/entity/SysDept.java#L22-L67)
+- [SysUserDept.java:22-73](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/mp/entity/SysUserDept.java#L22-L73)
+- [SysUserRole.java:22-67](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/mp/entity/SysUserRole.java#L22-L67)
+- [SysMenuApi.java:25-95](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/mp/entity/SysMenuApi.java#L25-L95)
+- [SysMenuRoute.java:25-130](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/mp/entity/SysMenuRoute.java#L25-L130)
 
 ### 用户权限对象（UserAuthObject）与权限计算逻辑
 - 数据结构
@@ -413,9 +413,9 @@ SYS_MENU_ROUTE }o--|| SYS_MENU_API : "对应"
   - CurrentUserSimpleAuthObject.fillUserAuth()通过用户与角色的笛卡尔积生成部门角色条目，形成“部门+角色”的组合权限
 
 章节来源
-- [UserAuthObject.java:12-18](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/model/UserAuthObject.java#L12-L18)
-- [SimpleAuthObject.java:54-79](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/composite/model/SimpleAuthObject.java#L54-L79)
-- [CurrentUserSimpleAuthObject.java:17-25](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/composite/model/CurrentUserSimpleAuthObject.java#L17-L25)
+- [UserAuthObject.java:12-18](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/model/UserAuthObject.java#L12-L18)
+- [SimpleAuthObject.java:54-79](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/composite/model/SimpleAuthObject.java#L54-L79)
+- [CurrentUserSimpleAuthObject.java:17-25](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/composite/model/CurrentUserSimpleAuthObject.java#L17-L25)
 
 ### 部门角色管理、权限范围控制与菜单路由
 - 部门角色管理
@@ -426,9 +426,9 @@ SYS_MENU_ROUTE }o--|| SYS_MENU_API : "对应"
   - 路由树接口返回前端可渲染的菜单树，结合API权限与路由元信息实现前后端一致的访问控制
 
 章节来源
-- [CurrentUserSimpleAuthObject.java:17-25](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/composite/model/CurrentUserSimpleAuthObject.java#L17-L25)
-- [RabcMenuApiController.java:36-44](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/controller/RabcMenuApiController.java#L36-L44)
-- [RabcMenuRouteController.java:26-30](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/controller/RabcMenuRouteController.java#L26-L30)
+- [CurrentUserSimpleAuthObject.java:17-25](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/composite/model/CurrentUserSimpleAuthObject.java#L17-L25)
+- [RbacMenuApiController.java:36-44](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/controller/RbacMenuApiController.java#L36-L44)
+- [RbacMenuRouteController.java:26-30](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/controller/RbacMenuRouteController.java#L26-L30)
 
 ## 依赖分析
 - 控制器依赖复合模型与服务层，复合模型依赖Mapper与实体
@@ -447,16 +447,16 @@ Entity --> DB["数据库"]
 ```
 
 图表来源
-- [SysUserCompositeImpl.java:24-93](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/composite/impl/SysUserCompositeImpl.java#L24-L93)
-- [SysUserUnionCompositeMapper.java:13-22](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/composite/mapper/SysUserUnionCompositeMapper.java#L13-L22)
+- [SysUserCompositeImpl.java:24-93](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/composite/impl/SysUserCompositeImpl.java#L24-L93)
+- [SysUserUnionCompositeMapper.java:13-22](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/composite/mapper/SysUserUnionCompositeMapper.java#L13-L22)
 - [SysUserUnionCompositeMapper.xml:1-30](file://qy-auth/auth-rbac/src/main/resources/mapper/SysUserUnionCompositeMapper.xml#L1-L30)
-- [RabcUserController.java:26-66](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/controller/RabcUserController.java#L26-L66)
+- [RbacUserController.java:26-66](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/controller/RbacUserController.java#L26-L66)
 
 章节来源
-- [SysUserCompositeImpl.java:24-93](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/composite/impl/SysUserCompositeImpl.java#L24-L93)
-- [SysUserUnionCompositeMapper.java:13-22](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/composite/mapper/SysUserUnionCompositeMapper.java#L13-L22)
+- [SysUserCompositeImpl.java:24-93](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/composite/impl/SysUserCompositeImpl.java#L24-L93)
+- [SysUserUnionCompositeMapper.java:13-22](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/composite/mapper/SysUserUnionCompositeMapper.java#L13-L22)
 - [SysUserUnionCompositeMapper.xml:1-30](file://qy-auth/auth-rbac/src/main/resources/mapper/SysUserUnionCompositeMapper.xml#L1-L30)
-- [RabcUserController.java:26-66](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/controller/RabcUserController.java#L26-L66)
+- [RbacUserController.java:26-66](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/controller/RbacUserController.java#L26-L66)
 
 ## 性能考虑
 - 单次联合查询：通过SysUserUnionCompositeMapper.xml的LEFT JOIN一次性获取用户-角色-部门关系，减少N+1查询
@@ -482,8 +482,8 @@ Entity --> DB["数据库"]
   - 处理：检查SysMenuApi与SysMenuRoute数据完整性与关联关系
 
 章节来源
-- [SysUserCompositeImpl.java:43-55](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/composite/impl/SysUserCompositeImpl.java#L43-L55)
-- [RabcMenuApiController.java:38-40](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/controller/RabcMenuApiController.java#L38-L40)
+- [SysUserCompositeImpl.java:43-55](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/composite/impl/SysUserCompositeImpl.java#L43-L55)
+- [RbacMenuApiController.java:38-40](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/controller/RbacMenuApiController.java#L38-L40)
 
 ## 结论
 auth-rbac模块通过复合用户模型与联合查询实现了高效的用户-角色-部门权限聚合，结合SimpleAuthObject与CurrentUserSimpleAuthObject的权限继承机制，提供了灵活而强大的RBAC能力。控制器层以清晰的REST API覆盖用户、角色、部门、菜单API与路由管理，配合菜单权限范围控制与路由树输出，满足现代应用的权限治理需求。建议在生产环境中关注索引与缓存策略，确保高并发下的稳定性与性能。
@@ -491,23 +491,23 @@ auth-rbac模块通过复合用户模型与联合查询实现了高效的用户-�
 ## 附录
 - RBAC API使用示例（说明性步骤）
   - 用户管理
-    - 获取用户列表：GET /rabc/user/list
-    - 分页查询：GET /rabc/user/page（携带分页参数）
-    - 新增用户：POST /rabc/user/add（Body传入SysUser）
-    - 更新用户：POST /rabc/user/update（Body传入SysUser，需提供ID）
-    - 删除用户：POST /rabc/user/delete（Body传入ID）
+    - 获取用户列表：GET /rbac/user/list
+    - 分页查询：GET /rbac/user/page（携带分页参数）
+    - 新增用户：POST /rbac/user/add（Body传入SysUser）
+    - 更新用户：POST /rbac/user/update（Body传入SysUser，需提供ID）
+    - 删除用户：POST /rbac/user/delete（Body传入ID）
   - 角色管理
-    - 获取角色列表：GET /rabc/role/list
-    - 分页查询：GET /rabc/role/page（携带分页参数）
-    - 新增角色：POST /rabc/role/add（Body传入SysRole）
-    - 更新角色：POST /rabc/role/update（Body传入SysRole，需提供ID）
-    - 删除角色：POST /rabc/role/delete（Body传入ID）
+    - 获取角色列表：GET /rbac/role/list
+    - 分页查询：GET /rbac/role/page（携带分页参数）
+    - 新增角色：POST /rbac/role/add（Body传入SysRole）
+    - 更新角色：POST /rbac/role/update（Body传入SysRole，需提供ID）
+    - 删除角色：POST /rbac/role/delete（Body传入ID）
   - 部门管理
-    - 获取部门列表：GET /rabc/dept/list
-    - 分页查询：GET /rabc/dept/page（携带分页参数）
-    - 新增部门：POST /rabc/dept/add（Body传入SysDept）
-    - 更新部门：POST /rabc/dept/update（Body传入SysDept，需提供ID）
-    - 删除部门：POST /rabc/dept/delete（Body传入ID）
+    - 获取部门列表：GET /rbac/dept/list
+    - 分页查询：GET /rbac/dept/page（携带分页参数）
+    - 新增部门：POST /rbac/dept/add（Body传入SysDept）
+    - 更新部门：POST /rbac/dept/update（Body传入SysDept，需提供ID）
+    - 删除部门：POST /rbac/dept/delete（Body传入ID）
   - 菜单API与权限范围
     - 获取API树：GET /menu/api/tree
     - 更新权限范围：POST /menu/api/update（Body传入菜单权限更新请求）

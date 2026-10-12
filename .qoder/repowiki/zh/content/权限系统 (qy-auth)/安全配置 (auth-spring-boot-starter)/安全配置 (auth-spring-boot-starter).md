@@ -2,19 +2,19 @@
 
 <cite>
 **本文引用的文件**
-- [SecurityConfig.java](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/config/SecurityConfig.java)
-- [AuthUserContextFilter.java](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/filter/AuthUserContextFilter.java)
-- [JsonLoginFilter.java](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/password/filter/JsonLoginFilter.java)
-- [ExceptionAdviceHandler.java](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/handler/ExceptionAdviceHandler.java)
-- [SecurityProperties.java](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/properties/SecurityProperties.java)
-- [SessionProperties.java](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/properties/SessionProperties.java)
-- [RememberMeProperties.java](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/properties/RememberMeProperties.java)
-- [PasswordSecurityConfig.java](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/password/config/PasswordSecurityConfig.java)
-- [JsonLoginAuthenticationFilterConfigurer.java](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/password/config/JsonLoginAuthenticationFilterConfigurer.java)
-- [AuthenticationSuccessResultResolver.java](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/response/AuthenticationSuccessResultResolver.java)
-- [SecurityUser.java](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/model/SecurityUser.java)
-- [SecurityUserDetailsService.java](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/service/SecurityUserDetailsService.java)
-- [PermitUrlContainer.java](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/extension/PermitUrlContainer.java)
+- [SecurityConfig.java](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/config/SecurityConfig.java)
+- [AuthUserContextFilter.java](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/filter/AuthUserContextFilter.java)
+- [JsonLoginFilter.java](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/password/filter/JsonLoginFilter.java)
+- [ExceptionAdviceHandler.java](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/handler/ExceptionAdviceHandler.java)
+- [SecurityProperties.java](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/properties/SecurityProperties.java)
+- [SessionProperties.java](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/properties/SessionProperties.java)
+- [RememberMeProperties.java](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/properties/RememberMeProperties.java)
+- [PasswordSecurityConfig.java](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/password/config/PasswordSecurityConfig.java)
+- [JsonLoginAuthenticationFilterConfigurer.java](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/password/config/JsonLoginAuthenticationFilterConfigurer.java)
+- [AuthenticationSuccessResultResolver.java](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/response/AuthenticationSuccessResultResolver.java)
+- [SecurityUser.java](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/model/SecurityUser.java)
+- [SecurityUserDetailsService.java](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/service/SecurityUserDetailsService.java)
+- [PermitUrlContainer.java](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/extension/PermitUrlContainer.java)
 - [spring.factories](file://qy-auth/auth-spring-boot-starter/src/main/resources/META-INF/spring.factories)
 </cite>
 
@@ -76,16 +76,16 @@ F1 --> RES
 ```
 
 图表来源
-- [SecurityConfig.java:34-134](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/config/SecurityConfig.java#L34-L134)
-- [PasswordSecurityConfig.java:18-49](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/password/config/PasswordSecurityConfig.java#L18-L49)
-- [AuthUserContextFilter.java:31-85](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/filter/AuthUserContextFilter.java#L31-L85)
-- [JsonLoginFilter.java:22-51](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/password/filter/JsonLoginFilter.java#L22-L51)
-- [ExceptionAdviceHandler.java:17-69](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/handler/ExceptionAdviceHandler.java#L17-L69)
-- [SecurityProperties.java:13-23](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/properties/SecurityProperties.java#L13-L23)
-- [SessionProperties.java:11-23](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/properties/SessionProperties.java#L11-L23)
-- [RememberMeProperties.java:11-27](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/properties/RememberMeProperties.java#L11-L27)
-- [AuthenticationSuccessResultResolver.java:14-24](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/response/AuthenticationSuccessResultResolver.java#L14-L24)
-- [PermitUrlContainer.java:31-82](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/extension/PermitUrlContainer.java#L31-L82)
+- [SecurityConfig.java:34-134](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/config/SecurityConfig.java#L34-L134)
+- [PasswordSecurityConfig.java:18-49](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/password/config/PasswordSecurityConfig.java#L18-L49)
+- [AuthUserContextFilter.java:31-85](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/filter/AuthUserContextFilter.java#L31-L85)
+- [JsonLoginFilter.java:22-51](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/password/filter/JsonLoginFilter.java#L22-L51)
+- [ExceptionAdviceHandler.java:17-69](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/handler/ExceptionAdviceHandler.java#L17-L69)
+- [SecurityProperties.java:13-23](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/properties/SecurityProperties.java#L13-L23)
+- [SessionProperties.java:11-23](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/properties/SessionProperties.java#L11-L23)
+- [RememberMeProperties.java:11-27](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/properties/RememberMeProperties.java#L11-L27)
+- [AuthenticationSuccessResultResolver.java:14-24](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/response/AuthenticationSuccessResultResolver.java#L14-L24)
+- [PermitUrlContainer.java:31-82](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/extension/PermitUrlContainer.java#L31-L82)
 
 章节来源
 - [spring.factories:1-6](file://qy-auth/auth-spring-boot-starter/src/main/resources/META-INF/spring.factories#L1-L6)
@@ -101,16 +101,16 @@ F1 --> RES
 - 放行 URL 容器（PermitUrlContainer）：聚合注解与配置的放行路径
 
 章节来源
-- [SecurityConfig.java:34-134](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/config/SecurityConfig.java#L34-L134)
-- [PasswordSecurityConfig.java:18-49](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/password/config/PasswordSecurityConfig.java#L18-L49)
-- [AuthUserContextFilter.java:31-85](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/filter/AuthUserContextFilter.java#L31-L85)
-- [JsonLoginFilter.java:22-51](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/password/filter/JsonLoginFilter.java#L22-L51)
-- [ExceptionAdviceHandler.java:17-69](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/handler/ExceptionAdviceHandler.java#L17-L69)
-- [SecurityProperties.java:13-23](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/properties/SecurityProperties.java#L13-L23)
-- [SessionProperties.java:11-23](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/properties/SessionProperties.java#L11-L23)
-- [RememberMeProperties.java:11-27](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/properties/RememberMeProperties.java#L11-L27)
-- [AuthenticationSuccessResultResolver.java:14-24](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/response/AuthenticationSuccessResultResolver.java#L14-L24)
-- [PermitUrlContainer.java:31-82](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/extension/PermitUrlContainer.java#L31-L82)
+- [SecurityConfig.java:34-134](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/config/SecurityConfig.java#L34-L134)
+- [PasswordSecurityConfig.java:18-49](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/password/config/PasswordSecurityConfig.java#L18-L49)
+- [AuthUserContextFilter.java:31-85](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/filter/AuthUserContextFilter.java#L31-L85)
+- [JsonLoginFilter.java:22-51](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/password/filter/JsonLoginFilter.java#L22-L51)
+- [ExceptionAdviceHandler.java:17-69](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/handler/ExceptionAdviceHandler.java#L17-L69)
+- [SecurityProperties.java:13-23](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/properties/SecurityProperties.java#L13-L23)
+- [SessionProperties.java:11-23](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/properties/SessionProperties.java#L11-L23)
+- [RememberMeProperties.java:11-27](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/properties/RememberMeProperties.java#L11-L27)
+- [AuthenticationSuccessResultResolver.java:14-24](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/response/AuthenticationSuccessResultResolver.java#L14-L24)
+- [PermitUrlContainer.java:31-82](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/extension/PermitUrlContainer.java#L31-L82)
 
 ## 架构总览
 下图展示安全配置模块在 Spring Security 中的交互关系与数据流向。
@@ -134,11 +134,11 @@ RES-->>C : "返回统一响应"
 ```
 
 图表来源
-- [SecurityConfig.java:84-115](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/config/SecurityConfig.java#L84-L115)
-- [PasswordSecurityConfig.java:32-46](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/password/config/PasswordSecurityConfig.java#L32-L46)
-- [JsonLoginFilter.java:24-49](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/password/filter/JsonLoginFilter.java#L24-L49)
-- [AuthUserContextFilter.java:49-75](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/filter/AuthUserContextFilter.java#L49-L75)
-- [AuthenticationSuccessResultResolver.java:14-24](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/response/AuthenticationSuccessResultResolver.java#L14-L24)
+- [SecurityConfig.java:84-115](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/config/SecurityConfig.java#L84-L115)
+- [PasswordSecurityConfig.java:32-46](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/password/config/PasswordSecurityConfig.java#L32-L46)
+- [JsonLoginFilter.java:24-49](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/password/filter/JsonLoginFilter.java#L24-L49)
+- [AuthUserContextFilter.java:49-75](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/filter/AuthUserContextFilter.java#L49-L75)
+- [AuthenticationSuccessResultResolver.java:14-24](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/response/AuthenticationSuccessResultResolver.java#L14-L24)
 
 ## 组件详解
 
@@ -150,7 +150,7 @@ RES-->>C : "返回统一响应"
 - 跨域配置可选启用（当前被注释），建议按需开启
 
 章节来源
-- [SecurityConfig.java:72-131](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/config/SecurityConfig.java#L72-L131)
+- [SecurityConfig.java:72-131](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/config/SecurityConfig.java#L72-L131)
 
 ### 用户上下文过滤器（AuthUserContextFilter）
 - 作用：在认证完成后，从 SecurityContext 获取认证对象，借助成功结果转换器生成 SecurityUser，并设置到应用上下文
@@ -172,10 +172,10 @@ IsCurrentUser -- "否" --> Next
 ```
 
 图表来源
-- [AuthUserContextFilter.java:49-83](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/filter/AuthUserContextFilter.java#L49-L83)
+- [AuthUserContextFilter.java:49-83](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/filter/AuthUserContextFilter.java#L49-L83)
 
 章节来源
-- [AuthUserContextFilter.java:31-85](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/filter/AuthUserContextFilter.java#L31-L85)
+- [AuthUserContextFilter.java:31-85](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/filter/AuthUserContextFilter.java#L31-L85)
 
 ### JSON 登录过滤器（JsonLoginFilter）
 - 仅处理 POST 方法且 Content-Type 为 JSON 的请求
@@ -195,10 +195,10 @@ Auth --> E
 ```
 
 图表来源
-- [JsonLoginFilter.java:24-49](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/password/filter/JsonLoginFilter.java#L24-L49)
+- [JsonLoginFilter.java:24-49](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/password/filter/JsonLoginFilter.java#L24-L49)
 
 章节来源
-- [JsonLoginFilter.java:22-51](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/password/filter/JsonLoginFilter.java#L22-L51)
+- [JsonLoginFilter.java:22-51](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/password/filter/JsonLoginFilter.java#L22-L51)
 
 ### 密码登录配置（PasswordSecurityConfig）
 - 通过自定义配置器将 JSON 登录过滤器接入 HttpSecurity
@@ -206,15 +206,15 @@ Auth --> E
 - 作为 HttpSecurityCustomizer 的实现，可被主配置迭代调用以覆盖默认行为
 
 章节来源
-- [PasswordSecurityConfig.java:18-49](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/password/config/PasswordSecurityConfig.java#L18-L49)
-- [JsonLoginAuthenticationFilterConfigurer.java:14-39](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/password/config/JsonLoginAuthenticationFilterConfigurer.java#L14-L39)
+- [PasswordSecurityConfig.java:18-49](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/password/config/PasswordSecurityConfig.java#L18-L49)
+- [JsonLoginAuthenticationFilterConfigurer.java:14-39](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/password/config/JsonLoginAuthenticationFilterConfigurer.java#L14-L39)
 
 ### 异常处理机制（ExceptionAdviceHandler）
 - 对访问异常、未登录、认证异常、权限不足、内部服务异常等进行分类处理
 - 返回统一的业务响应结构，状态码与消息根据异常类型映射
 
 章节来源
-- [ExceptionAdviceHandler.java:17-69](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/handler/ExceptionAdviceHandler.java#L17-L69)
+- [ExceptionAdviceHandler.java:17-69](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/handler/ExceptionAdviceHandler.java#L17-L69)
 
 ### 安全属性配置（SecurityProperties、SessionProperties、RememberMeProperties）
 - SecurityProperties
@@ -228,24 +228,24 @@ Auth --> E
   - validitySeconds：有效期（秒），默认 2592000（30 天）
 
 章节来源
-- [SecurityProperties.java:13-23](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/properties/SecurityProperties.java#L13-L23)
-- [SessionProperties.java:11-23](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/properties/SessionProperties.java#L11-L23)
-- [RememberMeProperties.java:11-27](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/properties/RememberMeProperties.java#L11-L27)
+- [SecurityProperties.java:13-23](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/properties/SecurityProperties.java#L13-L23)
+- [SessionProperties.java:11-23](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/properties/SessionProperties.java#L11-L23)
+- [RememberMeProperties.java:11-27](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/properties/RememberMeProperties.java#L11-L27)
 
 ### 成功结果解析与转换
 - AuthenticationSuccessResultResolver：定义统一的成功结果解析接口，供“获取当前用户”等场景使用
 - AuthUserContextFilter 使用该解析器生成响应体并写出
 
 章节来源
-- [AuthenticationSuccessResultResolver.java:14-24](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/response/AuthenticationSuccessResultResolver.java#L14-L24)
-- [AuthUserContextFilter.java:67-71](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/filter/AuthUserContextFilter.java#L67-L71)
+- [AuthenticationSuccessResultResolver.java:14-24](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/response/AuthenticationSuccessResultResolver.java#L14-L24)
+- [AuthUserContextFilter.java:67-71](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/filter/AuthUserContextFilter.java#L67-L71)
 
 ### 放行 URL 容器（PermitUrlContainer）
 - 自动扫描控制器上标注的 SecurityIgnore 注解，提取请求路径
 - 支持通过配置项追加放行路径，最终汇总为数组供授权规则使用
 
 章节来源
-- [PermitUrlContainer.java:31-82](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/extension/PermitUrlContainer.java#L31-L82)
+- [PermitUrlContainer.java:31-82](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/extension/PermitUrlContainer.java#L31-L82)
 
 ## 依赖关系分析
 - SecurityConfig 依赖：
@@ -281,16 +281,16 @@ SecurityConfig --> RememberMeProperties : "读取属性"
 ```
 
 图表来源
-- [SecurityConfig.java:34-134](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/config/SecurityConfig.java#L34-L134)
-- [PasswordSecurityConfig.java:18-49](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/password/config/PasswordSecurityConfig.java#L18-L49)
-- [AuthUserContextFilter.java:31-85](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/filter/AuthUserContextFilter.java#L31-L85)
-- [JsonLoginFilter.java:22-51](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/password/filter/JsonLoginFilter.java#L22-L51)
-- [ExceptionAdviceHandler.java:17-69](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/handler/ExceptionAdviceHandler.java#L17-L69)
-- [SecurityProperties.java:13-23](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/properties/SecurityProperties.java#L13-L23)
-- [SessionProperties.java:11-23](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/properties/SessionProperties.java#L11-L23)
-- [RememberMeProperties.java:11-27](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/properties/RememberMeProperties.java#L11-L27)
-- [AuthenticationSuccessResultResolver.java:14-24](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/response/AuthenticationSuccessResultResolver.java#L14-L24)
-- [PermitUrlContainer.java:31-82](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/extension/PermitUrlContainer.java#L31-L82)
+- [SecurityConfig.java:34-134](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/config/SecurityConfig.java#L34-L134)
+- [PasswordSecurityConfig.java:18-49](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/password/config/PasswordSecurityConfig.java#L18-L49)
+- [AuthUserContextFilter.java:31-85](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/filter/AuthUserContextFilter.java#L31-L85)
+- [JsonLoginFilter.java:22-51](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/password/filter/JsonLoginFilter.java#L22-L51)
+- [ExceptionAdviceHandler.java:17-69](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/handler/ExceptionAdviceHandler.java#L17-L69)
+- [SecurityProperties.java:13-23](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/properties/SecurityProperties.java#L13-L23)
+- [SessionProperties.java:11-23](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/properties/SessionProperties.java#L11-L23)
+- [RememberMeProperties.java:11-27](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/properties/RememberMeProperties.java#L11-L27)
+- [AuthenticationSuccessResultResolver.java:14-24](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/response/AuthenticationSuccessResultResolver.java#L14-L24)
+- [PermitUrlContainer.java:31-82](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/extension/PermitUrlContainer.java#L31-L82)
 
 ## 性能与安全特性
 - 过滤器链顺序
@@ -305,10 +305,10 @@ SecurityConfig --> RememberMeProperties : "读取属性"
   - 全局异常处理器对不同异常类型进行分类响应，便于前端统一处理
 
 章节来源
-- [SecurityConfig.java:105-115](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/config/SecurityConfig.java#L105-L115)
-- [SessionProperties.java:11-23](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/properties/SessionProperties.java#L11-L23)
-- [PermitUrlContainer.java:31-82](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/extension/PermitUrlContainer.java#L31-L82)
-- [ExceptionAdviceHandler.java:17-69](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/handler/ExceptionAdviceHandler.java#L17-L69)
+- [SecurityConfig.java:105-115](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/config/SecurityConfig.java#L105-L115)
+- [SessionProperties.java:11-23](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/properties/SessionProperties.java#L11-L23)
+- [PermitUrlContainer.java:31-82](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/extension/PermitUrlContainer.java#L31-L82)
+- [ExceptionAdviceHandler.java:17-69](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/handler/ExceptionAdviceHandler.java#L17-L69)
 
 ## 故障排查指南
 - 登录失败
@@ -325,12 +325,12 @@ SecurityConfig --> RememberMeProperties : "读取属性"
   - 如出现会话过多或被挤掉，调整 SessionProperties 的 maximumSessions 与 maxSessionsPreventsLogin
 
 章节来源
-- [JsonLoginFilter.java:24-49](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/password/filter/JsonLoginFilter.java#L24-L49)
-- [PasswordSecurityConfig.java:32-46](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/password/config/PasswordSecurityConfig.java#L32-L46)
-- [AuthUserContextFilter.java:67-71](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/filter/AuthUserContextFilter.java#L67-L71)
-- [SecurityProperties.java:13-23](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/properties/SecurityProperties.java#L13-L23)
-- [SessionProperties.java:11-23](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/properties/SessionProperties.java#L11-L23)
-- [ExceptionAdviceHandler.java:56-66](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/handler/ExceptionAdviceHandler.java#L56-L66)
+- [JsonLoginFilter.java:24-49](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/password/filter/JsonLoginFilter.java#L24-L49)
+- [PasswordSecurityConfig.java:32-46](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/password/config/PasswordSecurityConfig.java#L32-L46)
+- [AuthUserContextFilter.java:67-71](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/filter/AuthUserContextFilter.java#L67-L71)
+- [SecurityProperties.java:13-23](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/properties/SecurityProperties.java#L13-L23)
+- [SessionProperties.java:11-23](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/properties/SessionProperties.java#L11-L23)
+- [ExceptionAdviceHandler.java:56-66](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/handler/ExceptionAdviceHandler.java#L56-L66)
 
 ## 结论
 本模块通过清晰的配置分层与可扩展的过滤器链设计，实现了基于 JSON 的认证流程、统一的异常处理与灵活的放行策略。结合属性配置，可在会话管理、记住我、跨域等方面按需定制，满足多数企业级安全需求。建议在生产环境中启用必要的跨域与会话限制策略，并配合严格的放行路径管理与日志监控。

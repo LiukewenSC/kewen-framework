@@ -1,7 +1,7 @@
 {
   "properties": [
     {
-      "name": "kewen.tenant.open",
+      "name": "cu.tenant.open",
       "type": "java.lang.Boolean",
       "defaultValue": false,
       "description": "是否开启租户."

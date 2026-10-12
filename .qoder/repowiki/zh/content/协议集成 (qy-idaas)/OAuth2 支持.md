@@ -2,13 +2,13 @@
 
 <cite>
 **本文引用的文件**
-- [Oauth2Config.java](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/Oauth2Config.java)
-- [Oauth2OidcProperties.java](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/Oauth2OidcProperties.java)
-- [OauthProtocolType.java](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/OauthProtocolType.java)
-- [RestOperationBuilder.java](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/RestOperationBuilder.java)
-- [Oauth2AuthenticationSuccessResultConverter.java](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/result/Oauth2AuthenticationSuccessResultConverter.java)
-- [SecurityConfig.java](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/config/SecurityConfig.java)
-- [NoLoginException.java](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/exception/NoLoginException.java)
+- [Oauth2Config.java](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/Oauth2Config.java)
+- [Oauth2OidcProperties.java](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/Oauth2OidcProperties.java)
+- [OauthProtocolType.java](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/OauthProtocolType.java)
+- [RestOperationBuilder.java](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/RestOperationBuilder.java)
+- [Oauth2AuthenticationSuccessResultConverter.java](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/result/Oauth2AuthenticationSuccessResultConverter.java)
+- [SecurityConfig.java](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/config/SecurityConfig.java)
+- [NoLoginException.java](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/exception/NoLoginException.java)
 - [oidc接入踩坑记录.md](file://docs/过程文件/oidc接入踩坑记录.md)
 - [README.md](file://qy-idaas/README.md)
 - [spring.factories（qy-idaas）](file://qy-idaas/idaas-authentications/src/main/resources/META-INF/spring.factories)
@@ -69,22 +69,22 @@ I --> F
 ```
 
 图表来源
-- [Oauth2Config.java:46-225](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/Oauth2Config.java#L46-L225)
-- [Oauth2OidcProperties.java:24-251](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/Oauth2OidcProperties.java#L24-L251)
-- [OauthProtocolType.java:7-10](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/OauthProtocolType.java#L7-L10)
-- [RestOperationBuilder.java:30-93](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/RestOperationBuilder.java#L30-L93)
-- [Oauth2AuthenticationSuccessResultConverter.java:16-44](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/result/Oauth2AuthenticationSuccessResultConverter.java#L16-L44)
-- [SecurityConfig.java:34-134](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/config/SecurityConfig.java#L34-L134)
+- [Oauth2Config.java:46-225](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/Oauth2Config.java#L46-L225)
+- [Oauth2OidcProperties.java:24-251](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/Oauth2OidcProperties.java#L24-L251)
+- [OauthProtocolType.java:7-10](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/OauthProtocolType.java#L7-L10)
+- [RestOperationBuilder.java:30-93](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/RestOperationBuilder.java#L30-L93)
+- [Oauth2AuthenticationSuccessResultConverter.java:16-44](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/result/Oauth2AuthenticationSuccessResultConverter.java#L16-L44)
+- [SecurityConfig.java:34-134](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/config/SecurityConfig.java#L34-L134)
 - [spring.factories（qy-idaas）:1-3](file://qy-idaas/idaas-authentications/src/main/resources/META-INF/spring.factories#L1-L3)
 - [spring.factories（auth-spring-boot-starter）:1-6](file://qy-auth/auth-spring-boot-starter/src/main/resources/META-INF/spring.factories#L1-L6)
 
 章节来源
-- [Oauth2Config.java:46-225](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/Oauth2Config.java#L46-L225)
-- [Oauth2OidcProperties.java:24-251](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/Oauth2OidcProperties.java#L24-L251)
-- [OauthProtocolType.java:7-10](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/OauthProtocolType.java#L7-L10)
-- [RestOperationBuilder.java:30-93](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/RestOperationBuilder.java#L30-L93)
-- [Oauth2AuthenticationSuccessResultConverter.java:16-44](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/result/Oauth2AuthenticationSuccessResultConverter.java#L16-L44)
-- [SecurityConfig.java:34-134](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/config/SecurityConfig.java#L34-L134)
+- [Oauth2Config.java:46-225](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/Oauth2Config.java#L46-L225)
+- [Oauth2OidcProperties.java:24-251](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/Oauth2OidcProperties.java#L24-L251)
+- [OauthProtocolType.java:7-10](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/OauthProtocolType.java#L7-L10)
+- [RestOperationBuilder.java:30-93](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/RestOperationBuilder.java#L30-L93)
+- [Oauth2AuthenticationSuccessResultConverter.java:16-44](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/result/Oauth2AuthenticationSuccessResultConverter.java#L16-L44)
+- [SecurityConfig.java:34-134](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/config/SecurityConfig.java#L34-L134)
 - [spring.factories（qy-idaas）:1-3](file://qy-idaas/idaas-authentications/src/main/resources/META-INF/spring.factories#L1-L3)
 - [spring.factories（auth-spring-boot-starter）:1-6](file://qy-auth/auth-spring-boot-starter/src/main/resources/META-INF/spring.factories#L1-L6)
 
@@ -96,11 +96,11 @@ I --> F
 - 成功结果转换器：Oauth2AuthenticationSuccessResultConverter，将 OAuth2User 转换为统一 JsonSuccessResult。
 
 章节来源
-- [Oauth2Config.java:46-225](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/Oauth2Config.java#L46-L225)
-- [Oauth2OidcProperties.java:24-251](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/Oauth2OidcProperties.java#L24-L251)
-- [OauthProtocolType.java:7-10](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/OauthProtocolType.java#L7-L10)
-- [RestOperationBuilder.java:30-93](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/RestOperationBuilder.java#L30-L93)
-- [Oauth2AuthenticationSuccessResultConverter.java:16-44](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/result/Oauth2AuthenticationSuccessResultConverter.java#L16-L44)
+- [Oauth2Config.java:46-225](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/Oauth2Config.java#L46-L225)
+- [Oauth2OidcProperties.java:24-251](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/Oauth2OidcProperties.java#L24-L251)
+- [OauthProtocolType.java:7-10](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/OauthProtocolType.java#L7-L10)
+- [RestOperationBuilder.java:30-93](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/RestOperationBuilder.java#L30-L93)
+- [Oauth2AuthenticationSuccessResultConverter.java:16-44](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/result/Oauth2AuthenticationSuccessResultConverter.java#L16-L44)
 
 ## 架构总览
 OAuth2 支持模块通过 Spring Security 的 oauth2Login 与 OIDC 的 OidcUserService 协同工作，结合自定义 REST 客户端与结果转换器，完成从授权请求、令牌交换、用户信息获取到登录成功的全流程。
@@ -125,9 +125,9 @@ Sec-->>U : 登录成功，返回统一结果
 ```
 
 图表来源
-- [Oauth2Config.java:90-125](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/Oauth2Config.java#L90-L125)
-- [RestOperationBuilder.java:41-73](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/RestOperationBuilder.java#L41-L73)
-- [Oauth2AuthenticationSuccessResultConverter.java:16-44](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/result/Oauth2AuthenticationSuccessResultConverter.java#L16-L44)
+- [Oauth2Config.java:90-125](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/Oauth2Config.java#L90-L125)
+- [RestOperationBuilder.java:41-73](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/RestOperationBuilder.java#L41-L73)
+- [Oauth2AuthenticationSuccessResultConverter.java:16-44](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/result/Oauth2AuthenticationSuccessResultConverter.java#L16-L44)
 
 ## 组件详细分析
 
@@ -179,14 +179,14 @@ Oauth2Config --> Oauth2AuthenticationSuccessResultConverter : "注册"
 ```
 
 图表来源
-- [Oauth2Config.java:46-225](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/Oauth2Config.java#L46-L225)
-- [Oauth2OidcProperties.java:24-251](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/Oauth2OidcProperties.java#L24-L251)
-- [OauthProtocolType.java:7-10](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/OauthProtocolType.java#L7-L10)
-- [RestOperationBuilder.java:30-93](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/RestOperationBuilder.java#L30-L93)
-- [Oauth2AuthenticationSuccessResultConverter.java:16-44](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/result/Oauth2AuthenticationSuccessResultConverter.java#L16-L44)
+- [Oauth2Config.java:46-225](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/Oauth2Config.java#L46-L225)
+- [Oauth2OidcProperties.java:24-251](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/Oauth2OidcProperties.java#L24-L251)
+- [OauthProtocolType.java:7-10](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/OauthProtocolType.java#L7-L10)
+- [RestOperationBuilder.java:30-93](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/RestOperationBuilder.java#L30-L93)
+- [Oauth2AuthenticationSuccessResultConverter.java:16-44](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/result/Oauth2AuthenticationSuccessResultConverter.java#L16-L44)
 
 章节来源
-- [Oauth2Config.java:46-225](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/Oauth2Config.java#L46-L225)
+- [Oauth2Config.java:46-225](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/Oauth2Config.java#L46-L225)
 
 ### Oauth2OidcProperties：统一属性配置
 - 设计原则
@@ -210,18 +210,18 @@ Build --> End(["结束"])
 ```
 
 图表来源
-- [Oauth2OidcProperties.java:24-251](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/Oauth2OidcProperties.java#L24-L251)
-- [Oauth2Config.java:126-205](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/Oauth2Config.java#L126-L205)
+- [Oauth2OidcProperties.java:24-251](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/Oauth2OidcProperties.java#L24-L251)
+- [Oauth2Config.java:126-205](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/Oauth2Config.java#L126-L205)
 
 章节来源
-- [Oauth2OidcProperties.java:24-251](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/Oauth2OidcProperties.java#L24-L251)
+- [Oauth2OidcProperties.java:24-251](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/Oauth2OidcProperties.java#L24-L251)
 
 ### OauthProtocolType：协议类型枚举
 - 用途：在客户端注册时区分 OAuth2 与 OIDC，驱动不同的 ClientRegistration 构建逻辑
 - 适用场景：OAuth2 手动模式（需配置授权/令牌/用户信息端点）与 OIDC 自动发现模式（通过 issuerUri 自动发现）
 
 章节来源
-- [OauthProtocolType.java:7-10](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/OauthProtocolType.java#L7-L10)
+- [OauthProtocolType.java:7-10](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/OauthProtocolType.java#L7-L10)
 
 ### RestOperationBuilder：REST 操作构建机制
 - 设计目标：为 OAuth2/OIDC 用户信息服务提供可配置的 HTTP 客户端，支持跳过 SSL 校验（仅测试环境）
@@ -244,17 +244,17 @@ G --> H["返回 RestOperations"]
 ```
 
 图表来源
-- [RestOperationBuilder.java:30-93](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/RestOperationBuilder.java#L30-L93)
+- [RestOperationBuilder.java:30-93](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/RestOperationBuilder.java#L30-L93)
 
 章节来源
-- [RestOperationBuilder.java:30-93](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/RestOperationBuilder.java#L30-L93)
+- [RestOperationBuilder.java:30-93](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/RestOperationBuilder.java#L30-L93)
 
 ### Oauth2AuthenticationSuccessResultConverter：认证成功结果转换器
 - 作用：将 OAuth2User 转换为统一的 JsonSuccessResult，包含 name、昵称、用户名、手机号、邮箱、头像、性别、认证对象等属性
 - 适用性：仅对 OAuth2User 类型的认证生效；同时支持通过 UserDetailsService 转换为 SecurityUser
 
 章节来源
-- [Oauth2AuthenticationSuccessResultConverter.java:16-44](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/result/Oauth2AuthenticationSuccessResultConverter.java#L16-L44)
+- [Oauth2AuthenticationSuccessResultConverter.java:16-44](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/result/Oauth2AuthenticationSuccessResultConverter.java#L16-L44)
 
 ### 自动装配与安全配置
 - 自动装配
@@ -267,8 +267,8 @@ G --> H["返回 RestOperations"]
 章节来源
 - [spring.factories（qy-idaas）:1-3](file://qy-idaas/idaas-authentications/src/main/resources/META-INF/spring.factories#L1-L3)
 - [spring.factories（auth-spring-boot-starter）:1-6](file://qy-auth/auth-spring-boot-starter/src/main/resources/META-INF/spring.factories#L1-L6)
-- [SecurityConfig.java:34-134](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/config/SecurityConfig.java#L34-L134)
-- [NoLoginException.java:1-15](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/exception/NoLoginException.java#L1-L15)
+- [SecurityConfig.java:34-134](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/config/SecurityConfig.java#L34-L134)
+- [NoLoginException.java:1-15](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/exception/NoLoginException.java#L1-L15)
 
 ## 依赖关系分析
 - Oauth2Config 依赖 Oauth2OidcProperties 与 OauthProtocolType，动态构建 ClientRegistration
@@ -287,16 +287,16 @@ SecCfg["SecurityConfig"] --> Cfg
 ```
 
 图表来源
-- [Oauth2Config.java:46-225](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/Oauth2Config.java#L46-L225)
-- [Oauth2OidcProperties.java:24-251](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/Oauth2OidcProperties.java#L24-L251)
-- [OauthProtocolType.java:7-10](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/OauthProtocolType.java#L7-L10)
-- [RestOperationBuilder.java:30-93](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/RestOperationBuilder.java#L30-L93)
-- [Oauth2AuthenticationSuccessResultConverter.java:16-44](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/result/Oauth2AuthenticationSuccessResultConverter.java#L16-L44)
-- [SecurityConfig.java:34-134](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/config/SecurityConfig.java#L34-L134)
+- [Oauth2Config.java:46-225](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/Oauth2Config.java#L46-L225)
+- [Oauth2OidcProperties.java:24-251](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/Oauth2OidcProperties.java#L24-L251)
+- [OauthProtocolType.java:7-10](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/OauthProtocolType.java#L7-L10)
+- [RestOperationBuilder.java:30-93](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/RestOperationBuilder.java#L30-L93)
+- [Oauth2AuthenticationSuccessResultConverter.java:16-44](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/result/Oauth2AuthenticationSuccessResultConverter.java#L16-L44)
+- [SecurityConfig.java:34-134](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/config/SecurityConfig.java#L34-L134)
 
 章节来源
-- [Oauth2Config.java:46-225](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/Oauth2Config.java#L46-L225)
-- [SecurityConfig.java:34-134](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/config/SecurityConfig.java#L34-L134)
+- [Oauth2Config.java:46-225](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/Oauth2Config.java#L46-L225)
+- [SecurityConfig.java:34-134](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/config/SecurityConfig.java#L34-L134)
 
 ## 性能与安全考量
 - 性能
@@ -308,8 +308,8 @@ SecCfg["SecurityConfig"] --> Cfg
   - OIDC 的 nonce 校验不可随意关闭，除非明确理解风险
 
 章节来源
-- [Oauth2OidcProperties.java:24-251](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/Oauth2OidcProperties.java#L24-L251)
-- [RestOperationBuilder.java:30-93](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/RestOperationBuilder.java#L30-L93)
+- [Oauth2OidcProperties.java:24-251](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/Oauth2OidcProperties.java#L24-L251)
+- [RestOperationBuilder.java:30-93](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/RestOperationBuilder.java#L30-L93)
 - [oidc接入踩坑记录.md:1-452](file://docs/过程文件/oidc接入踩坑记录.md#L1-L452)
 
 ## 故障排查指南
@@ -328,7 +328,7 @@ SecCfg["SecurityConfig"] --> Cfg
 
 章节来源
 - [oidc接入踩坑记录.md:95-217](file://docs/过程文件/oidc接入踩坑记录.md#L95-L217)
-- [Oauth2OidcProperties.java:24-251](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/Oauth2OidcProperties.java#L24-L251)
+- [Oauth2OidcProperties.java:24-251](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/Oauth2OidcProperties.java#L24-L251)
 
 ## 结论
 OAuth2 支持模块通过统一的属性模型与灵活的协议选择，实现了 OAuth2 与 OIDC 的一体化接入。RestOperationBuilder 提供了可控的 HTTP 客户端能力，Oauth2AuthenticationSuccessResultConverter 统一了认证成功后的响应格式。结合自动装配与安全配置，开发者可以快速完成多 IDP 的 OAuth2/OIDC 集成。
@@ -347,5 +347,5 @@ OAuth2 支持模块通过统一的属性模型与灵活的协议选择，实现�
 
 章节来源
 - [README.md:31-184](file://qy-idaas/README.md#L31-L184)
-- [Oauth2OidcProperties.java:24-251](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/Oauth2OidcProperties.java#L24-L251)
-- [Oauth2Config.java:126-205](file://qy-idaas/idaas-authentications/src/main/java/com/kewen/framework/idaas/oauth2/Oauth2Config.java#L126-L205)
+- [Oauth2OidcProperties.java:24-251](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/Oauth2OidcProperties.java#L24-L251)
+- [Oauth2Config.java:126-205](file://qy-idaas/idaas-authentications/src/main/java/com/cu/framework/idaas/oauth2/Oauth2Config.java#L126-L205)

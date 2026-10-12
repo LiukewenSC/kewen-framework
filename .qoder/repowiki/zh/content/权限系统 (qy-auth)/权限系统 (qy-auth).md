@@ -2,21 +2,21 @@
 
 <cite>
 **本文引用的文件**
-- [AuthUserContext.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthUserContext.java)
-- [CurrentUser.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/CurrentUser.java)
-- [BaseAuth.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/BaseAuth.java)
-- [IAuthObject.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/IAuthObject.java)
-- [AuthMenuHandler.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/menu/AuthMenuHandler.java)
-- [MenuAccessInterceptor.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/menu/MenuAccessInterceptor.java)
-- [DataRangeContext.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/DataRangeContext.java)
-- [AuthRange.java](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/AuthRange.java)
-- [AuthUserContextFilter.java](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/filter/AuthUserContextFilter.java)
-- [SecurityConfig.java](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/config/SecurityConfig.java)
-- [SecurityIgnore.java](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/annotation/SecurityIgnore.java)
-- [RabcAnnotationAuthHandler.java](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/RabcAnnotationAuthHandler.java)
-- [User.java](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/composite/model/User.java)
-- [Role.java](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/composite/model/Role.java)
-- [Dept.java](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/composite/model/Dept.java)
+- [AuthUserContext.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthUserContext.java)
+- [CurrentUser.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/CurrentUser.java)
+- [BaseAuth.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/BaseAuth.java)
+- [IAuthObject.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/IAuthObject.java)
+- [AuthMenuHandler.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/menu/AuthMenuHandler.java)
+- [MenuAccessInterceptor.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/menu/MenuAccessInterceptor.java)
+- [DataRangeContext.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/DataRangeContext.java)
+- [AuthRange.java](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/AuthRange.java)
+- [AuthUserContextFilter.java](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/filter/AuthUserContextFilter.java)
+- [SecurityConfig.java](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/config/SecurityConfig.java)
+- [SecurityIgnore.java](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/annotation/SecurityIgnore.java)
+- [RbacAnnotationAuthHandler.java](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/RbacAnnotationAuthHandler.java)
+- [User.java](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/composite/model/User.java)
+- [Role.java](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/composite/model/Role.java)
+- [Dept.java](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/composite/model/Dept.java)
 </cite>
 
 ## 目录
@@ -57,8 +57,8 @@ SEC --> CORE
 ```
 
 **章节来源**
-- [AuthUserContext.java:1-32](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthUserContext.java#L1-L32)
-- [SecurityConfig.java:1-134](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/config/SecurityConfig.java#L1-L134)
+- [AuthUserContext.java:1-32](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthUserContext.java#L1-L32)
+- [SecurityConfig.java:1-134](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/config/SecurityConfig.java#L1-L134)
 
 ## 核心组件
 - 权限上下文与用户信息
@@ -69,7 +69,7 @@ SEC --> CORE
 - 菜单权限与拦截
   - AuthMenuHandler：菜单访问权限判定接口
   - MenuAccessInterceptor：基于注解的菜单权限拦截器，对标注 @AuthMenu 的方法或类生效
-  - RabcAnnotationAuthHandler：基于数据库的菜单权限判定实现
+  - RbacAnnotationAuthHandler：基于数据库的菜单权限判定实现
 - 数据范围控制
   - DataRangeContext：数据范围上下文（ThreadLocal）
   - AuthRange：范围查询定义（业务域、操作、表/别名、主键列、权限集合、匹配方式）
@@ -78,17 +78,17 @@ SEC --> CORE
   - SecurityConfig：安全配置，注册过滤器、异常处理、放行URL容器
 
 **章节来源**
-- [AuthUserContext.java:12-31](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthUserContext.java#L12-L31)
-- [CurrentUser.java:9-14](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/CurrentUser.java#L9-L14)
-- [BaseAuth.java:12-60](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/BaseAuth.java#L12-L60)
-- [IAuthObject.java:14-31](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/IAuthObject.java#L14-L31)
-- [AuthMenuHandler.java:16-35](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/menu/AuthMenuHandler.java#L16-L35)
-- [MenuAccessInterceptor.java:23-71](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/menu/MenuAccessInterceptor.java#L23-L71)
-- [RabcAnnotationAuthHandler.java:17-26](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/RabcAnnotationAuthHandler.java#L17-L26)
-- [DataRangeContext.java:9-23](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/DataRangeContext.java#L9-L23)
-- [AuthRange.java:14-48](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/AuthRange.java#L14-L48)
-- [AuthUserContextFilter.java:31-84](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/filter/AuthUserContextFilter.java#L31-L84)
-- [SecurityConfig.java:34-134](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/config/SecurityConfig.java#L34-L134)
+- [AuthUserContext.java:12-31](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthUserContext.java#L12-L31)
+- [CurrentUser.java:9-14](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/CurrentUser.java#L9-L14)
+- [BaseAuth.java:12-60](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/BaseAuth.java#L12-L60)
+- [IAuthObject.java:14-31](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/IAuthObject.java#L14-L31)
+- [AuthMenuHandler.java:16-35](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/menu/AuthMenuHandler.java#L16-L35)
+- [MenuAccessInterceptor.java:23-71](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/menu/MenuAccessInterceptor.java#L23-L71)
+- [RbacAnnotationAuthHandler.java:17-26](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/RbacAnnotationAuthHandler.java#L17-L26)
+- [DataRangeContext.java:9-23](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/DataRangeContext.java#L9-L23)
+- [AuthRange.java:14-48](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/AuthRange.java#L14-L48)
+- [AuthUserContextFilter.java:31-84](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/filter/AuthUserContextFilter.java#L31-L84)
+- [SecurityConfig.java:34-134](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/config/SecurityConfig.java#L34-L134)
 
 ## 架构总览
 下图展示从请求进入至权限判定与上下文注入的整体流程，以及各模块间的交互关系。
@@ -100,7 +100,7 @@ participant Sec as "Spring Security<br/>SecurityConfig"
 participant F as "AuthUserContextFilter"
 participant Ctx as "AuthUserContext"
 participant Inter as "MenuAccessInterceptor"
-participant Handler as "RabcAnnotationAuthHandler"
+participant Handler as "RbacAnnotationAuthHandler"
 Client->>Sec : 发起HTTP请求
 Sec->>F : 在SessionManagementFilter后插入过滤器
 F->>Ctx : 将SecurityUser写入ThreadLocal上下文
@@ -113,11 +113,11 @@ Inter-->>Client : 通过或抛出权限异常
 ```
 
 **图表来源**
-- [SecurityConfig.java:107](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/config/SecurityConfig.java#L107)
-- [AuthUserContextFilter.java:49-74](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/filter/AuthUserContextFilter.java#L49-L74)
-- [AuthUserContext.java:18-29](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthUserContext.java#L18-L29)
-- [MenuAccessInterceptor.java:28-61](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/menu/MenuAccessInterceptor.java#L28-L61)
-- [RabcAnnotationAuthHandler.java:22-25](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/RabcAnnotationAuthHandler.java#L22-L25)
+- [SecurityConfig.java:107](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/config/SecurityConfig.java#L107)
+- [AuthUserContextFilter.java:49-74](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/filter/AuthUserContextFilter.java#L49-L74)
+- [AuthUserContext.java:18-29](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthUserContext.java#L18-L29)
+- [MenuAccessInterceptor.java:28-61](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/menu/MenuAccessInterceptor.java#L28-L61)
+- [RbacAnnotationAuthHandler.java:22-25](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/RbacAnnotationAuthHandler.java#L22-L25)
 
 ## 详细组件分析
 
@@ -156,21 +156,21 @@ IAuthObject --> BaseAuth : "聚合"
 ```
 
 **图表来源**
-- [AuthUserContext.java:16-31](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthUserContext.java#L16-L31)
-- [CurrentUser.java:9-14](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/CurrentUser.java#L9-L14)
-- [IAuthObject.java:14-31](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/IAuthObject.java#L14-L31)
-- [BaseAuth.java:12-60](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/BaseAuth.java#L12-L60)
+- [AuthUserContext.java:16-31](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthUserContext.java#L16-L31)
+- [CurrentUser.java:9-14](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/CurrentUser.java#L9-L14)
+- [IAuthObject.java:14-31](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/IAuthObject.java#L14-L31)
+- [BaseAuth.java:12-60](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/BaseAuth.java#L12-L60)
 
 **章节来源**
-- [AuthUserContext.java:12-31](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthUserContext.java#L12-L31)
-- [CurrentUser.java:4-14](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/CurrentUser.java#L4-L14)
-- [AuthUserContextFilter.java:49-74](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/filter/AuthUserContextFilter.java#L49-L74)
+- [AuthUserContext.java:12-31](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthUserContext.java#L12-L31)
+- [CurrentUser.java:4-14](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/CurrentUser.java#L4-L14)
+- [AuthUserContextFilter.java:49-74](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/filter/AuthUserContextFilter.java#L49-L74)
 
 ### 菜单权限拦截与注解校验
 - 注解与拦截器
   - MenuAccessInterceptor：仅对标注 @AuthMenu 的方法或类生效，读取请求路径并调用 AuthMenuHandler 判定
   - AuthMenuHandler：菜单权限判定接口，提供基于 IAuthObject 或权限集合的判定方法
-  - RabcAnnotationAuthHandler：基于数据库的菜单权限判定实现
+  - RbacAnnotationAuthHandler：基于数据库的菜单权限判定实现
 - 路径处理
   - 去除 contextPath 后与菜单配置比对，未标注注解则跳过校验
 
@@ -190,14 +190,14 @@ Allowed --> |否| ThrowErr["抛出权限异常"]
 ```
 
 **图表来源**
-- [MenuAccessInterceptor.java:28-61](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/menu/MenuAccessInterceptor.java#L28-L61)
-- [AuthMenuHandler.java:27-34](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/menu/AuthMenuHandler.java#L27-L34)
-- [RabcAnnotationAuthHandler.java:22-25](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/RabcAnnotationAuthHandler.java#L22-L25)
+- [MenuAccessInterceptor.java:28-61](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/menu/MenuAccessInterceptor.java#L28-L61)
+- [AuthMenuHandler.java:27-34](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/menu/AuthMenuHandler.java#L27-L34)
+- [RbacAnnotationAuthHandler.java:22-25](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/RbacAnnotationAuthHandler.java#L22-L25)
 
 **章节来源**
-- [MenuAccessInterceptor.java:17-71](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/menu/MenuAccessInterceptor.java#L17-L71)
-- [AuthMenuHandler.java:16-35](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/menu/AuthMenuHandler.java#L16-L35)
-- [RabcAnnotationAuthHandler.java:10-26](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/RabcAnnotationAuthHandler.java#L10-L26)
+- [MenuAccessInterceptor.java:17-71](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/menu/MenuAccessInterceptor.java#L17-L71)
+- [AuthMenuHandler.java:16-35](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/menu/AuthMenuHandler.java#L16-L35)
+- [RbacAnnotationAuthHandler.java:10-26](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/RbacAnnotationAuthHandler.java#L10-L26)
 
 ### 数据范围控制（AuthRange 与 DataRangeContext）
 - 设计要点
@@ -231,13 +231,13 @@ AuthRange --> BaseAuth : "包含"
 ```
 
 **图表来源**
-- [DataRangeContext.java:9-23](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/DataRangeContext.java#L9-L23)
-- [AuthRange.java:14-48](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/AuthRange.java#L14-L48)
-- [BaseAuth.java:12-60](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/BaseAuth.java#L12-L60)
+- [DataRangeContext.java:9-23](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/DataRangeContext.java#L9-L23)
+- [AuthRange.java:14-48](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/AuthRange.java#L14-L48)
+- [BaseAuth.java:12-60](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/BaseAuth.java#L12-L60)
 
 **章节来源**
-- [DataRangeContext.java:4-23](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/DataRangeContext.java#L4-L23)
-- [AuthRange.java:9-48](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/AuthRange.java#L9-L48)
+- [DataRangeContext.java:4-23](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/DataRangeContext.java#L4-L23)
+- [AuthRange.java:9-48](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/AuthRange.java#L9-L48)
 
 ### RBAC 实体与复合对象
 - User/Role/Dept：继承抽象基类，提供唯一标志位（USER/ROLE/DEPT），作为权限标识与范围边界
@@ -276,17 +276,17 @@ IAuthObject --> BaseAuth : "聚合"
 ```
 
 **图表来源**
-- [User.java:10-49](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/composite/model/User.java#L10-L49)
-- [Role.java:14-33](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/composite/model/Role.java#L14-L33)
-- [Dept.java:14-36](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/composite/model/Dept.java#L14-L36)
-- [IAuthObject.java:14-31](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/IAuthObject.java#L14-L31)
-- [BaseAuth.java:12-60](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/BaseAuth.java#L12-L60)
+- [User.java:10-49](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/composite/model/User.java#L10-L49)
+- [Role.java:14-33](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/composite/model/Role.java#L14-L33)
+- [Dept.java:14-36](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/composite/model/Dept.java#L14-L36)
+- [IAuthObject.java:14-31](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/IAuthObject.java#L14-L31)
+- [BaseAuth.java:12-60](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/BaseAuth.java#L12-L60)
 
 **章节来源**
-- [User.java:3-49](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/composite/model/User.java#L3-L49)
-- [Role.java:3-33](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/composite/model/Role.java#L3-L33)
-- [Dept.java:3-36](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/composite/model/Dept.java#L3-L36)
-- [IAuthObject.java:8-31](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/entity/IAuthObject.java#L8-L31)
+- [User.java:3-49](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/composite/model/User.java#L3-L49)
+- [Role.java:3-33](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/composite/model/Role.java#L3-L33)
+- [Dept.java:3-36](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/composite/model/Dept.java#L3-L36)
+- [IAuthObject.java:8-31](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/entity/IAuthObject.java#L8-L31)
 
 ### Spring Security 集成与会话管理
 - 安全配置
@@ -313,12 +313,12 @@ end
 ```
 
 **图表来源**
-- [SecurityConfig.java:84-115](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/config/SecurityConfig.java#L84-L115)
-- [AuthUserContextFilter.java:49-74](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/filter/AuthUserContextFilter.java#L49-L74)
+- [SecurityConfig.java:84-115](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/config/SecurityConfig.java#L84-L115)
+- [AuthUserContextFilter.java:49-74](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/filter/AuthUserContextFilter.java#L49-L74)
 
 **章节来源**
-- [SecurityConfig.java:34-134](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/config/SecurityConfig.java#L34-L134)
-- [AuthUserContextFilter.java:23-84](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/filter/AuthUserContextFilter.java#L23-L84)
+- [SecurityConfig.java:34-134](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/config/SecurityConfig.java#L34-L134)
+- [AuthUserContextFilter.java:23-84](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/filter/AuthUserContextFilter.java#L23-L84)
 
 ## 依赖分析
 - 模块内聚与耦合
@@ -327,7 +327,7 @@ end
   - Spring Starter 依赖 auth-core 的上下文与拦截器，负责安全配置与过滤器装配
 - 关键依赖关系
   - MenuAccessInterceptor 依赖 AuthMenuHandler 与 AuthUserContext
-  - RabcAnnotationAuthHandler 依赖 SysAuthMenuComposite（数据库菜单判定）
+  - RbacAnnotationAuthHandler 依赖 SysAuthMenuComposite（数据库菜单判定）
   - AuthUserContextFilter 依赖 SecurityUser 与 AuthenticationSuccessResultConverter
 
 ```mermaid
@@ -338,14 +338,14 @@ SEC --> RBAC
 ```
 
 **图表来源**
-- [MenuAccessInterceptor.java:3-11](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/menu/MenuAccessInterceptor.java#L3-L11)
-- [RabcAnnotationAuthHandler.java:3-6](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/RabcAnnotationAuthHandler.java#L3-L6)
-- [AuthUserContextFilter.java:3-8](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/filter/AuthUserContextFilter.java#L3-L8)
+- [MenuAccessInterceptor.java:3-11](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/menu/MenuAccessInterceptor.java#L3-L11)
+- [RbacAnnotationAuthHandler.java:3-6](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/RbacAnnotationAuthHandler.java#L3-L6)
+- [AuthUserContextFilter.java:3-8](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/filter/AuthUserContextFilter.java#L3-L8)
 
 **章节来源**
-- [MenuAccessInterceptor.java:1-16](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/menu/MenuAccessInterceptor.java#L1-L16)
-- [RabcAnnotationAuthHandler.java:1-26](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/RabcAnnotationAuthHandler.java#L1-L26)
-- [AuthUserContextFilter.java:1-21](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/filter/AuthUserContextFilter.java#L1-L21)
+- [MenuAccessInterceptor.java:1-16](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/menu/MenuAccessInterceptor.java#L1-L16)
+- [RbacAnnotationAuthHandler.java:1-26](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/RbacAnnotationAuthHandler.java#L1-L26)
+- [AuthUserContextFilter.java:1-21](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/filter/AuthUserContextFilter.java#L1-L21)
 
 ## 性能考虑
 - 线程局部存储
@@ -366,15 +366,15 @@ SEC --> RBAC
   - 排查：确认 currentUserUrl 与请求路径一致；检查 resultResolver 输出序列化
 - 菜单权限判定失败
   - 现象：标注 @AuthMenu 的端点提示无访问权限
-  - 排查：确认菜单路径去除 contextPath 后与配置一致；核对 RabcAnnotationAuthHandler 的判定逻辑与菜单绑定
+  - 排查：确认菜单路径去除 contextPath 后与配置一致；核对 RbacAnnotationAuthHandler 的判定逻辑与菜单绑定
 - 数据范围未生效
   - 现象：查询结果未按预期过滤
   - 排查：确认 DataRangeContext 已在查询前设置；核对 AuthRange 的表/列/匹配方式；检查 SQL 注入器是否正确注入
 
 **章节来源**
-- [AuthUserContextFilter.java:66-74](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/filter/AuthUserContextFilter.java#L66-L74)
-- [MenuAccessInterceptor.java:52-60](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/menu/MenuAccessInterceptor.java#L52-L60)
-- [DataRangeContext.java:13-21](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/DataRangeContext.java#L13-L21)
+- [AuthUserContextFilter.java:66-74](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/filter/AuthUserContextFilter.java#L66-L74)
+- [MenuAccessInterceptor.java:52-60](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/menu/MenuAccessInterceptor.java#L52-L60)
+- [DataRangeContext.java:13-21](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/DataRangeContext.java#L13-L21)
 
 ## 结论
 qy-auth 通过清晰的模块划分与接口抽象，实现了 RBAC 权限模型的可扩展落地。AuthUserContext 的 ThreadLocal 设计确保了用户信息在请求生命周期内的稳定传递；菜单权限拦截与注解机制提供了细粒度的访问控制；数据范围控制结合 AuthRange 与拦截器实现业务域隔离。Spring Security 集成通过过滤器链在会话后置入上下文，简化了认证后的权限处理流程。整体架构具备良好的可维护性与扩展性。
@@ -386,15 +386,15 @@ qy-auth 通过清晰的模块划分与接口抽象，实现了 RBAC 权限模型
 ### 权限注解与拦截
 - @AuthMenu：标注于 Controller 方法或类上，启用菜单权限校验
 - MenuAccessInterceptor：自动识别注解并调用 AuthMenuHandler 判定
-- RabcAnnotationAuthHandler：基于数据库的菜单权限判定实现
+- RbacAnnotationAuthHandler：基于数据库的菜单权限判定实现
 
 使用建议
 - 仅对需要菜单控制的端点添加 @AuthMenu
 - 菜单路径应与实际请求路径保持一致（已自动去除 contextPath）
 
 **章节来源**
-- [MenuAccessInterceptor.java:17-44](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/menu/MenuAccessInterceptor.java#L17-L44)
-- [RabcAnnotationAuthHandler.java:17-26](file://qy-auth/auth-rbac/src/main/java/com/kewen/framework/auth/rabc/RabcAnnotationAuthHandler.java#L17-L26)
+- [MenuAccessInterceptor.java:17-44](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/menu/MenuAccessInterceptor.java#L17-L44)
+- [RbacAnnotationAuthHandler.java:17-26](file://qy-auth/auth-rbac/src/main/java/com/cu/framework/auth/rbac/RbacAnnotationAuthHandler.java#L17-L26)
 
 ### 权限上下文与用户信息
 - AuthUserContext：读取当前用户权限集合与设置上下文
@@ -405,8 +405,8 @@ qy-auth 通过清晰的模块划分与接口抽象，实现了 RBAC 权限模型
 - “查询当前用户”端点应与 securityProperties 中的 currentUserUrl 一致
 
 **章节来源**
-- [AuthUserContext.java:18-29](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/AuthUserContext.java#L18-L29)
-- [AuthUserContextFilter.java:49-74](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/filter/AuthUserContextFilter.java#L49-L74)
+- [AuthUserContext.java:18-29](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/AuthUserContext.java#L18-L29)
+- [AuthUserContextFilter.java:49-74](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/filter/AuthUserContextFilter.java#L49-L74)
 
 ### 数据范围控制
 - DataRangeContext：设置/获取当前请求的数据范围上下文
@@ -417,8 +417,8 @@ qy-auth 通过清晰的模块划分与接口抽象，实现了 RBAC 权限模型
 - 优先使用 IN 匹配，必要时使用 EXISTS 并确保索引
 
 **章节来源**
-- [DataRangeContext.java:13-21](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/DataRangeContext.java#L13-L21)
-- [AuthRange.java:16-48](file://qy-auth/auth-core/src/main/java/com/kewen/framework/auth/core/data/range/AuthRange.java#L16-L48)
+- [DataRangeContext.java:13-21](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/DataRangeContext.java#L13-L21)
+- [AuthRange.java:16-48](file://qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/AuthRange.java#L16-L48)
 
 ### Spring Security 集成要点
 - 放行 URL：通过 PermitUrlContainer 注入
@@ -427,8 +427,8 @@ qy-auth 通过清晰的模块划分与接口抽象，实现了 RBAC 权限模型
 - “查询当前用户”：由 AuthUserContextFilter 直接返回
 
 **章节来源**
-- [SecurityConfig.java:84-115](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/config/SecurityConfig.java#L84-L115)
-- [AuthUserContextFilter.java:23-84](file://qy-auth/auth-spring-boot-starter/src/main/java/com/kewen/framework/auth/security/filter/AuthUserContextFilter.java#L23-L84)
+- [SecurityConfig.java:84-115](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/config/SecurityConfig.java#L84-L115)
+- [AuthUserContextFilter.java:23-84](file://qy-auth/auth-spring-boot-starter/src/main/java/com/cu/framework/auth/security/filter/AuthUserContextFilter.java#L23-L84)
 
 ### 最佳实践
 - 权限模型
