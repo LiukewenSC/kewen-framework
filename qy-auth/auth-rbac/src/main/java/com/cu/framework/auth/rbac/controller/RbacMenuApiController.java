@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * API 菜单管理接口（/menu/api），提供菜单 API 树查询与菜单更新，类上 @AuthMenu 名称为"菜单路径相关接口"
@@ -50,11 +51,22 @@ public class RbacMenuApiController {
      */
     @PostMapping("/update")
     public RbacResult<List<MenuApiResp>> updateMenu(@RequestBody MenuApiSaveReq req){
-        if (req.getAuthType()== MenuTypeConstant.AUTH_TYPE.OWNER && (req.getAuthObject()==null || req.getAuthObject().isEmpty())){
+        if (isOwnerWithoutAuthObject(req)){
             throw new RuntimeException("这样谁都没有权限查看了");
         }
         Collection<BaseAuth> auths = AuthUserContext.getAuths();
         sysAuthMenuComposite.updateMenu(req);
         return RbacResult.success(null);
+    }
+
+    /**
+     * OWNER（基于自身权限）类型的菜单若不给权限集合体，等于谁都没有查看权限。
+     * <p>authType 与 OWNER 的比较必须按值而非按引用，Integer 的 == 只在 -128~127 缓存区间内成立。
+     * @param req 菜单保存请求
+     * @return 需要拒绝该请求时为 true
+     */
+    static boolean isOwnerWithoutAuthObject(MenuApiSaveReq req) {
+        return Objects.equals(req.getAuthType(), MenuTypeConstant.AUTH_TYPE.OWNER)
+                && (req.getAuthObject() == null || req.getAuthObject().isEmpty());
     }
 }
