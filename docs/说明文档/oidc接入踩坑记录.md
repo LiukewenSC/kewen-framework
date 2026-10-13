@@ -38,7 +38,7 @@ Spring Security 中 **OIDC 通过 `oauth2Login()` 统一支持**，无需额外�
 | `redirectUriTemplate` | 通用 | 默认值可用 | 回调地址模板 |
 | `scopes` | 通用 | OIDC 自动补 openid | 权限范围 |
 | `clientName` | 通用 | 可选 | 显示名称 |
-| `ignoreSsl` | 通用 | 默认 false | 仅测试环境用 |
+| `ignoreSsl` | 通用 | 默认 false | 仅测试环境用；按客户端独立生效，只豁免 userinfo 端点，不影响 OIDC Discovery |
 
 | `oidcDiscoveryUri` | **OIDC 专用** | 与手动配置互斥 | IDP 基础地址，自动发现所有端点 |
 | `configurationMetadata` | **OIDC 专用** | 系统自动填充 | Discovery 文档中的其他元数据 |
@@ -401,6 +401,11 @@ cu:
 
 3. **检查 IDP Discovery 文档中 `issuer` 字段是否与配置一致**
 4. **检查是否需要 SSL 跳过**（测试环境 `ignoreSsl: true`）
+   注意该开关**只作用于 userinfo 端点**。如果失败发生在 Discovery 阶段（`ClientRegistrations.fromIssuerLocation`
+   拉取 `.well-known/openid-configuration` 时报证书错误），配 `ignoreSsl` 不会有任何效果——
+   Discovery 走 Spring 自带的 `RestTemplate`，始终执行标准证书校验，这是刻意保留的。
+   此时应把 IDP 的证书导入 JVM 信任库，而不是放宽校验。
+   该开关的历史与取舍见 [已废弃实现与决策记录](./已废弃实现与决策记录.md) 第二节。
 5. **验证 JWKS 端点是否可访问**（特别是非标准 IdP 可能需要额外参数）
 6. **检查 ID Token 是否包含 `nonce` 声明**
 
