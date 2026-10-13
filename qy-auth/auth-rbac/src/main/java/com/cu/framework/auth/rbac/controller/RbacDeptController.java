@@ -71,7 +71,7 @@ public class RbacDeptController {
     @AuthMenu(name = "部门列表")
     public RbacResult<Boolean> update(@RequestBody SysDept sysDept){
         if (sysDept.getId()==null){
-            throw new RuntimeException("用户ID为空");
+            throw new RuntimeException("部门ID为空");
         }
         boolean b = sysDeptMpService.updateById(sysDept);
         return RbacResult.success(b);
