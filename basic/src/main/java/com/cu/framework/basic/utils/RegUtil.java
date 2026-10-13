@@ -16,8 +16,8 @@ public class RegUtil {
 
     /** 电子邮箱地址正则 */
     public static final String EMAIL = "^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$";
-    /** 手机号正则，1 开头、第二位为 3/4/5/7/8，共 11 位数字 */
-    public static final String PHONE = "^1[34578]\\d{9}$";
+    /** 手机号正则，11 位、1 开头、第二位 3-9，覆盖当前及后续在用的全部号段 */
+    public static final String PHONE = "^1[3-9]\\d{9}$";
     /** 18 位身份证号正则，出生年份限 18xx/19xx/20xx，末位可为 X/x */
     public static final String ID_CARD = "^[1-9]\\d{5}(18|19|20)\\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\\d{3}[0-9Xx]$";
     /** IPv4 地址正则，每段 0-255 */
@@ -26,11 +26,12 @@ public class RegUtil {
     public static final String URL = "^http://([\\w-]+\\.)+[\\w-]+(/[\\w-./?%&=]*)?$";
     /** QQ 号正则，不以 0 开头的 5-11 位数字 */
     public static final String QQ = "^[1-9]\\d{4,10}$";
-    /** 手机号正则，按号段限制：13x、145/147、15x（不含 154）、18x，共 11 位数字 */
-    public static final String MOBILE = "^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\\d{8}$";
+    /** 手机号正则，与 PHONE 同义；保留该名称只为兼容历史叫法，不再单独维护一份表达式 */
+    public static final String MOBILE = PHONE;
     /** 邮政编码正则，不以 0 开头的 6 位数字 */
     public static final String ZIP_CODE = "^[1-9]\\d{5}$";
-    public static final String CHINESE = "^[\u4e00-\u9fa5],{0,}$";
+    /** 仅由中文汉字（基本区）组成的正则；原实现把量词写成了 `,{0,}`，会额外放行结尾的英文逗号 */
+    public static final String CHINESE = "^[\\u4e00-\\u9fa5]+$";
     /** 仅由英文字母组成的正则 */
     public static final String ENGLISH = "^[A-Za-z]+$";
     /** 仅由数字组成的正则 */
@@ -39,16 +40,16 @@ public class RegUtil {
     public static final String INTEGER = "^[-\\+]?[\\d]*$";
     /** 可带正负号、可含小数点的数值正则 */
     public static final String FLOAT = "^[-\\+]?[.\\d]*$";
-    /** 可带正负号、可含小数点的数值正则，与 FLOAT 相同 */
-    public static final String DOUBLE = "^[-\\+]?[.\\d]*$";
+    /** 可带正负号、可含小数点的数值正则；与 FLOAT 同义，保留该名称只为兼容历史叫法 */
+    public static final String DOUBLE = FLOAT;
+    /**
+     * 允许汉字、CJK 兼容表意文字、英文字母、数字与下划线，不允许任何标点与空白字符。
+     * <p>名称中的 SPECIAL_CHAR 并不表示"允许特殊字符"，实际匹配范围以上述为准。
+     * <p>此集合原有 8 个按 NO_EN / NO_CN / NO_NUM 等名字暗示逐级排除的常量，
+     * 但它们的正则逐字节相同、从未做过任何排除，仓内引用数为 0，已全部删除；
+     * 需要真正的字符集排除规则时应另写表达式，而不是复用这些名字。
+     */
     public static final String SPECIAL_CHAR = "^[\\u4E00-\\u9FA5\\uF900-\\uFA2D\\w]+$";
-    public static final String SPECIAL_CHAR_NO_EN = "^[\\u4E00-\\u9FA5\\uF900-\\uFA2D\\w]+$";
-    public static final String SPECIAL_CHAR_NO_CN = "^[\\u4E00-\\u9FA5\\uF900-\\uFA2D\\w]+$";
-    public static final String SPECIAL_CHAR_NO_EN_CN = "^[\\u4E00-\\u9FA5\\uF900-\\uFA2D\\w]+$";
-    public static final String SPECIAL_CHAR_NO_EN_CN_NO_NUM = "^[\\u4E00-\\u9FA5\\uF900-\\uFA2D\\w]+$";
-    public static final String SPECIAL_CHAR_NO_EN_CN_NO_NUM_NO_SPECIAL = "^[\\u4E00-\\u9FA5\\uF900-\\uFA2D\\w]+$";
-    public static final String SPECIAL_CHAR_NO_EN_CN_NO_NUM_NO_SPECIAL_NO_SPACE = "^[\\u4E00-\\u9FA5\\uF900-\\uFA2D\\w]+$";
-    public static final String SPECIAL_CHAR_NO_EN_CN_NO_NUM_NO_SPECIAL_NO_SPACE_NO_DASH = "^[\\u4E00-\\u9FA5\\uF900-\\uFA2D\\w]+$";
 
     /**
      * MARKDOWN 图片匹配表达式
