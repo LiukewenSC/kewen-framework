@@ -16,7 +16,7 @@ public class TraceContext {
     public static void set(String traceId){
         MDC.put(LoggerConstant.TRACE_ID_KEY,traceId);
     }
-    public static void remove(String traceId){
-        MDC.remove(traceId);
+    public static void remove(){
+        MDC.remove(LoggerConstant.TRACE_ID_KEY);
     }
 }

@@ -42,7 +42,7 @@ public class TraceRequestFilter implements EarlyRequestFilter {
 
     /**
      * 通过流水号处理器获取本次请求的流水号并写入 TraceContext（MDC），
-     * 放行后续过滤器链，请求处理结束后在 finally 中调用 TraceContext.remove(traceId)
+     * 放行后续过滤器链，请求处理结束后在 finally 中调用 TraceContext.remove() 清除流水号
      */
     @Override
     public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -54,7 +54,7 @@ public class TraceRequestFilter implements EarlyRequestFilter {
         try {
             filterChain.doFilter(request,response);
         } finally {
-            TraceContext.remove(traceId);
+            TraceContext.remove();
         }
     }
 }
