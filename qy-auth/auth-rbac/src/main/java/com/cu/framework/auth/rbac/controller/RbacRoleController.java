@@ -65,16 +65,16 @@ public class RbacRoleController {
     }
     /**
      * 按 ID 修改角色（POST /rbac/role/update，菜单权限"修改角色"），请求体未携带 ID 时抛出异常
-     * @param sysUser 待更新的角色，ID 必填
+     * @param sysRole 待更新的角色，ID 必填
      * @return 是否修改成功
      */
     @PostMapping("/update")
     @AuthMenu(name = "修改角色")
-    public RbacResult<Boolean> update(@RequestBody SysRole sysUser){
-        if (sysUser.getId()==null){
-            throw new RuntimeException("用户ID为空");
+    public RbacResult<Boolean> update(@RequestBody SysRole sysRole){
+        if (sysRole.getId()==null){
+            throw new RuntimeException("角色ID为空");
         }
-        boolean b = sysRoleMpService.updateById(sysUser);
+        boolean b = sysRoleMpService.updateById(sysRole);
         return RbacResult.success(b);
     }
     /**
