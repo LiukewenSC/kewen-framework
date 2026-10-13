@@ -32,21 +32,51 @@ public class StorageAutoConfiguration {
 
     /**
      * 配置存储模板
-     * @return
+     * @return 七牛云存储模板
      */
     @Bean
     StorageTemplate storageTemplate(){
         return new QiNiuStorageTemplate(
                 storageProperties.getAccessKey(),
                 storageProperties.getSecretKey(),
-                //华南机房
-                Region.region2(),
+                resolveRegion(storageProperties.getRegion()),
                 storageProperties.getBucket(),
                 storageProperties.getRootPath(),
                 storageProperties.getIsPublic(),
                 storageProperties.getDownloadDomain(),
-                storageProperties.getUploadCallbackUrl()
+                storageProperties.getUploadCallbackUrl(),
+                storageProperties.getPersistentNotifyUrl(),
+                Boolean.TRUE.equals(storageProperties.getUseHttpsDownload())
         );
+    }
+
+    /**
+     * 把配置中的区域标识解析为七牛 Region 实例
+     * @param region cu.storage.region 配置值，接受 region0/region1/region2/region3/region4/auto
+     *               及对应拼音别名 huadong/huabei/huanan/beimei/xinjiapo
+     * @return 对应的七牛 Region
+     * @throws IllegalArgumentException 区域标识无法识别时抛出，避免静默落到错误的机房
+     */
+    private static Region resolveRegion(String region) {
+        String key = region == null ? "" : region.trim().toLowerCase();
+        switch (key) {
+            case "region0": case "huadong":
+                return Region.region0();
+            case "region1": case "huabei":
+                return Region.region1();
+            case "region2": case "huanan":
+                return Region.region2();
+            case "region3": case "beimei":
+                return Region.beimei();
+            case "region4": case "xinjiapo":
+                return Region.xinjiapo();
+            case "auto": case "autoregion":
+                return Region.autoRegion();
+            default:
+                throw new IllegalArgumentException("无法识别的存储区域配置 cu.storage.region=" + region
+                        + "，可选值：region0/huadong、region1/huabei、region2/huanan、"
+                        + "region3/beimei、region4/xinjiapo、auto");
+        }
     }
 
     @Bean
