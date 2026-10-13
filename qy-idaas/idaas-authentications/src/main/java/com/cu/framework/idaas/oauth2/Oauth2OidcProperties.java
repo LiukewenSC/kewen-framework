@@ -220,8 +220,11 @@ public class Oauth2OidcProperties {
         /**
          * 是否忽略 SSL 证书校验
          * <p><b>协议归属：</b> OAuth2通用 + OIDC通用</p>
-         * <p>设置为 {@code true} 时会跳过对 IDP 的 SSL 证书验证（<b>仅用于测试/开发环境</b>）。</p>
-         * <p><b>⚠️ 生产环境务必保持true {@code true}</b></p>
+         * <p>设置为 {@code true} 时会跳过对 IDP 的 SSL 证书与主机名校验（<b>仅用于测试/开发环境</b>）。</p>
+         * <p><b>⚠️ 生产环境务必保持默认值 {@code false}</b>，即执行证书校验。</p>
+         * <p><b>作用范围：</b>只影响 userinfo 端点。OIDC Discovery 与 JWK Set 拉取走 Spring 自带的
+         * HTTP 客户端，始终执行标准证书校验，配 {@code true} 也不会放宽——若失败发生在 Discovery 阶段，
+         * 应把 IDP 证书导入 JVM 信任库。</p>
          */
         private boolean ignoreSsl = false;
     }
