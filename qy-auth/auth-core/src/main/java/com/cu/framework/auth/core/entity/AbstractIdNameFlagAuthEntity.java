@@ -5,7 +5,12 @@ import lombok.Data;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.core.GenericTypeResolver;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 
 /**
  * 抽象权限对象，提供基础的数据，用于转换成BaseAuth权限对象
@@ -20,6 +25,25 @@ import java.util.Objects;
 public abstract class AbstractIdNameFlagAuthEntity<ID> implements IFlagAuthEntity<ID> {
 
     private static final long serialVersionUID = 5347275476740629152L;
+
+    /**
+     * ID 类型转换器注册表，支持扩展新类型只需 put 即可
+     */
+    private static final Map<Class<?>, Function<String, ?>> ID_CONVERTERS;
+
+    static {
+        Map<Class<?>, Function<String, ?>> map = new HashMap<>();
+        map.put(Integer.class, Integer::valueOf);
+        map.put(Long.class, Long::valueOf);
+        map.put(String.class, Function.identity());
+        ID_CONVERTERS = Collections.unmodifiableMap(map);
+    }
+
+    /**
+     * 缓存每个具体子类解析出的 ID 转换器，避免重复反射
+     */
+    private static final ConcurrentHashMap<Class<?>, Function<String, ?>> CONVERTER_MAP = new ConcurrentHashMap<>();
+
     /**
      * ID
      */
@@ -37,19 +61,19 @@ public abstract class AbstractIdNameFlagAuthEntity<ID> implements IFlagAuthEntit
 
     @Override
     public void deSerialize(int pos, String idStr, String descStr) {
-        // 基类必须只有一个泛型参数，否则 resolveTypeArgument 抛 IllegalArgumentException
-        Class<?> actualT = GenericTypeResolver.resolveTypeArgument(this.getClass(), AbstractIdNameFlagAuthEntity.class);
-        //这里也还是硬伤啊
-        if (actualT== Integer.class){
-            setId((ID)Integer.valueOf(idStr));
-        } else if (actualT == Long.class){
-            setId((ID)Long.valueOf(idStr));
-        } else if (actualT == String.class){
-            setId((ID) idStr);
-        } else {
-            throw new AuthEntityException("ID的 格式 仅支持基本数据类型 int long String");
-        }
+        setId(getIdConverter().andThen(id -> (ID) id).apply(idStr));
         setName(descStr);
+    }
+
+    private Function<String, ?> getIdConverter() {
+        return CONVERTER_MAP.computeIfAbsent(this.getClass(), clz -> {
+            Class<?> actualT = GenericTypeResolver.resolveTypeArgument(clz, AbstractIdNameFlagAuthEntity.class);
+            Function<String, ?> converter = ID_CONVERTERS.get(actualT);
+            if (converter == null) {
+                throw new AuthEntityException("ID的格式仅支持: " + ID_CONVERTERS.keySet());
+            }
+            return converter;
+        });
     }
 
     @Override
