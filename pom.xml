@@ -21,6 +21,7 @@
         <module>basic</module>
         <module>basic-support</module>
         <module>boot</module>
+        <module>login-spring-boot-starter</module>
         <module>sample</module>
         <module>other</module>
         <module>qy-auth</module>

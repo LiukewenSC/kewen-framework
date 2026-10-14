@@ -21,10 +21,10 @@
 
     <modules>
         <module>auth-core</module>
-        <module>auth-spring-boot-starter</module>
         <module>auth-core-spring-boot-starter</module>
         <module>auth-rbac</module>
         <module>auth-rbac-spring-boot-starter</module>
+        <module>auth-rbac-security-spring-boot-starter</module>
     </modules>
 
 </project>
