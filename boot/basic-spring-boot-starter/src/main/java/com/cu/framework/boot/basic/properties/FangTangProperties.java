@@ -11,6 +11,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @ConfigurationProperties("cu.message.fang-tang")
 public class FangTangProperties {
+
+    private boolean enabled;
     /**
      * 秘钥
      */
@@ -20,6 +22,14 @@ public class FangTangProperties {
      */
     private String domain ="https://sctapi.ftqq.com";
 
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
     public String getKey() {
         return key;

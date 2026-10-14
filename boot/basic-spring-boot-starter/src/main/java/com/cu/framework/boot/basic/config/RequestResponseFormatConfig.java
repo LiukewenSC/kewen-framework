@@ -5,7 +5,7 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import com.cu.framework.basic.exception.ExceptionHandlerAdvice;
+import com.cu.framework.basic.exception.GlobalExceptionHandlerAdvice;
 import com.cu.framework.basic.logger.trace.TraceResponseBodyAdvice;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
@@ -34,8 +34,8 @@ public class RequestResponseFormatConfig {
      * @return
      */
     @Bean
-    ExceptionHandlerAdvice exceptionHandlerAdvance(){
-        return new ExceptionHandlerAdvice();
+    GlobalExceptionHandlerAdvice exceptionHandlerAdvance(){
+        return new GlobalExceptionHandlerAdvice();
     }
     /**
      * 链路追踪响应体增强，把 TraceContext 中的流水号信息写入返回的 Result

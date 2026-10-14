@@ -1,12 +1,10 @@
-package com.cu.framework.basic.support.log;
+package com.cu.framework.basic.support.message;
 
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.cu.framework.basic.logger.request.RequestLoggerEvent;
 import com.cu.framework.basic.logger.request.RequestLogger;
-import com.cu.framework.basic.support.message.FangTangMessageClient;
-import com.cu.framework.basic.support.message.FangTangMessageDTO;
 import com.cu.framework.basic.support.utils.MarkdownUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
