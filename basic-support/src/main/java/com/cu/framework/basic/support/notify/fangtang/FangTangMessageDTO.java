@@ -1,4 +1,4 @@
-package com.cu.framework.basic.support.message;
+package com.cu.framework.basic.support.notify.fangtang;
 
 
 import lombok.Getter;

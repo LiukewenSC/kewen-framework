@@ -9,7 +9,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @author kewen
  * @since 2024-08-30
  */
-@ConfigurationProperties("cu.message.fang-tang")
+@ConfigurationProperties("cu.notify.fang-tang")
 public class FangTangProperties {
 
     private boolean enabled;

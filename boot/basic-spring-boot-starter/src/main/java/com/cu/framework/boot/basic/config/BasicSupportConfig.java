@@ -1,11 +1,12 @@
 package com.cu.framework.boot.basic.config;
 
 
-import com.cu.framework.basic.support.message.FangTangMessageClient;
-import com.cu.framework.basic.support.message.FangTangRequestMessageListener;
+import com.cu.framework.basic.support.notify.fangtang.FangTangMessageClient;
+import com.cu.framework.basic.support.log.FangTangRequestMessageListener;
 import com.cu.framework.basic.support.log.DatabasePersistentListener;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowire;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -34,7 +35,8 @@ public class BasicSupportConfig {
      * @return
      */
     @Bean
-    @ConditionalOnProperty(name = "cu.request.message.fang-tang", havingValue = "true")
+    @ConditionalOnProperty(name = {"cu.request.message.fang-tang", "cu.notify.fang-tang.enabled"}, havingValue = "true")
+    @ConditionalOnBean(FangTangMessageClient.class)
     FangTangRequestMessageListener fangTangRequestMessageListener(FangTangMessageClient fangTangMessageClient) {
         FangTangRequestMessageListener listener = new FangTangRequestMessageListener();
         listener.setFangTangMessageClient(fangTangMessageClient);

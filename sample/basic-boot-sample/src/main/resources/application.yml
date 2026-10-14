@@ -1,8 +1,65 @@
 server:
   port: 8080
+
 spring:
   application:
     name: sample
+  # 默认使用 H2 内存库，无需本地 MySQL 即可启动 demo；切回 MySQL 用 --spring.profiles.active=mysql
+  profiles:
+    active: h2
+  # 建表脚本只有 docs/sql 一份，由 pom 的 resources 挂到 classpath:sql/ 下
+  # encoding 必须显式指定，脚本里有中文注释，否则跟随平台默认编码
+  sql:
+    init:
+      mode: always
+      encoding: UTF-8
+      schema-locations: classpath:sql/basic-support.sql
+  # H2 Web 控制台：http://localhost:8080/h2-console （JDBC URL 填下方 datasource.url）
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+cu:
+  notify:
+    fang-tang:
+      enabled: true
+      key: your_fangtang_key
+      domain: https://sctapi.ftqq.com
+  request:
+    message:
+      fang-tang: true
+    persistent:
+      database: true
+
+---
+# H2 内存数据源（MySQL 兼容模式）
+spring:
+  config:
+    activate:
+      on-profile: h2
+  datasource:
+    url: jdbc:h2:mem:sample;MODE=MySQL;DATABASE_TO_LOWER=TRUE;CASE_INSENSITIVE_IDENTIFIERS=TRUE;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+    hikari:
+      auto-commit: true
+      connection-test-query: select 1
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      maximum-pool-size: 5
+      minimum-idle: 2
+      validation-timeout: 5000
+      pool-name: HikariCP-H2
+
+---
+# 本地 MySQL 数据源（保留原有 p6spy 驱动）
+spring:
+  config:
+    activate:
+      on-profile: mysql
   datasource:
     url: jdbc:mysql://localhost:3306/your_database
     username: your_username
@@ -17,14 +74,4 @@ spring:
       maximum-pool-size: 5
       minimum-idle: 2
       validation-timeout: 5000
-      pool-name:  HikariCP-Pool-1
-cu:
-  message:
-    fang-tang:
-      key: your_fangtang_key
-      domain: https://sctapi.ftqq.com
-  request:
-    message:
-      fang-tang: true
-    persistent:
-      database: true
+      pool-name: HikariCP-Pool-1

@@ -1,6 +1,8 @@
-package com.cu.framework.basic.support.message;
+package com.cu.framework.basic.support.log;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cu.framework.basic.support.notify.fangtang.FangTangMessageClient;
+import com.cu.framework.basic.support.notify.fangtang.FangTangMessageDTO;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.cu.framework.basic.logger.request.RequestLoggerEvent;
