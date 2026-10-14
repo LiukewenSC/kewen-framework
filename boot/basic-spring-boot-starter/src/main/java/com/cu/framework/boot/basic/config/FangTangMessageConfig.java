@@ -1,7 +1,7 @@
 package com.cu.framework.boot.basic.config;
 
 
-import com.cu.framework.basic.support.message.FangTangMessageClient;
+import com.cu.framework.basic.support.notify.fangtang.FangTangMessageClient;
 import com.cu.framework.boot.basic.properties.FangTangProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -24,7 +24,7 @@ public class FangTangMessageConfig {
      * @return
      */
     @Bean
-    @ConditionalOnProperty(prefix = "cu.message.fang-tang", name = "enabled", havingValue = "true")
+    @ConditionalOnProperty(prefix = "cu.notify.fang-tang", name = "enabled", havingValue = "true")
     FangTangMessageClient fangTangMessageClient(FangTangProperties fangTangProperties){
 
         if (!StringUtils.hasText(fangTangProperties.getKey())){

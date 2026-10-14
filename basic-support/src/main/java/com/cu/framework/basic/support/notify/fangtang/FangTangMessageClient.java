@@ -1,12 +1,10 @@
-package com.cu.framework.basic.support.message;
+package com.cu.framework.basic.support.notify.fangtang;
 
 
 import cn.hutool.core.map.MapBuilder;
 import cn.hutool.http.HttpUtil;
-import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.util.HashMap;
 import java.util.Map;
