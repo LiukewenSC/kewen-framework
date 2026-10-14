@@ -68,6 +68,11 @@
                 <artifactId>basic</artifactId>
                 <version>${framework-version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.cu.framework</groupId>
+                <artifactId>login-spring-boot-starter</artifactId>
+                <version>${framework-version}</version>
+            </dependency>
 
             <!--************spring-cloud相关************-->
 

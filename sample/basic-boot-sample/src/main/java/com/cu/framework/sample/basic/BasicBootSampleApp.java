@@ -10,12 +10,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @since 2024-08-29
  */
 @SpringBootApplication
-public class SampleBasicBootApp {
+public class BasicBootSampleApp {
     /**
      * 示例工程入口
      * @param args 启动参数
      */
     public static void main(String[] args) {
-        SpringApplication.run(SampleBasicBootApp.class, args);
+        SpringApplication.run(BasicBootSampleApp.class, args);
     }
 }

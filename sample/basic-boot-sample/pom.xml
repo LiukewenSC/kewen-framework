@@ -23,5 +23,29 @@
             <artifactId>basic-spring-boot-starter</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+
+        <!-- demo 默认使用 H2 内存库，无需本地 MySQL 即可启动；版本由 spring-boot-dependencies 管理 -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
     </dependencies>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>${project.basedir}/src/main/resources</directory>
+            </resource>
+            <!-- 框架初始化脚本只有 docs/sql 一份，这里挂进 classpath 供 spring.sql.init 使用，
+                 避免在示例模块里手抄一份 DDL 造成两边漂移 -->
+            <resource>
+                <directory>${project.basedir}/../../docs/sql</directory>
+                <targetPath>sql</targetPath>
+                <includes>
+                    <include>*.sql</include>
+                </includes>
+            </resource>
+        </resources>
+    </build>
 </project>
