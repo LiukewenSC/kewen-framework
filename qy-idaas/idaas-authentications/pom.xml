@@ -18,42 +18,7 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>com.cu.framework.auth</groupId>
-            <artifactId>auth-spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-saml2-service-provider</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-oauth2-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-oauth2-jose</artifactId>
-        </dependency>
 
-        <!-- spring-security-openid 已在 Spring Security 5.7 中废弃，且引入 guice:3.0 导致类加载冲突，故移除 -->
-        <!--旧版本的Oauth2，已经废弃-->
-        <!-- spring Boot 2.x 的旧版 OAuth2 自动配置，用于桥接旧的 Spring Security OAuth 项目-->
-        <!--<dependency>
-            <groupId>org.springframework.security.oauth.boot</groupId>
-            <artifactId>spring-security-oauth2-autoconfigure</artifactId>
-        </dependency>
-        旧的 Spring Security OAuth 项目（Spring Security OAuth Legacy） 已废弃
-        <dependency>
-            <groupId>org.springframework.security.oauth</groupId>
-            <artifactId>spring-security-oauth2</artifactId>
-            <version>2.3.8.RELEASE</version>
-        </dependency>-->
-
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
 </project>

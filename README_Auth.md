@@ -63,7 +63,7 @@
 
 1.下载本框架工程然后`mvn install`到本地maven仓库。
 
-2.工程引入,通过继承`auth-parent`，引入`auth-spring-boot-starter`模块即可
+2.工程引入,通过继承`auth-parent`，引入`login-spring-boot-starter`模块即可
 
 ```xml
 <parent>
@@ -133,7 +133,7 @@ spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 ## 4.3. 应用可选配置
 
 然后应用中有部分可选配置，可以参考`cu-framework-auth-sample`启动示例工程选择使用
-`ExceptionAdviceHandler`主要用于返回异常，方便在报错时可以准确处理异常
+`AuthenticationExceptionAdviceHandler`主要用于返回异常，方便在报错时可以准确处理异常
 `SampleResponseBodyResultResolver`，认证成功返回的结构处理，可以匹配成和自己项目中一致的统一返回，不配置则使用默认的
 
 另外，示例工程还包含了代码生成相关的类，可以忽略不管，新的表需要一键生成MybatisPlus代码时也可以是使用，后续来完善这部分功能
@@ -696,7 +696,7 @@ public class ExceptionAdviceHandler {
 }
 ```
 
-也可以参考 **cu-framework-auth-sample**下的`ExceptionAdviceHandler`
+也可以参考 **cu-framework-auth-sample**下的`AuthenticationExceptionAdviceHandler`
 
 ## 9.2. 注解权限相关
 

@@ -9,7 +9,9 @@ import com.cu.framework.auth.rbac.composite.SysAuthMenuComposite;
 import com.cu.framework.auth.rbac.composite.impl.MemoryExpiredAuthMenuStore;
 import com.cu.framework.auth.rbac.extension.RbacMenuApiService;
 import com.cu.framework.auth.rbac.mp.service.SysMenuApiMpService;
+import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -71,4 +73,8 @@ public class AuthRbacConfig {
         return new MemoryExpiredAuthMenuStore();
     }
 
+    @Bean
+    RbacResultAdviceHandler rbacResultAdviceHandler(){
+        return new RbacResultAdviceHandler();
+    }
 }
