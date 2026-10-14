@@ -1,9 +1,9 @@
 package com.cu.framework.auth.core.entity;
 
 import com.cu.framework.auth.core.exception.AuthEntityException;
-import com.cu.framework.auth.core.util.ClassUtil;
 import lombok.Data;
 import org.apache.commons.lang3.tuple.Pair;
+import org.springframework.core.GenericTypeResolver;
 
 import java.util.Objects;
 
@@ -37,8 +37,8 @@ public abstract class AbstractIdNameFlagAuthEntity<ID> implements IFlagAuthEntit
 
     @Override
     public void deSerialize(int pos, String idStr, String descStr) {
-        //只有一个
-        Class actualT = ClassUtil.parseSuperActualT(this.getClass(), Object.class);
+        // 基类必须只有一个泛型参数，否则 resolveTypeArgument 抛 IllegalArgumentException
+        Class<?> actualT = GenericTypeResolver.resolveTypeArgument(this.getClass(), AbstractIdNameFlagAuthEntity.class);
         //这里也还是硬伤啊
         if (actualT== Integer.class){
             setId((ID)Integer.valueOf(idStr));
