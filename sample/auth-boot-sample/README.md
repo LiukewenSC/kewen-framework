@@ -38,10 +38,16 @@ cu-framework-auth-sample
 
 ## 3.1. 初始化数据库
 
-框架默认给了MySQL的初始化脚本，并且添加了默认的一些数据供使用，方便一键启动项目并查看。
-初始化需要先将`cu-framework-auth`框架下`./script/auth_full.sql`中的初始化SQL语句执行，用以建表，然后执行本工程下`./script/init.sql`初始化语句。
-全量脚本的路径在框架目录下的`./script/sql/auth_full.sql`下，
-增量脚本在同级目录，带日期后缀，如 `auth_20240801.sql`
+框架的初始化脚本统一放在仓库根目录的 `docs/sql/` 下，示例专用的建表和种子数据放在本模块的 `sql/` 下。
+执行顺序是先建表、再灌数据：
+
+| 脚本 | 内容 |
+| --- | --- |
+| `../../docs/sql/auth-rbac.sql` | 权限框架 10 张表的建表语句 + 查看用的视图（MySQL 与 H2 通用） |
+| `docs/sql/basic-support.sql` | 文件存储与请求日志表，本示例可选 |
+| `sql/init.sql`（本模块） | 示例业务表（`meeting_room`、`testauth_annotation_business`、`SPRING_SESSION`）建表 + 种子数据 |
+
+`../../docs/sql/auth-rbac.sql` 必须先执行，`sql/init.sql` 里的 INSERT 依赖它建出来的表。
 
 默认创建admin用户，超级管理员角色，可以直接用admin/123456登录。同时包含了所有API菜单权限、路由菜单权限等。
 默认创建一个会议室，可以管理和预约，可以直接使用。利用[kewen-web-admin](https://gitee.com/LiuKewenSc/kewen-web-admin)工程可以皮诶和直接在页面上直观的查看。

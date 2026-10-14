@@ -118,7 +118,7 @@
 </dependencies>
 ```
 
-**初始化数据库**：和利用sample模块启动一致，找到工程目录`./script/sql/auth.sql`的脚本执行即可
+**初始化数据库**：建表脚本统一放在仓库根目录的 `docs/sql/auth-rbac.sql`（MySQL 与 H2 通用），需要示例数据再执行 `sample/auth-boot-sample/sql/init.sql`
 
 **配置**：同样，自行配置基本的数据库配置
 

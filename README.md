@@ -152,8 +152,7 @@ cu-framework/
 │   │       └── service/                # 用户DetailsService等
 │   │
 │   └── relation/                       # 权限相关资源
-│       ├── properties/                 # 配置文件
-│       └── sql/                        # 权限数据库脚本
+│       └── properties/                 # 配置文件
 │
 ├── qy-idaas/                           # IDaaS 统一认证模块
 │   ├── idaas-authentications/          # SAML/OIDC 等认证集成
@@ -164,7 +163,7 @@ cu-framework/
 │
 ├── sample/                             # 示例项目
 │   ├── auth-boot-sample/               # 权限认证示例（会议室管理）
-│   │   ├── relation/                   # 示例相关资源
+│   │   ├── sql/                        # 示例专用建表与种子数据
 │   │   ├── src/                        # 示例源码
 │   │   └── README.md                   # 示例说明
 │   ├── basic-boot-sample/              # 基础功能示例
@@ -176,15 +175,16 @@ cu-framework/
 │   └── code-generator/                 # 代码生成器（MyBatis-Plus代码生成）
 │
 ├── docs/                               # 文档和脚本
-│   ├── sql/                            # 数据库初始化脚本
-│   │   ├── storage.sql                 # 文件存储模块表
-│   │   └── sys_request_log.sql         # 请求日志表
-│   ├── 过程文件/                        # 开发过程文档
+│   ├── sql/                            # 数据库初始化脚本（MySQL 与 H2 通用，全仓库唯一一份）
+│   │   ├── auth-rbac.sql               # 权限系统建表 + 视图
+│   │   └── basic-support.sql           # 文件存储表 + 请求日志表
+│   ├── 说明文档/                        # 开发过程文档
 │   │   └── oidc接入踩坑记录.md
 │   └── application.yml                 # 配置示例
 │
-├── relation/                           # 项目根目录资源
-│   └── auth.sql                        # 权限系统数据库脚本
+├── scripts/                            # 维护脚本
+│   ├── check-sql-compat.sh             # 用 H2 实测 SQL：语法、可重复执行、表是否真建成
+│   └── CheckCompat.java                # 上面那个脚本用的检查器
 │
 ├── logs/                               # 日志目录
 ├── .gitignore                          # Git 忽略配置
@@ -216,14 +216,25 @@ mvn clean install
 执行数据库初始化脚本：
 
 ```bash
-# 权限系统表（位于 relation 目录）
-mysql -u root -p your_database < relation/auth.sql
+# 权限系统表 + 视图
+mysql -u root -p your_database < docs/sql/auth-rbac.sql
 
-# 存储模块表（可选，位于 docs/sql 目录）
-mysql -u root -p your_database < docs/sql/storage.sql
+# 基础支撑表（文件存储 + 请求日志）
+mysql -u root -p your_database < docs/sql/basic-support.sql
 
-# 请求日志表（可选，位于 docs/sql 目录）
-mysql -u root -p your_database < docs/sql/sys_request_log.sql
+# 跑 auth-boot-sample 示例时需要，包含示例业务表和种子数据
+mysql -u root -p your_database < sample/auth-boot-sample/sql/init.sql
+```
+
+`docs/sql/` 是框架初始化 SQL 的唯一存放位置，同一份脚本 MySQL 和 H2 都能执行，因此不写
+`ENGINE` / `CHARACTER SET` / `COLLATE` / `ROW_FORMAT`，由各自的库决定默认值。示例专用的建表和
+种子数据放在对应 sample 模块的 `sql/` 目录下；sample 需要自动建表时，由 pom 的 `<resources>`
+把 `docs/sql` 挂到 `classpath:sql/`，避免手抄一份 DDL 造成两边漂移。
+
+改完 SQL 跑一下检查（只需本地有 JDK 与 h2 jar，可用 `H2_JAR` 指定路径）：
+
+```bash
+bash scripts/check-sql-compat.sh
 ```
 
 ### 3. 在你的项目中引入依赖
@@ -770,7 +781,7 @@ public Result publicInfo() {
 
 - [详细权限文档](README_Auth.md)
 - [示例项目](sample/)
-- [数据库脚本](relation/auth.sql, docs/sql/)
+- [数据库脚本](docs/sql/)
 - [前端模板](https://gitee.com/LiuKewenSc/kewen-web-admin)
 
 ## 📧 联系方式

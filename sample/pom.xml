@@ -19,6 +19,7 @@
         <module>storage-boot-sample</module>
         <module>auth-boot-sample</module>
         <module>idaas-sp-boot-sample</module>
+        <module>login-boot-sample</module>
     </modules>
 
     <properties>
