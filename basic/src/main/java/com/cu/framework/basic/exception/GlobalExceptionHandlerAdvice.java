@@ -19,7 +19,7 @@ import java.util.List;
  */
 @RestControllerAdvice
 @Slf4j
-public class ExceptionHandlerAdvice {
+public class GlobalExceptionHandlerAdvice {
 
     /**
      * 业务异常

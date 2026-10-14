@@ -36,7 +36,7 @@ public class TenantRequestFilter implements EarlyRequestFilter {
                 TenantContext.set(Long.parseLong(tenantStr));
                 filterChain.doFilter(request, response);
             } finally {
-                TenantContext.clear();
+                TenantContext.remove();
             }
         } else {
             filterChain.doFilter(request, response);

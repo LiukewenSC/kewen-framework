@@ -36,7 +36,7 @@ public class TenantContext {
     /**
      * 清除
      */
-    public static void clear(){
+    public static void remove(){
         context.remove();
     }
 

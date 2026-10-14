@@ -2,7 +2,7 @@ package com.cu.framework.boot.basic.config;
 
 
 import com.cu.framework.basic.support.message.FangTangMessageClient;
-import com.cu.framework.basic.support.log.FangTangRequestMessageListener;
+import com.cu.framework.basic.support.message.FangTangRequestMessageListener;
 import com.cu.framework.basic.support.log.DatabasePersistentListener;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowire;
