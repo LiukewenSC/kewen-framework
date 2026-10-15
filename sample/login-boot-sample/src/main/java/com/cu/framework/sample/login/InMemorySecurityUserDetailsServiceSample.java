@@ -23,12 +23,12 @@ import java.util.Map;
  * @since 2026-10-15
  */
 @Component
-public class InmemorySecurityUserDetailsServiceSample implements SecurityUserDetailsService {
+public class InMemorySecurityUserDetailsServiceSample implements SecurityUserDetailsService {
 
     /** 用户名到用户的内存表；密码存的是密文，与真实库中的用法一致 */
     private final Map<String, SecurityUser> users = new LinkedHashMap<>();
 
-    public InmemorySecurityUserDetailsServiceSample(PasswordEncoder passwordEncoder) {
+    public InMemorySecurityUserDetailsServiceSample(PasswordEncoder passwordEncoder) {
         addUser(passwordEncoder, "admin", "admin123", "管理员", Arrays.asList("ROLE_ADMIN", "ROLE_USER"));
         addUser(passwordEncoder, "demo", "demo123", "演示用户", Arrays.asList("ROLE_USER"));
     }
