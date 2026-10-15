@@ -92,5 +92,4 @@ public class SysUser extends Model<SysUser> {
     public Serializable pkVal() {
         return this.id;
     }
-
 }

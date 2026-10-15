@@ -100,7 +100,7 @@ cu:
         registrations:
           - registration-id: demo-saml            # 留空时 getter 回退返回 sp-entity-id
             sp-entity-id: cu-framework-local      # 需与 IDP 侧配置的 SP Audience 一致
-            metadata-resource: "classpath:saml/idp-metadata.xml"   # 会解析出 entityId / SSO URL / 验签证书
+            metadata-resource: "classpath:saml/metadata/idp-metadata.xml"   # 会解析出 entityId / SSO URL / 验签证书
             #登录入口：http://localhost:8080/saml2/authenticate/demo-saml
             #ACS 回调：http://localhost:8080/login/saml2/sso/demo-saml
             #SP 元数据：http://localhost:8080/saml2/service-provider-metadata/demo-saml

@@ -2,8 +2,7 @@ package com.cu.framework.auth.core.menu;
 
 import com.cu.framework.auth.core.AuthMenu;
 import com.cu.framework.auth.core.entity.BaseAuth;
-import com.cu.framework.auth.core.data.AuthDataHandler;
-import com.cu.framework.auth.core.AuthUserContext;
+import com.cu.framework.auth.core.AuthCurrentUserContextHolder;
 import com.cu.framework.auth.core.exception.AuthException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +24,8 @@ public class MenuAccessInterceptor implements HandlerInterceptor {
     /** 菜单权限处理器，校验当前用户是否有菜单路径的访问权限 */
     @Autowired
     private AuthMenuHandler authMenuHandler;
+    @Autowired
+    private AuthCurrentUserContextHolder authCurrentUserContextHolder;
 
     /**
      * 请求进入 Controller 方法前校验菜单权限：
@@ -55,7 +56,7 @@ public class MenuAccessInterceptor implements HandlerInterceptor {
 
 
         //获取当前用户的权限
-        Collection<BaseAuth> auths = AuthUserContext.getAuths();
+        Collection<BaseAuth> auths = authCurrentUserContextHolder.getAuths();
 
         //检查是否有菜单访问权限
         boolean hasMenuAuth = authMenuHandler.hasMenuAccessAuth(

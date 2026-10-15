@@ -16,7 +16,7 @@ import java.util.Collection;
 @Setter
 public class RbacAnnotationAuthHandler implements AuthMenuHandler {
 
-    SysAuthMenuComposite sysAuthMenuComposite;
+    private SysAuthMenuComposite sysAuthMenuComposite;
 
 
     @Override

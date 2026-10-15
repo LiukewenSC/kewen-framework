@@ -6,15 +6,16 @@ import com.cu.framework.auth.core.menu.AuthMenuHandler;
 import com.cu.framework.auth.rbac.RbacAnnotationAuthHandler;
 import com.cu.framework.auth.rbac.composite.AuthMenuStore;
 import com.cu.framework.auth.rbac.composite.SysAuthMenuComposite;
+import com.cu.framework.auth.rbac.composite.SysUserComposite;
 import com.cu.framework.auth.rbac.composite.impl.MemoryExpiredAuthMenuStore;
+import com.cu.framework.auth.rbac.extension.RbacCurrentUserService;
 import com.cu.framework.auth.rbac.extension.RbacMenuApiService;
 import com.cu.framework.auth.rbac.mp.service.SysMenuApiMpService;
-import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  *  impl 实现相关
@@ -52,6 +53,16 @@ public class AuthRbacConfig {
         return new AuthDataAdaptor();
     }
 
+    @Bean
+    RbacCurrentUserService rbacCurrentUserService(
+            SysUserComposite sysUserComposite, PasswordEncoder passwordEncoder){
+
+        RbacCurrentUserService service = new RbacCurrentUserService();
+        service.setSysUserComposite(sysUserComposite);
+        service.setPasswordEncoder(passwordEncoder);
+        return service;
+
+    }
     /**
      * 菜单API服务
      * @return

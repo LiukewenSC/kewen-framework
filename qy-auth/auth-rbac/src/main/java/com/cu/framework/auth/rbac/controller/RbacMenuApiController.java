@@ -1,7 +1,7 @@
 package com.cu.framework.auth.rbac.controller;
 
 import com.cu.framework.auth.core.AuthMenu;
-import com.cu.framework.auth.core.AuthUserContext;
+import com.cu.framework.auth.core.AuthCurrentUserContextHolder;
 import com.cu.framework.auth.core.entity.BaseAuth;
 import com.cu.framework.auth.rbac.composite.SysAuthMenuComposite;
 import com.cu.framework.auth.rbac.model.MenuTypeConstant;
@@ -32,6 +32,8 @@ public class RbacMenuApiController {
 
     @Autowired
     SysAuthMenuComposite sysAuthMenuComposite;
+    @Autowired
+    AuthCurrentUserContextHolder authCurrentUserContextHolder;
 
 
     /**
@@ -54,7 +56,7 @@ public class RbacMenuApiController {
         if (isOwnerWithoutAuthObject(req)){
             throw new RuntimeException("这样谁都没有权限查看了");
         }
-        Collection<BaseAuth> auths = AuthUserContext.getAuths();
+        Collection<BaseAuth> auths = authCurrentUserContextHolder.getAuths();
         sysAuthMenuComposite.updateMenu(req);
         return RbacResult.success(null);
     }

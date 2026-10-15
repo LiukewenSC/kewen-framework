@@ -19,7 +19,6 @@ public class FilterOrderTestController {
      */
     @RequestMapping("/filter/hello")
     public Result<?> filter(){
-        //IUser iUser = UserContext.get();
         return Result.success();
     }
 }

@@ -1,14 +1,13 @@
 package com.cu.framework.auth.core.entity;
 
+import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
- * 当前登录人
- * @author kewen
- * @since 2024-08-22
+ * 登录用户
  */
-public interface CurrentUser {
-    String getUsername();
-    String getPassword();
-
-    IAuthObject getAuthObject();
+@Data
+@Accessors(chain = true)
+public class CurrentUser {
+    private String username;
 }

@@ -118,7 +118,7 @@
 </dependencies>
 ```
 
-**初始化数据库**：建表脚本统一放在仓库根目录的 `docs/sql/auth-rbac.sql`（MySQL 与 H2 通用），需要示例数据再执行 `sample/auth-boot-sample/sql/init.sql`
+**初始化数据库**：建表脚本统一放在仓库根目录的 `docs/sql/auth-rbac.sql`（MySQL 与 H2 通用），需要示例数据再执行 `sample/auth-rbac-boot-sample`
 
 **配置**：同样，自行配置基本的数据库配置
 
@@ -194,7 +194,6 @@ cu-framework-auth
 │    ├─configurer                   以SpringSecurity风格的配置类
 │    │    └─JsonLoginAuthenticationFilterConfigurer
 │    ├─filter                       过滤器
-│    │    ├─AuthUserContextFilter   用户上下文相关过滤器
 │    │    ├─JsonLoginFilter         登录过滤器
 │    │    └─TokenSessionRequestFilter  token相关过滤器
 │    ├─model          

@@ -91,7 +91,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     /**
      * 构建安全过滤链：汇总所有 UrlSecurityCustomizer 的放行 URL 后其余请求需认证；
      * 登出成功走 successHandler，认证入口与访问拒绝走 exceptionResolverHandler；禁用 csrf；
-     * 在 SessionManagementFilter 之后注册 AuthUserContextFilter；
      * 最后依次应用容器中所有 HttpSecurityCustomizer（可覆盖以上配置）
      */
     @Override

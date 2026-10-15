@@ -1,10 +1,10 @@
 package com.cu.framework.auth.core.data.edit;
 
 
-import com.cu.framework.auth.core.entity.CurrentUser;
 import com.cu.framework.auth.core.AuthDataOperation;
 import com.cu.framework.auth.core.data.AuthDataHandler;
-import com.cu.framework.auth.core.AuthUserContext;
+import com.cu.framework.auth.core.AuthCurrentUserContextHolder;
+import com.cu.framework.auth.core.entity.IAuthObject;
 import com.cu.framework.auth.core.exception.AuthException;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
@@ -28,6 +28,7 @@ public class DataCheckAspect {
 
     /** 数据权限处理器，用于校验当前用户对数据的操作权限 */
     private AuthDataHandler annotationAuthHandler;
+    private AuthCurrentUserContextHolder authCurrentUserContextHolder;
 
 
 
@@ -57,8 +58,8 @@ public class DataCheckAspect {
             throw new AuthException("参数没有找到接口 IdDataEdit 实现类");
         }
         IdDataEdit business = (IdDataEdit) first.get();
-        CurrentUser currentUser = AuthUserContext.getCurrentUser();
-        boolean hasAuth = annotationAuthHandler.hasDataOperateAuths(currentUser.getAuthObject(), authAnn.businessFunction(), business.getDataId(),authAnn.operate());
+        IAuthObject authObject = authCurrentUserContextHolder.getAuthObject();
+        boolean hasAuth = annotationAuthHandler.hasDataOperateAuths(authObject, authAnn.businessFunction(), business.getDataId(),authAnn.operate());
         if (!hasAuth){
             throw new AuthException("权限校验不通过");
         }
@@ -67,4 +68,8 @@ public class DataCheckAspect {
     public void setAnnotationAuthHandler(AuthDataHandler annotationAuthHandler) {
         this.annotationAuthHandler = annotationAuthHandler;
     }
+    public void setAuthUserContext(AuthCurrentUserContextHolder authCurrentUserContextHolder) {
+        this.authCurrentUserContextHolder = authCurrentUserContextHolder;
+    }
+
 }
