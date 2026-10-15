@@ -4,6 +4,7 @@ package com.cu.framework.auth.core.data.edit;
 import com.cu.framework.auth.core.AuthDataOperation;
 import com.cu.framework.auth.core.data.AuthDataHandler;
 import com.cu.framework.auth.core.AuthCurrentUserContextHolder;
+import com.cu.framework.auth.core.entity.BaseAuth;
 import com.cu.framework.auth.core.entity.IAuthObject;
 import com.cu.framework.auth.core.exception.AuthException;
 import org.aspectj.lang.JoinPoint;
@@ -14,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Optional;
 
 /**
@@ -58,8 +60,8 @@ public class DataCheckAspect {
             throw new AuthException("参数没有找到接口 IdDataEdit 实现类");
         }
         IdDataEdit business = (IdDataEdit) first.get();
-        IAuthObject authObject = authCurrentUserContextHolder.getAuthObject();
-        boolean hasAuth = annotationAuthHandler.hasDataOperateAuths(authObject, authAnn.businessFunction(), business.getDataId(),authAnn.operate());
+        Collection<BaseAuth> auths = authCurrentUserContextHolder.getAuths();
+        boolean hasAuth = annotationAuthHandler.hasDataOperateAuths(auths, authAnn.businessFunction(), business.getDataId(),authAnn.operate());
         if (!hasAuth){
             throw new AuthException("权限校验不通过");
         }
