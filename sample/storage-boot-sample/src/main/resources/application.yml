@@ -1,11 +1,21 @@
 spring:
   application:
     name: sample
-  datasource:
-    url: jdbc:mysql://localhost:3306/your_database
-    username: your_username
-    password: your_password
-    driver-class-name: com.cu.framework.boot.basic.p6spy.KP6SpyDriver
+  # 默认使用 H2 内存库，无需本地 MySQL 即可启动 demo；切回 MySQL 用 --spring.profiles.active=mysql
+  profiles:
+    active: h2
+  # 建表脚本由 pom 的 resources 挂到 classpath:sql/ 下（docs/sql/basic-support.sql 含 file_detail/file_part_detail）
+  sql:
+    init:
+      mode: always
+      encoding: UTF-8
+      schema-locations: classpath:sql/basic-support.sql
+  # H2 Web 控制台：http://localhost:8080/h2-console
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
 cu:
   storage:
     type: qiniu
@@ -15,3 +25,27 @@ cu:
     is-public: false
     download-domain: your_download_domain
     upload-callback-url: https://your_domain.com/storage/upload/callback
+
+---
+# H2 内存数据源（MySQL 兼容模式）
+spring:
+  config:
+    activate:
+      on-profile: h2
+  datasource:
+    url: jdbc:h2:mem:storage_sample;MODE=MySQL;DATABASE_TO_LOWER=TRUE;CASE_INSENSITIVE_IDENTIFIERS=TRUE;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+---
+# 本地 MySQL 数据源（保留原有 p6spy 驱动）
+spring:
+  config:
+    activate:
+      on-profile: mysql
+  datasource:
+    url: jdbc:mysql://localhost:3306/your_database
+    username: your_username
+    password: your_password
+    driver-class-name: com.cu.framework.boot.basic.p6spy.KP6SpyDriver
