@@ -11,6 +11,8 @@ import java.util.Collections;
 /**
  * 具有权限的用户上下文，用户登录了之后每次请求都应该有上下文信息
  * 实现类通过 SecurityUserContext（login-spring-boot-starter）获取当前登录用户
+ * @author kewen
+ * @since 2026-10-15
  */
 public interface AuthCurrentUserContextHolder {
 
@@ -21,10 +23,8 @@ public interface AuthCurrentUserContextHolder {
      * @return 权限集合，上下文中无用户或无权限对象时返回空集合
      */
     default Collection<BaseAuth> getAuths(){
-        if (getUser() == null || getAuthObject() == null) {
-            return Collections.emptyList();
-        }
-        return getAuthObject().listBaseAuth();
+        IAuthObject authObject = getAuthObject();
+        return authObject == null ? Collections.emptyList() : authObject.listBaseAuth();
     }
     /**
      * 获取当前登录用户的基础权限集合

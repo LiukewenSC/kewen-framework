@@ -13,7 +13,7 @@ import org.springframework.session.events.SessionDestroyedEvent;
  * 使依赖会话事件的监听器（如并发会话控制）能够感知变化
  *
  * @author kewen
- * @since 2026-05-
+ * @since 2026-05-30
  * @deprecated
  * ## 问题根源：与 Spring Session 自动配置的 `@ConditionalOnMissingBean` 冲突
  *
@@ -60,6 +60,7 @@ import org.springframework.session.events.SessionDestroyedEvent;
  *
  * **一句话：Wrapper "不能用"是因为它实现了 `SessionRepository` 接口，触发了 `@ConditionalOnMissingBean` 短路，导致真正要被包装的原始 Bean 压根就没创建出来。**
  */
+@Deprecated
 public class SessionRepositoryEventWrapper implements SessionRepository, ApplicationEventPublisherAware {
 
     /** 被装饰的原始 SessionRepository */

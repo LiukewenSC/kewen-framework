@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -147,9 +148,11 @@ public class SecurityUser implements UserDetails, AuthenticatedPrincipal {
     }
 
     /**
-     * 从权限对象 authObject 中提取权限串列表并转换为 GrantedAuthority 集合；authObject 为空时返回空集合
+     * Spring Security 需要的授权集合
+     * @return 授权集合，userAuthorities 未设置时返回空集合
      */
+    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return userAuthorities;
+        return userAuthorities == null ? Collections.emptyList() : userAuthorities;
     }
 }

@@ -2,17 +2,13 @@ package com.cu.framework.authentication;
 
 import com.cu.framework.authentication.model.SecurityUser;
 import com.cu.framework.authentication.response.AuthenticationSuccessResultConverter;
-import com.cu.framework.authentication.response.AuthenticationSuccessResultResolver;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
-
-import java.util.Optional;
 
 /**
  * 用户上下文
@@ -26,19 +22,21 @@ public class SecurityUserContext implements ApplicationContextAware {
     /** 用户详情服务，供转换器加载用户使用 */
     private static UserDetailsService userDetailsService;
 
+    /**
+     * 用支持的转换器把当前认证信息转为登录用户
+     * @return 登录用户，未登录（含匿名）或没有支持的转换器时返回 null
+     */
     public static SecurityUser getCurrentUser() {
-        Optional<Authentication> optionalAuthentication = Optional.of(SecurityContextHolder.getContext())
-                .map(SecurityContext::getAuthentication);
-        //设置用户权限上下文
-        if (optionalAuthentication.isPresent()){
-            Authentication authentication = optionalAuthentication.get();
-            for (AuthenticationSuccessResultConverter successResultConverter : jsonSuccessResultConverter) {
-                if (successResultConverter.support(authentication)) {
-                    return successResultConverter.convert(userDetailsService, authentication);
-                }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null) {
+            return null;
+        }
+        for (AuthenticationSuccessResultConverter successResultConverter : jsonSuccessResultConverter) {
+            if (successResultConverter.support(authentication)) {
+                return successResultConverter.convert(userDetailsService, authentication);
             }
         }
-        throw new RuntimeException("当前用户不存在");
+        return null;
     }
 
     @Override

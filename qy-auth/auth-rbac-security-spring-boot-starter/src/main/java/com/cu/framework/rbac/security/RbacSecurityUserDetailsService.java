@@ -11,7 +11,6 @@ import com.cu.framework.authentication.service.SecurityUserDetailsService;
 import lombok.Setter;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.stream.Collectors;
 
@@ -47,6 +46,10 @@ public class RbacSecurityUserDetailsService implements SecurityUserDetailsServic
         SysUser sysUser = userAuthObject.getSysUser();
         SysUserCredential credential = userAuthObject.getSysUserCredential();
         SimpleAuthObject authObject = userAuthObject.getAuthObject();
+        //用户存在但凭证或权限体缺失时，装载结果无法组装，按认证失败处理而不是抛空指针
+        if (credential == null || authObject == null) {
+            throw new UsernameNotFoundException("用户凭证或权限集合缺失");
+        }
 
         return new SecurityUser()
                 .setId(sysUser.getId())
