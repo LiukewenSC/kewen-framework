@@ -22,14 +22,6 @@ public interface AuthCurrentUserContextHolder {
      * 获取当前登录用户的基础权限集合
      * @return 权限集合，上下文中无用户或无权限对象时返回空集合
      */
-    default Collection<BaseAuth> getAuths(){
-        IAuthObject authObject = getAuthObject();
-        return authObject == null ? Collections.emptyList() : authObject.listBaseAuth();
-    }
-    /**
-     * 获取当前登录用户的基础权限集合
-     * @return 权限集合，上下文中无用户或无权限对象时返回空集合
-     */
-    IAuthObject getAuthObject();
+    Collection<BaseAuth> getAuths();
 
 }

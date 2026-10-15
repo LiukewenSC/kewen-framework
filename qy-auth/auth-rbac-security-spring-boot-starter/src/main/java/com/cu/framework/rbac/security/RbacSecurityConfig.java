@@ -28,7 +28,7 @@ public class RbacSecurityConfig {
     @Bean
     AuthCurrentUserContextHolder rbacSecurityCurrentUserAuthContextHolder(RbacSecurityUserDetailsService securityUserDetailsService){
         RbacSecurityAuthCurrentUserContextHolder holder = new RbacSecurityAuthCurrentUserContextHolder();
-        holder.setRbacSecurityUserDetailsService(securityUserDetailsService);
+        //holder.setRbacSecurityUserDetailsService(securityUserDetailsService);
         return holder;
     }
 

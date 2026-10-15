@@ -1,11 +1,15 @@
 package com.cu.framework.auth.sample;
 
 import com.cu.framework.auth.core.AuthCurrentUserContextHolder;
+import com.cu.framework.auth.core.entity.BaseAuth;
 import com.cu.framework.auth.core.entity.CurrentUser;
 import com.cu.framework.auth.core.entity.IAuthObject;
 import com.cu.framework.auth.rbac.composite.SysUserComposite;
 import com.cu.framework.auth.rbac.model.UserAuthObject;
 import lombok.Setter;
+
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  * 示例用的用户上下文：本 sample 未引入 Spring Security 登录态，用户名固定为 admin，
@@ -25,12 +29,11 @@ public class AuthBootSampleCurrentUserContextHolder implements AuthCurrentUserCo
     }
 
     @Override
-    public IAuthObject getAuthObject() {
-        UserAuthObject authObject = getUserAuthObjectByUsername(getUsername());
-        if (authObject == null){
-            return null;
+    public Collection<BaseAuth> getAuths() { UserAuthObject authObject = getUserAuthObjectByUsername(getUsername());
+        if (authObject == null || authObject.getAuthObject() == null){
+            return Collections.emptyList();
         }
-        return authObject.getAuthObject();
+        return authObject.getAuthObject().listBaseAuth();
     }
 
     public UserAuthObject getUserAuthObjectByUsername(String username){

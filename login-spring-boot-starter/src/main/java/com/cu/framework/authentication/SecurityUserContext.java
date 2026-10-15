@@ -1,5 +1,6 @@
 package com.cu.framework.authentication;
 
+import com.cu.framework.authentication.exception.NoLoginException;
 import com.cu.framework.authentication.model.SecurityUser;
 import com.cu.framework.authentication.response.AuthenticationSuccessResultConverter;
 import org.springframework.beans.BeansException;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
@@ -29,14 +31,14 @@ public class SecurityUserContext implements ApplicationContextAware {
     public static SecurityUser getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) {
-            return null;
+            throw new NoLoginException("未登录");
         }
         for (AuthenticationSuccessResultConverter successResultConverter : jsonSuccessResultConverter) {
             if (successResultConverter.support(authentication)) {
                 return successResultConverter.convert(userDetailsService, authentication);
             }
         }
-        return null;
+        throw new NoLoginException("未转换成功用户详情");
     }
 
     @Override
