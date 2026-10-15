@@ -29,10 +29,11 @@ public class Oauth2OidcProperties {
      * 本地 OAuth2/OIDC 登录授权端点的基础 URI
      * <p><b>协议归属：</b> OAuth2通用 + OIDC通用</p>
      * <p>用于发起认证请求的端点路径，用户访问此路径后会重定向到 IDP 进行登录。</p>
-     * <p>默认值：{@code /oauth2/authorize}</p>
-     * <p>访问示例：{@code /oauth2/authorize/{registrationId}}</p>
+     * <p>默认值：{@code /oauth2/authorization}，与 Spring Security 官方
+     * {@code OAuth2AuthorizationRequestRedirectFilter.DEFAULT_AUTHORIZATION_REQUEST_BASE_URI} 保持一致。</p>
+     * <p>访问示例：{@code /oauth2/authorization/{registrationId}}</p>
      */
-    private String ssoAuthorizationUri = "/oauth2/authorize";
+    private String ssoAuthorizationUri = "/oauth2/authorization";
 
     /**
      * OAuth2/OIDC 登录回调处理端点
@@ -67,7 +68,7 @@ public class Oauth2OidcProperties {
          * 客户端注册 ID（唯一标识）
          * <p><b>协议归属：</b> OAuth2通用 + OIDC通用</p>
          * <p>每个 IDP 提供商的唯一标识，用于区分不同的身份源。
-         * 在认证 URL 中会使用此 ID，例如：{@code /oauth2/authorize/{registrationId}}。</p>
+         * 在认证 URL 中会使用此 ID，例如：{@code /oauth2/authorization/{registrationId}}。</p>
          * <p><b>必填</b></p>
          */
         private String registrationId;
