@@ -61,10 +61,10 @@ spring:
     activate:
       on-profile: mysql
   datasource:
-    url: jdbc:mysql://localhost:3306/your_database
+    url: jdbc:pyspy:mysql://localhost:3306/your_database
     username: your_username
     password: your_password
-    driver-class-name: com.cu.framework.boot.basic.p6spy.KP6SpyDriver
+    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
     hikari:
       auto-commit: true
       connection-test-query: select 1
