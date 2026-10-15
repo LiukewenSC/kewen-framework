@@ -7,6 +7,12 @@ import com.cu.framework.auth.rbac.composite.SysUserComposite;
 import com.cu.framework.auth.rbac.model.UserAuthObject;
 import lombok.Setter;
 
+/**
+ * 示例用的用户上下文：本 sample 未引入 Spring Security 登录态，用户名固定为 admin，
+ * 权限集合按该用户名从 sys_user 体系实时装载
+ * @author kewen
+ * @since 2026-10-15
+ */
 @Setter
 public class AuthBootSampleCurrentUserContextHolder implements AuthCurrentUserContextHolder {
 

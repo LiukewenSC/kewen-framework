@@ -41,7 +41,7 @@ public class Properties {
     /**
      * 工程绝对路径地址，指定到src上面一层;
      * 为空则表示用代码生成器在的路径
-     * 示例: /path/to/your/project/sample/auth-boot-sample
+     * 示例: /path/to/your/project/sample/auth-rbac-boot-sample
      */
     private final String absolutePath = "";
 

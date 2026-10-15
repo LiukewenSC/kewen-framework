@@ -11,9 +11,9 @@ SAML 中 SP 发起的 `AuthnRequest` / `LogoutRequest` 是否需要签名，由 
 | 场景 | 是否需要 keystore |
 | --- | --- |
 | `WantAuthnRequestsSigned="false"`（如 `login-boot-sample` 的 demo 元数据、idaas-idp4 各环境元数据） | 不需要，`keystore-resource` 留空即可跑通 |
-| `WantAuthnRequestsSigned="true"`（如本 sample 的 `cu-local-metadata.xml`） | **需要**，否则 AuthnRequest 不签名，会被 IdP 拒绝 |
+| `WantAuthnRequestsSigned="true"` | **需要**，否则 AuthnRequest 不签名，会被 IdP 拒绝 |
 
-本 sample（`idaas-sp-boot-sample`）的 `application.yml` 中配置了：
+`login-boot-sample` 用的是 demo 元数据且 `WantAuthnRequestsSigned="false"`，所以 `keystore-resource` 留空即可跑通。已移除的 `idaas-sp-boot-sample` 曾配置过签名密钥库：
 
 ```yaml
 cu.security.login.saml.sp-signing-keystore:

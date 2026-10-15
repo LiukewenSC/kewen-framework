@@ -162,14 +162,13 @@ cu-framework/
 │   └── README.md                       # IDaaS 使用说明
 │
 ├── sample/                             # 示例项目
-│   ├── auth-boot-sample/               # 权限认证示例（会议室管理）
+│   ├── auth-rbac-boot-sample/          # 权限认证示例（会议室管理）
 │   │   ├── sql/                        # 示例专用建表与种子数据
 │   │   ├── src/                        # 示例源码
 │   │   └── README.md                   # 示例说明
 │   ├── basic-boot-sample/              # 基础功能示例
 │   ├── storage-boot-sample/            # 文件存储示例
-│   ├── tenant-boot-sample/             # 多租户示例
-│   └── idaas-sp-boot-sample/           # IDaaS SAML 示例
+│   └── tenant-boot-sample/             # 多租户示例
 │
 ├── other/                              # 其他工具
 │   └── code-generator/                 # 代码生成器（MyBatis-Plus代码生成）
@@ -511,11 +510,11 @@ RBAC 快速配置 Starter。
 
 提供完整的使用示例：
 
-- **auth-boot-sample**：权限认证完整示例（会议室管理案例）
+- **auth-rbac-boot-sample**：权限认证完整示例（会议室管理案例）
 - **basic-boot-sample**：基础功能示例
+- **login-boot-sample**：账密登录与 SAML/OAuth2 登录示例
 - **storage-boot-sample**：文件存储示例
 - **tenant-boot-sample**：多租户示例
-- **idaas-sp-boot-sample**：IDaaS SAML 认证示例
 
 ## ⚙️ 配置指南
 

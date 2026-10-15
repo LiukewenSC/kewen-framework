@@ -40,7 +40,7 @@ public class AuthCoreConfig {
     DataCheckAspect dataCheckAspect(AuthDataHandler annotationAuthHandler, AuthCurrentUserContextHolder authCurrentUserContextHolder) {
         DataCheckAspect aspect = new DataCheckAspect();
         aspect.setAnnotationAuthHandler(annotationAuthHandler);
-        aspect.setAuthUserContext(authCurrentUserContextHolder);
+        aspect.setAuthCurrentUserContextHolder(authCurrentUserContextHolder);
         return aspect;
     }
 

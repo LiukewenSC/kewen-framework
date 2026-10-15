@@ -68,7 +68,7 @@ public class DataCheckAspect {
     public void setAnnotationAuthHandler(AuthDataHandler annotationAuthHandler) {
         this.annotationAuthHandler = annotationAuthHandler;
     }
-    public void setAuthUserContext(AuthCurrentUserContextHolder authCurrentUserContextHolder) {
+    public void setAuthCurrentUserContextHolder(AuthCurrentUserContextHolder authCurrentUserContextHolder) {
         this.authCurrentUserContextHolder = authCurrentUserContextHolder;
     }
 
