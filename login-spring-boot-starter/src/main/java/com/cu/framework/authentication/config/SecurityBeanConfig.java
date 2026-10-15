@@ -1,5 +1,6 @@
 package com.cu.framework.authentication.config;
 
+import com.cu.framework.authentication.SecurityUserContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.cu.framework.authentication.filter.WebSecurityGlobalExceptionHandlerFilter;
 import com.cu.framework.authentication.extension.PropertiesUrlSecurityCustomizer;
@@ -92,5 +93,10 @@ public class SecurityBeanConfig {
     @ConditionalOnMissingBean(AuthenticationSuccessResultResolver.class)
     AuthenticationSuccessResultResolver authenticationSuccessResultResolver(){
         return new NoneAuthenticationSuccessResultResolver();
+    }
+
+    @Bean
+    SecurityUserContext securityUserContext() {
+        return new SecurityUserContext();
     }
 }

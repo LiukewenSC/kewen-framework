@@ -10,6 +10,7 @@ import com.cu.framework.auth.rbac.mp.entity.SysUser;
 import com.cu.framework.auth.rbac.mp.entity.SysUserCredential;
 import com.cu.framework.auth.rbac.mp.service.SysUserCredentialMpService;
 import com.cu.framework.auth.rbac.mp.service.SysUserMpService;
+import com.cu.framework.basic.exception.BizException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,11 +34,28 @@ public class SysUserCompositeImpl implements SysUserComposite {
     SysUserUnionCompositeMapper unionCompositeMapper;
 
     @Override
-    public UserAuthObject loadByUsername(String username) {
-
+    public SysUserCredential getUserCredentialByUsername(String username) {
         SysUser user = userMpService.getOne(
                 new LambdaQueryWrapper<SysUser>().eq(SysUser::getUsername, username)
                         .select()
+        );
+        if (user == null){
+            throw new BizException("用户不存在");
+        }
+        SysUserCredential credential = credentialMpService.getOne(
+                new LambdaQueryWrapper<SysUserCredential>().eq(SysUserCredential::getUserId, user.getId())
+        );
+        if (credential == null){
+            throw new BizException("用户凭证不存在");
+        }
+        return credential;
+    }
+
+    @Override
+    public UserAuthObject getUserAuthObjectByUsername(String username) {
+
+        SysUser user = userMpService.getOne(
+                new LambdaQueryWrapper<SysUser>().eq(SysUser::getUsername, username)
         );
         if (user == null){
             return null;
@@ -62,28 +80,19 @@ public class SysUserCompositeImpl implements SysUserComposite {
     }
 
     @Override
-    public boolean updatePassword(String username, String newPassword) {
+    public boolean updatePassword(String username, String encryptedNewPassword) {
         SysUser user = userMpService.getOne(
                 new LambdaQueryWrapper<SysUser>().eq(SysUser::getUsername, username)
-                        .select()
         );
         if (user == null){
             log.info("更新用户失败，用户不存在");
             return false;
         }
-        Long id = user.getId();
 
-        /*
-        return credentialMpService.update(
-                new LambdaUpdateWrapper<SysUserCredential>()
-                        .set(SysUserCredential::getPassword, newPassword)
-                        .eq(SysUserCredential::getUserId, user.getId())
-        );
-        */
        return credentialMpService.update(
                 new LambdaUpdateWrapper<SysUserCredential>()
                         .eq(SysUserCredential::getUserId, user.getId())
-                        .set(SysUserCredential::getPassword, newPassword)
+                        .set(SysUserCredential::getPassword, encryptedNewPassword)
         );
 
 

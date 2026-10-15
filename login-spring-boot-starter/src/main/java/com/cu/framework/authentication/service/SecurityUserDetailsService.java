@@ -15,6 +15,13 @@ public interface SecurityUserDetailsService extends UserDetailsService, UserDeta
     @Override
     UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
 
+    /**
+     * 更新密码，主要用于刷新用户旧的密钥算法，登陆一次之后重置密码
+     * @param user the user to modify the password for
+     * @param encryptedNewPassword the password to change to, encoded by the configured
+     * {@code PasswordEncoder}
+     * @return
+     */
     @Override
-    UserDetails updatePassword(UserDetails user, String newPassword);
+    UserDetails updatePassword(UserDetails user, String encryptedNewPassword);
 }

@@ -1,5 +1,6 @@
 package com.cu.framework.boot.auth.core.config;
 
+import com.cu.framework.auth.core.AuthCurrentUserContextHolder;
 import com.cu.framework.auth.core.data.AuthDataHandler;
 import com.cu.framework.auth.core.data.JdbcAuthDataHandler;
 import com.cu.framework.auth.core.data.JdbcAuthDataPersistent;
@@ -12,7 +13,6 @@ import com.cu.framework.auth.core.menu.MenuAccessInterceptor;
 import com.cu.framework.auth.core.menu.MenuApiGeneratorProcessor;
 import com.cu.framework.boot.auth.core.init.InitMenuApiCommandLineRunner;
 import com.cu.framework.boot.auth.core.properties.AuthDataTableProperties;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,9 +37,10 @@ public class AuthCoreConfig {
      * @return
      */
     @Bean
-    DataCheckAspect dataCheckAspect(AuthDataHandler annotationAuthHandler) {
+    DataCheckAspect dataCheckAspect(AuthDataHandler annotationAuthHandler, AuthCurrentUserContextHolder authCurrentUserContextHolder) {
         DataCheckAspect aspect = new DataCheckAspect();
         aspect.setAnnotationAuthHandler(annotationAuthHandler);
+        aspect.setAuthUserContext(authCurrentUserContextHolder);
         return aspect;
     }
 

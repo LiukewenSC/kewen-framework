@@ -2,12 +2,13 @@ package com.cu.framework.auth.core.data.range;
 
 
 import com.cu.framework.auth.core.AuthDataRange;
-import com.cu.framework.auth.core.AuthUserContext;
+import com.cu.framework.auth.core.AuthCurrentUserContextHolder;
 import com.cu.framework.auth.core.entity.BaseAuth;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;
 
@@ -18,6 +19,9 @@ import java.util.Collection;
  */
 @Aspect
 public class DataRangeAspect {
+
+    @Autowired
+    private AuthCurrentUserContextHolder authCurrentUserContextHolder;
 
     /**
      * 切入标注了 {@link AuthDataRange} 注解的方法
@@ -39,7 +43,7 @@ public class DataRangeAspect {
     @Around("jointPoint() && @annotation(checkAuthDataRange)")
     public Object around(ProceedingJoinPoint proceedingJoinPoint, AuthDataRange checkAuthDataRange) throws Throwable {
 
-        Collection<BaseAuth> auths = AuthUserContext.getAuths();
+        Collection<BaseAuth> auths = authCurrentUserContextHolder.getAuths();
         AuthRange authRange = new AuthRange()
                 .setBusinessFunction(checkAuthDataRange.businessFunction())
                 .setOperate(checkAuthDataRange.operate())

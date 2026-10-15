@@ -1,7 +1,6 @@
 package com.cu.framework.auth.rbac.controller;
 
-import com.cu.framework.auth.core.AuthUserContext;
-import com.cu.framework.auth.core.entity.CurrentUser;
+import com.cu.framework.auth.core.AuthCurrentUserContextHolder;
 import com.cu.framework.auth.core.entity.BaseAuth;
 import com.cu.framework.auth.rbac.composite.SysAuthMenuComposite;
 import com.cu.framework.auth.rbac.extension.RbacCurrentUserService;
@@ -29,12 +28,15 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/currentUser")
-public class RbacCurrentUserController implements ApplicationContextAware {
+public class RbacCurrentUserController {
 
     @Autowired
     SysAuthMenuComposite sysAuthMenuComposite;
 
+    @Autowired
     RbacCurrentUserService rbacCurrentUserService;
+    @Autowired
+    AuthCurrentUserContextHolder authCurrentUserContextHolder;
 
     /**
      * 获取当前登录人有权限的路由菜单树（GET /currentUser/routeMenus），基于当前用户权限集合过滤
@@ -42,7 +44,7 @@ public class RbacCurrentUserController implements ApplicationContextAware {
      */
     @GetMapping("/routeMenus")
     public RbacResult<List<MenuRouteResp>> routeTrees(){
-        Collection<BaseAuth> auths = AuthUserContext.getAuths();
+        Collection<BaseAuth> auths = authCurrentUserContextHolder.getAuths();
         List<MenuRouteResp> menuTree = sysAuthMenuComposite.getRouteAuthMenuTree(auths);
         return RbacResult.success(menuTree);
     }
@@ -53,43 +55,7 @@ public class RbacCurrentUserController implements ApplicationContextAware {
      */
     @PostMapping("/updatePassword")
     public RbacResult<Void> updatePassword(@RequestBody @Validated UpdatePasswordReq req){
-        rbacCurrentUserService.updatePassword(AuthUserContext.getCurrentUser(),req.getOldPassword(), req.getNewPassword());
+        rbacCurrentUserService.updatePassword(authCurrentUserContextHolder.getUser(),req.getOldPassword(), req.getNewPassword());
         return RbacResult.success();
-    }
-
-
-
-
-
-
-
-
-
-    /**
-     * 注入 RbacCurrentUserService，容器中不存在时降级为不支持修改密码的默认实现
-     * @param applicationContext Spring 应用上下文
-     */
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        ObjectProvider<RbacCurrentUserService> beanProvider = applicationContext.getBeanProvider(RbacCurrentUserService.class);
-        RbacCurrentUserService ifAvailable = beanProvider.getIfAvailable();
-        //没有注入RbacCurrentUserService就不支持
-        if(ifAvailable != null){
-            rbacCurrentUserService = ifAvailable;
-        } else {
-            rbacCurrentUserService = new UnsupportedRbacCurrentUserService();
-        }
-    }
-
-    /**
-     * 不支持的当前登录服务
-     */
-    static class UnsupportedRbacCurrentUserService implements RbacCurrentUserService {
-
-        @Override
-        public void updatePassword(CurrentUser currentUser, String oldPassword, String newPassword) {
-            throw new UnsupportedOperationException("Not supported updatePassword");
-
-        }
     }
 }

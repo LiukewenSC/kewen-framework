@@ -20,7 +20,6 @@ import java.util.List;
 @Accessors(chain = true)
 public class SecurityUser implements UserDetails, AuthenticatedPrincipal {
 
-
     private String token;
 
     /**
