@@ -25,7 +25,6 @@
         <module>sample</module>
         <module>other</module>
         <module>qy-auth</module>
-        <module>qy-idaas</module>
     </modules>
 
     <dependencies>
