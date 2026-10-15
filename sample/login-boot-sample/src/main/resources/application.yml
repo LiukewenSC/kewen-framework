@@ -60,8 +60,9 @@ cu:
         password-parameter: password
 
       oauth2:
-        # 本地发起授权请求的端点，实际访问 /oauth2/authorize/{registrationId}
-        sso-authorization-uri: /oauth2/authorize
+        # 本地发起授权请求的端点，实际访问 /oauth2/authorization/{registrationId}
+        # 与 Spring Security 官方默认一致，这里显式写出仅为可读性，删除本行也不影响
+        sso-authorization-uri: /oauth2/authorization
         # IDP 回调处理端点（Ant 通配，与 starter 里的默认值一致）
         login-processing-url: /login/oauth2/code/*
         # clients 无默认值，但必须至少配一个：Oauth2Config 是无条件加载的自动配置，
@@ -71,15 +72,15 @@ cu:
         clients:
           - registration-id: demo-oauth2
             protocol-type: oauth2                 # oauth2 | oidc，默认 oauth2
-            client-id: demo-client
-            client-secret: demo-secret
+            client-id: client_50d901b5844247df
+            client-secret: 35fcd41f49ed477992cc9ff6dbbd4e19d193b4e627ee4030aca195d2dec8a053
             client-authentication-method: client_secret_basic   # client_secret_basic | client_secret_post | none
             redirect-uri-template: "{baseUrl}/login/oauth2/code/{registrationId}"
             scopes:
               - read
-            authorization-uri: http://localhost:9000/oauth2/authorize
-            token-uri: http://localhost:9000/oauth2/token
-            user-info-uri: http://localhost:9000/oauth2/userinfo
+            authorization-uri: http://localhost:9010/oauth2/authorize
+            token-uri: http://localhost:9010/oauth2/token
+            user-info-uri: http://localhost:9010/oauth2/userinfo
             user-name-attribute-name: sub         # userinfo 响应里代表用户唯一标识的字段
             # —— 以下项本 demo 未使用，需要时再打开 ——
             # oidc 模式：配 issuer-uri 自动发现端点，jwk-set-uri / client-name 只在 oidc 模式下被代码读取

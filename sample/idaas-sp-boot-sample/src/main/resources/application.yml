@@ -87,7 +87,7 @@ cu:
             metadata-resource: classpath:saml/metadata/idaas-idp4-loc-metadata.xml
 
       oauth2:
-        sso-authorization-uri: /oauth2/authorize
+        sso-authorization-uri: /oauth2/authorization
         clients:
           -
             registration-id: cu-local-oidc-registration
