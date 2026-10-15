@@ -30,8 +30,8 @@ public class JacksonSerializerController {
      * @return 成功响应
      */
     @GetMapping("/paramSerializer")
-    public Result<Void> paramSerializer(@RequestParam(required = false) LocalDate localDate, @RequestParam(required = false) LocalDateTime localDateTime){
-        return Result.success();
+    public Result paramSerializer(@RequestParam(required = false) LocalDate localDate, @RequestParam(required = false) LocalDateTime localDateTime){
+        return Result.success(MapUtil.builder().put("localDate", localDate).put("localDateTime", localDateTime).build());
     }
     /**
      * 测试以对象属性绑定方式（不加 @RequestBody）反序列化 LocalDateParam 中的日期字段
@@ -39,8 +39,8 @@ public class JacksonSerializerController {
      * @return 成功响应
      */
     @GetMapping("/paramSerializer2")
-    public Result<Void> paramSerializer2(LocalDateParam req){
-        return Result.success();
+    public Result paramSerializer2(LocalDateParam req){
+        return Result.success(req);
     }
 
     /**
@@ -49,8 +49,8 @@ public class JacksonSerializerController {
      * @return 成功响应
      */
     @GetMapping("/paramSerializer3")
-    public Result<Void> paramSerializer3(@RequestBody LocalDateParam req){
-        return Result.success();
+    public Result paramSerializer3(@RequestBody LocalDateParam req){
+        return Result.success(req);
     }
     /**
      * 返回包含 Date / LocalDateTime / LocalDate 三种日期类型的 Map，用于观察 JSON 序列化输出格式
