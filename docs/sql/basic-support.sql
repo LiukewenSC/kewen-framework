@@ -47,6 +47,18 @@ CREATE TABLE `file_part_detail` (
     PRIMARY KEY (`id`)
 ) COMMENT = '文件分片信息表，仅在手动分片上传时使用';
 
+DROP TABLE IF EXISTS `sys_storage_file`;
+CREATE TABLE `sys_storage_file` (
+    `id`         bigint       NOT NULL AUTO_INCREMENT COMMENT '主键ID，数据库自增',
+    `file_name`  varchar(256) NULL DEFAULT NULL COMMENT '文件名',
+    `file_key`   varchar(512) NULL DEFAULT NULL COMMENT '存储的key值',
+    `mime_type`  varchar(128) NULL DEFAULT NULL COMMENT '文件类型',
+    `size`       bigint       NULL DEFAULT NULL COMMENT '文件大小，单位字节',
+    `status`     int          NULL DEFAULT 0 COMMENT '0-等待上传 1-上传中 2-完成 3-失败',
+    `create_time` datetime    NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    PRIMARY KEY (`id`)
+) COMMENT = '文件存储表，预上传token与直传成功后落库';
+
 DROP TABLE IF EXISTS `sys_request_log`;
 CREATE TABLE `sys_request_log` (
     `id`          bigint NOT NULL AUTO_INCREMENT COMMENT '主键 ID，数据库自增',

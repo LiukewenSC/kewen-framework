@@ -26,6 +26,19 @@
             <groupId>com.cu.framework</groupId>
             <artifactId>login-spring-boot-starter</artifactId>
         </dependency>
+
+        <!-- spring-session-jdbc 需要 DataSource 与连接池，starter-jdbc 自带 HikariCP -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
+
+        <!-- demo 默认使用 H2 内存库，无需本地 MySQL 即可启动；版本由 spring-boot-dependencies 管理 -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
     </dependencies>
 
     <build>
