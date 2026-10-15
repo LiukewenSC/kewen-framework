@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  demo 用 IdP 元数据，证书由 keytool 自签名生成（CN=demo-idp），仅用于本地跑通 SAML 流程。
+  SSO/Logout 地址是占位，接真实 IdP 时整份替换本文件即可，配置项见 application.yml 的
+  cu.security.login.saml.registrations[].metadata-resource。
+  WantAuthnRequestsSigned 必须显式写值：IdpMetadataParser 会把它拆箱成 boolean，缺省会 NPE。
+-->
+
+<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" entityID="idp-demo3">
+<md:IDPSSODescriptor WantAuthnRequestsSigned="false"
+                     protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+    <md:KeyDescriptor use="signing">
+        <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+            <ds:X509Data>
+                <ds:X509Certificate>
+                    MIIC3DCCAcSgAwIBAgIGAaE+UwhBMA0GCSqGSIb3DQEBCwUAMC8xEjAQBgNVBAMMCWlkcC1kZW1vMzEMMAoGA1UECgwDSURQMQswCQYDVQQGEwJDTjAeFw0yNjEwMTUwNjQ5NTFaFw0yNzEwMTUwNjQ5NTFaMC8xEjAQBgNVBAMMCWlkcC1kZW1vMzEMMAoGA1UECgwDSURQMQswCQYDVQQGEwJDTjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjNj1XvJL/Kd5I3wUlZwZg746wxx420a84tiNxdUFHnSk5DEl3fiYDRifUuflmE/AtdzayBE/ue44BEQnlpaPzpor53Zu++7kpxST38lSmCaEehLcoKZ2+48/HwU5rqj/Mcm+yiqxO7HaE9CPtyHMoaGrhhrWB/IMkwgNMz+jgR7EqoxJfz6JpCgJHzpNredRgmrdzUs8kJJrpK8MwurWd5ZKC8xhE9GJnW63UhDeujf2xSwYzRCLLezPPm6TudqISU2vG1EDYElIwFWqnHvPozC/QwwozC0fTKNevY2tEy+8JVz6L0AF0QsMH+Ait/Pzb7f19ZUcvOhU5oKDEzrIcCAwEAATANBgkqhkiG9w0BAQsFAAOCAQEAUsnTEQn/OkRSDtBR1c7PSKwYoqPq4ANwjSP3p1HQ2iXHLiOkHX3DE/ZoxWu+9PgBlXISSTQHOqvAS5PxwJuDLXAX3i8FArol6sj2N83eBq+vmJI27KX1vZXPcA2VtVJ76/oJWz4Kz+ayYQcZtLdyhkVrZKZ0lC7L8KFSQyCVJ9YH5dDOyjrAi2jVk55+s6WZvIGhDBqm8j+f8i2wLtmLdPRJplxd3JgiLjjIMrd5gvu3uD9mXBKRLuZgnTjvA0u26BCN8DRRgDDqjVQCr2Fj5KsYJvxukzJfNNfrxO3QOiQiW+dmcU/pYCQKXHDfAxgo6+IoA2e72lMsev33PbfANw==
+                </ds:X509Certificate>
+            </ds:X509Data>
+        </ds:KeyInfo>
+    </md:KeyDescriptor>
+    <md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress</md:NameIDFormat>
+    <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+                            Location="http://localhost:9010/saml/sso"/>
+    <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+                            Location="http://localhost:9010/saml/sso"/>
+</md:IDPSSODescriptor>
+</md:EntityDescriptor>

@@ -1,0 +1,123 @@
+# login-boot-sample 配置参数总表
+# 自定义参数全部来自 login-spring-boot-starter：
+#   - @ConfigurationProperties：cu.security / cu.security.session / cu.security.remember-me
+#                               cu.security.login.password / cu.security.login.oauth2 / cu.security.login.saml
+#   - @Value：cu.auth.permit-url
+# 下面填的值就是属性类字段的初始值（默认值），没有初始值的留空。
+
+server:
+  port: 8080
+
+spring:
+  application:
+    name: login-sample
+
+  # ---- 以下为框架自带参数，不是本项目自定义的，因 starter 依赖而必须配 ----
+  # spring-session-jdbc 会把会话持久化到数据库，因此必须有 DataSource（见下方 datasource 段）
+  session:
+    store-type: jdbc
+    # 会话超时，starter 的 maximum-sessions 并发控制依赖它
+    timeout: 2D
+    jdbc:
+      # embedded = 嵌入式库（H2）启动时自动执行 schema-h2.sql 建 SPRING_SESSION 表
+      initialize-schema: embedded
+  # demo 默认 H2 内存库，无需本地 MySQL；换 MySQL 见文件末尾的 mysql 段
+  datasource:
+    url: jdbc:h2:mem:login-sample;MODE=MySQL;DATABASE_TO_LOWER=TRUE;CASE_INSENSITIVE_IDENTIFIERS=TRUE;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+cu:
+  auth:
+    # 免登录放行的 URL，多个用分号或逗号分隔；无默认值（默认空）
+    # 与 @SecurityIgnore 注解收集的 URL 合并后一起 permitAll
+    permit-url:
+
+  security:
+    # 当前用户接口地址。消费方是 auth-rbac-security-spring-boot-starter 的 AuthUserContextFilter，
+    # 本 sample 没引那个依赖，所以 /currentUser 在这个 demo 里不会生效
+    current-user-url: /currentUser
+
+    session:
+      # 最大 session 数量
+      maximum-sessions: 10
+      # true = 超限阻止新登录；false = 挤掉最早的会话
+      max-sessions-prevents-login: false
+
+    remember-me:
+      # 关闭时不注册 SpringSessionRememberMeServices
+      enabled: true
+      remember-parameter: remember-me
+      # 记住时长，单位秒，默认 30 天
+      validity-seconds: 2592000
+
+    login:
+      password:
+        # JSON 登录接口地址
+        login-url: /login
+        username-parameter: username
+        password-parameter: password
+
+      oauth2:
+        # 本地发起授权请求的端点，实际访问 /oauth2/authorize/{registrationId}
+        sso-authorization-uri: /oauth2/authorize
+        # IDP 回调处理端点（Ant 通配，与 starter 里的默认值一致）
+        login-processing-url: /login/oauth2/code/*
+        # clients 无默认值，但必须至少配一个：Oauth2Config 是无条件加载的自动配置，
+        # 代码里直接遍历 clients 且 InMemoryClientRegistrationRepository 不接受空列表，留空会启动失败。
+        # 下面是 protocol-type=oauth2 的手动端点模式（启动时不发网络请求，端点是占位，走真实 IDP 时再改）。
+        # protocol-type=oidc 会改成启动时就去拉 {issuer-uri}/.well-known/openid-configuration，那个 IDP 不在线就起不来。
+        clients:
+          - registration-id: demo-oauth2
+            protocol-type: oauth2                 # oauth2 | oidc，默认 oauth2
+            client-id: demo-client
+            client-secret: demo-secret
+            client-authentication-method: client_secret_basic   # client_secret_basic | client_secret_post | none
+            redirect-uri-template: "{baseUrl}/login/oauth2/code/{registrationId}"
+            scopes:
+              - read
+            authorization-uri: http://localhost:9000/oauth2/authorize
+            token-uri: http://localhost:9000/oauth2/token
+            user-info-uri: http://localhost:9000/oauth2/userinfo
+            user-name-attribute-name: sub         # userinfo 响应里代表用户唯一标识的字段
+            # —— 以下项本 demo 未使用，需要时再打开 ——
+            # oidc 模式：配 issuer-uri 自动发现端点，jwk-set-uri / client-name 只在 oidc 模式下被代码读取
+            # issuer-uri:
+            # jwk-set-uri:
+            # client-name:
+            # authorization-grant-type:           # 当前代码未读取，实际固定用 authorization_code
+            # user-info-authentication-method: header   # 当前代码未读取
+            # ignore-ssl: false                   # true = userinfo 请求跳过证书校验，只用于测试环境
+
+      saml:
+        # SP 侧 ACS（登录回调）地址模板
+        login-processing-url: /login/saml2/sso/{registrationId}
+        logout-request-url: /logout/saml2/slo
+        logout-response-url: /logout/saml2/slo
+        # 同样无默认值且必须至少配一个：SamlConfig 里直接 registrations.stream()，留空会启动失败
+        registrations:
+          - registration-id: demo-saml            # 留空时 getter 回退返回 sp-entity-id
+            sp-entity-id: cu-framework-local      # 需与 IDP 侧配置的 SP Audience 一致
+            metadata-resource: "classpath:saml/idp-metadata.xml"   # 会解析出 entityId / SSO URL / 验签证书
+            #登录入口：http://localhost:8080/saml2/authenticate/demo-saml
+            #ACS 回调：http://localhost:8080/login/saml2/sso/demo-saml
+            #SP 元数据：http://localhost:8080/saml2/service-provider-metadata/demo-saml
+            #退出：http://localhost:8080/saml2/logout
+        # SP 签名密钥库：不配则 AuthnRequest / LogoutRequest 不签名。
+        # demo 的 idp-metadata.xml 里 WantAuthnRequestsSigned=false，所以留空即可跑通
+        sp-signing-keystore:
+          keystore-resource:            # 无默认值，如 classpath:saml/sp-keystore.jks
+          keystore-password: changeit
+          key-alias: sp-signing
+          key-password: changeit
+
+  # login-page-url 已 @Deprecated 且当前未实现，故不列入
+
+# ---- 换用本地 MySQL 时把上面 spring.datasource 段替换为以下内容，并加 --spring.profiles.active=mysql ----
+# spring:
+#   datasource:
+#     url: jdbc:mysql://localhost:3306/your_database
+#     username: your_username
+#     password: your_password
+#     driver-class-name: com.mysql.cj.jdbc.Driver
