@@ -83,9 +83,4 @@ public class AuthRbacConfig {
     AuthMenuStore authMenuStore(){
         return new MemoryExpiredAuthMenuStore();
     }
-
-    @Bean
-    RbacResultAdviceHandler rbacResultAdviceHandler(){
-        return new RbacResultAdviceHandler();
-    }
 }

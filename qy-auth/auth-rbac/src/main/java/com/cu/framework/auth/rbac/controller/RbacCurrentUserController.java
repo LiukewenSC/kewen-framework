@@ -4,9 +4,9 @@ import com.cu.framework.auth.core.AuthCurrentUserContextHolder;
 import com.cu.framework.auth.core.entity.BaseAuth;
 import com.cu.framework.auth.rbac.composite.SysAuthMenuComposite;
 import com.cu.framework.auth.rbac.extension.RbacCurrentUserService;
-import com.cu.framework.auth.rbac.model.RbacResult;
 import com.cu.framework.auth.rbac.model.req.UpdatePasswordReq;
 import com.cu.framework.auth.rbac.model.resp.MenuRouteResp;
+import com.cu.framework.basic.model.Result;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,10 +43,10 @@ public class RbacCurrentUserController {
      * @return 路由菜单树
      */
     @GetMapping("/routeMenus")
-    public RbacResult<List<MenuRouteResp>> routeTrees(){
+    public Result<List<MenuRouteResp>> routeTrees(){
         Collection<BaseAuth> auths = authCurrentUserContextHolder.getAuths();
         List<MenuRouteResp> menuTree = sysAuthMenuComposite.getRouteAuthMenuTree(auths);
-        return RbacResult.success(menuTree);
+        return Result.success(menuTree);
     }
     /**
      * 当前登录人修改自己的密码（POST /currentUser/updatePassword），委托给容器中的 RbacCurrentUserService 处理
@@ -54,8 +54,8 @@ public class RbacCurrentUserController {
      * @return 操作结果
      */
     @PostMapping("/updatePassword")
-    public RbacResult<Void> updatePassword(@RequestBody @Validated UpdatePasswordReq req){
+    public Result<Void> updatePassword(@RequestBody @Validated UpdatePasswordReq req){
         rbacCurrentUserService.updatePassword(authCurrentUserContextHolder.getUser(),req.getOldPassword(), req.getNewPassword());
-        return RbacResult.success();
+        return Result.success();
     }
 }

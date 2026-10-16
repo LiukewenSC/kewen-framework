@@ -5,11 +5,12 @@ import com.cu.framework.auth.core.AuthDataOperation;
 import com.cu.framework.auth.core.AuthDataRange;
 import com.cu.framework.auth.core.AuthMenu;
 import com.cu.framework.auth.core.data.edit.IdDataEdit;
-import com.cu.framework.auth.rbac.model.RbacPageReq;
-import com.cu.framework.auth.rbac.model.RbacPageResult;
-import com.cu.framework.basic.model.Result;
 import com.cu.framework.auth.sample.mp.entity.TestauthAnnotationBusiness;
 import com.cu.framework.auth.sample.mp.service.TestauthAnnotationBusinessMpService;
+import com.cu.framework.basic.model.PageReq;
+import com.cu.framework.basic.model.PageResult;
+import com.cu.framework.basic.model.Result;
+import com.cu.framework.basic.support.utils.MybatisPageExecutor;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
@@ -50,15 +51,11 @@ public class TestAuthAnnotationController {
      */
     @AuthDataRange(businessFunction = "testrange")
     @GetMapping("/pageDataRange")
-    public Object pageDataRange(RbacPageReq RbacPageReq) {
-        Page<TestauthAnnotationBusiness> page = new Page<>(RbacPageReq.getPage(),RbacPageReq.getSize());
-        Page<TestauthAnnotationBusiness> RbacPageResult = testauthAnnotationBusinessMpService.page(page);
-        Assert.isTrue(!RbacPageResult.getRecords().isEmpty(), "测试的表数据为空");
-        RbacPageResult<TestauthAnnotationBusiness> result = new RbacPageResult<>();
-        result.setTotal(RbacPageResult.getTotal());
-        result.setData(RbacPageResult.getRecords());
-        result.setPage(RbacPageReq.getPage());
-        result.setSize(RbacPageResult.getSize());
+    public Object pageDataRange(PageReq pageReq) {
+        Page<TestauthAnnotationBusiness> page = new Page<>(pageReq.getPage(),pageReq.getSize());
+        Page<TestauthAnnotationBusiness> mpPage = testauthAnnotationBusinessMpService.page(page);
+        Assert.isTrue(!mpPage.getRecords().isEmpty(), "测试的表数据为空");
+        PageResult<TestauthAnnotationBusiness> result = MybatisPageExecutor.baomidouPage2PageResult(mpPage);
         return Result.success(result);
     }
 
