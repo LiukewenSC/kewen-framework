@@ -104,6 +104,12 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
+        <!-- 仅测试用：提供 MockHttpServletRequest / MockHttpServletResponse 来断言认证结果的交付姿态 -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>

@@ -118,6 +118,12 @@ public class SamlProperties {
         private String spEntityId = "cu-saml";
 
         /**
+         * 前端展示名，用于登录页渲染单点登录按钮的文案；未配置时由 resolveDisplayName 回退为注册 ID。
+         * 只用于展示，不参与任何协议字段，对应 OAuth2 侧的 client-name
+         */
+        private String displayName;
+
+        /**
          * 获取注册 ID；registrationId 未配置时回退返回 spEntityId
          * @return 注册 ID
          */
@@ -126,6 +132,18 @@ public class SamlProperties {
                 return spEntityId;
             }
             return registrationId;
+        }
+
+        /**
+         * 获取前端展示名；displayName 为空或空白时回退为 getRegistrationId()，
+         * 而后者自身还会回退到 spEntityId，因此返回值恒不为 null
+         * @return 展示名
+         */
+        public String resolveDisplayName() {
+            if (displayName == null || displayName.trim().isEmpty()) {
+                return getRegistrationId();
+            }
+            return displayName;
         }
     }
 }

@@ -1,7 +1,8 @@
 # login-boot-sample 配置参数总表
 # 自定义参数全部来自 login-spring-boot-starter：
 #   - @ConfigurationProperties：cu.security / cu.security.session / cu.security.remember-me
-#                               cu.security.login.password / cu.security.login.oauth2 / cu.security.login.saml
+#                               cu.security.login.password / cu.security.login.oauth2
+#                               cu.security.login.sso / cu.security.login.saml
 #   - @Value：cu.auth.permit-url
 # 下面填的值就是属性类字段的初始值（默认值），没有初始值的留空。
 
@@ -47,6 +48,16 @@ cu:
       validity-seconds: 2592000
 
     login:
+      # 三类单点登录协议共用的属性（SsoLoginProperties），账号密码登录不受影响
+      sso:
+        # 单点登录结束后浏览器回跳的前端地址。
+        # 留空 = OAuth2 / OIDC / SAML2 的成功与失败响应都返回 JSON，与引入本属性之前逐字一致；
+        # 配置后三类协议一律 302 到该地址并追加 kewenLoginState=success|failure。
+        # 相对地址按当前请求解析，写绝对地址则原样使用（前端独立部署时用它）。
+        # URL 只带状态标记，不带会话标识与令牌，会话靠 Cookie 生效。
+        # 本 sample 的登录页是同源静态页，放在 src/main/resources/static/login.html
+        redirect-url: /login.html
+
       password:
         # JSON 登录接口地址
         login-url: /login
@@ -76,14 +87,59 @@ cu:
             token-uri: http://localhost:9010/oauth2/token
             user-info-uri: http://localhost:9010/oauth2/userinfo
             user-name-attribute-name: sub         # userinfo 响应里代表用户唯一标识的字段
+            client-name: 本地 IDP（OAuth2 手动端点）   # 登录页按钮文案；不配则回退 registration-id
+          # —— 下面两条只为演示"入口数量随配置变化"，端点与上面同指一个 IDP ——
+          # 复制客户端条目是零成本的：protocol-type=oauth2 时启动不发网络请求，端点值只是占位。
+          # 注意 IDP 侧只登记了 demo-oauth2 的回调地址，点这两条会被 IDP 以 invalid_redirect_uri 拒绝；
+          # 要真跑通就在 IDP 后台把对应的 redirect_uris 与 saml_acs_url 加上。
+          - registration-id: demo-oauth2-secondary
+            protocol-type: oauth2
+            client-id: client_50d901b5844247df
+            client-secret: 35fcd41f49ed477992cc9ff6dbbd4e19d193b4e627ee4030aca195d2dec8a053
+            client-authentication-method: client_secret_basic
+            redirect-uri-template: "{baseUrl}/login/oauth2/code/{registrationId}"
+            scopes:
+              - read
+            authorization-uri: http://localhost:9010/oauth2/authorize
+            token-uri: http://localhost:9010/oauth2/token
+            user-info-uri: http://localhost:9010/oauth2/userinfo
+            user-name-attribute-name: sub
+            client-name: 第二个 OAuth2 入口
+          - registration-id: demo-oauth2-third
+            protocol-type: oauth2
+            client-id: client_50d901b5844247df
+            client-secret: 35fcd41f49ed477992cc9ff6dbbd4e19d193b4e627ee4030aca195d2dec8a053
+            client-authentication-method: client_secret_basic
+            redirect-uri-template: "{baseUrl}/login/oauth2/code/{registrationId}"
+            scopes:
+              - read
+            authorization-uri: http://localhost:9010/oauth2/authorize
+            token-uri: http://localhost:9010/oauth2/token
+            user-info-uri: http://localhost:9010/oauth2/userinfo
+            user-name-attribute-name: sub
+            client-name: 第三个 OAuth2 入口
             # —— 以下项本 demo 未使用，需要时再打开 ——
-            # oidc 模式：配 issuer-uri 自动发现端点，jwk-set-uri / client-name 只在 oidc 模式下被代码读取
             # issuer-uri:
             # jwk-set-uri:
-            # client-name:
             # authorization-grant-type:           # 当前代码未读取，实际固定用 authorization_code
             # user-info-authentication-method: header   # 当前代码未读取
             # ignore-ssl: false                   # true = userinfo 请求跳过证书校验，只用于测试环境
+          # —— OIDC 条目默认不配，原因如下 ——
+          # protocol-type: oidc 会在应用启动构建 ClientRegistration 时就去拉
+          # {issuer-uri}/.well-known/openid-configuration，身份源不在线整个应用直接起不来。
+          # 本地 IDP 的这个文档是在线的（http://localhost:9010/.well-known/openid-configuration），
+          # 所以要演示 oidc 类别可以打开下面这条；scope 必须含 openid，否则 IDP 不发 id_token。
+          # - registration-id: demo-oidc
+          #   protocol-type: oidc
+          #   issuer-uri: http://localhost:9010
+          #   client-id: client_50d901b5844247df
+          #   client-secret: 35fcd41f49ed477992cc9ff6dbbd4e19d193b4e627ee4030aca195d2dec8a053
+          #   scopes:
+          #     - openid
+          #     - profile
+          #     - email
+          #   client-name: 本地 IDP（OIDC 自动发现）
+          #   user-name-attribute-name: sub
 
       saml:
         # SP 侧 ACS（登录回调）地址模板
@@ -94,6 +150,7 @@ cu:
         registrations:
           - registration-id: demo-saml            # 留空时 getter 回退返回 sp-entity-id
             sp-entity-id: cu-framework-local      # 需与 IDP 侧配置的 SP Audience 一致
+            display-name: 本地 IDP（SAML 单点登录）   # 登录页按钮文案；不配则回退 registration-id
             metadata-resource: "classpath:saml/metadata/idp-metadata.xml"   # 会解析出 entityId / SSO URL / 验签证书
             #登录入口：http://localhost:8080/saml2/authenticate/demo-saml
             #ACS 回调：http://localhost:8080/login/saml2/sso/demo-saml

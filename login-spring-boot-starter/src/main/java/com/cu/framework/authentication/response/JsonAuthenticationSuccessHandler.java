@@ -27,11 +27,15 @@ public class JsonAuthenticationSuccessHandler implements SecurityAuthenticationS
     private AuthenticationSuccessResultResolver resultResolver;
     /** Authentication 转登录成功响应体的转换器提供者 */
     private ObjectProvider<AuthenticationSuccessResultConverter> jsonSuccessResultConverter;
+    /** 认证结果交付姿态判定器，决定单点登录成功是否改为整页重定向 */
+    private LoginDeliveryResolver loginDeliveryResolver;
 
-    public JsonAuthenticationSuccessHandler(AuthenticationSuccessResultResolver resultResolver , ObjectMapper objectMapper, ObjectProvider<AuthenticationSuccessResultConverter> jsonSuccessResultConverter) {
+    public JsonAuthenticationSuccessHandler(AuthenticationSuccessResultResolver resultResolver , ObjectMapper objectMapper, ObjectProvider<AuthenticationSuccessResultConverter> jsonSuccessResultConverter,
+                                            LoginDeliveryResolver loginDeliveryResolver) {
         this.objectMapper = objectMapper;
         this.resultResolver = resultResolver;
         this.jsonSuccessResultConverter = jsonSuccessResultConverter;
+        this.loginDeliveryResolver = loginDeliveryResolver;
     }
 
     /**
@@ -45,6 +49,13 @@ public class JsonAuthenticationSuccessHandler implements SecurityAuthenticationS
      */
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+
+        // 单点登录的回调由浏览器整页承载，此时没有任何脚本在等响应体，改为把浏览器送回前端。
+        // 判定必须早于 resultResolver 调用，否则消费方自定义的解析器会在跳转场景被无谓执行一次。
+        if (loginDeliveryResolver.shouldRedirect(request)) {
+            loginDeliveryResolver.redirect(response, LoginDeliveryResolver.STATE_SUCCESS);
+            return;
+        }
 
         // 所有协议返回的都是SecurityUser，不是的需要自定义AuthenticationProvider，并返回SecurityUser
         LoginSuccessResult loginSuccessResult = null;

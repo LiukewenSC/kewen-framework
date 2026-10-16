@@ -16,7 +16,49 @@
 | OIDC | `cu.security.login.oauth2`（`protocol-type: oidc`） | `Oauth2Config` | 同上，额外走 `OidcUserService` 校验 ID Token | ❌ |
 | SAML2 | `cu.security.login.saml` | `SamlConfig` | `Saml2WebSsoAuthenticationRequestFilter` + `Saml2WebSsoAuthenticationFilter` | ❌ |
 
-所有 `SecurityAuthenticationSuccessHandler` / `SecurityAuthenticationExceptionResolverHandler` 都是共享的：三条链路的成功走同一份 JSON 输出，异常走同一份 `HandlerExceptionResolver` 列表；每种协议各自实现一个 `AuthenticationSuccessResultConverter`（`SecurityUser...` / `Oauth2...` / `Saml...`）来分派 principal。
+所有 `SecurityAuthenticationSuccessHandler` / `SecurityAuthenticationExceptionResolverHandler` 都是共享的：三条链路的结果处理走同一份实现，异常走同一份 `HandlerExceptionResolver` 列表；每种协议各自实现一个 `AuthenticationSuccessResultConverter`（`SecurityUser...` / `Oauth2...` / `Saml...`）来分派 principal。
+
+## 跨协议共享配置（`cu.security.login.sso`）
+
+三类单点登录协议共用一组属性，对应 `SsoLoginProperties`，账号密码登录不受其影响。
+
+| 字段 | 默认值 | 必填 | 说明 |
+|---|---|---|---|
+| `redirect-url` | 无 | 否 | 单点登录流程结束后浏览器回跳的前端地址。**留空时 OAuth2 / OIDC / SAML2 的成功与失败响应都保持 JSON 输出，与引入该属性之前逐字一致**；配置后三类协议的成功与失败一律改为 302 到该地址并追加 `kewenLoginState=success|failure` |
+
+相对地址由容器按当前请求的 scheme/host/port 解析，绝对地址原样使用，因此同一项同时适用于同源静态页与独立部署的前端。回跳 URL 只携带状态标记，不含会话标识与令牌，会话靠 Cookie 生效。
+
+**各入口的交付姿态**
+
+分流依据是"请求命中的认证端点属于哪一类协议"，由 `LoginDeliveryResolver` 统一判定，成功与失败共用同一条规则。之所以不看 `Authentication` 对象的类型：认证失败时处理器只拿得到 `AuthenticationException`，其中的 Authentication 对象并不可靠；而处理端点由各自的配置项给出，两类结果都落在同一个请求上。
+
+| 请求命中的端点 | 配置了 `redirect-url` | 未配置 `redirect-url` |
+|---|---|---|
+| `/login`（账号密码 JSON 登录） | JSON | JSON |
+| `/login/oauth2/code/*`（OAuth2 / OIDC 回调） | **302** + `?kewenLoginState=success` | JSON |
+| `/login/saml2/sso/{registrationId}`（SAML ACS） | **302** + `?kewenLoginState=success` | JSON |
+| 上述两个回调端点上的**认证失败** | **302** + `?kewenLoginState=failure` | JSON 错误体 |
+| `/logout`、业务接口、静态资源 | JSON | JSON |
+
+要点：
+
+- **账号密码登录永远返回 JSON**，不因请求是脚本发出还是表单导航而改变；登出同理。
+- 判定名单只含两个 SSO 回调端点，因此业务接口上的未登录请求仍是既有的 JSON 契约。
+- **行为变更**：配置 `redirect-url` 后，单点登录的失败（用户在身份源取消、state / InResponseTo / Audience 校验不通过）不再返回 JSON 错误体，而是 302 回前端并带 `failure` 标记。账号密码的失败响应（含状态码 403 等既有语义）不受影响。
+- 重定向发生在写出结果之前，消费方自定义的 `AuthenticationSuccessResultResolver` 在跳转场景不会被调用。
+
+## 未认证请求会看到什么
+
+下表为 `sample/login-boot-sample` 实测结果，未做任何额外放行：
+
+| 请求 | 响应 |
+|---|---|
+| `GET /`、`GET /login` | **HTTP 200** + `{"code":401,"success":false,"message":"请求的权限不足，需要提升，请重新登录"}` |
+| `GET /oauth2/authorization/{id}` | **HTTP 302**，Location 指向 IDP 授权端点并带 `state` 与 `redirect_uri` |
+| `GET /saml2/authenticate/{id}` | **HTTP 200** + HTTP-POST Binding 的自动提交表单（含 `SAMLRequest`） |
+| `*.html`、`/js/**`、`/css/**` | 经 `web.ignoring` 绕过安全过滤器链，资源不存在时由 MVC 返回 **404** 而非 401 |
+
+入口点产出的是 **HTTP 200 + 业务码 401**，不是 401 状态码；调用方判断登录态失效要读 `code` / `success`，不能只看 HTTP 状态码。
 
 ---
 
@@ -242,6 +284,7 @@ cu:
 | `registration-id` | 未填时 getter 回退返回 `sp-entity-id` | 建议 | 用于路径变量 `/saml2/authenticate/{registrationId}` |
 | `sp-entity-id` | `cu-saml` | ✅ | 需与 IDP 侧配置的 SP Audience 一致，否则 `AudienceRestriction` 校验失败 |
 | `metadata-resource` | `classpath:saml/idp-metadata.xml` | ✅ | 解析出 entityId / SSO URL / 验签证书 / SLO URL |
+| `display-name` | 未填时回退 `registration-id`（再回退 `sp-entity-id`） | 否 | 仅前端登录页按钮文案使用，不参与任何协议字段；对应 OAuth2 侧的 `client-name` |
 
 **`sp-signing-keystore`**
 
@@ -345,6 +388,93 @@ cu:
 - `saml/SamlLogoutController.java`
 - `saml/SamlAuthenticationSuccessResultConverter.java`
 - `docs/说明文档/SAML2_SP_Metadata配置指南.md`
+```
+
+---
+
+# 四、登录方式发现接口
+
+## 背景
+
+前端登录页要知道"现在能用什么方式登录"，但身份源是配置出来的、数量不固定。本接口把配置里的注册项如实吐成入口列表，前端按条渲染，配置增减不需要改前端代码。
+
+- 配置来源：`cu.security.login.oauth2.clients`、`cu.security.login.saml.registrations`、`cu.security.login.password`。
+- 实现类：`loginoption/LoginOptionsEndpoint`（经 `SecurityBeanConfig` 注册为 Bean，非组件扫描），装配逻辑在 `loginoption/LoginOptionsFactory`。
+- **未经认证即可访问**：类上标 `@SecurityIgnore`，URL 由 `PropertiesUrlSecurityCustomizer` 收集进放行清单，不需要往 `cu.auth.permit-url` 里手写。
+
+## 接口契约
+
+`GET /api/login/options` → `Content-Type: application/json`
+
+```json
+{
+  "code": 200,
+  "success": true,
+  "message": "成功",
+  "data": {
+    "password": {
+      "loginUrl": "/login",
+      "usernameParameter": "username",
+      "passwordParameter": "password"
+    },
+    "sso": [
+      {
+        "protocol": "oauth2",
+        "registrationId": "demo-oauth2",
+        "displayName": "演示 OAuth2 登录",
+        "loginUrl": "/oauth2/authorization/demo-oauth2"
+      },
+      {
+        "protocol": "saml",
+        "registrationId": "demo-saml",
+        "displayName": "企业单点登录",
+        "loginUrl": "/saml2/authenticate/demo-saml"
+      }
+    ]
+  }
+}
+```
+
+字段说明：
+
+| 字段 | 含义 | 取值来源 |
+|---|---|---|
+| `password.loginUrl` | 账号密码的提交地址 | `cu.security.login.password.login-url` |
+| `password.usernameParameter` / `passwordParameter` | 表单字段名，前端不硬编码 | `username-parameter` / `password-parameter` |
+| `sso[].protocol` | `oauth2` \| `oidc` \| `saml` | oauth2/oidc 取该客户端的 `protocol-type`；saml 固定 `saml` |
+| `sso[].registrationId` | 身份源注册标识 | `registration-id`（SAML 缺省回退 `sp-entity-id`） |
+| `sso[].displayName` | 按钮文案，恒非空 | `client-name` / `display-name`，缺省回退 `registrationId` |
+| `sso[].loginUrl` | 发起登录的地址，前端直接顶层导航跳转 | oauth2/oidc 用 `sso-authorization-uri` 拼标识；saml 用固定前缀 `/saml2/authenticate` 拼标识 |
+
+## 明确不返回的东西
+
+接口对未认证请求开放，因此响应只含展示所需字段，**不含** `client-id`、`client-secret`、密钥库口令与私钥、证书与 `metadata-resource` 路径、以及授权/令牌/userinfo 端点地址。
+
+**也不返回记住我**：`cu.security.remember-me` 虽有配置类，但认证流程里没有接入（既未调用 `http.rememberMe(...)`，Spring Session 的实现又只读请求参数），所以接口不声明它、前端不应渲染对应控件。
+
+## 行为约定
+
+- 入口条数 = 配置有效（能解析出注册标识）的身份源条数；某条 oauth2 客户端没配 `registration-id` 会被排除并输出 WARN，日志带上它在配置中的位置。
+- `protocol-type: oidc` 的条目在**应用启动时**就要拉取 issuer 的 discovery 文档，身份源不在线则整个应用起不来（这是 OIDC 模式本身的约束，与本接口无关）。要多演示几个入口，加 `protocol-type: oauth2` 的条目最省事，它们的端点是配置值、启动不发网络请求。
+
+## 快速自测流程
+
+1. 启动 `sample/login-boot-sample`（默认 h2 profile，端口 8080），IDP 侧无需登录态。
+2. `curl -s http://localhost:8080/api/login/options` —— 未带任何 Cookie 就应返回上述结构。
+3. 核对 `sso[].displayName` 等于 yml 里的 `client-name` / `display-name`，`loginUrl` 与协议前缀一致。
+4. 往 `clients` 里复制一条并改 `registration-id`，重启后再 curl，条目数 +1。
+5. `grep -c remember` 结果为 0，且响应里搜不到 `client-secret` 的值。
+
+## 参考代码
+
+```
+- `loginoption/LoginOptionsEndpoint.java`
+- `loginoption/LoginOptionsFactory.java`
+- `loginoption/LoginOptions.java`
+- `properties/SsoLoginProperties.java`
+- `response/LoginDeliveryResolver.java`
+- `src/test/java/.../loginoption/LoginOptionsFactoryTest.java`
+- `sample/login-boot-sample/src/main/resources/static/`（示例前端页）
 ```
 
 ---
