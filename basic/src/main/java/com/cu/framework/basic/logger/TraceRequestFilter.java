@@ -25,7 +25,7 @@ import java.io.IOException;
 public class TraceRequestFilter implements EarlyRequestFilter {
 
     /** 流水号处理器，容器中无 TraceIdProcessor 时默认为基于请求头的 HeaderTraceIdProcessor */
-    private TraceIdProcessor traceIdProcessor;
+    private final TraceIdProcessor traceIdProcessor;
 
     /**
      * 构造过滤器，优先使用容器中的 TraceIdProcessor，未注册时回退到 HeaderTraceIdProcessor
