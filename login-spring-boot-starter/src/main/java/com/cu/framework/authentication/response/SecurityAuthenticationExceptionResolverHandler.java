@@ -31,6 +31,11 @@ public class SecurityAuthenticationExceptionResolverHandler implements Authentic
     List<HandlerExceptionResolver> handlerExceptionResolvers;
 
     /**
+     * 认证结果交付姿态判定器，为空时一律按 JSON 返回
+     */
+    private LoginDeliveryResolver loginDeliveryResolver;
+
+    /**
      * AuthenticationEntryPoint 的实现
      * 处理未进入登录但后续需要验证登录的异常
      */
@@ -61,7 +66,13 @@ public class SecurityAuthenticationExceptionResolverHandler implements Authentic
     /**
      * 具体解析器的处理逻辑
      */
-    private void resolver(HttpServletRequest request, HttpServletResponse response, Exception exception) {
+    private void resolver(HttpServletRequest request, HttpServletResponse response, Exception exception) throws IOException {
+        // 单点登录的失败同样由浏览器整页承载，与成功路径共用一条判定规则，避免把裸 JSON 甩在用户屏幕上。
+        // 账号密码端点与非认证端点不在判定名单内，因此它们的 JSON 错误契约完全不变。
+        if (loginDeliveryResolver.shouldRedirect(request)) {
+            loginDeliveryResolver.redirect(response, LoginDeliveryResolver.STATE_FAILURE);
+            return;
+        }
         //拿到容器中配置的HandlerExceptionResolver，并调用其解析逻辑，这个类本身就会扫描`@ControllerAdvice`并加入HandlerExceptionResolver中
         for (HandlerExceptionResolver handlerExceptionResolver : handlerExceptionResolvers) {
             ModelAndView modelAndView = handlerExceptionResolver.resolveException(request, response, null, exception);
@@ -85,6 +96,11 @@ public class SecurityAuthenticationExceptionResolverHandler implements Authentic
 
     public SecurityAuthenticationExceptionResolverHandler setHandlerExceptionResolvers(List<HandlerExceptionResolver> handlerExceptionResolvers) {
         this.handlerExceptionResolvers = handlerExceptionResolvers;
+        return this;
+    }
+
+    public SecurityAuthenticationExceptionResolverHandler setLoginDeliveryResolver(LoginDeliveryResolver loginDeliveryResolver) {
+        this.loginDeliveryResolver = loginDeliveryResolver;
         return this;
     }
 

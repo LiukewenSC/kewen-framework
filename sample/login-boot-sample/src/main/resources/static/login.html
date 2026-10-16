@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>登录 - cu-framework</title>
+    <link rel="stylesheet" href="/css/login.css">
+</head>
+<body>
+<main class="card">
+    <h1 class="title">cu-framework 登录示例</h1>
+    <p class="subtitle">后端只返回 JSON，页面全部由这里的原生 JS 渲染</p>
+
+    <div id="notice" class="notice" hidden></div>
+
+    <!-- 未登录视图 -->
+    <section id="logged-out" hidden>
+        <form id="password-form" class="form">
+            <div class="field">
+                <label for="username">用户名</label>
+                <input id="username" name="username" type="text" autocomplete="username" required>
+            </div>
+            <div class="field">
+                <label for="password">密码</label>
+                <input id="password" name="password" type="password" autocomplete="current-password" required>
+            </div>
+            <div id="form-error" class="error" hidden></div>
+            <button id="submit-button" class="primary" type="submit">登录</button>
+            <p class="hint">演示账号：<code>admin / admin123</code> 或 <code>demo / demo123</code></p>
+        </form>
+
+        <div class="divider"><span>单点登录</span></div>
+        <div id="sso-list" class="sso-list">
+            <p class="hint">正在读取可用登录方式…</p>
+        </div>
+    </section>
+
+    <!-- 已登录视图 -->
+    <section id="logged-in" hidden>
+        <dl class="profile">
+            <dt>登录名</dt>
+            <dd id="me-username">-</dd>
+            <dt>权限</dt>
+            <dd id="me-authorities">-</dd>
+        </dl>
+        <p class="hint">会话凭 Cookie 维持，刷新页面后仍由 <code>GET /api/me</code> 判定登录态。</p>
+        <button id="logout-button" class="primary" type="button">退出登录</button>
+    </section>
+</main>
+
+<script src="/js/login.js"></script>
+</body>
+</html>
