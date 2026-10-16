@@ -23,6 +23,11 @@
             <artifactId>auth-core</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.cu.framework</groupId>
+            <artifactId>basic-support</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus</artifactId>
         </dependency>

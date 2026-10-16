@@ -5,10 +5,10 @@ import com.cu.framework.auth.core.AuthCurrentUserContextHolder;
 import com.cu.framework.auth.core.entity.BaseAuth;
 import com.cu.framework.auth.rbac.composite.SysAuthMenuComposite;
 import com.cu.framework.auth.rbac.model.MenuTypeConstant;
-import com.cu.framework.auth.rbac.model.RbacResult;
 import com.cu.framework.auth.rbac.model.req.MenuApiSaveReq;
 import com.cu.framework.auth.rbac.model.resp.MenuApiAndAuthResp;
 import com.cu.framework.auth.rbac.model.resp.MenuApiResp;
+import com.cu.framework.basic.model.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,9 +41,9 @@ public class RbacMenuApiController {
      * @return API 菜单树，节点上附带各自的权限集合体
      */
     @GetMapping("/tree")
-    public RbacResult<List<MenuApiAndAuthResp>> menuTree(){
+    public Result<List<MenuApiAndAuthResp>> menuTree(){
         List<MenuApiAndAuthResp> menuTree = sysAuthMenuComposite.getApiAuthMenuTree(true);
-        return RbacResult.success(menuTree);
+        return Result.success(menuTree);
     }
     /**
      * 更新菜单 API 及其权限集合体（POST /menu/api/update）；
@@ -52,13 +52,13 @@ public class RbacMenuApiController {
      * @return 操作结果，data 恒为 null
      */
     @PostMapping("/update")
-    public RbacResult<List<MenuApiResp>> updateMenu(@RequestBody MenuApiSaveReq req){
+    public Result<List<MenuApiResp>> updateMenu(@RequestBody MenuApiSaveReq req){
         if (isOwnerWithoutAuthObject(req)){
             throw new RuntimeException("这样谁都没有权限查看了");
         }
         Collection<BaseAuth> auths = authCurrentUserContextHolder.getAuths();
         sysAuthMenuComposite.updateMenu(req);
-        return RbacResult.success(null);
+        return Result.success(null);
     }
 
     /**

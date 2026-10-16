@@ -3,13 +3,13 @@ package com.cu.framework.auth.sample.controller;
 import com.cu.framework.auth.core.AuthDataOperation;
 import com.cu.framework.auth.core.AuthDataRange;
 import com.cu.framework.auth.core.AuthMenu;
-import com.cu.framework.auth.rbac.model.RbacPageConverter;
-import com.cu.framework.auth.rbac.model.RbacPageReq;
-import com.cu.framework.auth.rbac.model.RbacPageResult;
-import com.cu.framework.auth.sample.model.MeetingRoomApproveReq;
 import com.cu.framework.auth.sample.mp.entity.MeetingRoom;
 import com.cu.framework.auth.sample.mp.service.MeetingRoomMpService;
+import com.cu.framework.auth.sample.model.MeetingRoomApproveReq;
+import com.cu.framework.basic.model.PageReq;
+import com.cu.framework.basic.model.PageResult;
 import com.cu.framework.basic.model.Result;
+import com.cu.framework.basic.support.utils.MybatisPageExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,13 +50,13 @@ public class MeetingRoomApproveController {
 
     /**
      * 查询可预约列表
-     * @param RbacPageReq
+     * @param pageReq
      * @return
      */
     @GetMapping(value = "/page")
     @AuthDataRange(businessFunction = BUSINESS_FUNCTION,operate = OPERATE_APPROVE)
-    public Result<RbacPageResult<MeetingRoom>> pageapproves(@Validated RbacPageReq RbacPageReq) {
-        RbacPageResult<MeetingRoom> meetingRoomPageResult = RbacPageConverter.pageAndConvert(RbacPageReq, meetingRoomService);
+    public Result<PageResult<MeetingRoom>> pageapproves(@Validated PageReq pageReq) {
+        PageResult<MeetingRoom> meetingRoomPageResult = MybatisPageExecutor.pageAndConvert(pageReq, meetingRoomService);
         return Result.success(meetingRoomPageResult);
     }
 

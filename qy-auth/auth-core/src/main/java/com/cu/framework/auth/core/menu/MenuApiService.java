@@ -3,7 +3,7 @@ package com.cu.framework.auth.core.menu;
 import java.util.List;
 
 /**
- * 菜单API入库类
+ * 菜单API持久化类，用于保存数据到数据库，只做数据库原始的存储，不会有其它逻辑
  *
  * @author kewen
  * @since 2024-08-09

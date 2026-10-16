@@ -1,8 +1,10 @@
-package com.cu.framework.auth.rbac.model;
+package com.cu.framework.basic.support.utils;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.cu.framework.basic.model.PageReq;
+import com.cu.framework.basic.model.PageResult;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -11,20 +13,20 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
- * RBAC 分页转换工具，负责 RbacPageReq、MyBatis-Plus Page 与 RbacPageResult 之间的转换，并提供直接执行分页查询的封装
+ * RBAC 分页转换工具，负责 PageReq、MyBatis-Plus Page 与 PageResult 之间的转换，并提供直接执行分页查询的封装
  * @author kewen
  * @since 2026-02-12
  */
-public class RbacPageConverter {
+public class MybatisPageExecutor {
 
     /**
-     * 将 RbacPageReq 转换为 MyBatis-Plus 的分页对象
-     * @param rbacPageReq 分页请求参数
+     * 将 PageReq 转换为 MyBatis-Plus 的分页对象
+     * @param PageReq 分页请求参数
      * @param <T> 数据类型
      * @return Page 分页对象
      */
-    public static <T> Page<T> pageReq2BaomidouPage(RbacPageReq rbacPageReq) {
-        return new Page<>(rbacPageReq.getPage(), rbacPageReq.getSize());
+    public static <T> Page<T> pageReq2BaomidouPage(PageReq PageReq) {
+        return new Page<>(PageReq.getPage(), PageReq.getSize());
     }
 
     /**
@@ -33,7 +35,7 @@ public class RbacPageConverter {
      * @param <T>
      * @return
      */
-    public static <T> RbacPageResult<T> baomidouPage2PageResult(Page<T> page) {
+    public static <T> PageResult<T> baomidouPage2PageResult(Page<T> page) {
         return baomidouPage2PageResult(page, page.getRecords());
     }
 
@@ -44,8 +46,8 @@ public class RbacPageConverter {
      * @param <T>
      * @return
      */
-    public static <T> RbacPageResult<T> baomidouPage2PageResult(Page page, List<T> data) {
-        return RbacPageResult.of(page.getCurrent(),page.getSize(),page.getTotal(),data);
+    public static <T> PageResult<T> baomidouPage2PageResult(Page page, List<T> data) {
+        return PageResult.of((int)page.getCurrent(),(int)page.getSize(),(int)page.getTotal(),data);
     }
 
     /**
@@ -55,7 +57,7 @@ public class RbacPageConverter {
      * @param <T> 数据类型
      * @return
      */
-    public static <T> RbacPageResult<T> pageAndConvert(RbacPageReq req, IService<T> service) {
+    public static <T> PageResult<T> pageAndConvert(PageReq req, IService<T> service) {
         return pageAndConvert(req, service, new Query<T>());
     }
 
@@ -67,7 +69,7 @@ public class RbacPageConverter {
      * @param <T> 数据类型
      * @return
      */
-    public static <T> RbacPageResult<T> pageAndConvert(RbacPageReq req, IService<T> service, Query<T> query) {
+    public static <T> PageResult<T> pageAndConvert(PageReq req, IService<T> service, Query<T> query) {
         Page<T> baomidoPage = new Page<>(req.getPage(), req.getSize());
 
         Consumer<Page<T>> consumer = query == null ? null : query.getPageConsumer();
@@ -93,11 +95,11 @@ public class RbacPageConverter {
      * @param <R> 返回参数
      * @return
      */
-    public static <T, R> RbacPageResult<R> pageAndConvert(RbacPageReq req, IService<T> service, Query<T> query, Function<List<T>, List<R>> function) {
-        RbacPageResult<T> rbacPageResult = pageAndConvert(req, service, query);
-        List<T> listT = rbacPageResult.getData();
+    public static <T, R> PageResult<R> pageAndConvert(PageReq req, IService<T> service, Query<T> query, Function<List<T>, List<R>> function) {
+        PageResult<T> PageResult = pageAndConvert(req, service, query);
+        List<T> listT = PageResult.getData();
         List<R> listR = function.apply(listT);
-        return RbacPageResult.of(rbacPageResult.getPage(), rbacPageResult.getSize(), rbacPageResult.getTotal(), listR);
+        return PageResult.of(PageResult.getPage(), PageResult.getSize(), PageResult.getTotal(), listR);
     }
 
     /**

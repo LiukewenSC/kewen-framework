@@ -2,8 +2,8 @@ package com.cu.framework.auth.rbac.controller;
 
 import com.cu.framework.auth.core.AuthMenu;
 import com.cu.framework.auth.rbac.composite.SysAuthMenuComposite;
-import com.cu.framework.auth.rbac.model.RbacResult;
 import com.cu.framework.auth.rbac.model.resp.MenuRouteResp;
+import com.cu.framework.basic.model.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,9 +29,9 @@ public class RbacMenuRouteController {
      * @return
      */
     @GetMapping("/tree")
-    public RbacResult<List<MenuRouteResp>> routeTrees(){
+    public Result<List<MenuRouteResp>> routeTrees(){
         List<MenuRouteResp> menuTree = sysAuthMenuComposite.getRouteAuthMenuTree(true);
-        return RbacResult.success(menuTree);
+        return Result.success(menuTree);
     }
 
 }

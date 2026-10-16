@@ -60,7 +60,7 @@ public class MenuApiGeneratorProcessor implements ApplicationContextAware,Runnab
     public void run() {
         //处理对应关系，找到路径信息，在此处处理不会引发系统启动的问题
         if (menuApiService ==null){
-            log.warn("menuApiStore is null");
+            log.warn("menuApiService is null");
             return;
         }
         process();

@@ -20,7 +20,7 @@ public class MenuApiEntity<T> {
     String name;
     /** 上级菜单ID，根据 parentPath 对应的菜单取得，无上级时为根节点ID */
     T parentId;
-    /** 上级菜单路径，来自 Controller 类上 @RequestMapping 的路径 */
+    /** 上级菜单路径，主要用于根据此路径来寻找父id */
     String parentPath;
 
     /**

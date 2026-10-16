@@ -1,13 +1,13 @@
 package com.cu.framework.auth.rbac.controller;
 
 import com.cu.framework.auth.core.AuthMenu;
-import com.cu.framework.auth.rbac.model.RbacIdReq;
-import com.cu.framework.auth.rbac.model.RbacPageConverter;
-import com.cu.framework.auth.rbac.model.RbacPageReq;
-import com.cu.framework.auth.rbac.model.RbacPageResult;
-import com.cu.framework.auth.rbac.model.RbacResult;
 import com.cu.framework.auth.rbac.mp.entity.SysRole;
 import com.cu.framework.auth.rbac.mp.service.SysRoleMpService;
+import com.cu.framework.basic.model.IdReq;
+import com.cu.framework.basic.model.PageReq;
+import com.cu.framework.basic.model.PageResult;
+import com.cu.framework.basic.model.Result;
+import com.cu.framework.basic.support.utils.MybatisPageExecutor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,9 +37,9 @@ public class RbacRoleController {
      */
     @GetMapping("/list")
     @AuthMenu(name = "角色列表")
-    public RbacResult<List<SysRole>> listRole(){
+    public Result<List<SysRole>> listRole(){
         List<SysRole> list = sysRoleMpService.list();
-        return RbacResult.success(list);
+        return Result.success(list);
     }
     /**
      * 分页查询角色（GET /rbac/role/page，菜单权限"角色分页"）
@@ -48,9 +48,9 @@ public class RbacRoleController {
      */
     @GetMapping("/page")
     @AuthMenu(name = "角色分页")
-    public RbacResult<RbacPageResult<SysRole>> pageRole(@Validated RbacPageReq req){
-        RbacPageResult<SysRole> sysRoleRbacPageResult = RbacPageConverter.pageAndConvert(req, sysRoleMpService);
-        return RbacResult.success(sysRoleRbacPageResult);
+    public Result<PageResult<SysRole>> pageRole(@Validated PageReq req){
+        PageResult<SysRole> pageResult = MybatisPageExecutor.pageAndConvert(req, sysRoleMpService);
+        return Result.success(pageResult);
     }
     /**
      * 新增角色（POST /rbac/role/add，菜单权限"添加角色"）
@@ -59,9 +59,9 @@ public class RbacRoleController {
      */
     @PostMapping("/add")
     @AuthMenu(name = "添加角色")
-    public RbacResult<Boolean> add(@RequestBody SysRole sysRole){
+    public Result<Boolean> add(@RequestBody SysRole sysRole){
         boolean b = sysRoleMpService.save(sysRole);
-        return RbacResult.success(b);
+        return Result.success(b);
     }
     /**
      * 按 ID 修改角色（POST /rbac/role/update，菜单权限"修改角色"），请求体未携带 ID 时抛出异常
@@ -70,22 +70,22 @@ public class RbacRoleController {
      */
     @PostMapping("/update")
     @AuthMenu(name = "修改角色")
-    public RbacResult<Boolean> update(@RequestBody SysRole sysRole){
+    public Result<Boolean> update(@RequestBody SysRole sysRole){
         if (sysRole.getId()==null){
             throw new RuntimeException("角色ID为空");
         }
         boolean b = sysRoleMpService.updateById(sysRole);
-        return RbacResult.success(b);
+        return Result.success(b);
     }
     /**
      * 按 ID 删除角色（POST /rbac/role/delete，菜单权限"删除角色"）
-     * @param rbacIdReq 携带角色 ID 的请求体
+     * @param idReq 携带角色 ID 的请求体
      * @return 是否删除成功
      */
     @PostMapping("/delete")
     @AuthMenu(name = "删除角色")
-    public RbacResult<Boolean> delete(@RequestBody @Validated RbacIdReq rbacIdReq){
-        boolean b = sysRoleMpService.removeById(rbacIdReq.getId());
-        return RbacResult.success(b);
+    public Result<Boolean> delete(@RequestBody @Validated IdReq idReq){
+        boolean b = sysRoleMpService.removeById(idReq.getId());
+        return Result.success(b);
     }
 }

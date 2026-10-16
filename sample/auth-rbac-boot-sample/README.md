@@ -20,7 +20,7 @@ auth-rbac-boot-sample
 │    ├─model                                    请求/响应对象
 │    ├─mp                                       MyBatis-Plus 生成的实体与 Mapper
 │    ├─AuthBootSampleCurrentUserContextHolder   当前用户上下文
-│    └─AuthBootSampleApp                        启动类
+│    └─AuthRbacBootSampleApp                    启动类
 └─src/main/resources
      ├─application.yml                          配置（h2 / mysql 两个 profile 段）
      ├─logback-spring.xml                       日志

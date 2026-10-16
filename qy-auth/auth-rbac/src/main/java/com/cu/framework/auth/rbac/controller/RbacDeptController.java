@@ -1,13 +1,13 @@
 package com.cu.framework.auth.rbac.controller;
 
 import com.cu.framework.auth.core.AuthMenu;
-import com.cu.framework.auth.rbac.model.RbacIdReq;
-import com.cu.framework.auth.rbac.model.RbacPageConverter;
-import com.cu.framework.auth.rbac.model.RbacPageReq;
-import com.cu.framework.auth.rbac.model.RbacPageResult;
-import com.cu.framework.auth.rbac.model.RbacResult;
 import com.cu.framework.auth.rbac.mp.entity.SysDept;
 import com.cu.framework.auth.rbac.mp.service.SysDeptMpService;
+import com.cu.framework.basic.model.IdReq;
+import com.cu.framework.basic.model.PageReq;
+import com.cu.framework.basic.model.PageResult;
+import com.cu.framework.basic.model.Result;
+import com.cu.framework.basic.support.utils.MybatisPageExecutor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,9 +37,9 @@ public class RbacDeptController {
      */
     @GetMapping("/list")
     @AuthMenu(name = "部门列表")
-    public RbacResult<List<SysDept>> listDept(){
+    public Result<List<SysDept>> listDept(){
         List<SysDept> list = sysDeptMpService.list();
-        return RbacResult.success(list);
+        return Result.success(list);
     }
     /**
      * 分页查询部门（GET /rbac/dept/page，菜单权限"部门分页"）
@@ -48,8 +48,8 @@ public class RbacDeptController {
      */
     @GetMapping("/page")
     @AuthMenu(name = "部门分页")
-    public RbacResult<RbacPageResult<SysDept>> pageDept(@Validated RbacPageReq req){
-        return RbacResult.success(RbacPageConverter.pageAndConvert(req, sysDeptMpService));
+    public Result<PageResult<SysDept>> pageDept(@Validated PageReq req){
+        return Result.success(MybatisPageExecutor.pageAndConvert(req, sysDeptMpService));
     }
     /**
      * 新增部门（POST /rbac/dept/add，菜单权限"添加部门"）
@@ -58,9 +58,9 @@ public class RbacDeptController {
      */
     @PostMapping("/add")
     @AuthMenu(name = "添加部门")
-    public RbacResult<Boolean> add(@RequestBody SysDept sysDept){
+    public Result<Boolean> add(@RequestBody SysDept sysDept){
         boolean b = sysDeptMpService.save(sysDept);
-        return RbacResult.success(b);
+        return Result.success(b);
     }
     /**
      * 按 ID 修改部门（POST /rbac/dept/update），请求体未携带 ID 时抛出异常
@@ -69,22 +69,22 @@ public class RbacDeptController {
      */
     @PostMapping("/update")
     @AuthMenu(name = "部门列表")
-    public RbacResult<Boolean> update(@RequestBody SysDept sysDept){
+    public Result<Boolean> update(@RequestBody SysDept sysDept){
         if (sysDept.getId()==null){
             throw new RuntimeException("部门ID为空");
         }
         boolean b = sysDeptMpService.updateById(sysDept);
-        return RbacResult.success(b);
+        return Result.success(b);
     }
     /**
      * 按 ID 删除部门（POST /rbac/dept/delete，菜单权限"删除部门"）
-     * @param rbacIdReq 携带部门 ID 的请求体
+     * @param idReq 携带部门 ID 的请求体
      * @return 是否删除成功
      */
     @PostMapping("/delete")
     @AuthMenu(name = "删除部门")
-    public RbacResult<Boolean> delete(@RequestBody @Validated RbacIdReq rbacIdReq){
-        boolean b = sysDeptMpService.removeById(rbacIdReq.getId());
-        return RbacResult.success(b);
+    public Result<Boolean> delete(@RequestBody @Validated IdReq idReq){
+        boolean b = sysDeptMpService.removeById(idReq.getId());
+        return Result.success(b);
     }
 }
