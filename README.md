@@ -221,8 +221,11 @@ mysql -u root -p your_database < docs/sql/auth-rbac.sql
 # 基础支撑表（文件存储 + 请求日志）
 mysql -u root -p your_database < docs/sql/basic-support.sql
 
-# 跑 auth-boot-sample 示例时需要，包含示例业务表和种子数据
-mysql -u root -p your_database < sample/auth-boot-sample/sql/init.sql
+# auth-rbac-boot-sample 的示例业务表（meeting_room、testauth_annotation_business）
+mysql -u root -p your_database < sample/auth-rbac-boot-sample/sql/schema.sql
+
+# 上表建好后灌示例种子数据；种子 INSERT 带显式主键，只在空表上执行一次
+mysql -u root -p your_database < sample/auth-rbac-boot-sample/sql/seed-data.sql
 ```
 
 `docs/sql/` 是框架初始化 SQL 的唯一存放位置，同一份脚本 MySQL 和 H2 都能执行，因此不写

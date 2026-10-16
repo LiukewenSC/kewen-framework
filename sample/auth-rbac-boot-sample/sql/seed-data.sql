@@ -1,3 +1,9 @@
+-- 示例种子数据：sys_* 的数据依赖 docs/sql/auth-rbac.sql 已建表，自有表的数据依赖 sql/schema.sql 已建表
+-- INSERT 不带列名，因此列顺序必须与上述建表脚本一致
+-- 本脚本带显式主键、非幂等：只在 h2 profile 由 spring.sql.init.data-locations 自动执行；
+-- MySQL 侧按需手动导入一次，不要挂进自动执行
+-- 兼容性由 scripts/check-sql-compat.sh 用 H2 实测校验
+
 -- ----------------------------
 -- Records of sys_auth_data
 -- ----------------------------
@@ -319,20 +325,6 @@ VALUES (1, 1, 1, 1, '2024-08-01 00:00:00', NULL);
 INSERT INTO `sys_user_role`
 VALUES (1, 1, 1, '2024-08-01 00:00:00', NULL);
 
--- ----------------------------
--- Table structure for testauth_annotation_business
--- ----------------------------
-DROP TABLE IF EXISTS `testauth_annotation_business`;
-CREATE TABLE `testauth_annotation_business`
-(
-    `id`          bigint NOT NULL AUTO_INCREMENT,
-    `name`        varchar(255)  NULL DEFAULT NULL,
-    `description` varchar(255)  NULL DEFAULT NULL,
-    `create_time` datetime NULL DEFAULT NULL,
-    `update_time` datetime NULL DEFAULT NULL,
-    `is_deleted`  tinyint(1) NULL DEFAULT 0,
-    PRIMARY KEY (`id`)
-);
 
 -- ----------------------------
 -- Records of testauth_annotation_business
@@ -345,25 +337,6 @@ INSERT INTO `testauth_annotation_business`
 VALUES (3, '不可通过超级管理员', '超级管理员没有权限，也就是说没有对应权限的不展示到页面', '2024-08-01 00:00:00', NULL,
         0);
 
-
-
-DROP TABLE IF EXISTS `meeting_room`;
-CREATE TABLE `meeting_room`
-(
-    `id`           bigint       NOT NULL AUTO_INCREMENT,
-    `name`         varchar(255) NOT NULL COMMENT '会议室名字',
-    `user_count`   int          DEFAULT NULL COMMENT ' 会议室容纳人数',
-    `place`        varchar(255) DEFAULT NULL COMMENT '位置',
-    `remark`       varchar(255) DEFAULT NULL COMMENT '备注',
-    `is_video`     tinyint      DEFAULT NULL COMMENT '是否有电视屏幕',
-    `is_projector` tinyint      DEFAULT NULL COMMENT '是否有投影仪',
-    `is_phone`     tinyint      DEFAULT NULL COMMENT '是否有座机电话',
-    `create_time`  datetime     DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    `update_time`  datetime     DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    PRIMARY KEY (`id`),
-    UNIQUE KEY `uk_meeting_room_name` (`name`)
-) COMMENT='会议室';
-
 -- 插入一条示例数据，超级管理员可管理、可修改、可预约的会议室
 INSERT INTO `meeting_room`
 VALUES (1, '1103会议室', 32, '11楼', '大会议室，开会使用', 1, 1, 1, '2024-08-01 00:00:00', NULL);
@@ -371,30 +344,3 @@ INSERT INTO `sys_auth_data`
 VALUES (7, 'meeting_room', 1, 'edit_info', 'ROLE__1', 'ROLE__超级管理员', '2024-08-01 00:00:00', NULL);
 INSERT INTO `sys_auth_data`
 VALUES (8, 'meeting_room', 1, 'approve', 'ROLE__1', 'ROLE__超级管理员', '2024-08-01 00:00:00', NULL);
-
-
--- 引入SpringSessionJdbc
-DROP TABLE IF EXISTS `SPRING_SESSION_ATTRIBUTES`;
-DROP TABLE IF EXISTS `SPRING_SESSION`;
-CREATE TABLE SPRING_SESSION
-(
-    PRIMARY_ID            CHAR(36) NOT NULL,
-    SESSION_ID            CHAR(36) NOT NULL,
-    CREATION_TIME         BIGINT   NOT NULL,
-    LAST_ACCESS_TIME      BIGINT   NOT NULL,
-    MAX_INACTIVE_INTERVAL INT      NOT NULL,
-    EXPIRY_TIME           BIGINT   NOT NULL,
-    PRINCIPAL_NAME        VARCHAR(100),
-    CONSTRAINT SPRING_SESSION_PK PRIMARY KEY (PRIMARY_ID)
-);
-CREATE UNIQUE INDEX SPRING_SESSION_IX1 ON SPRING_SESSION (SESSION_ID);
-CREATE INDEX SPRING_SESSION_IX2 ON SPRING_SESSION (EXPIRY_TIME);
-CREATE INDEX SPRING_SESSION_IX3 ON SPRING_SESSION (PRINCIPAL_NAME);
-CREATE TABLE SPRING_SESSION_ATTRIBUTES
-(
-    SESSION_PRIMARY_ID CHAR(36)     NOT NULL,
-    ATTRIBUTE_NAME     VARCHAR(200) NOT NULL,
-    ATTRIBUTE_BYTES    BLOB         NOT NULL,
-    CONSTRAINT SPRING_SESSION_ATTRIBUTES_PK PRIMARY KEY (SESSION_PRIMARY_ID, ATTRIBUTE_NAME),
-    CONSTRAINT SPRING_SESSION_ATTRIBUTES_FK FOREIGN KEY (SESSION_PRIMARY_ID) REFERENCES SPRING_SESSION (PRIMARY_ID) ON DELETE CASCADE
-);

@@ -1,7 +1,7 @@
 package com.cu.framework.authentication.config;
 
 
-import com.cu.framework.authentication.handler.AuthResponseBodyResultResolver;
+import com.cu.framework.authentication.handler.SecurityResponseBodyResultResolver;
 import com.cu.framework.authentication.handler.AuthenticationExceptionAdviceHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,8 +15,8 @@ import org.springframework.context.annotation.Configuration;
 public class KewenAuthConfig {
 
     @Bean
-    AuthResponseBodyResultResolver authResponseBodyResultResolver(){
-        return new AuthResponseBodyResultResolver();
+    SecurityResponseBodyResultResolver authResponseBodyResultResolver(){
+        return new SecurityResponseBodyResultResolver();
     }
     @Bean
     AuthenticationExceptionAdviceHandler exceptionAdviceHandler(){

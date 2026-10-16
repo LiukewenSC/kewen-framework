@@ -1,12 +1,37 @@
 spring:
   application:
     name: sample
+  # demo 默认用 H2 内存库，本机没有 MySQL 也能起；换本地 MySQL 用 --spring.profiles.active=mysql
+  profiles:
+    active: h2
+
+cu:
+  tenant:
+    open: true
+
+---
+# H2 内存数据源。本示例的业务代码只从 TenantContext 取租户 ID，不访问任何数据表，
+# 但 basic-spring-boot-starter 传递带入了 mybatis-plus-boot-starter，DataSource 因此是启动的硬前提。
+# 这里只给一个能连上的空库：不挂任何建表脚本，也不需要表存在。
+spring:
+  config:
+    activate:
+      on-profile: h2
+  datasource:
+    url: jdbc:h2:mem:tenant_sample;MODE=MySQL;DATABASE_TO_LOWER=TRUE;CASE_INSENSITIVE_IDENTIFIERS=TRUE;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+---
+# 本地 MySQL 数据源。驱动由 basic-spring-boot-starter 传递提供（mysql-connector-java），本模块未重复声明。
+# 本 profile 同样不执行任何建表脚本 —— 本示例不需要表。
+spring:
+  config:
+    activate:
+      on-profile: mysql
   datasource:
     url: jdbc:mysql://localhost:3306/your_database
     username: your_username
     password: your_password
     driver-class-name: com.mysql.cj.jdbc.Driver
-cu:
-  tenant:
-    open: true
-

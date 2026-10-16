@@ -27,4 +27,23 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <build>
+        <resources>
+            <resource>
+                <directory>${project.basedir}/src/main/resources</directory>
+            </resource>
+            <!-- 框架初始化脚本只有 docs/sql 一份，挂进各示例的 classpath:sql/ 供 spring.sql.init 使用，
+                 避免在示例模块里手抄一份 DDL 造成两边漂移。
+                 目录值按示例子模块的深度写（sample/<module>/../../docs/sql），继承时 ${project.basedir}
+                 以执行模块的上下文插值；子模块若自行声明 <resources> 会整体覆盖这里，必须两项并写。 -->
+            <resource>
+                <directory>${project.basedir}/../../docs/sql</directory>
+                <targetPath>sql</targetPath>
+                <includes>
+                    <include>*.sql</include>
+                </includes>
+            </resource>
+        </resources>
+    </build>
+
 </project>
