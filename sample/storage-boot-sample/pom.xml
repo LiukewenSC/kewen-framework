@@ -35,21 +35,4 @@
         </dependency>
     </dependencies>
 
-    <build>
-        <resources>
-            <resource>
-                <directory>${project.basedir}/src/main/resources</directory>
-            </resource>
-            <!-- 框架初始化脚本只有 docs/sql 一份，这里挂进 classpath 供 spring.sql.init 使用。
-                 file_detail / file_part_detail 已含其中，无需在示例模块重复建表 -->
-            <resource>
-                <directory>${project.basedir}/../../docs/sql</directory>
-                <targetPath>sql</targetPath>
-                <includes>
-                    <include>*.sql</include>
-                </includes>
-            </resource>
-        </resources>
-    </build>
-
 </project>

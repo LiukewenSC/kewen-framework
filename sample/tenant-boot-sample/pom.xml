@@ -28,6 +28,15 @@
             <artifactId>basic-spring-boot-starter</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+
+        <!-- 本示例的业务代码不访问任何表，但 basic-spring-boot-starter 传递带入了
+             mybatis-plus-boot-starter，DataSource 因此是启动的硬前提；这里用 H2 内存库满足它，
+             不需要任何建表脚本。版本由 spring-boot-dependencies 管理 -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
     </dependencies>
 
 </project>

@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author kewen
  * @since 2024-07-05
  */
-public class AuthResponseBodyResultResolver implements AuthenticationSuccessResultResolver {
+public class SecurityResponseBodyResultResolver implements AuthenticationSuccessResultResolver {
 
     /**
      * 将数据包装为 Result.success，并附带当前 TraceContext 链路信息后返回

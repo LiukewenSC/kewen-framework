@@ -13,30 +13,29 @@ API接口已经发布在**Apifox**上[cu-framework-auth框架接口](https://api
 # 2. 工程结构
 
 ```text
-cu-framework-auth-sample
-├─java
-│    ├─config                       配置类
-│    ├─controller                   列表功能，对相关的注解有测试代码
-│    ├─mp                           测试表自动生成的测试代码
-│    ├─response                     统一异常处理、登录成功返回转化等
-│    └─AuthWebSample                启动类
-└─resources
-     ├─application.yml              配置
-     ├─templates                    代码生成器模板
-     └─spy.properties               p6syd sql打印配置
+auth-rbac-boot-sample
+├─src/main/java/com/cu/framework/auth/sample
+│    ├─config                                   配置类
+│    ├─controller                               会议室接口，含各类权限注解的演示
+│    ├─model                                    请求/响应对象
+│    ├─mp                                       MyBatis-Plus 生成的实体与 Mapper
+│    ├─AuthBootSampleCurrentUserContextHolder   当前用户上下文
+│    └─AuthBootSampleApp                        启动类
+└─src/main/resources
+     ├─application.yml                          配置（h2 / mysql 两个 profile 段）
+     ├─logback-spring.xml                       日志
+     ├─saml                                     SAML 元数据
+     └─spy.properties                           p6spy sql 打印配置
 ```
 
 # 3. 初始化启动
 
-工程已经做好了模块引入和基本配置，我们只需要做少量的配置即可启动
-
-那么首先把工程拉下来，
-
-- 初始化数据库
-- 添加配置
-- 启动
+默认使用 H2 内存库，不需要初始化数据库、也不需要改任何配置，直接启动即可。
+要接自己的 MySQL，才需要下面这两步：先按 3.1 建表灌数据，再按 3.2 填好 `mysql` profile 的连接。
 
 ## 3.1. 初始化数据库
+
+以下脚本在 `h2` profile 下由 `spring.sql.init` 自动执行，无需手动跑；手动执行只针对接自己 MySQL 的情况。
 
 框架的初始化脚本统一放在仓库根目录的 `docs/sql/` 下，示例专用的建表和种子数据放在本模块的 `sql/` 下。
 执行顺序是先建表、再灌数据：
@@ -44,30 +43,47 @@ cu-framework-auth-sample
 | 脚本 | 内容 |
 | --- | --- |
 | `../../docs/sql/auth-rbac.sql` | 权限框架 10 张表的建表语句 + 查看用的视图（MySQL 与 H2 通用） |
-| `docs/sql/basic-support.sql` | 文件存储与请求日志表，本示例可选 |
-| `sql/init.sql`（本模块） | 示例业务表（`meeting_room`、`testauth_annotation_business`、`SPRING_SESSION`）建表 + 种子数据 |
+| `../../docs/sql/basic-support.sql` | 文件存储与请求日志表，本示例可选 |
+| `sql/schema.sql`（本模块） | 示例业务表建表（`testauth_annotation_business`、`meeting_room`） |
+| `sql/seed-data.sql`（本模块） | 上述两表与权限框架 10 张表的种子数据 |
 
-`../../docs/sql/auth-rbac.sql` 必须先执行，`sql/init.sql` 里的 INSERT 依赖它建出来的表。
+`../../docs/sql/auth-rbac.sql` 与 `sql/schema.sql` 必须先执行，`sql/seed-data.sql` 里的 INSERT 依赖这些表。
+
+会话存储所需的表不在这里建：H2 由 `spring.session.jdbc.initialize-schema: embedded` 自动创建，
+`mysql` profile 用 `never`，需要自行执行 spring-session jar 内的
+`org/springframework/session/jdbc/schema-mysql.sql`。
 
 默认创建admin用户，超级管理员角色，可以直接用admin/123456登录。同时包含了所有API菜单权限、路由菜单权限等。
 默认创建一个会议室，可以管理和预约，可以直接使用。利用[kewen-web-admin](https://gitee.com/LiuKewenSc/kewen-web-admin)工程可以皮诶和直接在页面上直观的查看。
 
 ## 3.2. 配置
 
-配置需要自行配置基本的数据库配置
+默认不配也能跑：`spring.profiles.active` 已是 `h2`，用内存库，建表和种子数据由 `h2` profile 段里的
+`spring.sql.init` 自动执行。
+
+接自己的 MySQL 时加 `--spring.profiles.active=mysql`，并把该 profile 段的占位值改掉：
 
 ```properties
 server.port=8081
-spring.datasource.url=jdbc:mysql://localhost:3306/cu_framework_auth_template
-spring.datasource.username=open_framework
-spring.datasource.password=Framework123456_
-#修改了P6Spy非要在链接上添加jdbc:p6spy前缀的问题
-spring.datasource.driver-class-name=com.cu.framework.auth.sample.p6spy.KP6SpyDriver
+spring.datasource.url=jdbc:mysql://localhost:3306/your_database
+spring.datasource.username=your_username
+spring.datasource.password=your_password
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 ```
+
+`mysql` profile 不执行任何建表脚本，需先按 3.1 手动建表并灌入种子数据。
+
+SQL 打印看 `spy.properties`。当前 `mysql` profile 用的是官方 MySQL 驱动，不经过 p6spy；
+要用 p6spy 抓 SQL，需自行把 URL 改成 `jdbc:p6spy:mysql://` 并把驱动换成
+`com.p6spy.engine.spy.P6SpyDriver`（原先为绕开前缀问题写的 `KP6SpyDriver` 已删除）。
 
 ## 3.3. 启动
 
-配置完成直接启动`AuthWebSample`类即可。
+配置完成直接启动 `AuthRbacBootSampleApp` 类即可，端口 8081；命令行方式：
+
+```bash
+mvn -pl sample/auth-rbac-boot-sample spring-boot:run
+```
 
 启动后可以直接登录访问，默认账号密码 **admin/123456**
 

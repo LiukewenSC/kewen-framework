@@ -3,20 +3,12 @@ server:
 spring:
   application:
     name: sample
+  # demo 默认用 H2 内存库，本机没有 MySQL 也能起；换本地 MySQL 用 --spring.profiles.active=mysql
+  # 原先的 dev profile 已退役，其 MySQL 连接内容并入文件末尾的 mysql 段
   profiles:
-    active: dev
+    active: h2
 
-  datasource:
-    hikari:
-      auto-commit:true
-      connection-test-query:select 1
-      connection-timeout:30000
-      idle-timeout:600000
-      max-lifetime:1800000
-      maximum-pool-size:5
-      minimum-idle:2
-      validation-timeout:5000
-      pool-name:HikaraPool-1
+  # ---- 与数据库无关，留在公共段 ----
   session:
     store-type: jdbc
     timeout: 2D #超时2天
@@ -53,3 +45,73 @@ cu:
         login-url: /login                 #登录地址
         username-parameter: username      # username参数
         password-parameter: password      # password参数
+
+---
+# H2 内存数据源（MySQL 兼容模式）。H2 相关的一切只写在本段内。
+spring:
+  config:
+    activate:
+      on-profile: h2
+  datasource:
+    url: jdbc:h2:mem:auth_sample;MODE=MySQL;DATABASE_TO_LOWER=TRUE;CASE_INSENSITIVE_IDENTIFIERS=TRUE;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+    hikari:
+      auto-commit: true
+      connection-test-query: select 1
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      maximum-pool-size: 5
+      minimum-idle: 2
+      validation-timeout: 5000
+      pool-name: HikariCP-H2
+  session:
+    jdbc:
+      # 会话表由 spring-session 执行 jar 内 schema-h2.sql 创建，示例脚本不再重复建同名表
+      initialize-schema: embedded
+  # 建表脚本由 sample/pom.xml（docs/sql）与本模块 pom（sql/）挂到 classpath:sql/ 下。
+  # 顺序：先框架 10 表与视图（auth-rbac.sql）、再示例自有表（schema.sql），最后灌种子数据。
+  # mode 只写在本段：内存库每次启动都是空库，可以放心 always 重建；种子脚本非幂等，不许挂到 mysql 段。
+  # encoding 必须显式指定，脚本里有中文注释，否则跟随平台默认编码。
+  sql:
+    init:
+      mode: always
+      encoding: UTF-8
+      schema-locations: classpath:sql/auth-rbac.sql, classpath:sql/schema.sql
+      data-locations: classpath:sql/seed-data.sql
+  # H2 Web 控制台：http://localhost:8081/h2-console （JDBC URL 填上方 datasource.url）
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+---
+# 本地 MySQL 数据源（内容来自已删除的 application-dev.yml，凭据改为占位值）。
+# 本 profile 不执行任何建表脚本，需自行按 sample/auth-rbac-boot-sample/README.md 的 3.1 依次执行
+# docs/sql/auth-rbac.sql、sql/schema.sql、sql/seed-data.sql；
+# 会话表则执行 spring-session-jdbc jar 内的 org/springframework/session/jdbc/schema-mysql.sql。
+spring:
+  config:
+    activate:
+      on-profile: mysql
+  datasource:
+    url: jdbc:mysql://localhost:3306/your_database
+    username: your_username
+    password: your_password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      auto-commit: true
+      connection-test-query: select 1
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      maximum-pool-size: 5
+      minimum-idle: 2
+      validation-timeout: 5000
+      pool-name: HikariCP-Pool-1
+  session:
+    jdbc:
+      # never = 启动不碰会话表，避免每次重启把已有会话清空
+      initialize-schema: never

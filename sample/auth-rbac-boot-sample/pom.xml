@@ -53,6 +53,13 @@
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
 
+        <!-- h2 profile 用的内存库，MySQL 兼容模式；版本由 spring-boot-dependencies 管理 -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
         <!-- junit 测试相关，可以不用-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -68,6 +75,28 @@
     </dependencies>
 
     <build>
+        <!-- 子模块的 <resources> 是整体覆盖而非追加，所以这里必须把父 pom 继承来的
+             docs/sql 挂载一并重写，否则框架建表脚本会从 classpath 上消失 -->
+        <resources>
+            <resource>
+                <directory>${project.basedir}/src/main/resources</directory>
+            </resource>
+            <resource>
+                <directory>${project.basedir}/../../docs/sql</directory>
+                <targetPath>sql</targetPath>
+                <includes>
+                    <include>*.sql</include>
+                </includes>
+            </resource>
+            <!-- 本模块自有的示例表建表与种子数据，spring.sql.init 按名字引用 -->
+            <resource>
+                <directory>${project.basedir}/sql</directory>
+                <targetPath>sql</targetPath>
+                <includes>
+                    <include>*.sql</include>
+                </includes>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -76,7 +105,7 @@
                 <configuration>
                     <classifier>exec</classifier>
                     <!-- 指定该Main Class为全局的唯一入口 -->
-                    <mainClass>com.cu.framework.auth.sample.AuthBootSampleApp</mainClass>
+                    <mainClass>com.cu.framework.auth.sample.AuthRbacBootSampleApp</mainClass>
                     <layout>ZIP</layout>
                 </configuration>
                 <executions>
