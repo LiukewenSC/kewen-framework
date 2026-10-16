@@ -9,6 +9,7 @@ import com.cu.framework.basic.support.mp.entity.SysRequestLog;
 import com.cu.framework.basic.support.mp.service.SysRequestLogMpService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.scheduling.annotation.Async;
 
@@ -18,14 +19,15 @@ import org.springframework.scheduling.annotation.Async;
  * @author kewen
  * @since 2023-04-26
  */
-public class DatabasePersistentListener implements ApplicationListener<RequestLoggerEvent> {
+public class RequestLogDatabasePersistentListener implements ApplicationListener<RequestLoggerEvent> {
 
-    private static final Logger log = LoggerFactory.getLogger(DatabasePersistentListener.class);
+    private static final Logger log = LoggerFactory.getLogger(RequestLogDatabasePersistentListener.class);
 
     /** 请求日志表的 MyBatis-Plus 服务，由外部通过 setter 注入 */
-    SysRequestLogMpService requestLogMpService;
+    @Autowired
+    private SysRequestLogMpService requestLogMpService;
 
-    public DatabasePersistentListener() {
+    public RequestLogDatabasePersistentListener() {
         log.info("开启请求日志数据库持久化");
     }
 
@@ -59,9 +61,5 @@ public class DatabasePersistentListener implements ApplicationListener<RequestLo
                 .setTraceId(TraceContext.get())
         ;
         requestLogMpService.save(sysRequestLog);
-    }
-
-    public void setRequestLogMpService(SysRequestLogMpService requestLogMpService) {
-        this.requestLogMpService = requestLogMpService;
     }
 }

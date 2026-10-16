@@ -17,8 +17,10 @@ import org.springframework.session.events.SessionDestroyedEvent;
  * spring-session 事件切面，原版的是不会触发事件的，到时相关的监听器无法监听session事件
  * @author kewen
  * @since 2024-11-26
+ * @deprecated 新的方案：SessionRepositoryWrapperPostProcessor + SessionRepositoryEventWrapper 做，更合理
  */
 @Aspect
+@Deprecated
 public class SessionRepositoryEventAspect implements ApplicationEventPublisherAware {
 
     private static final Logger log = LoggerFactory.getLogger(SessionRepositoryEventAspect.class);

@@ -49,7 +49,7 @@
 
 关前者是因为仓库在 Gitee 公开可读，`cu.notify.fang-tang.key` 目前是占位串且异常被吞——测试会绿，但每次跑都在真的出网；一旦有人把真 key 提交进来，跑测试就变成了给别人推送消息。后者只写内存 H2，无外部依赖，留着不影响隔离性。
 
-已核实生效路径：`FangTangMessageClient` 带 `@ConditionalOnProperty(prefix = "cu.notify.fang-tang", name = "enabled", havingValue = "true")`，关掉后该 bean 不注册，`FangTangRequestMessageListener` 因其 `@ConditionalOnProperty` 与 `@ConditionalOnBean` 双重条件同时不注册。`DatabasePersistentListener` 的条件是 `cu.request.persistent.database=true`，保持不变故仍注册。
+已核实生效路径：`FangTangMessageClient` 带 `@ConditionalOnProperty(prefix = "cu.notify.fang-tang", name = "enabled", havingValue = "true")`，关掉后该 bean 不注册，`RequestLogFangTangMessageListener` 因其 `@ConditionalOnProperty` 与 `@ConditionalOnBean` 双重条件同时不注册。`RequestLogDatabasePersistentListener` 的条件是 `cu.request.persistent.database=true`，保持不变故仍注册。
 
 代价：测试不再覆盖"方糖推送真的发得出去"。那本就该由 starter 侧负责，见 Non-Goals。
 
