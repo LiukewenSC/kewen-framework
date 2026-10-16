@@ -8,11 +8,14 @@ import com.cu.framework.authentication.properties.SessionProperties;
 import com.cu.framework.basic.model.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.web.authentication.RememberMeServices;
+import org.springframework.session.FindByIndexNameSessionRepository;
+import org.springframework.session.jdbc.JdbcIndexedSessionRepository;
 import org.springframework.session.security.web.authentication.SpringSessionRememberMeServices;
 import com.cu.framework.authentication.extension.HeaderCookieHttpSessionIdResolver;
 import org.springframework.session.web.http.HttpSessionIdResolver;
@@ -56,10 +59,22 @@ public class SessionConfig {
 
     /**
      * 注册 spring-session 事件切面，使 SessionRepository 的创建/删除操作能发布会话事件
+     * @deprecated 该功能已集成到 SessionRepositoryWrapperPostProcessor 中
      */
-    @Bean
+    //@Bean
+    @Deprecated
     SessionRepositoryEventAspect findByIndexNameSessionRepositoryAspect(){
         return new SessionRepositoryEventAspect();
+    }
+
+    /**
+     * 会话仓库包装处理器：增强 JabcSessionRepository 功能，用于在会话仓库中添加会话创建/删除事件发布功能
+     * @return
+     */
+    @Bean
+    @ConditionalOnBean(value = {JdbcIndexedSessionRepository.class})
+    SessionRepositoryWrapperPostProcessor sessionRepositoryWrapperPostProcessor() {
+        return new SessionRepositoryWrapperPostProcessor();
     }
 
     /**

@@ -24,9 +24,9 @@ import java.util.concurrent.TimeUnit;
  * @author kewen
  * @since 2024-08-29
  */
-public class FangTangRequestMessageListener implements ApplicationListener<RequestLoggerEvent> {
+public class RequestLogFangTangMessageListener implements ApplicationListener<RequestLoggerEvent> {
 
-    private static final Logger log = LoggerFactory.getLogger(FangTangRequestMessageListener.class);
+    private static final Logger log = LoggerFactory.getLogger(RequestLogFangTangMessageListener.class);
 
     /** 已推送过的 IP 记录，键为请求来源 IP；缓存采用 expireAfterAccess(5 分钟)，即每次访问都会续期 */
     private static final Cache<String, Object> cache = CacheBuilder.newBuilder().expireAfterAccess(5, TimeUnit.MINUTES).build();
@@ -42,7 +42,7 @@ public class FangTangRequestMessageListener implements ApplicationListener<Reque
     String applicationName;
 
 
-    public FangTangRequestMessageListener() {
+    public RequestLogFangTangMessageListener() {
         log.info("开启请求消息通知 - 方糖渠道");
     }
 

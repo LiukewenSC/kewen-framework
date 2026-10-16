@@ -8,59 +8,30 @@ import org.springframework.session.events.SessionCreatedEvent;
 import org.springframework.session.events.SessionDestroyedEvent;
 
 /**
- * SessionRepository 装饰器：委托原始 SessionRepository 完成会话操作，
- * 并在创建/保存/删除后额外发布 SessionCreatedEvent、SessionDestroyedEvent，
- * 使依赖会话事件的监听器（如并发会话控制）能够感知变化
+ * {@link SessionRepository} 的装饰器：把创建/保存/删除等操作委托给原始实现，
+ * 并在其上补发 {@link SessionCreatedEvent}、{@link SessionDestroyedEvent}，
+ * 使依赖会话事件的监听器（如并发会话控制）能够感知会话变化。
+ *
+ * <p><strong>为什么需要它：</strong>本框架使用 spring-session-jdbc，会话持久化到数据库。
+ * 与 Redis 实现不同，{@code JdbcIndexedSessionRepository} 自身<strong>不会</strong>发布会话事件
+ * —— Redis 靠键空间通知 + Pub/Sub 被动感知创建/删除/过期，JDBC 没有等价机制，
+ * 因此这里必须主动包装并补发事件。
+ *
+ * <p><strong>禁止直接以 {@code @Bean} 方式注册本类。</strong>本类实现了 {@link SessionRepository} 接口，
+ * 一旦被注册为 SessionRepository 类型的 Bean，就会让 Spring Boot 的 JDBC 会话自动配置整体退避——
+ * 其配置类上的 {@code @ConditionalOnMissingBean({ SessionRepository.class, SessionRegistry.class })}
+ * 条件不再成立，真正需要被包装的 {@code JdbcIndexedSessionRepository} 根本不会被创建，
+ * 本类构造时也就找不到被包装的目标（缺 Bean / 循环依赖）。
+ *
+ * <p><strong>正确用法：</strong>由
+ * {@link com.cu.framework.authentication.config.SessionRepositoryWrapperPostProcessor} 在 Bean
+ * 后置处理阶段（{@code postProcessAfterInitialization}）对已经创建好的
+ * {@code JdbcIndexedSessionRepository} 就地包装。这样自动配置正常执行、条件不受影响，
+ * 下游的 {@code SessionRepositoryFilter} 也会透明地拿到被包装后的实例。
  *
  * @author kewen
  * @since 2026-05-30
- * @deprecated
- * ## 问题根源：与 Spring Session 自动配置的 `@ConditionalOnMissingBean` 冲突
- *
- * 你的项目用的是 `spring-session-jdbc`，它的自动配置类（`JdbcSessionConfiguration`）大致长这样：
- *
- * ```java
- * @Bean
- * @ConditionalOnMissingBean(SessionRepository.class)
- * public JdbcIndexedSessionRepository sessionRepository() {
- *     return new JdbcIndexedSessionRepository(...);
- * }
- * ```
- *
- * 当你用 **Wrapper** 方案时：
- *
- * 1. `SessionRepositoryEventWrapper implements SessionRepository` → 容器中已经有 `SessionRepository` 类型的 Bean 了
- * 2. 自动配置的 `@ConditionalOnMissingBean(SessionRepository.class)` 条件**不满足**，原始的 `JdbcIndexedSessionRepository` **不会被创建**
- * 3. Wrapper 构造器需要注入一个 `SessionRepository`（即被包装的目标）→ **找不到！循环死锁 / NoSuchBeanDefinitionException**
- *
- * ```
- * Wrapper 需要原始 SessionRepository → 但原始的不创建因为 Wrapper 已经是 SessionRepository 了
- * ```
- *
- * ---
- *
- * ## 为什么 Aspect 方案可以正常工作
- *
- * AOP Aspect **不替换 Bean，也不伪装成 Bean 类型**：
- *
- * - `SessionRepositoryEventAspect` 是一个独立的 `@Aspect` Bean，和 `SessionRepository` 接口完全无关
- * - Spring Session 自动配置正常创建 `JdbcIndexedSessionRepository`（条件满足）
- * - Spring AOP 给这个 Bean 生成**动态代理**，所有通过容器调用 `createSession()` / `deleteById()` 的地方都会被拦截
- * - `SessionRepositoryFilter` 内部注入的是代理后的对象，调用自然走切面逻辑
- *
- * ---
- *
- * ## 总结对比
- *
- * | | Aspect (AOP) | Wrapper (装饰器) |
- * |---|---|---|
- * | 是否影响自动配置 | ❌ 不影响，它不是 SessionRepository 类型 | ✅ 影响，它本身实现了 SessionRepository |
- * | Bean 创建 | 原始 Repository 正常创建，AOP 透明代理 | 原始 Repository 因条件不满足而消失 |
- * | 拦截方式 | 代理拦截所有调用（包括 Filter 内部调用） | 需要显式将 Wrapper 注入给所有使用者 |
- *
- * **一句话：Wrapper "不能用"是因为它实现了 `SessionRepository` 接口，触发了 `@ConditionalOnMissingBean` 短路，导致真正要被包装的原始 Bean 压根就没创建出来。**
  */
-@Deprecated
 public class SessionRepositoryEventWrapper implements SessionRepository, ApplicationEventPublisherAware {
 
     /** 被装饰的原始 SessionRepository */
