@@ -58,7 +58,8 @@ public class RequestLogDatabasePersistentListener implements ApplicationListener
                 .setParams(requestLogger.getParams())
                 .setBody(JSON.toJSONString(requestLogger.getBody()))
                 .setApi_path(requestLogger.getUrl())
-                .setTraceId(TraceContext.get())
+                // 从事件对象携带的数据取，避免异步线程 ThreadLocal 丢失
+                .setTraceId(requestLogger.getTraceId())
         ;
         requestLogMpService.save(sysRequestLog);
     }

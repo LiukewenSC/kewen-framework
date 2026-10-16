@@ -29,7 +29,7 @@ public class RequestLogFangTangMessageListener implements ApplicationListener<Re
     private static final Logger log = LoggerFactory.getLogger(RequestLogFangTangMessageListener.class);
 
     /** 已推送过的 IP 记录，键为请求来源 IP；缓存采用 expireAfterAccess(5 分钟)，即每次访问都会续期 */
-    private static final Cache<String, Object> cache = CacheBuilder.newBuilder().expireAfterAccess(5, TimeUnit.MINUTES).build();
+    private static final Cache<String, Object> cache = CacheBuilder.newBuilder().expireAfterAccess(30, TimeUnit.MINUTES).build();
 
     /** 缓存的占位值，本场景只关心键是否存在，值本身无意义，故所有键共用同一实例 */
     private static final Object object = new Object();
