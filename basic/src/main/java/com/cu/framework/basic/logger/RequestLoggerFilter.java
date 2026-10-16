@@ -6,12 +6,14 @@ import com.cu.framework.basic.filter.EarlyRequestFilter;
 import com.cu.framework.basic.logger.request.BodyHttpServletRequest;
 import com.cu.framework.basic.logger.request.RequestLoggerEvent;
 import com.cu.framework.basic.logger.request.RequestLogger;
+import com.cu.framework.basic.logger.trace.TraceContext;
 import com.cu.framework.basic.utils.RequestIpUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.servlet.support.RequestContext;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -48,6 +50,7 @@ public class RequestLoggerFilter implements EarlyRequestFilter , ApplicationEven
         BodyHttpServletRequest innerRequest = new BodyHttpServletRequest(request);
 
         RequestLogger requestLogger = new RequestLogger()
+                .setTraceId(TraceContext.get())
                 .setIp(RequestIpUtil.getIp(request))
                 .setUrl(request.getRequestURI())
                 .setMethod(request.getMethod())
