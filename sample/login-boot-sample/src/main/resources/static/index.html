@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>首页 - cu-framework</title>
+    <link rel="stylesheet" href="/css/login.css">
+</head>
+<body>
+<!-- 校验登录态前整页不可见，避免未登录时先闪一下首页内容再跳登录页 -->
+<main class="card" id="home" hidden>
+    <h1 class="title">cu-framework 登录示例 · 首页</h1>
+    <p class="subtitle">这一页需要登录才能停留，未登录会被送去 <code>/login.html</code></p>
+
+    <dl class="profile">
+        <dt>登录名</dt>
+        <dd id="me-username">-</dd>
+        <dt>权限</dt>
+        <dd id="me-authorities">-</dd>
+    </dl>
+
+    <p class="hint">会话凭 Cookie 维持；本页只调用 <code>GET /api/me</code>，后端始终是 JSON 与静态文件。</p>
+
+    <div class="actions">
+        <button id="logout-button" class="primary" type="button">退出登录</button>
+        <a class="link" href="/login.html">回登录页</a>
+    </div>
+</main>
+
+<script src="/js/index.js"></script>
+</body>
+</html>
