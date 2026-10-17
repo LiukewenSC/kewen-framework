@@ -27,7 +27,9 @@ cu:
   auth:
     # 免登录放行的 URL，多个用分号或逗号分隔；无默认值（默认空）
     # 与 @SecurityIgnore 注解收集的 URL 合并后一起 permitAll
-    permit-url:
+    # 这里放行根路径，是为了让 Spring Boot 的欢迎页把 static/index.html 当首页吐出来；
+    # 未登录时由 index.html 自己的脚本查 /api/me 后跳去登录页，后端仍然只出静态文件与 JSON
+    permit-url: /
 
   security:
     # 当前用户接口地址。消费方是 auth-rbac-security-spring-boot-starter 的 AuthUserContextFilter，
@@ -50,13 +52,13 @@ cu:
     login:
       # 三类单点登录协议共用的属性（SsoLoginProperties），账号密码登录不受影响
       sso:
-        # 单点登录结束后浏览器回跳的前端地址。
+        # 单点登录结果页地址：流程结束后浏览器要回到的前端页面，成功和失败都回到这同一个地址。
         # 留空 = OAuth2 / OIDC / SAML2 的成功与失败响应都返回 JSON，与引入本属性之前逐字一致；
-        # 配置后三类协议一律 302 到该地址并追加 kewenLoginState=success|failure。
+        # 配置后三类协议一律 302 到该地址并追加 loginState=success|failure。
         # 相对地址按当前请求解析，写绝对地址则原样使用（前端独立部署时用它）。
         # URL 只带状态标记，不带会话标识与令牌，会话靠 Cookie 生效。
         # 本 sample 的登录页是同源静态页，放在 src/main/resources/static/login.html
-        redirect-url: /login.html
+        result-url: /login.html
 
       password:
         # JSON 登录接口地址

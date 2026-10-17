@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    var STATE_PARAMETER = 'kewenLoginState';
+    var STATE_PARAMETER = 'loginState';
     var OPTIONS_URL = '/api/login/options';
     var ME_URL = '/api/me';
     var LOGOUT_URL = '/logout';

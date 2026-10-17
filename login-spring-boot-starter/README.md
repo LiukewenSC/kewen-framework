@@ -24,7 +24,7 @@
 
 | 字段 | 默认值 | 必填 | 说明 |
 |---|---|---|---|
-| `redirect-url` | 无 | 否 | 单点登录流程结束后浏览器回跳的前端地址。**留空时 OAuth2 / OIDC / SAML2 的成功与失败响应都保持 JSON 输出，与引入该属性之前逐字一致**；配置后三类协议的成功与失败一律改为 302 到该地址并追加 `kewenLoginState=success|failure` |
+| `result-url` | 无 | 否 | 单点登录结果页地址，即流程结束后浏览器要回到的前端页面；成败都回到这同一个地址。**留空时 OAuth2 / OIDC / SAML2 的成功与失败响应都保持 JSON 输出，与引入该属性之前逐字一致**；配置后三类协议的成功与失败一律改为 302 到该地址并追加 `loginState=success|failure` |
 
 相对地址由容器按当前请求的 scheme/host/port 解析，绝对地址原样使用，因此同一项同时适用于同源静态页与独立部署的前端。回跳 URL 只携带状态标记，不含会话标识与令牌，会话靠 Cookie 生效。
 
@@ -32,19 +32,19 @@
 
 分流依据是"请求命中的认证端点属于哪一类协议"，由 `LoginDeliveryResolver` 统一判定，成功与失败共用同一条规则。之所以不看 `Authentication` 对象的类型：认证失败时处理器只拿得到 `AuthenticationException`，其中的 Authentication 对象并不可靠；而处理端点由各自的配置项给出，两类结果都落在同一个请求上。
 
-| 请求命中的端点 | 配置了 `redirect-url` | 未配置 `redirect-url` |
+| 请求命中的端点 | 配置了 `result-url` | 未配置 `result-url` |
 |---|---|---|
 | `/login`（账号密码 JSON 登录） | JSON | JSON |
-| `/login/oauth2/code/*`（OAuth2 / OIDC 回调） | **302** + `?kewenLoginState=success` | JSON |
-| `/login/saml2/sso/{registrationId}`（SAML ACS） | **302** + `?kewenLoginState=success` | JSON |
-| 上述两个回调端点上的**认证失败** | **302** + `?kewenLoginState=failure` | JSON 错误体 |
+| `/login/oauth2/code/*`（OAuth2 / OIDC 回调） | **302** + `?loginState=success` | JSON |
+| `/login/saml2/sso/{registrationId}`（SAML ACS） | **302** + `?loginState=success` | JSON |
+| 上述两个回调端点上的**认证失败** | **302** + `?loginState=failure` | JSON 错误体 |
 | `/logout`、业务接口、静态资源 | JSON | JSON |
 
 要点：
 
 - **账号密码登录永远返回 JSON**，不因请求是脚本发出还是表单导航而改变；登出同理。
 - 判定名单只含两个 SSO 回调端点，因此业务接口上的未登录请求仍是既有的 JSON 契约。
-- **行为变更**：配置 `redirect-url` 后，单点登录的失败（用户在身份源取消、state / InResponseTo / Audience 校验不通过）不再返回 JSON 错误体，而是 302 回前端并带 `failure` 标记。账号密码的失败响应（含状态码 403 等既有语义）不受影响。
+**行为变更**：配置 `result-url` 后，单点登录的失败（用户在身份源取消、state / InResponseTo / Audience 校验不通过）不再返回 JSON 错误体，而是 302 回前端并带 `failure` 标记。账号密码的失败响应（含状态码 403 等既有语义）不受影响。
 - 重定向发生在写出结果之前，消费方自定义的 `AuthenticationSuccessResultResolver` 在跳转场景不会被调用。
 
 ## 未认证请求会看到什么
@@ -399,7 +399,7 @@ cu:
 前端登录页要知道"现在能用什么方式登录"，但身份源是配置出来的、数量不固定。本接口把配置里的注册项如实吐成入口列表，前端按条渲染，配置增减不需要改前端代码。
 
 - 配置来源：`cu.security.login.oauth2.clients`、`cu.security.login.saml.registrations`、`cu.security.login.password`。
-- 实现类：`loginoption/LoginOptionsEndpoint`（经 `SecurityBeanConfig` 注册为 Bean，非组件扫描），装配逻辑在 `loginoption/LoginOptionsFactory`。
+- 实现类：`loginpage/LoginOptionsEndpoint`（经 `SecurityBeanConfig` 注册为 Bean，非组件扫描），装配逻辑在 `loginpage/LoginOptionsFactory`。
 - **未经认证即可访问**：类上标 `@SecurityIgnore`，URL 由 `PropertiesUrlSecurityCustomizer` 收集进放行清单，不需要往 `cu.auth.permit-url` 里手写。
 
 ## 接口契约
@@ -468,12 +468,12 @@ cu:
 ## 参考代码
 
 ```
-- `loginoption/LoginOptionsEndpoint.java`
-- `loginoption/LoginOptionsFactory.java`
-- `loginoption/LoginOptions.java`
+- `loginpage/LoginOptionsEndpoint.java`
+- `loginpage/LoginOptionsFactory.java`
+- `loginpage/LoginOptions.java`
 - `properties/SsoLoginProperties.java`
 - `response/LoginDeliveryResolver.java`
-- `src/test/java/.../loginoption/LoginOptionsFactoryTest.java`
+- `src/test/java/.../loginpage/LoginOptionsFactoryTest.java`
 - `sample/login-boot-sample/src/main/resources/static/`（示例前端页）
 ```
 

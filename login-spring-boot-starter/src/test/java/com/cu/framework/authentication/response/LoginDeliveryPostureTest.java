@@ -34,9 +34,9 @@ public class LoginDeliveryPostureTest {
     /** SAML ACS 地址，与 SamlProperties 的默认 loginProcessingUrl 模板相匹配 */
     private static final String SAML_ACS = "/login/saml2/sso/demo-saml";
 
-    private LoginDeliveryResolver resolverOf(String redirectUrl) {
+    private LoginDeliveryResolver resolverOf(String resultUrl) {
         SsoLoginProperties sso = new SsoLoginProperties();
-        sso.setRedirectUrl(redirectUrl);
+        sso.setResultUrl(resultUrl);
         return new LoginDeliveryResolver(sso, new Oauth2OidcProperties(), new SamlProperties());
     }
 
@@ -47,7 +47,7 @@ public class LoginDeliveryPostureTest {
     }
 
     /**
-     * 未配置回跳目标时，即使是单点登录的回调请求也不重定向
+     * 未配置结果页地址时，即使是单点登录的回调请求也不重定向
      */
     @Test
     public void noRedirectWhenTargetNotConfigured() {
@@ -56,7 +56,7 @@ public class LoginDeliveryPostureTest {
     }
 
     /**
-     * 三类协议共用同一个回跳目标，oauth2 / oidc（同一条处理端点）与 saml 都命中
+     * 三类协议共用同一个结果页地址，oauth2 / oidc（同一条处理端点）与 saml 都命中
      */
     @Test
     public void singleSignOnProcessingEndpointsRedirect() {
@@ -89,13 +89,13 @@ public class LoginDeliveryPostureTest {
      */
     @Test
     public void stateMarkerAppendedWithCorrectSeparator() {
-        Assert.assertEquals("/login.html?kewenLoginState=success",
+        Assert.assertEquals("/login.html?loginState=success",
                 LoginDeliveryResolver.buildRedirectUrl("/login.html", LoginDeliveryResolver.STATE_SUCCESS));
-        Assert.assertEquals("/login.html?kewenLoginState=failure",
+        Assert.assertEquals("/login.html?loginState=failure",
                 LoginDeliveryResolver.buildRedirectUrl("/login.html", LoginDeliveryResolver.STATE_FAILURE));
-        Assert.assertEquals("/login.html?tab=sso&kewenLoginState=success",
+        Assert.assertEquals("/login.html?tab=sso&loginState=success",
                 LoginDeliveryResolver.buildRedirectUrl("/login.html?tab=sso", LoginDeliveryResolver.STATE_SUCCESS));
-        Assert.assertEquals("http://front.example.com/cb?kewenLoginState=failure",
+        Assert.assertEquals("http://front.example.com/cb?loginState=failure",
                 LoginDeliveryResolver.buildRedirectUrl("http://front.example.com/cb", LoginDeliveryResolver.STATE_FAILURE));
     }
 
@@ -112,7 +112,7 @@ public class LoginDeliveryPostureTest {
         handler.onAuthenticationSuccess(requestOf("GET", OAUTH2_CALLBACK), response,
                 new UsernamePasswordAuthenticationToken("admin", "admin123"));
 
-        Assert.assertEquals("/login.html?kewenLoginState=success", response.getRedirectedUrl());
+        Assert.assertEquals("/login.html?loginState=success", response.getRedirectedUrl());
         Assert.assertEquals(302, response.getStatus());
         Assert.assertEquals("重定向响应体不得携带业务数据", "", response.getContentAsString());
         Assert.assertEquals("跳转场景不应触发结果解析器", 0, resultResolver.invocations);
@@ -167,7 +167,7 @@ public class LoginDeliveryPostureTest {
         handler.onAuthenticationFailure(requestOf("GET", OAUTH2_CALLBACK), response,
                 new BadCredentialsException("invalid state"));
 
-        Assert.assertEquals("/login.html?kewenLoginState=failure", response.getRedirectedUrl());
+        Assert.assertEquals("/login.html?loginState=failure", response.getRedirectedUrl());
         Assert.assertEquals(302, response.getStatus());
         Assert.assertEquals("重定向时不应再走 JSON 异常解析链", 0, advice.invocations);
     }
