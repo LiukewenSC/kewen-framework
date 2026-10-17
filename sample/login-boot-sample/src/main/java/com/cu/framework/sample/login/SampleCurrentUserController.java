@@ -1,5 +1,7 @@
 package com.cu.framework.sample.login;
 
+import com.cu.framework.authentication.SecurityUserContext;
+import com.cu.framework.authentication.model.SecurityUser;
 import com.cu.framework.basic.model.Result;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -34,7 +36,9 @@ public class SampleCurrentUserController {
     @GetMapping("/api/me")
     public Result<Map<String, Object>> me(Authentication authentication) {
         Map<String, Object> data = new LinkedHashMap<>();
-        data.put("username", authentication.getName());
+        SecurityUser currentUser = SecurityUserContext.getCurrentUser();
+        data.put("username", currentUser.getUsername());
+        data.put("name", currentUser.getName());
         data.put("authenticated", authentication.isAuthenticated());
         List<String> authorities = new ArrayList<>();
         for (GrantedAuthority authority : authentication.getAuthorities()) {

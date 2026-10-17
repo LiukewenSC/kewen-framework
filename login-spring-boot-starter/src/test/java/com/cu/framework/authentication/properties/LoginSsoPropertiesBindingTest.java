@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 单点登录回跳地址与 SAML 展示名两个新增配置项的绑定与回退行为
+ * 单点登录结果页地址与 SAML 展示名两个新增配置项的绑定与回退行为
  *
  * @author kewen
  * @since 2026-10-16
@@ -25,21 +25,21 @@ public class LoginSsoPropertiesBindingTest {
     }
 
     /**
-     * kebab-case 的 redirect-url 应绑定到驼峰字段，且留空时字段为 null（不产生空串假象）
+     * kebab-case 的 result-url 应绑定到驼峰字段，且留空时字段为 null（不产生空串假象）
      */
     @Test
-    public void redirectUrlBindsFromKebabCaseName() {
+    public void resultUrlBindsFromKebabCaseName() {
         Map<String, String> values = new HashMap<>();
-        values.put("cu.security.login.sso.redirect-url", "/login.html");
+        values.put("cu.security.login.sso.result-url", "/login.html");
         SsoLoginProperties properties = binderOf(values)
                 .bind("cu.security.login.sso", Bindable.of(SsoLoginProperties.class))
                 .get();
-        Assert.assertEquals("/login.html", properties.getRedirectUrl());
+        Assert.assertEquals("/login.html", properties.getResultUrl());
 
         SsoLoginProperties empty = binderOf(new HashMap<>())
                 .bind("cu.security.login.sso", Bindable.of(SsoLoginProperties.class))
                 .orElseGet(SsoLoginProperties::new);
-        Assert.assertNull("未配置时应保持 null，交付姿态据此回退为 JSON", empty.getRedirectUrl());
+        Assert.assertNull("未配置时应保持 null，交付姿态据此回退为 JSON", empty.getResultUrl());
     }
 
     /**

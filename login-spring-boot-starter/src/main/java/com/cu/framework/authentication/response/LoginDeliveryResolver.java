@@ -41,7 +41,7 @@ public class LoginDeliveryResolver {
     /**
      * 回跳地址上表示流程结果的参数名，供前端判断是成功回来还是失败回来
      */
-    public static final String STATE_PARAMETER = "kewenLoginState";
+    public static final String STATE_PARAMETER = "loginState";
 
     /**
      * 单点登录流程结束后的结果标记取值
@@ -76,8 +76,8 @@ public class LoginDeliveryResolver {
      * @return 需要重定向返回 true，保持 JSON 返回 false
      */
     public boolean shouldRedirect(HttpServletRequest request) {
-        String redirectUrl = ssoLoginProperties.getRedirectUrl();
-        if (redirectUrl == null || redirectUrl.trim().isEmpty()) {
+        String resultUrl = ssoLoginProperties.getResultUrl();
+        if (resultUrl == null || resultUrl.trim().isEmpty()) {
             return false;
         }
         String path = URL_PATH_HELPER.getPathWithinApplication(request);
@@ -97,18 +97,18 @@ public class LoginDeliveryResolver {
      * @throws IOException 重定向写出失败时抛出
      */
     public void redirect(HttpServletResponse response, String state) throws IOException {
-        response.sendRedirect(buildRedirectUrl(ssoLoginProperties.getRedirectUrl(), state));
+        response.sendRedirect(buildRedirectUrl(ssoLoginProperties.getResultUrl(), state));
     }
 
     /**
      * 拼接回跳地址与结果标记，地址自带 query 时改用 {@code &} 追加
      *
-     * @param redirectUrl 配置的回跳地址，相对或绝对均可
+     * @param resultUrl 配置的结果页地址，相对或绝对均可
      * @param state       结果标记取值
      * @return 完整重定向地址，不含会话标识与令牌
      */
-    static String buildRedirectUrl(String redirectUrl, String state) {
-        String separator = redirectUrl.indexOf('?') >= 0 ? "&" : "?";
-        return redirectUrl + separator + STATE_PARAMETER + "=" + state;
+    static String buildRedirectUrl(String resultUrl, String state) {
+        String separator = resultUrl.indexOf('?') >= 0 ? "&" : "?";
+        return resultUrl + separator + STATE_PARAMETER + "=" + state;
     }
 }
