@@ -169,3 +169,29 @@ code {
     margin: 0;
     word-break: break-all;
 }
+
+.actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+/* .primary 原本是给 button 用的，链接复用时要自己撑成块级并居中 */
+.link {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+}
+
+.ghost {
+    padding: 10px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+}
+
+.ghost:disabled {
+    opacity: .6;
+    cursor: progress;
+}
