@@ -60,7 +60,8 @@ public class RbacSecurityUserDetailsService implements SecurityUserDetailsServic
                 .setEmail(sysUser.getEmail())
                 .setAvatarFileId(sysUser.getAvatarFileId())
                 .setPassword(credential.getPassword())
-                .setGender(sysUser.getGender())
+                // 库中 gender 是 tinyint，认证模型里是 String（单点登录子类型要实现 OidcUser 的标准声明访问器）
+                .setGender(sysUser.getGender() == null ? null : String.valueOf(sysUser.getGender()))
                 .setUserAuthorities(authObject.listBaseAuth().stream().map(a->new SecurityUserAuthority(a.getAuth(), a.getDescription())).collect(Collectors.toList()))
                 .setPasswordExpiredTime(credential.getPasswordExpiredTime())
                 .setAccountLockedDeadline(credential.getAccountLockedDeadline())

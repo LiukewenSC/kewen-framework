@@ -88,7 +88,7 @@ cu:
             authorization-uri: http://localhost:9010/oauth2/authorize
             token-uri: http://localhost:9010/oauth2/token
             user-info-uri: http://localhost:9010/oauth2/userinfo
-            user-name-attribute-name: sub         # userinfo 响应里代表用户唯一标识的字段
+            user-name-attribute-name: preferred_username   # 该声明的值必须等于本系统用户名，登录后据此定位本地账号
             client-name: 本地 IDP（OAuth2 手动端点）   # 登录页按钮文案；不配则回退 registration-id
           # —— 下面两条只为演示"入口数量随配置变化"，端点与上面同指一个 IDP ——
           # 复制客户端条目是零成本的：protocol-type=oauth2 时启动不发网络请求，端点值只是占位。
@@ -105,7 +105,7 @@ cu:
             authorization-uri: http://localhost:9010/oauth2/authorize
             token-uri: http://localhost:9010/oauth2/token
             user-info-uri: http://localhost:9010/oauth2/userinfo
-            user-name-attribute-name: sub
+            user-name-attribute-name: preferred_username
             client-name: 第二个 OAuth2 入口
           - registration-id: demo-oauth2-third
             protocol-type: oauth2
@@ -118,7 +118,7 @@ cu:
             authorization-uri: http://localhost:9010/oauth2/authorize
             token-uri: http://localhost:9010/oauth2/token
             user-info-uri: http://localhost:9010/oauth2/userinfo
-            user-name-attribute-name: sub
+            user-name-attribute-name: preferred_username
             client-name: 第三个 OAuth2 入口
             # —— 以下项本 demo 未使用，需要时再打开 ——
             # issuer-uri:
@@ -126,22 +126,24 @@ cu:
             # authorization-grant-type:           # 当前代码未读取，实际固定用 authorization_code
             # user-info-authentication-method: header   # 当前代码未读取
             # ignore-ssl: false                   # true = userinfo 请求跳过证书校验，只用于测试环境
-          # —— OIDC 条目默认不配，原因如下 ——
+          # —— OIDC 条目 ——
           # protocol-type: oidc 会在应用启动构建 ClientRegistration 时就去拉
-          # {issuer-uri}/.well-known/openid-configuration，身份源不在线整个应用直接起不来。
-          # 本地 IDP 的这个文档是在线的（http://localhost:9010/.well-known/openid-configuration），
-          # 所以要演示 oidc 类别可以打开下面这条；scope 必须含 openid，否则 IDP 不发 id_token。
-          # - registration-id: demo-oidc
-          #   protocol-type: oidc
-          #   issuer-uri: http://localhost:9010
-          #   client-id: client_50d901b5844247df
-          #   client-secret: 35fcd41f49ed477992cc9ff6dbbd4e19d193b4e627ee4030aca195d2dec8a053
-          #   scopes:
-          #     - openid
-          #     - profile
-          #     - email
-          #   client-name: 本地 IDP（OIDC 自动发现）
-          #   user-name-attribute-name: sub
+          # {issuer-uri}/.well-known/openid-configuration，身份源不在线整个应用直接起不来；
+          # 本地 IDP 的这个文档是在线的（http://localhost:9010/.well-known/openid-configuration）。
+          # scope 必须含 openid，否则 IDP 不发 id_token。
+          # 这条用的仍是上面那个客户端凭据，因此 IDP 侧 application 表的 redirect_uris
+          # 需要额外登记 http://localhost:8080/login/oauth2/code/demo-oidc。
+          - registration-id: demo-oidc
+            protocol-type: oidc
+            issuer-uri: http://localhost:9010
+            client-id: client_50d901b5844247df
+            client-secret: 35fcd41f49ed477992cc9ff6dbbd4e19d193b4e627ee4030aca195d2dec8a053
+            scopes:
+              - openid
+              - profile
+              - email
+            client-name: 本地 IDP（OIDC 自动发现）
+            user-name-attribute-name: preferred_username
 
       saml:
         # SP 侧 ACS（登录回调）地址模板

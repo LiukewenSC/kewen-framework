@@ -4,13 +4,14 @@ import com.cu.framework.authentication.config.HttpSecurityCustomizer;
 import com.cu.framework.authentication.response.SecurityAuthenticationExceptionResolverHandler;
 import com.cu.framework.authentication.response.SecurityAuthenticationSuccessHandler;
 import com.cu.framework.authentication.saml.properties.SamlProperties;
+import com.cu.framework.authentication.service.SecurityUserDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.saml2.core.Saml2X509Credential;
 import org.springframework.security.saml2.provider.service.authentication.OpenSamlAuthenticationProvider;
@@ -60,6 +61,10 @@ public class SamlConfig implements HttpSecurityCustomizer{
     @Autowired
     SecurityAuthenticationExceptionResolverHandler exceptionResolverHandler;
 
+    /** 本系统账号来源，用于把断言里的 NameID 换成本系统的用户与权限 */
+    @Autowired
+    SecurityUserDetailsService securityUserDetailsService;
+
     /**
      * 添加 SAML2 登录配置到 HttpSecurity
      *
@@ -69,14 +74,19 @@ public class SamlConfig implements HttpSecurityCustomizer{
     @Override
     public void customizer(HttpSecurity http) throws Exception {
         //这里不能用OpenSaml4AuthenticationProvider，OpenSaml4AuthenticationProvider只支持jdk11以上
-        AuthenticationProvider samlAuthenticationProvider = new OpenSamlAuthenticationProvider();
+        OpenSamlAuthenticationProvider samlAuthenticationProvider = new OpenSamlAuthenticationProvider();
+        // 断言校验照旧，只接管校验之后的组装环节：让进入安全上下文的主体是本框架的统一认证主体
+        samlAuthenticationProvider.setResponseAuthenticationConverter(
+                new SecurityUserSamlAuthenticationConverter(securityUserDetailsService));
         //两种方式，
         // 1. 将 SAML2 认证提供者添加到 HttpSecurity，则不需要添加2对应的authenticationManager，保持使用统一的
         // 2. .authenticationManager(new ProviderManager(samlAuthenticationProvider))，那么不需要http.authenticationProvider(samlAuthenticationProvider);
-        http.authenticationProvider(samlAuthenticationProvider);
+        // 换掉组装主体之后只能选 2：Saml2LoginConfigurer 自己也会向 HttpSecurity 注册一个默认的
+        // OpenSamlAuthenticationProvider，两者共用 AuthenticationManager 时不保证我们这一个先被选中
+        // （实测默认那个胜出，进入安全上下文的仍是 DefaultSaml2AuthenticatedPrincipal）。
         http
                 .saml2Login()
-                //.authenticationManager(new ProviderManager(samlAuthenticationProvider))
+                .authenticationManager(new ProviderManager(samlAuthenticationProvider))
                 .relyingPartyRegistrationRepository(relyingPartyRegistrationRepository())
                 .successHandler(successHandler)
                 .failureHandler(exceptionResolverHandler)
@@ -113,14 +123,6 @@ public class SamlConfig implements HttpSecurityCustomizer{
             //registration = buildRegistrationFromProperties();
         //}
         return new InMemoryRelyingPartyRegistrationRepository(registration);
-    }
-    /**
-     * SAML 登录成功结果转换器 Bean，把 Saml2AuthenticatedPrincipal 转换为统一的登录成功响应
-     * @return SAML 认证成功结果转换器
-     */
-    @Bean
-    SamlAuthenticationSuccessResultConverter samlAuthenticationSuccessResultConverter() {
-        return new SamlAuthenticationSuccessResultConverter();
     }
 
     /**

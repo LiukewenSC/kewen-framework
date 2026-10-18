@@ -16,7 +16,7 @@
 | OIDC | `cu.security.login.oauth2`（`protocol-type: oidc`） | `Oauth2Config` | 同上，额外走 `OidcUserService` 校验 ID Token | ❌ |
 | SAML2 | `cu.security.login.saml` | `SamlConfig` | `Saml2WebSsoAuthenticationRequestFilter` + `Saml2WebSsoAuthenticationFilter` | ❌ |
 
-所有 `SecurityAuthenticationSuccessHandler` / `SecurityAuthenticationExceptionResolverHandler` 都是共享的：三条链路的结果处理走同一份实现，异常走同一份 `HandlerExceptionResolver` 列表；每种协议各自实现一个 `AuthenticationSuccessResultConverter`（`SecurityUser...` / `Oauth2...` / `Saml...`）来分派 principal。
+所有 `SecurityAuthenticationSuccessHandler` / `SecurityAuthenticationExceptionResolverHandler` 都是共享的：三条链路的结果处理走同一份实现，异常走同一份 `HandlerExceptionResolver` 列表。三种协议的 principal 也统一：进入安全上下文的都是 `SecurityUser`（单点登录为其协议子类型），因此结果处理与 `SecurityUserContext` 都不需要按协议分派。
 
 ## 跨协议共享配置（`cu.security.login.sso`）
 
@@ -132,7 +132,7 @@ cu:
 
 1. 启动 `login-boot-sample`（H2 内存库，`SecurityUserDetailsService` demo 已提供实现）。
 2. 未登录访问任一受保护接口 → 命中 `authenticationEntryPoint`，返回统一 JSON 异常结构（或兜底字符串）。
-3. `curl -X POST http://localhost:8080/login -H "Content-Type: application/json" -d '{"username":"admin","password":"123456"}'` → 成功返回 `SecurityUserAuthenticationSuccessResultConverter` 输出的登录结果；Set-Cookie 带回 session。
+3. `curl -X POST http://localhost:8080/login -H "Content-Type: application/json" -d '{"username":"admin","password":"123456"}'` → 成功返回 `LoginSuccessResult.of(...)` 投影出的登录结果；Set-Cookie 带回 session。
 4. 用同一 Cookie 再次访问受保护接口 → 200。
 5. `curl -X POST http://localhost:8080/logout --cookie "..."` → 走同一个 `successHandler`，session 失效。
 
@@ -188,7 +188,7 @@ cu:
 | `authorization-uri` | — | `oauth2` 必填 | IdP 授权端点 |
 | `token-uri` | — | `oauth2` 必填 | IdP 令牌端点 |
 | `user-info-uri` | — | `oauth2` 必填 | IdP userinfo 端点 |
-| `user-name-attribute-name` | — | `oauth2` 必填 | userinfo 响应里代表用户唯一标识的字段 |
+| `user-name-attribute-name` | — | `oauth2` 必填 | userinfo 响应中指向**本系统用户名**的字段，登录后据此取本地账号；未配置时 OIDC 回退 `sub` |
 | `jwk-set-uri` | — | `oidc` 可选 | 手动覆盖自动发现结果 |
 | `client-name` | — | 否 | 日志展示 |
 | `ignore-ssl` | `false` | 否 | **仅影响 userinfo**，Discovery / JWK 拉取不受影响 |
@@ -251,7 +251,9 @@ cu:
 - `oauth2/Oauth2Config.java`
 - `oauth2/Oauth2OidcProperties.java`
 - `oauth2/RestOperationBuilder.java`
-- `oauth2/result/Oauth2AuthenticationSuccessResultConverter.java`
+- `oauth2/Oauth2SecurityUser.java`
+- `oauth2/SecurityUserSsoAssembler.java`
+- `oauth2/SecurityUserOidcUserService.java`
 - `docs/说明文档/oidc接入踩坑记录.md`
 
 ---
@@ -386,7 +388,8 @@ cu:
 - `saml/properties/SamlProperties.java`
 - `saml/IdpMetadataParser.java`
 - `saml/SamlLogoutController.java`
-- `saml/SamlAuthenticationSuccessResultConverter.java`
+- `saml/SamlSecurityUser.java`
+- `saml/SecurityUserSamlAuthenticationConverter.java`
 - `docs/说明文档/SAML2_SP_Metadata配置指南.md`
 ```
 

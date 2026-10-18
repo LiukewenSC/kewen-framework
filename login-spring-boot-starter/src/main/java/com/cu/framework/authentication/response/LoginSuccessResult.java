@@ -1,5 +1,6 @@
 package com.cu.framework.authentication.response;
 
+import com.cu.framework.authentication.model.SecurityUser;
 import com.cu.framework.authentication.model.SecurityUserAuthority;
 import lombok.Data;
 
@@ -58,9 +59,9 @@ public class LoginSuccessResult {
     private String password;
 
     /**
-     * 1-男 2-女 3-..
+     * 1-男 2-女 3-..，取值与 {@code SecurityUser.gender} 一致
      */
-    private Integer gender;
+    private String gender;
 
     /**
      * 权限集合
@@ -71,4 +72,25 @@ public class LoginSuccessResult {
      * 本次登录时间，认证成功时取当前时间写入
      */
     private LocalDateTime loginTime;
+
+    /**
+     * 由统一认证主体投影出登录成功响应体。不含密码；
+     * token 与 loginTime 由 {@code JsonAuthenticationSuccessHandler} 写入
+     *
+     * @param securityUser 当前认证主体
+     * @return 登录成功响应体
+     */
+    public static LoginSuccessResult of(SecurityUser securityUser) {
+        LoginSuccessResult result = new LoginSuccessResult();
+        result.setName(securityUser.getName());
+        result.setNickName(securityUser.getNickName());
+        result.setUsername(securityUser.getUsername());
+        result.setPhone(securityUser.getPhone());
+        result.setEmail(securityUser.getEmail());
+        result.setAvatarFileId(securityUser.getAvatarFileId());
+        result.setGender(securityUser.getGender());
+        result.setAuthorities(securityUser.getUserAuthorities());
+        result.setLoginTime(securityUser.getLoginTime());
+        return result;
+    }
 }

@@ -1,9 +1,10 @@
 package com.cu.framework.authentication.response;
 
+import com.cu.framework.authentication.exception.NoLoginException;
+import com.cu.framework.authentication.model.SecurityUser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.security.core.Authentication;
 
 import javax.servlet.ServletException;
@@ -25,16 +26,13 @@ public class JsonAuthenticationSuccessHandler implements SecurityAuthenticationS
     private ObjectMapper objectMapper;
     /** 认证成功结果解析器，将响应体包装为最终返回结构 */
     private AuthenticationSuccessResultResolver resultResolver;
-    /** Authentication 转登录成功响应体的转换器提供者 */
-    private ObjectProvider<AuthenticationSuccessResultConverter> jsonSuccessResultConverter;
     /** 认证结果交付姿态判定器，决定单点登录成功是否改为整页重定向 */
     private LoginDeliveryResolver loginDeliveryResolver;
 
-    public JsonAuthenticationSuccessHandler(AuthenticationSuccessResultResolver resultResolver , ObjectMapper objectMapper, ObjectProvider<AuthenticationSuccessResultConverter> jsonSuccessResultConverter,
+    public JsonAuthenticationSuccessHandler(AuthenticationSuccessResultResolver resultResolver , ObjectMapper objectMapper,
                                             LoginDeliveryResolver loginDeliveryResolver) {
         this.objectMapper = objectMapper;
         this.resultResolver = resultResolver;
-        this.jsonSuccessResultConverter = jsonSuccessResultConverter;
         this.loginDeliveryResolver = loginDeliveryResolver;
     }
 
@@ -58,17 +56,12 @@ public class JsonAuthenticationSuccessHandler implements SecurityAuthenticationS
         }
 
         // 所有协议返回的都是SecurityUser，不是的需要自定义AuthenticationProvider，并返回SecurityUser
-        LoginSuccessResult loginSuccessResult = null;
-
-        for (AuthenticationSuccessResultConverter successResultConverter : jsonSuccessResultConverter) {
-            if (successResultConverter.support(authentication)) {
-                loginSuccessResult = successResultConverter.convert(authentication);
-                break;
-            }
+        Object principal = authentication.getPrincipal();
+        if (!(principal instanceof SecurityUser)) {
+            throw new NoLoginException("认证主体不是统一认证实体："
+                    + (principal == null ? "null" : principal.getClass().getName()));
         }
-        if (loginSuccessResult ==null){
-            loginSuccessResult = new LoginSuccessResult();
-        }
+        LoginSuccessResult loginSuccessResult = LoginSuccessResult.of((SecurityUser) principal);
 
         loginSuccessResult.setToken(request.getSession().getId());
         loginSuccessResult.setLoginTime(LocalDateTime.now());
