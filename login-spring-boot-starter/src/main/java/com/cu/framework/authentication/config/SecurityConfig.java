@@ -3,7 +3,6 @@ package com.cu.framework.authentication.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.cu.framework.authentication.properties.SecurityProperties;
 import com.cu.framework.authentication.response.AuthenticationSuccessResultResolver;
-import com.cu.framework.authentication.response.AuthenticationSuccessResultConverter;
 import com.cu.framework.authentication.response.SecurityAuthenticationExceptionResolverHandler;
 import com.cu.framework.authentication.response.SecurityAuthenticationSuccessHandler;
 import com.cu.framework.authentication.service.SecurityUserDetailsService;
@@ -52,9 +51,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     ObjectMapper objectMapper;
-    @Autowired
-    ObjectProvider<AuthenticationSuccessResultConverter> jsonSuccessResultConverter;
-
     @Autowired
     ObjectProvider<HttpSecurityCustomizer> httpSecurityCustomizers;
 

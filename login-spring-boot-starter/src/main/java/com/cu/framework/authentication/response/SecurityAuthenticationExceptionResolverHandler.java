@@ -70,6 +70,9 @@ public class SecurityAuthenticationExceptionResolverHandler implements Authentic
         // 单点登录的失败同样由浏览器整页承载，与成功路径共用一条判定规则，避免把裸 JSON 甩在用户屏幕上。
         // 账号密码端点与非认证端点不在判定名单内，因此它们的 JSON 错误契约完全不变。
         if (loginDeliveryResolver.shouldRedirect(request)) {
+            // 重定向不带响应体，浏览器侧也看不到原因，服务端日志是唯一的取证处；
+            // 走 JSON 分支时由 HandlerExceptionResolver 负责记录，不在此重复
+            logger.warn("单点登录认证失败，按失败姿态回跳：{}", exception.getMessage());
             loginDeliveryResolver.redirect(response, LoginDeliveryResolver.STATE_FAILURE);
             return;
         }

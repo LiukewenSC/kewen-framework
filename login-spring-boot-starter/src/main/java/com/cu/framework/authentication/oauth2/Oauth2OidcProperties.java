@@ -189,13 +189,17 @@ public class Oauth2OidcProperties {
 
         /**
          * 用户名属性名称
-         * <p><b>协议归属：</b> <b>OAuth2 手动配置专用</b>（OIDC 模式下默认使用 {@code sub}）</p>
-         * <p>用户信息响应中表示用户唯一标识的属性名。</p>
+         * <p><b>协议归属：</b> OAuth2 与 OIDC 通用
+         * <p>用户信息响应中指向本系统用户名的属性名。身份源只负责证明"这个人是谁"，
+         * 登录成功后系统用该属性的值作为用户名向 {@code SecurityUserDetailsService} 取本地账号与权限；
+         * <b>值对不上本地账号时本次登录直接失败</b>（错误码 {@code sso_local_user_not_found}）。
          * <ul>
-         *   <li><b>OAuth2 场景</b>：根据 IDP 返回的用户信息字段指定，如 {@code login}（GitHub）、{@code id}、{@code email} 等</li>
-         *   <li><b>OIDC 场景</b>：使用 {@code oidcDiscoveryUri} 自动发现时，固定使用 {@code sub}（OIDC 标准主体标识）</li>
+         *   <li><b>OAuth2 场景</b>：按 IDP 返回的用户信息字段指定，如 {@code login}（GitHub）、{@code username}、{@code email}</li>
+         *   <li><b>OIDC 场景</b>：常用 {@code preferred_username}；不配置时回退 OIDC 标准主体标识 {@code sub}，
+         *       而 {@code sub} 通常是身份源侧的数字 ID 或配对码，等于本系统用户名的情况很少</li>
          * </ul>
-         * <p>当 <b>未配置</b> {@code oidcDiscoveryUri} 时，此项为 <b>必填</b>。</p>
+         * <p>想按身份源的其他字段（如邮箱）匹配本地账号，应由业务实现的
+         * {@code SecurityUserDetailsService} 承担，本项只决定传给它的那个值。
          */
         private String userNameAttributeName;
 

@@ -65,8 +65,11 @@ public class SecurityUser implements UserDetails, AuthenticatedPrincipal {
 
     /**
      * 1-男 2-女 3-..
+     * <p>String 而非 Integer：单点登录的子类型要实现 {@code OidcUser}，
+     * 而该接口的父接口 StandardClaimAccessor 提供了 {@code String getGender()}，
+     * 同名方法返回类型不同会导致无法继承本类
      */
-    private Integer gender;
+    private String gender;
 
     /**
      * 权限集合

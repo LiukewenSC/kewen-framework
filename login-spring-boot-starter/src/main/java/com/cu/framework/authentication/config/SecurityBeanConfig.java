@@ -1,6 +1,5 @@
 package com.cu.framework.authentication.config;
 
-import com.cu.framework.authentication.SecurityUserContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.cu.framework.authentication.filter.WebSecurityGlobalExceptionHandlerFilter;
 import com.cu.framework.authentication.loginpage.LoginOptionsEndpoint;
@@ -9,16 +8,13 @@ import com.cu.framework.authentication.oauth2.Oauth2OidcProperties;
 import com.cu.framework.authentication.password.properties.SecurityLoginProperties;
 import com.cu.framework.authentication.response.LoginDeliveryResolver;
 import com.cu.framework.authentication.extension.PropertiesUrlSecurityCustomizer;
-import com.cu.framework.authentication.response.AuthenticationSuccessResultConverter;
 import com.cu.framework.authentication.response.AuthenticationSuccessResultResolver;
 import com.cu.framework.authentication.response.JsonAuthenticationSuccessHandler;
 import com.cu.framework.authentication.response.NoneAuthenticationSuccessResultResolver;
 import com.cu.framework.authentication.response.SecurityAuthenticationExceptionResolverHandler;
 import com.cu.framework.authentication.response.SecurityAuthenticationSuccessHandler;
-import com.cu.framework.authentication.response.SecurityUserAuthenticationSuccessResultConverter;
 import com.cu.framework.authentication.properties.SsoLoginProperties;
 import com.cu.framework.authentication.saml.properties.SamlProperties;
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -96,18 +92,10 @@ public class SecurityBeanConfig {
     @Bean
     @ConditionalOnMissingBean(SecurityAuthenticationSuccessHandler.class)
     SecurityAuthenticationSuccessHandler securityAuthenticationSuccessHandler(
-            AuthenticationSuccessResultResolver resultResolverProvider, ObjectMapper objectMapper, ObjectProvider<AuthenticationSuccessResultConverter> jsonSuccessResultConverter,
+            AuthenticationSuccessResultResolver resultResolverProvider, ObjectMapper objectMapper,
             LoginDeliveryResolver loginDeliveryResolver){
-        return new JsonAuthenticationSuccessHandler(resultResolverProvider,objectMapper,jsonSuccessResultConverter,loginDeliveryResolver);
+        return new JsonAuthenticationSuccessHandler(resultResolverProvider,objectMapper,loginDeliveryResolver);
     }
-    /**
-     * 默认的认证成功结果转换器，将 principal 为 SecurityUser 的认证结果转换为返回体
-     */
-    @Bean
-    SecurityUserAuthenticationSuccessResultConverter securityUserJsonSuccessResultConverter() {
-        return new SecurityUserAuthenticationSuccessResultConverter();
-    }
-
 
     /**
      * 安全异常解析处理器，注入容器中全部 HandlerExceptionResolver，用于统一解析认证/访问异常
@@ -134,10 +122,5 @@ public class SecurityBeanConfig {
     @ConditionalOnMissingBean(AuthenticationSuccessResultResolver.class)
     AuthenticationSuccessResultResolver authenticationSuccessResultResolver(){
         return new NoneAuthenticationSuccessResultResolver();
-    }
-
-    @Bean
-    SecurityUserContext securityUserContext() {
-        return new SecurityUserContext();
     }
 }

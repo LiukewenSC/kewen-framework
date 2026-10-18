@@ -4,7 +4,7 @@ import com.cu.framework.authentication.config.HttpSecurityCustomizer;
 import com.cu.framework.authentication.response.SecurityAuthenticationExceptionResolverHandler;
 import com.cu.framework.authentication.response.SecurityAuthenticationSuccessHandler;
 import com.cu.framework.authentication.oauth2.Oauth2OidcProperties.Oauth2OidcRegistrationClientProperties;
-import com.cu.framework.authentication.oauth2.result.Oauth2AuthenticationSuccessResultConverter;
+import com.cu.framework.authentication.service.SecurityUserDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,6 +69,10 @@ public class Oauth2Config implements HttpSecurityCustomizer {
     @Autowired
     private Oauth2OidcProperties oauth2OidcProperties;
 
+    /** 本系统账号来源，用于把身份源认证的账号换成本系统的用户与权限 */
+    @Autowired
+    private SecurityUserDetailsService securityUserDetailsService;
+
     /**
      * 授权请求仓库 Bean，基于 HttpSession 保存 OAuth2AuthorizationRequest（含 state 等），供回调时校验
      * @return 基于 Session 的授权请求仓库
@@ -76,15 +80,6 @@ public class Oauth2Config implements HttpSecurityCustomizer {
     @Bean
     public AuthorizationRequestRepository<OAuth2AuthorizationRequest> authorizationRequestRepository() {
         return new HttpSessionOAuth2AuthorizationRequestRepository();
-    }
-
-    /**
-     * OAuth2 登录成功结果转换器 Bean，把 OAuth2User 属性转换为统一的登录成功响应
-     * @return OAuth2 认证成功结果转换器
-     */
-    @Bean
-    public Oauth2AuthenticationSuccessResultConverter oauth2JsonSuccessResultConverter(){
-        return new Oauth2AuthenticationSuccessResultConverter();
     }
 
     /**
@@ -114,6 +109,19 @@ public class Oauth2Config implements HttpSecurityCustomizer {
         return userRequest -> resolveUserService(byRegistrationIdMap,
                         userRequest.getClientRegistration().getRegistrationId())
                 .loadUser(userRequest);
+    }
+
+    /**
+     * OAuth2 协议（非 OIDC）登录端点实际使用的用户信息服务：在 {@link #oauth2UserService()}
+     * 之上追加一步装配，使进入安全上下文的主体是本框架的统一认证主体而不是协议自带的类型。
+     * <p>不注册为 Bean：容器里 {@code OAuth2UserService} 类型的实例保持单一，
+     * 装配只在认证链路的末端发生一次。
+     * @return 产出统一认证主体的用户信息服务
+     */
+    private OAuth2UserService<OAuth2UserRequest, OAuth2User> mappedUserService() {
+        SecurityUserSsoAssembler assembler = new SecurityUserSsoAssembler(securityUserDetailsService);
+        OAuth2UserService<OAuth2UserRequest, OAuth2User> nativeUserService = oauth2UserService();
+        return userRequest -> assembler.assemble(nativeUserService.loadUser(userRequest));
     }
 
     /**
@@ -188,7 +196,7 @@ public class Oauth2Config implements HttpSecurityCustomizer {
                     })
                     //userinfo配置 配置的是拿到 token 后怎么去获取用户信息（用什么 HTTP 客户端、是否校验 SSL 等）
                     .userInfoEndpoint(endpoint -> {
-                        endpoint.userService(oauth2UserService());
+                        endpoint.userService(mappedUserService());
                         endpoint.oidcUserService(oidcUserService());
                     })
                     .loginProcessingUrl(oauth2OidcProperties.getLoginProcessingUrl())
@@ -250,10 +258,13 @@ public class Oauth2Config implements HttpSecurityCustomizer {
      * 创建 OIDC UserService 用于处理 OIDC 协议的用户信息获取及 ID Token 验证。
      * <p>其 userinfo 拉取复用 {@link #oauth2UserService()}，因此同样按客户端的 ignore-ssl
      * 决定是否校验证书；不调用时 OidcUserService 内部默认也是校验的，两者默认行为一致。
+     * <p>返回的主体由 {@link SecurityUserOidcUserService} 装配成统一认证主体，ID Token 与
+     * 声明原样保留在该主体上，依赖 {@code principal instanceof OidcUser} 的会话终止功能不受影响。
      */
     @Bean
     public OidcUserService oidcUserService() {
-        OidcUserService oidcUserService = new OidcUserService();
+        SecurityUserOidcUserService oidcUserService =
+                new SecurityUserOidcUserService(new SecurityUserSsoAssembler(securityUserDetailsService));
         oidcUserService.setOauth2UserService(oauth2UserService());
         return oidcUserService;
     }
@@ -261,8 +272,9 @@ public class Oauth2Config implements HttpSecurityCustomizer {
     /**
      * 通过 OIDC issuer-uri 自动发现创建 ClientRegistration
      * 会自动从 {issuerUri}/.well-known/openid-configuration 获取元数据
+     * <p>包内可见是为了让映射字段的接线能被单测覆盖，不是对外扩展点
      */
-    private ClientRegistration createOidcClientRegistration(Oauth2OidcRegistrationClientProperties client) {
+    ClientRegistration createOidcClientRegistration(Oauth2OidcRegistrationClientProperties client) {
         // 确保 OIDC 协议必需的 openid scope
         Set<String> scopes = client.getScopes();
         if (scopes == null || scopes.isEmpty()) {
@@ -287,6 +299,9 @@ public class Oauth2Config implements HttpSecurityCustomizer {
         Optional.ofNullable(client.getAuthorizationUri()).ifPresent(builder::authorizationUri);
         Optional.ofNullable(client.getTokenUri()).ifPresent(builder::tokenUri);
         Optional.ofNullable(client.getUserInfoUri()).ifPresent(builder::userInfoUri);
+        // 不配这一项时主体的标识取 ID Token 的 sub，而 sub 要登录后定位本系统账号，
+        // 因此配置了映射字段就必须传给 builder，否则 OIDC 客户端只能用 sub
+        Optional.ofNullable(client.getUserNameAttributeName()).ifPresent(builder::userNameAttributeName);
         return builder.build();
     }
 

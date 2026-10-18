@@ -17,6 +17,15 @@ qy-idaas 模块基于 Spring Security 框架，提供企业级单点登录（SSO
 - **OAuth2**：基于授权码模式（Authorization Code）的标准 OAuth2 认证
 - **SAML 2.0**：基于 SAML 协议的企业级单点登录
 
+### 身份源与本系统的分工
+
+- 身份源只负责证明"这个人是谁"。**账号信息与权限一律来自本系统**，由业务的 `SecurityUserDetailsService` 提供；身份源声明里带的权限、角色、`SCOPE_*` 都不参与授权判定。
+- 认证成功后写入安全上下文的主体，三种协议都是 `SecurityUser`（单点登录的是它的协议子类型 `Oauth2SecurityUser` / `SamlSecurityUser`），因此 `SecurityUserContext.getCurrentUser()` 不需要知道本次登录走了哪种协议。
+- 身份源标识要能对上本地账号：OAuth2/OIDC 由 `user-name-attribute-name` 指定的那个声明提供，SAML 由断言的 NameID 提供，**该值必须等于本系统的用户名**。对不上时本次认证以错误码 `sso_local_user_not_found` 失败，不会留下一个没有权限的会话。
+- 因此身份源侧要配：userinfo 返回映射字段（OIDC 常用 `preferred_username`，注意 `sub` 通常是身份源自己的数字 ID）；SAML 的 NameID 属性选 `username`——服务侧发起的单点登出会把 `Authentication.getName()`（即本地用户名）作为 NameID 发给身份源，两边取值口径必须一致。
+- 主体在会话里是**登录时快照**：改了权限或资料要重新登录才生效；反过来说，取当前用户不再查库。
+- 会话行里除用户信息外还存着身份源的原始声明与 ID Token（`spring-session-jdbc` 会把它们序列化进会话表），**不要把会话表导出或同步到日志**。
+
 ### 核心端点说明
 
 | 协议 | 端点类型 | 默认路径 | 说明 |
@@ -62,7 +71,7 @@ cu:
             user-info-uri: https://idp.example.com/api/userinfo           # 用户信息端点
             
             # 用户信息配置
-            user-name-attribute-name: sub             # 必填：用户名对应的属性名
+            user-name-attribute-name: preferred_username  # 必填：该声明的值要等于本系统用户名，登录后据此取本地账号
             user-info-authentication-method: header   # 用户信息认证方式（默认：header）
             
             # 回调配置
@@ -91,7 +100,7 @@ cu:
 | `authorization-uri` | ✅ | - | IdP 的授权端点URL，用户在此进行认证 |
 | `token-uri` | ✅ | - | IdP 的令牌端点URL，用于获取 access_token |
 | `user-info-uri` | ✅ | - | IdP 的用户信息端点URL，用于获取用户详细信息 |
-| `user-name-attribute-name` | ✅ | - | 用户信息中用作用户名的属性名，如：`sub`、`email`、`username` |
+| `user-name-attribute-name` | ✅ | - | 用户信息中指向**本系统用户名**的属性名，如：`preferred_username`、`login`、`email`；填 `sub` 通常对不上，因为它是身份源自己的数字 ID |
 | `user-info-authentication-method` | ❌ | `header` | 访问用户信息时的认证方式，可选：`header`、`form`、`query` |
 | `redirect-uri-template` | ❌ | `{baseUrl}/login/oauth2/code/{registrationId}` | 认证成功后的回调地址模板 |
 | `scopes` | ✅ | - | 申请的权限范围列表，常见值：`read`、`profile`、`email` |
@@ -153,7 +162,7 @@ cu:
             authorization-uri: https://idp4-test.example.com/oauth/authorize
             token-uri: https://idp4-test.example.com/oauth/token
             user-info-uri: https://idp4-test.example.com/api/userinfo
-            user-name-attribute-name: sub
+            user-name-attribute-name: preferred_username
             scopes:
               - read
           

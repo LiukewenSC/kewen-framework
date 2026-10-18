@@ -1,13 +1,13 @@
 package com.cu.framework.authentication.response;
 
+import com.cu.framework.authentication.model.SecurityUser;
+import com.cu.framework.authentication.model.SecurityUserAuthority;
 import com.cu.framework.authentication.oauth2.Oauth2OidcProperties;
 import com.cu.framework.authentication.properties.SsoLoginProperties;
 import com.cu.framework.authentication.saml.properties.SamlProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
 import org.junit.Test;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.servlet.HandlerExceptionResolver;
@@ -15,9 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.stream.Stream;
 
 /**
  * 认证结果交付姿态的分流正确性：三类单点登录按请求命中的处理端点改为重定向，
@@ -44,6 +42,20 @@ public class LoginDeliveryPostureTest {
         MockHttpServletRequest request = new MockHttpServletRequest(method, uri);
         request.setRequestURI(uri);
         return request;
+    }
+
+    /**
+     * 认证成功处理器收到的认证对象：账号密码与三种单点登录都交出 SecurityUser 主体，
+     * 本测试只关心交付姿态，用它代表任意一种
+     */
+    private UsernamePasswordAuthenticationToken authenticatedToken() {
+        SecurityUser securityUser = new SecurityUser()
+                .setId(1L)
+                .setUsername("admin")
+                .setName("管理员")
+                .setEnabled(true)
+                .setUserAuthorities(Collections.singletonList(new SecurityUserAuthority("ROLE_ADMIN", null)));
+        return new UsernamePasswordAuthenticationToken(securityUser, null, securityUser.getAuthorities());
     }
 
     /**
@@ -106,11 +118,10 @@ public class LoginDeliveryPostureTest {
     public void successRedirectsAndSkipsResultResolver() throws Exception {
         CountingResultResolver resultResolver = new CountingResultResolver();
         JsonAuthenticationSuccessHandler handler = new JsonAuthenticationSuccessHandler(
-                resultResolver, new ObjectMapper(), emptyConverters(), resolverOf("/login.html"));
+                resultResolver, new ObjectMapper(), resolverOf("/login.html"));
 
         MockHttpServletResponse response = new MockHttpServletResponse();
-        handler.onAuthenticationSuccess(requestOf("GET", OAUTH2_CALLBACK), response,
-                new UsernamePasswordAuthenticationToken("admin", "admin123"));
+        handler.onAuthenticationSuccess(requestOf("GET", OAUTH2_CALLBACK), response, authenticatedToken());
 
         Assert.assertEquals("/login.html?loginState=success", response.getRedirectedUrl());
         Assert.assertEquals(302, response.getStatus());
@@ -125,11 +136,10 @@ public class LoginDeliveryPostureTest {
     public void passwordLoginStillWritesJson() throws Exception {
         CountingResultResolver resultResolver = new CountingResultResolver();
         JsonAuthenticationSuccessHandler handler = new JsonAuthenticationSuccessHandler(
-                resultResolver, new ObjectMapper(), emptyConverters(), resolverOf("/login.html"));
+                resultResolver, new ObjectMapper(), resolverOf("/login.html"));
 
         MockHttpServletResponse response = new MockHttpServletResponse();
-        handler.onAuthenticationSuccess(requestOf("POST", "/login"), response,
-                new UsernamePasswordAuthenticationToken("admin", "admin123"));
+        handler.onAuthenticationSuccess(requestOf("POST", "/login"), response, authenticatedToken());
 
         Assert.assertNull(response.getRedirectedUrl());
         Assert.assertEquals(1, resultResolver.invocations);
@@ -142,11 +152,10 @@ public class LoginDeliveryPostureTest {
     @Test
     public void singleSignOnStaysJsonWhenTargetAbsent() throws Exception {
         JsonAuthenticationSuccessHandler handler = new JsonAuthenticationSuccessHandler(
-                new CountingResultResolver(), new ObjectMapper(), emptyConverters(), resolverOf(null));
+                new CountingResultResolver(), new ObjectMapper(), resolverOf(null));
 
         MockHttpServletResponse response = new MockHttpServletResponse();
-        handler.onAuthenticationSuccess(requestOf("GET", OAUTH2_CALLBACK), response,
-                new UsernamePasswordAuthenticationToken("admin", "admin123"));
+        handler.onAuthenticationSuccess(requestOf("GET", OAUTH2_CALLBACK), response, authenticatedToken());
 
         Assert.assertNull(response.getRedirectedUrl());
         Assert.assertTrue(response.getContentAsString().contains("loginResult"));
@@ -225,37 +234,5 @@ public class LoginDeliveryPostureTest {
             invocations++;
             return new ModelAndView();
         }
-    }
-
-    /**
-     * 空的转换器提供者：三种协议的 principal 类型不同，此处只验证交付姿态，不参与结果转换
-     */
-    private static ObjectProvider<AuthenticationSuccessResultConverter> emptyConverters() {
-        return new ObjectProvider<AuthenticationSuccessResultConverter>() {
-            @Override
-            public AuthenticationSuccessResultConverter getObject() {
-                throw new NoSuchBeanDefinitionException(AuthenticationSuccessResultConverter.class);
-            }
-
-            @Override
-            public AuthenticationSuccessResultConverter getObject(Object... args) {
-                throw new NoSuchBeanDefinitionException(AuthenticationSuccessResultConverter.class);
-            }
-
-            @Override
-            public AuthenticationSuccessResultConverter getIfAvailable() {
-                return null;
-            }
-
-            @Override
-            public AuthenticationSuccessResultConverter getIfUnique() {
-                return null;
-            }
-
-            @Override
-            public Stream<AuthenticationSuccessResultConverter> stream() {
-                return new ArrayList<AuthenticationSuccessResultConverter>().stream();
-            }
-        };
     }
 }
