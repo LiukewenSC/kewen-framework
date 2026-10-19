@@ -45,4 +45,20 @@ class AuthRange {
      * 权限匹配方式， IN或者exists
      */
     private MatchMethod matchMethod;
+
+    /**
+     * 复制出一份不含权限集合的声明副本。
+     * 缓存中保存的是多条语句共用的声明模板，执行期必须先复制再写入当次请求的权限集合，
+     * 否则会污染缓存、把权限范围跨请求共享。
+     * @return 仅含注解静态信息的新实例
+     */
+    AuthRange copy() {
+        return new AuthRange()
+                .setBusinessFunction(businessFunction)
+                .setOperate(operate)
+                .setTable(table)
+                .setTableAlias(tableAlias)
+                .setDataIdColumn(dataIdColumn)
+                .setMatchMethod(matchMethod);
+    }
 }

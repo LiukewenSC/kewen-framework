@@ -348,19 +348,23 @@ public class MeetingRoomController {
 
 在查询数据列表时自动筛选登录人可见的数据，不可见的数据不展示。
 
+声明位置是 **MyBatis 的 Mapper 接口查询方法**：注解标在哪个方法，权限条件就只注入那一条语句，
+同一调用链上的其他语句不受影响。一条语句绑定一个 `businessFunction` + `operate`，
+同一张表按不同操作过滤就各写一个查询方法。
+
 ```java
-@RestController
-@RequestMapping("/api/meeting")
-public class MeetingRoomController {
-    
+@Mapper
+public interface MeetingRoomMpMapper extends BaseMapper<MeetingRoom> {
+
     @AuthDataRange(businessFunction = "meeting_room")
-    @GetMapping("/list")
-    public Result list() {
-        List<MeetingRoom> list = meetingRoomService.list();
-        return Result.success(list);
-    }
+    @Select("select * from meeting_room order by id")
+    List<MeetingRoom> selectVisibleList();
 }
 ```
+
+> MyBatis-Plus 从 `BaseMapper` 继承的 `selectList`、`page` 等方法没有挂载点，不受本注解管辖。
+> 声明写错（解析不到语句、语句不是查询、语句启用二级缓存、静态 SQL 中找不到目标表、
+> 注解标在 Mapper 接口以外）会在应用启动时直接失败，而不是运行期静默不过滤。
 
 **参数说明：**
 - `businessFunction`：业务功能标识（必填），用于区分权限所属
@@ -647,18 +651,20 @@ public class MeetingRoomController {
 #### 2. 查询可编辑的会议室列表
 
 ```java
-@RestController
-@RequestMapping("/api/meeting")
-public class MeetingRoomController {
-    
+@Mapper
+public interface MeetingRoomMpMapper extends BaseMapper<MeetingRoom> {
+
     @AuthDataRange(businessFunction = "meeting_room", operate = "edit_info")
-    @GetMapping("/editList")
-    public Result editList() {
-        List<MeetingRoom> list = meetingRoomService.list();
-        return Result.success(list);
-    }
+    @Select("select * from meeting_room order by id limit #{size} offset #{offset}")
+    List<MeetingRoom> selectEditAblePage(@Param("size") Integer size, @Param("offset") Integer offset);
+
+    @AuthDataRange(businessFunction = "meeting_room", operate = "edit_info")
+    @Select("select count(*) from meeting_room")
+    long selectEditAbleCount();
 }
 ```
+
+分页的列表与计数是两条语句，因此各声明一次，总数与行集才是同一套权限口径。
 
 #### 3. 编辑会议室
 

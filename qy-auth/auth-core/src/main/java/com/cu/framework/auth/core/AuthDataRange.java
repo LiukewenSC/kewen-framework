@@ -10,8 +10,16 @@ import java.lang.annotation.Target;
 
 /**
  * 基于当前权限范围查询注解，在查询数据的时候关联数据的权限表以及用户权限体系，检查用户是否拥有数据配置的权限
- * 在mapper拦截 ，用于数据权限列表查询
- * 例如 拼接语句：
+ * <p>
+ * 声明位置是 <b>MyBatis 的 Mapper 接口查询方法</b>：注解标在哪个方法上，权限条件就只注入该方法对应的那一条语句，
+ * 同一调用链上的其他语句不受影响。一条语句绑定一个业务功能与操作类型，
+ * 同一张表需要按多个操作过滤时，为每个操作各自声明一个查询方法。
+ * MyBatis-Plus 由 BaseMapper 继承而来的内建方法（selectList、page 等）没有挂载点，不受本注解管辖。
+ * <p>
+ * 应用启动时会校验全部声明，以下情况直接启动失败：解析不到映射语句、语句不是查询、
+ * 语句启用了二级缓存（缓存键在权限条件注入之前就已计算，两者不能共存）、静态可得的 SQL 中找不到声明的目标表。
+ * <p>
+ * 用于数据权限列表查询，例如拼接语句：
  * select * from ${business_table} where
  *   ${business_table}.{business_id} in
  *      (   select data_id from sys_auth_data
@@ -38,6 +46,7 @@ public @interface AuthDataRange {
     /**
      * 表名多表联查时用于指定是和哪一张表关联
      * 当为空时默认指定以主表（from后的表）为准
+     * 该默认只在被声明的这条语句内生效，不会影响同一调用链上的其他语句
      * @return
      */
     String table() default "";

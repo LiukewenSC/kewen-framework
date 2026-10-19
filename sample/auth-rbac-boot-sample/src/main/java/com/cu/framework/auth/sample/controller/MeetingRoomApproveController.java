@@ -1,7 +1,6 @@
 package com.cu.framework.auth.sample.controller;
 
 import com.cu.framework.auth.core.AuthDataOperation;
-import com.cu.framework.auth.core.AuthDataRange;
 import com.cu.framework.auth.core.AuthMenu;
 import com.cu.framework.auth.sample.mp.entity.MeetingRoom;
 import com.cu.framework.auth.sample.mp.service.MeetingRoomMpService;
@@ -9,7 +8,6 @@ import com.cu.framework.auth.sample.model.MeetingRoomApproveReq;
 import com.cu.framework.basic.model.PageReq;
 import com.cu.framework.basic.model.PageResult;
 import com.cu.framework.basic.model.Result;
-import com.cu.framework.basic.support.utils.MybatisPageExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,9 +52,9 @@ public class MeetingRoomApproveController {
      * @return
      */
     @GetMapping(value = "/page")
-    @AuthDataRange(businessFunction = BUSINESS_FUNCTION,operate = OPERATE_APPROVE)
     public Result<PageResult<MeetingRoom>> pageapproves(@Validated PageReq pageReq) {
-        PageResult<MeetingRoom> meetingRoomPageResult = MybatisPageExecutor.pageAndConvert(pageReq, meetingRoomService);
+        //数据范围声明在 MeetingRoomMpMapper 的可预约查询方法上，这里只取分页结果
+        PageResult<MeetingRoom> meetingRoomPageResult = meetingRoomService.pageApproveAble(pageReq);
         return Result.success(meetingRoomPageResult);
     }
 

@@ -2,6 +2,7 @@ package com.cu.framework.auth.core.data;
 
 import com.cu.framework.auth.core.entity.BaseAuth;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Collection;
@@ -14,11 +15,12 @@ import java.util.stream.Collectors;
  * @author kewen
  * @since 2024-08-14
  */
-@Setter
+
 public class JdbcAuthDataHandler implements AuthDataHandler {
 
     /** 数据权限持久化组件，执行权限表的增删查 SQL */
-    protected JdbcAuthDataPersistent jdbcAuthDataPersistent;
+
+    private JdbcAuthDataPersistent jdbcAuthDataPersistent;
 
     @Override
     public void editDataAuths(String businessFunction, Object dataId, String operate, Collection<BaseAuth> baseAuths) {
@@ -72,5 +74,9 @@ public class JdbcAuthDataHandler implements AuthDataHandler {
     @Override
     public void deleteBusinessFunctionAuthByDataId(String businessFunction, Object dataId) {
         int i = jdbcAuthDataPersistent.deleteBusinessFunctionDataIdAuth(businessFunction, dataId);
+    }
+
+    public void setJdbcAuthDataPersistent(JdbcAuthDataPersistent jdbcAuthDataPersistent) {
+        this.jdbcAuthDataPersistent = jdbcAuthDataPersistent;
     }
 }
