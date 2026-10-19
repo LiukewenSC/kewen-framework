@@ -103,7 +103,7 @@ public class JdbcAuthDataPersistent implements InitializingBean {
             } else if (id instanceof Integer) {
                 Integer id1 = (Integer) id;
                 expressions.add(new LongValue(id1));
-            } else if (id instanceof StringValue) {
+            } else if (id instanceof String) {
                 expressions.add(new StringValue(id.toString()));
             } else {
                 throw new RuntimeException("ID类型异常");

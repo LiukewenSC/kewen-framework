@@ -181,6 +181,10 @@ public class SqlAuthInject {
      * @throws JSQLParserException 递归解析子查询出错时抛出
      */
     private PlainSelectAndTable parseExpression(Expression expression, Table paramTable) throws JSQLParserException {
+        if (expression == null) {
+            //没有 WHERE 子句时无处可找，交由调用方按未匹配处理
+            return null;
+        }
         PlainSelectAndTable psat = null;
         if (expression instanceof Select) {
             //这是递归中唯一满足要求提前结束的场景，按照PlainSelect查询匹配，
