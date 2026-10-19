@@ -124,7 +124,8 @@ b. 另一种方式是每个会议室都会分配管理的人，因为会议室�
  */
 @PostMapping("/meetingRoomPrimary/add")
 @Transactional(rollbackFor = Exception.class)
-@AuthMenu(name = "创建会议室")
+@AuthMenu
+@AuthMenuDoc(name = "创建会议室")
 @AuthDataAuthEdit(businessFunction = "meeting_room",operate = "edit_info",before = false)
 public Result add(@RequestBody MeetingRoomAddReq entity){
    meetingRoomService.save(entity);
@@ -136,7 +137,8 @@ public Result add(@RequestBody MeetingRoomAddReq entity){
  * @return
  */
 @PostMapping("/meetingRoomPrimary/add2")
-@AuthMenu(name = "创建会议室")
+@AuthMenu
+@AuthMenuDoc(name = "创建会议室")
 @Transactional(rollbackFor = Exception.class)
 public Result add2(@RequestBody MeetingRoomAddReq entity){
    meetingRoomService.save(entity);

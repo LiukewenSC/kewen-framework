@@ -22,6 +22,7 @@ import org.springframework.validation.annotation.Validated;
 import org.apache.commons.lang3.StringUtils;
 
 import com.cu.framework.auth.core.AuthMenu;
+import com.cu.framework.auth.core.AuthMenuDoc;
 import com.cu.framework.basic.model.*;
 import com.cu.framework.basic.support.utils.PageUtil;
 
@@ -47,7 +48,8 @@ import java.util.List;
 #else
 @Controller
 #end
-@AuthMenu(name = "$!{table.comment}")
+@AuthMenu
+@AuthMenuDoc(name = "$!{table.comment}")
 @RequestMapping("/mp#if(${package.ModuleName})/${package.ModuleName}#end/#if(${controllerMappingHyphenStyle})${controllerMappingHyphen}#else${table.entityPath}#end")
 #if(${kotlin})
 class ${table.controllerName}#if(${superControllerClass}) : ${superControllerClass}()#end

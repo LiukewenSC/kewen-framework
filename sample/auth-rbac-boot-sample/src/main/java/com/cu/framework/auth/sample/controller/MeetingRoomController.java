@@ -3,6 +3,7 @@ package com.cu.framework.auth.sample.controller;
 import com.cu.framework.auth.core.AuthDataAdaptor;
 import com.cu.framework.auth.core.AuthDataOperation;
 import com.cu.framework.auth.core.AuthMenu;
+import com.cu.framework.auth.core.AuthMenuDoc;
 import com.cu.framework.auth.sample.mp.entity.MeetingRoom;
 import com.cu.framework.auth.sample.mp.service.MeetingRoomMpService;
 import com.cu.framework.auth.sample.model.MeetingRoomResult;
@@ -33,7 +34,8 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("/meetingRoom")
-@AuthMenu(name = "会议室信息管理")
+@AuthMenu
+@AuthMenuDoc(name = "会议室信息管理")
 public class MeetingRoomController {
 
     private static final Logger log = LoggerFactory.getLogger(MeetingRoomController.class);

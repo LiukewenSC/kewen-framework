@@ -2,6 +2,7 @@ package com.cu.framework.auth.sample.controller;
 
 import com.cu.framework.auth.core.AuthDataOperation;
 import com.cu.framework.auth.core.AuthMenu;
+import com.cu.framework.auth.core.AuthMenuDoc;
 import com.cu.framework.auth.sample.mp.entity.MeetingRoom;
 import com.cu.framework.auth.sample.mp.service.MeetingRoomMpService;
 import com.cu.framework.auth.sample.model.MeetingRoomApproveReq;
@@ -27,7 +28,8 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/meetingRoomApprove")
-@AuthMenu(name = "会议室预约")
+@AuthMenu
+@AuthMenuDoc(name = "会议室预约")
 public class MeetingRoomApproveController {
 
     private static final Logger log = LoggerFactory.getLogger(MeetingRoomApproveController.class);

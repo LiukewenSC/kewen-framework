@@ -3,6 +3,7 @@ package controller.authmenu;
 
 
 import com.cu.framework.auth.core.AuthMenu;
+import com.cu.framework.auth.core.AuthMenuDoc;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,7 +14,8 @@ public class TestAuthMenuMethodController2 {
 
 
     @GetMapping("/testAuthMenuMethod2")
-    @AuthMenu(name = "测试只在Method上加@AuthMenu权限注解2，Controller上没有注解")
+    @AuthMenu
+    @AuthMenuDoc(name = "测试只在Method上加@AuthMenu权限注解2，Controller上没有注解")
     public Object testDataRange() {
         return "";
     }

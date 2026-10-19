@@ -3,6 +3,8 @@ package com.cu.framework.auth.rbac.composite.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.cu.framework.auth.core.entity.BaseAuth;
 import com.cu.framework.auth.rbac.composite.AuthMenuStore;
 import com.cu.framework.auth.rbac.composite.SysAuthMenuComposite;
@@ -50,6 +52,17 @@ public class DefaultSysAuthMenuComposite implements SysAuthMenuComposite {
     /** 是否缓存菜单与权限数据，读取配置 cu.auth.cache-auth，默认 false（每次直接查库） */
     @Value("${cu.auth.cache-auth:false}")
     private boolean isCache = false;
+
+    /**
+     * 允许经菜单更新接口修改的字段。请求路径是鉴权身份，只由代码声明与建库脚本决定，
+     * 因此不进 SET：请求里带了也不会生效
+     */
+    static final List<SFunction<SysMenuApi, ?>> UPDATABLE_COLUMNS = Collections.unmodifiableList(Arrays.asList(
+            SysMenuApi::getName,
+            SysMenuApi::getRemark,
+            SysMenuApi::getAuthType,
+            SysMenuApi::getParentId
+    ));
 
     /** 菜单缓存存储，isCache 为 true 时经由它读写菜单与权限数据 */
     @Autowired
@@ -169,13 +182,29 @@ public class DefaultSysAuthMenuComposite implements SysAuthMenuComposite {
     }
 
     /**
-     * 更新菜单：先按 ID 更新 sys_menu_api 记录，再以请求中的权限集合体为准同步编辑该菜单的权限
+     * 组装只含可修改字段的更新条件：字段清单见 {@link #UPDATABLE_COLUMNS}，
+     * 值为 null 的字段不写入，与原先 updateById 的默认字段策略一致
+     * @param req 菜单保存请求，需携带菜单 ID
+     * @return 更新条件包装器
+     */
+    static LambdaUpdateWrapper<SysMenuApi> buildUpdatableWrapper(MenuApiSaveReq req) {
+        LambdaUpdateWrapper<SysMenuApi> wrapper = new LambdaUpdateWrapper<>();
+        for (SFunction<SysMenuApi, ?> column : UPDATABLE_COLUMNS) {
+            Object value = column.apply(req);
+            wrapper.set(value != null, column, value);
+        }
+        return wrapper.eq(SysMenuApi::getId, req.getId());
+    }
+
+    /**
+     * 更新菜单：按 {@link #UPDATABLE_COLUMNS} 白名单更新 sys_menu_api 记录（请求路径不在其中），
+     * 再以请求中的权限集合体为准同步编辑该菜单的权限
      * @param req 菜单保存请求，需携带菜单 ID 与权限集合体
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateMenu(MenuApiSaveReq req) {
-        sysMenuPathMpService.updateById(req);
+        sysMenuPathMpService.update(buildUpdatableWrapper(req));
         Long apiId = req.getId();
         editMenuAuthorities(apiId,req.getAuthObject().listBaseAuth());
     }

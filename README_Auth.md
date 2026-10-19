@@ -230,19 +230,17 @@ cu-framework-auth
 
 ```java
 public @interface AuthMenu {
+}
 
-    /**
-     * 名字
-     * API菜单的名称，在数据库存储API菜单的时候作为描述使用，方便在数据库层面定位到对应功能
-     * @return
-     */
+public @interface AuthMenuDoc {
     String name();
 }
 ```
 
-**参数：**
+**分工：**
 
-- name()：API菜单的名称，在数据库存储API菜单的时候作为描述使用，方便在数据库层面定位到对应功能
+- `@AuthMenu`：只声明"管不管辖"，无属性
+- `@AuthMenuDoc`：`name()` 是菜单树的标签，存入 API 菜单表的名称字段，方便在数据库层面定位到对应功能；它不参与鉴权判定，改它不改变任何权限归属
 
 **使用方法**：
 
@@ -256,7 +254,8 @@ public @interface AuthMenu {
       /**
        * 测试菜单控制
        */
-      @AuthMenu(name = "测试菜单控制")
+      @AuthMenu
+      @AuthMenuDoc(name = "测试菜单控制")
       @GetMapping("/checkMenu")
       public Result testCheckMenu() {
          return Result.success("成功通过注解AuthMenu完成控制");
@@ -273,7 +272,8 @@ public @interface AuthMenu {
    ```java
    @RestController
    @RequestMapping("/testAnnoClassMenuController")
-   @AuthMenu(name = "测试只在Controller上加@AuthMenu权限注解")
+   @AuthMenu
+   @AuthMenuDoc(name = "测试只在Controller上加@AuthMenu权限注解")
    public class TestAuthMenuClassController {
       @GetMapping("/hello")
       public String hello(String name) {
@@ -287,6 +287,12 @@ public @interface AuthMenu {
    ```
 
    此时`/testAnnoClassMenuController/hello`、`/testAnnoClassMenuController/hello2`均会加入API菜单校验
+
+**鉴权身份与已知限制**：
+
+- 菜单权限挂在API菜单表的行上，行由请求路径定位。`/menu/api/update` 只更新名称、备注、权限类型和父节点，**请求路径改不了**：请求里带一个新路径也不会生效，该行的授权关系原样保留。要换路径就改代码里的 `@RequestMapping` 并同步数据库。
+- 鉴权是拿请求路径精确匹配，所以**带路径变量的端点（如 `/x/{id}`）标 `@AuthMenu` 会被恒拒绝**。现有 Controller 全部使用字面量路径，所以没暴露；本轮不处理（读码结论，未实测）。
+- 同一路径的不同HTTP方法（`GET /x` 与 `POST /x`）共用同一条菜单行、同一份授权。
 
 ## 7.2. `@AuthDataRange`
 
