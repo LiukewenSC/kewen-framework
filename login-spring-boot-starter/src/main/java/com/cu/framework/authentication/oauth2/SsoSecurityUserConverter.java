@@ -3,6 +3,7 @@ package com.cu.framework.authentication.oauth2;
 import com.cu.framework.authentication.exception.SsoErrorCodes;
 import com.cu.framework.authentication.model.SecurityUser;
 import com.cu.framework.authentication.service.SecurityUserDetailsService;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.OAuth2Error;
@@ -20,14 +21,15 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
  * @author kewen
  * @since 2026-10-18
  */
-public class SecurityUserSsoAssembler {
+public class SsoSecurityUserConverter implements Converter<OAuth2User, Oauth2SecurityUser> {
+
 
     /**
      * 本系统账号来源，单点登录用它把身份源标识换成本系统的用户与权限
      */
     private final SecurityUserDetailsService userDetailsService;
 
-    public SecurityUserSsoAssembler(SecurityUserDetailsService userDetailsService) {
+    public SsoSecurityUserConverter(SecurityUserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
 
@@ -44,7 +46,8 @@ public class SecurityUserSsoAssembler {
      * @return 统一认证主体
      * @throws OAuth2AuthenticationException 本系统没有对应账号
      */
-    public Oauth2SecurityUser assemble(OAuth2User source) {
+    @Override
+    public Oauth2SecurityUser convert(OAuth2User source) {
         SecurityUser localUser = loadLocalUser(source.getName());
         OidcIdToken idToken = null;
         OidcUserInfo userInfo = null;

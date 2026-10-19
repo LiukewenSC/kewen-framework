@@ -200,7 +200,7 @@ cu:
 | **SP 发起授权（登录入口）** | GET | `{sso-authorization-uri}/{registrationId}`，默认 `/oauth2/authorization/{registrationId}` | `OAuth2AuthorizationRequestRedirectFilter` | `cu.security.login.oauth2.sso-authorization-uri` |
 | IDP 回调（授权码换令牌 + 加载用户） | GET | `{login-processing-url}`，默认 `/login/oauth2/code/{registrationId}` | `OAuth2LoginAuthenticationFilter` | `cu.security.login.oauth2.login-processing-url`（Ant 通配） |
 | 令牌交换（SP→IDP 出站） | POST | `clients[i].token-uri` 或 OIDC 自动发现 | `DefaultAuthorizationCodeTokenResponseClient` | 每个 client 单独配 |
-| userinfo 拉取（SP→IDP 出站） | GET | `clients[i].user-info-uri` 或 OIDC 自动发现 | `oauth2UserService` / `oidcUserService` | 每个 client 单独配 |
+| userinfo 拉取（SP→IDP 出站） | GET | `clients[i].user-info-uri` 或 OIDC 自动发现 | `routingOauth2UserService` / `oidcUserService` | 每个 client 单独配 |
 | OIDC 端点自动发现（**启动阶段执行**） | GET | `{issuer-uri}/.well-known/openid-configuration` | `ClientRegistrations.fromIssuerLocation` | 由 `protocol-type: oidc` 触发 |
 | 退出 | POST | `/logout` | Spring Security 默认 `LogoutFilter` | 本 starter 未覆盖 |
 | OIDC RP-Initiated Logout | — | 由 `OidcClientInitiatedLogoutSuccessHandler` 跳转到 IDP 的 `end_session_endpoint` | 已声明为 Bean | ⚠️ 当前 **未** 在 `customizer()` 中接入 `http.logout()`，实际不会触发 |

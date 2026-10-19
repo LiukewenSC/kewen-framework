@@ -9,7 +9,7 @@
 
 ## 2. OAuth2 / OIDC 主体装配
 
-- [x] 2.1 装配落在 `oauth2/SecurityUserSsoAssembler`：以 `OAuth2User.getName()` 为用户名调 `SecurityUserDetailsService.loadUserByUsername` 组装 `Oauth2SecurityUser`，账号不存在时抛带 `SsoErrorCodes.LOCAL_USER_NOT_FOUND` 的 `OAuth2AuthenticationException`。**实现改为在外层包装而非派生 `DefaultOAuth2UserService`**（见 design D3），行为与任务描述一致。`SecurityUserSsoAssemblerTest` 覆盖映射成功与本地无账号两条分支
+- [x] 2.1 装配落在 `oauth2/SecurityUserSsoAssembler`：以 `OAuth2User.getName()` 为用户名调 `SecurityUserDetailsService.loadUserByUsername` 组装 `Oauth2SecurityUser`，账号不存在时抛带 `SsoErrorCodes.LOCAL_USER_NOT_FOUND` 的 `OAuth2AuthenticationException`。 **实现改为在外层包装而非派生 `DefaultOAuth2UserService`**（见 design D3），行为与任务描述一致。`SsoSecurityUserConverterTest` 覆盖映射成功与本地无账号两条分支
 - [x] 2.2 `Oauth2Config` 的 `buildUserServiceMap()` 分发表一行未动（含 `SECURE_FALLBACK` 与 ignore-ssl 的 `RestOperations` 注入），`oauth2Login` 用新的 `mappedUserService()` 包一层；验证 `Oauth2UserServiceWiringTest` 4 条断言原样通过
 - [x] 2.3 新增 `oauth2/SecurityUserOidcUserService extends OidcUserService` 覆写 `loadUser(OidcUserRequest)`，内部 userinfo 服务仍指向未装配的那张分发表（避免同一次登录查两遍账号）；`OidcUser`/idToken/权限三条断言在 `SecurityUserSsoAssemblerTest.assemblesOidcPrincipalKeepingIdToken` 上验证（该 Service 本身是三行委托，端到端留给 6.1 的 OIDC 实跑）
 - [x] 2.4 `createOidcClientRegistration` 补 `userNameAttributeName`（方法放宽为包内可见以便测试）；`OidcClientRegistrationTest` 用本地一次性发现端点断言：配了 `preferred_username` 就生效，没配则回退 `sub`
