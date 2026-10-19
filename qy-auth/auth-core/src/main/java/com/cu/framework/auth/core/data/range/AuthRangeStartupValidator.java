@@ -54,6 +54,11 @@ public class AuthRangeStartupValidator implements SmartInitializingSingleton {
     @Override
     public void afterSingletonsInstantiated() {
 
+        if (sqlSessionFactory == null) {
+            //未接入 MyBatis：没有映射语句可扫描，声明与改写都不生效，与装配处跳过该 bean 的行为一致
+            log.debug("没有 SqlSessionFactory，跳过 @AuthDataRange 数据范围声明校验");
+            return;
+        }
         Configuration configuration = sqlSessionFactory.getConfiguration();
         authRangeCache.scan(configuration);
 
