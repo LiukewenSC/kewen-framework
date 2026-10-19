@@ -1,6 +1,7 @@
 package com.cu.framework.auth.rbac.controller;
 
 import com.cu.framework.auth.core.AuthMenu;
+import com.cu.framework.auth.core.AuthMenuDoc;
 import com.cu.framework.auth.rbac.mp.entity.SysRole;
 import com.cu.framework.auth.rbac.mp.service.SysRoleMpService;
 import com.cu.framework.basic.model.IdReq;
@@ -36,7 +37,8 @@ public class RbacRoleController {
      * @return 角色列表
      */
     @GetMapping("/list")
-    @AuthMenu(name = "角色列表")
+    @AuthMenu
+    @AuthMenuDoc(name = "角色列表")
     public Result<List<SysRole>> listRole(){
         List<SysRole> list = sysRoleMpService.list();
         return Result.success(list);
@@ -47,7 +49,8 @@ public class RbacRoleController {
      * @return 角色分页结果
      */
     @GetMapping("/page")
-    @AuthMenu(name = "角色分页")
+    @AuthMenu
+    @AuthMenuDoc(name = "角色分页")
     public Result<PageResult<SysRole>> pageRole(@Validated PageReq req){
         PageResult<SysRole> pageResult = MybatisPageExecutor.pageAndConvert(req, sysRoleMpService);
         return Result.success(pageResult);
@@ -58,7 +61,8 @@ public class RbacRoleController {
      * @return 是否新增成功
      */
     @PostMapping("/add")
-    @AuthMenu(name = "添加角色")
+    @AuthMenu
+    @AuthMenuDoc(name = "添加角色")
     public Result<Boolean> add(@RequestBody SysRole sysRole){
         boolean b = sysRoleMpService.save(sysRole);
         return Result.success(b);
@@ -69,7 +73,8 @@ public class RbacRoleController {
      * @return 是否修改成功
      */
     @PostMapping("/update")
-    @AuthMenu(name = "修改角色")
+    @AuthMenu
+    @AuthMenuDoc(name = "修改角色")
     public Result<Boolean> update(@RequestBody SysRole sysRole){
         if (sysRole.getId()==null){
             throw new RuntimeException("角色ID为空");
@@ -83,7 +88,8 @@ public class RbacRoleController {
      * @return 是否删除成功
      */
     @PostMapping("/delete")
-    @AuthMenu(name = "删除角色")
+    @AuthMenu
+    @AuthMenuDoc(name = "删除角色")
     public Result<Boolean> delete(@RequestBody @Validated IdReq idReq){
         boolean b = sysRoleMpService.removeById(idReq.getId());
         return Result.success(b);

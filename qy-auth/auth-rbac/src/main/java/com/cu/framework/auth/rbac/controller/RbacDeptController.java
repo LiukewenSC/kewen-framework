@@ -1,6 +1,7 @@
 package com.cu.framework.auth.rbac.controller;
 
 import com.cu.framework.auth.core.AuthMenu;
+import com.cu.framework.auth.core.AuthMenuDoc;
 import com.cu.framework.auth.rbac.mp.entity.SysDept;
 import com.cu.framework.auth.rbac.mp.service.SysDeptMpService;
 import com.cu.framework.basic.model.IdReq;
@@ -36,7 +37,8 @@ public class RbacDeptController {
      * @return 部门列表
      */
     @GetMapping("/list")
-    @AuthMenu(name = "部门列表")
+    @AuthMenu
+    @AuthMenuDoc(name = "部门列表")
     public Result<List<SysDept>> listDept(){
         List<SysDept> list = sysDeptMpService.list();
         return Result.success(list);
@@ -47,7 +49,8 @@ public class RbacDeptController {
      * @return 部门分页结果
      */
     @GetMapping("/page")
-    @AuthMenu(name = "部门分页")
+    @AuthMenu
+    @AuthMenuDoc(name = "部门分页")
     public Result<PageResult<SysDept>> pageDept(@Validated PageReq req){
         return Result.success(MybatisPageExecutor.pageAndConvert(req, sysDeptMpService));
     }
@@ -57,7 +60,8 @@ public class RbacDeptController {
      * @return 是否新增成功
      */
     @PostMapping("/add")
-    @AuthMenu(name = "添加部门")
+    @AuthMenu
+    @AuthMenuDoc(name = "添加部门")
     public Result<Boolean> add(@RequestBody SysDept sysDept){
         boolean b = sysDeptMpService.save(sysDept);
         return Result.success(b);
@@ -68,7 +72,8 @@ public class RbacDeptController {
      * @return 是否修改成功
      */
     @PostMapping("/update")
-    @AuthMenu(name = "部门列表")
+    @AuthMenu
+    @AuthMenuDoc(name = "修改部门")
     public Result<Boolean> update(@RequestBody SysDept sysDept){
         if (sysDept.getId()==null){
             throw new RuntimeException("部门ID为空");
@@ -82,7 +87,8 @@ public class RbacDeptController {
      * @return 是否删除成功
      */
     @PostMapping("/delete")
-    @AuthMenu(name = "删除部门")
+    @AuthMenu
+    @AuthMenuDoc(name = "删除部门")
     public Result<Boolean> delete(@RequestBody @Validated IdReq idReq){
         boolean b = sysDeptMpService.removeById(idReq.getId());
         return Result.success(b);

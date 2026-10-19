@@ -328,7 +328,8 @@ public class Application {
 @RequestMapping("/api/meeting")
 public class MeetingRoomController {
     
-    @AuthMenu(name = "创建会议室")
+    @AuthMenu
+    @AuthMenuDoc(name = "创建会议室")
     @PostMapping("/add")
     public Result add(@RequestBody MeetingRoom room) {
         meetingRoomService.save(room);
@@ -337,12 +338,17 @@ public class MeetingRoomController {
 }
 ```
 
-**参数说明：**
-- `name`：API 菜单名称，在数据库中作为描述使用
+**分工：**
+- `@AuthMenu`：管辖开关，无属性
+- `@AuthMenuDoc`：`name` 是 API 菜单名称，在数据库中作为描述使用，不参与鉴权判定
 
 **使用方式：**
 - 在 Controller 方法上使用：该方法需要菜单权限
-- 在 Controller 类上使用：该类所有带 `@RequestMapping` 的方法都需要菜单权限
+- 在 Controller 类上使用：该类所有带 `@RequestMapping` 的方法都需要菜单权限，边界就是本类的端点集合
+
+**已知限制：**
+- 菜单行由请求路径定位，`/menu/api/update` 不接受路径修改，请求里带了也不会生效
+- 带路径变量的端点（如 `/x/{id}`）标 `@AuthMenu` 会被恒拒绝；同一路径的不同 HTTP 方法共用一份授权
 
 #### 2. `@AuthDataRange` - 数据范围查询注解
 
@@ -411,7 +417,8 @@ public class MeetingRoomController {
 @RequestMapping("/api/meeting")
 public class MeetingRoomController {
     
-    @AuthMenu(name = "创建会议室")
+    @AuthMenu
+    @AuthMenuDoc(name = "创建会议室")
     @AuthDataAuthEdit(businessFunction = "meeting_room", operate = "edit_info", before = false)
     @PostMapping("/add")
     @Transactional(rollbackFor = Exception.class)
@@ -611,7 +618,8 @@ cu:
 @RequestMapping("/api/meeting")
 public class MeetingRoomController {
     
-    @AuthMenu(name = "创建会议室")
+    @AuthMenu
+    @AuthMenuDoc(name = "创建会议室")
     @AuthDataAuthEdit(businessFunction = "meeting_room", operate = "edit_info", before = false)
     @PostMapping("/add")
     @Transactional(rollbackFor = Exception.class)

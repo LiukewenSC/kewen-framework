@@ -2,6 +2,7 @@ package com.cu.framework.auth.sample.controller;
 
 import com.cu.framework.auth.core.AuthDataOperation;
 import com.cu.framework.auth.core.AuthMenu;
+import com.cu.framework.auth.core.AuthMenuDoc;
 import com.cu.framework.auth.core.data.edit.IdDataEdit;
 import com.cu.framework.auth.sample.mp.entity.TestauthAnnotationBusiness;
 import com.cu.framework.auth.sample.mp.service.TestauthAnnotationBusinessMpService;
@@ -69,7 +70,8 @@ public class TestAuthAnnotationController {
      * 测试菜单控制
      * @return
      */
-    @AuthMenu(name = "测试菜单控制")
+    @AuthMenu
+    @AuthMenuDoc(name = "测试菜单控制")
     @GetMapping("/checkMenu")
     public Result testCheckMenu() {
         return Result.success("成功通过注解AuthMenu完成控制");
@@ -78,7 +80,8 @@ public class TestAuthAnnotationController {
      * 测试菜单控制
      * @return
      */
-    @AuthMenu(name = "测试菜单控制无权限")
+    @AuthMenu
+    @AuthMenuDoc(name = "测试菜单控制无权限")
     @GetMapping("/checkMenuNone")
     public String testCheckMenuNone() {
         return "没有权限执行";

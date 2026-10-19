@@ -41,14 +41,8 @@ public class MenuAccessInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        //获取菜单权限注解，如果没有的话说明不需要做校验的，那么就直接跳过拦截器，如果是则需要进一步进行权限校验
-        HandlerMethod handlerMethod = (HandlerMethod) handler;
-        AuthMenu checkEndpoint = handlerMethod.getMethodAnnotation(AuthMenu.class);
-        if (checkEndpoint == null){
-            checkEndpoint = handlerMethod.getMethod().getDeclaringClass().getAnnotation(AuthMenu.class);
-        }
-        //未添加权限注解，直接跳过校验
-        if (checkEndpoint ==null){
+        //是否有管辖声明：方法上没有就看所在类，都没有则跳过校验
+        if (!isGoverned((HandlerMethod) handler)){
             return true;
         }
         //校验url
@@ -67,6 +61,17 @@ public class MenuAccessInterceptor implements HandlerInterceptor {
             throw new AuthException("没有API菜单"+url+"访问权限");
         }
         return true;
+    }
+
+    /**
+     * 该端点是否受菜单管辖：方法上有 {@link AuthMenu} 声明即管辖该端点，
+     * 方法没有则看所在类，类上声明即管辖该类的全部端点
+     * @param handlerMethod 命中的 Controller 方法
+     * @return 是否受管辖
+     */
+    static boolean isGoverned(HandlerMethod handlerMethod) {
+        return handlerMethod.hasMethodAnnotation(AuthMenu.class)
+                || handlerMethod.getMethod().getDeclaringClass().isAnnotationPresent(AuthMenu.class);
     }
     /**
      * 获取用于权限校验的请求路径，即 RequestURI 去掉 contextPath 前缀

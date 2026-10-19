@@ -81,7 +81,7 @@ INSERT INTO `sys_menu_api`
 VALUES (1818496367898750983, '/rbac/dept/page', '部门管理>部门分页', 1818496367898750979, NULL, 2,
         '2024-08-01 00:00:00', NULL, 0);
 INSERT INTO `sys_menu_api`
-VALUES (1818496367898750984, '/rbac/dept/update', '部门管理>部门列表', 1818496367898750979, NULL, 2,
+VALUES (1818496367898750984, '/rbac/dept/update', '部门管理>修改部门', 1818496367898750979, NULL, 2,
         '2024-08-01 00:00:00', NULL, 0);
 INSERT INTO `sys_menu_api`
 VALUES (1818496367898750985, '/rbac/role', '角色管理', 0, NULL, 1, '2024-08-01 00:00:00', NULL, 0);

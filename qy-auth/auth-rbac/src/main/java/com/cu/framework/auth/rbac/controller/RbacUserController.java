@@ -1,6 +1,7 @@
 package com.cu.framework.auth.rbac.controller;
 
 import com.cu.framework.auth.core.AuthMenu;
+import com.cu.framework.auth.core.AuthMenuDoc;
 import com.cu.framework.auth.rbac.mp.entity.SysUser;
 import com.cu.framework.auth.rbac.mp.service.SysUserMpService;
 import com.cu.framework.basic.model.IdReq;
@@ -25,7 +26,8 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/rbac/user")
-@AuthMenu(name = "用户相关")
+@AuthMenu
+@AuthMenuDoc(name = "用户相关")
 public class RbacUserController {
 
     @Autowired
@@ -36,7 +38,8 @@ public class RbacUserController {
      * @return 用户列表
      */
     @GetMapping("/list")
-    @AuthMenu(name = "用户列表")
+    @AuthMenu
+    @AuthMenuDoc(name = "用户列表")
     public Result<List<SysUser>> listUser(){
         List<SysUser> list = sysUserMpService.list();
         return Result.success(list);
@@ -47,7 +50,8 @@ public class RbacUserController {
      * @return 用户分页结果
      */
     @GetMapping("/page")
-    @AuthMenu(name = "分页")
+    @AuthMenu
+    @AuthMenuDoc(name = "分页")
     public Result<PageResult<SysUser>> pageUser(@Validated PageReq pageReq){
         PageResult<SysUser> result = MybatisPageExecutor.pageAndConvert(pageReq,sysUserMpService);
         return Result.success(result);
@@ -58,7 +62,8 @@ public class RbacUserController {
      * @return 是否新增成功
      */
     @PostMapping("/add")
-    @AuthMenu(name = "新增")
+    @AuthMenu
+    @AuthMenuDoc(name = "新增")
     public Result<Boolean> add(@RequestBody SysUser sysUser){
         boolean b = sysUserMpService.save(sysUser);
         return Result.success(b);

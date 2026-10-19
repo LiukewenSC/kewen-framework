@@ -1,6 +1,7 @@
 package com.cu.framework.auth.core.menu;
 
 import com.cu.framework.auth.core.AuthMenu;
+import com.cu.framework.auth.core.AuthMenuDoc;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -112,7 +113,8 @@ public class MenuApiGeneratorProcessor implements ApplicationContextAware,Runnab
         for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : handlerMethods.entrySet()) {
             /*
                 path始终以RequestmappingHandlerMapping为准
-                name 通过把 controller 注解AuthMenu#name 与method注解AuthMenu#name 合并生成
+                管辖由 @AuthMenu 声明，标在类上即覆盖本类全部端点；
+                标签由 @AuthMenuDoc 声明，controller 标签与 method 标签合并生成
                 类还需要单独生成一个请求，以创建上下层级关系
              */
             String controllerName;
@@ -120,19 +122,21 @@ public class MenuApiGeneratorProcessor implements ApplicationContextAware,Runnab
 
             RequestMappingInfo mappingInfo = entry.getKey();
             HandlerMethod handlerMethod = entry.getValue();
-            AuthMenu authMenu;
+            AuthMenuDoc authMenuDoc;
             boolean hasAuthMenu = false;
             boolean hasAddClassVirtualPath = false;
 
 
             //处理类上的注解
             Class<?> controllerClass = handlerMethod.getMethod().getDeclaringClass();
-            if ((authMenu = controllerClass.getAnnotation(AuthMenu.class)) != null) {
-                //类上有@AuthMenu注解
-                controllerName = authMenu.name();
+            if (controllerClass.getAnnotation(AuthMenu.class) != null) {
+                //类上有@AuthMenu注解，本类全部端点受管辖
                 hasAuthMenu = true;
+            }
+            //类上没有@AuthMenuDoc时以类简单名为准，仍然按类建立上下级关系
+            if ((authMenuDoc = controllerClass.getAnnotation(AuthMenuDoc.class)) != null) {
+                controllerName = authMenuDoc.name();
             } else {
-                //类上没有@AuthMenu注解，就直接生成一个以controller的类建立上下级关系
                 controllerName =controllerClass.getSimpleName();
             }
 
@@ -149,17 +153,15 @@ public class MenuApiGeneratorProcessor implements ApplicationContextAware,Runnab
                 controllerPath = null;
             }
 
-            String methodName = null;
             //处理方法上的注解，方法注解可能方法上有AuthMenu注解，也可能只有Controller上有注解
             if (handlerMethod.hasMethodAnnotation(AuthMenu.class)) {
-                authMenu = handlerMethod.getMethodAnnotation(AuthMenu.class);
-                //没有名字以方法名为准
-                methodName = controllerName + ">" + authMenu.name();
                 hasAuthMenu = true;
-            } else if (hasAuthMenu) {
-                //类上有注解，但是方法上没有注解
-                methodName = controllerName + ">" + handlerMethod.getMethod().getName();
             }
+            //方法上没有@AuthMenuDoc时以方法名为准
+            authMenuDoc = handlerMethod.getMethodAnnotation(AuthMenuDoc.class);
+            String methodName = controllerName + ">" + (authMenuDoc != null
+                    ? authMenuDoc.name()
+                    : handlerMethod.getMethod().getName());
 
             //判断有菜单API注解才执行
             if (hasAuthMenu) {

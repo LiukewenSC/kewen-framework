@@ -1,6 +1,7 @@
 package com.cu.framework.auth.rbac.controller;
 
 import com.cu.framework.auth.core.AuthMenu;
+import com.cu.framework.auth.core.AuthMenuDoc;
 import com.cu.framework.auth.rbac.composite.SysAuthMenuComposite;
 import com.cu.framework.auth.rbac.model.resp.MenuRouteResp;
 import com.cu.framework.basic.model.Result;
@@ -18,7 +19,8 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/menu/route")
-@AuthMenu(name = "菜单路由相关接口")
+@AuthMenu
+@AuthMenuDoc(name = "菜单路由相关接口")
 public class RbacMenuRouteController {
 
     @Autowired
