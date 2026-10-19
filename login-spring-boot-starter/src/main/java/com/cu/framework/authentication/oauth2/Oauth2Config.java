@@ -22,13 +22,10 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.ClientRegistrations;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
 import org.springframework.security.oauth2.client.web.HttpSessionOAuth2AuthorizationRequestRepository;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -89,20 +86,20 @@ public class Oauth2Config implements HttpSecurityCustomizer {
      * @return 按客户端配置决定证书校验行为的用户信息服务
      */
     @Bean
-    public RoutingOAuth2UserService oauth2UserService() {
+    public RoutingOAuth2UserService routingOauth2UserService() {
         return new RoutingOAuth2UserService(oauth2OidcProperties);
     }
 
     /**
-     * OAuth2 协议（非 OIDC）登录端点实际使用的用户信息服务：在 {@link #oauth2UserService()}
+     * OAuth2 协议（非 OIDC）登录端点实际使用的用户信息服务：在 {@link #routingOauth2UserService()}
      * 之上追加一步装配，使进入安全上下文的主体是本框架的统一认证主体而不是协议自带的类型。
      * <p>不注册为 Bean：容器里 {@code OAuth2UserService} 类型的实例保持单一，
      * 装配只在认证链路的末端发生一次。
      * @return 产出统一认证主体的用户信息服务
      */
     private SecurityUserOAuth2UserService securityUserOAuth2UserService() {
-        return new SecurityUserOAuth2UserService(oauth2UserService(),
-                new SecurityUserSsoAssembler(securityUserDetailsService));
+        return new SecurityUserOAuth2UserService(routingOauth2UserService(),
+                new SsoSecurityUserConverter(securityUserDetailsService));
     }
 
     /**
@@ -200,7 +197,7 @@ public class Oauth2Config implements HttpSecurityCustomizer {
 
     /**
      * 创建 OIDC UserService 用于处理 OIDC 协议的用户信息获取及 ID Token 验证。
-     * <p>其 userinfo 拉取复用 {@link #oauth2UserService()} 那个<b>只路由不装配</b>的
+     * <p>其 userinfo 拉取复用 {@link #routingOauth2UserService()} 那个<b>只路由不装配</b>的
      * {@link RoutingOAuth2UserService}，因此同样按客户端的 ignore-ssl 决定是否校验证书；
      * 不调用时 OidcUserService 内部默认也是校验的，两者默认行为一致。
      * 这里 MUST NOT 换成 {@link SecurityUserOAuth2UserService}：{@code OidcUserService} 只消费
@@ -212,8 +209,8 @@ public class Oauth2Config implements HttpSecurityCustomizer {
     @Bean
     public OidcUserService oidcUserService() {
         SecurityUserOidcUserService oidcUserService =
-                new SecurityUserOidcUserService(new SecurityUserSsoAssembler(securityUserDetailsService));
-        oidcUserService.setOauth2UserService(oauth2UserService());
+                new SecurityUserOidcUserService(new SsoSecurityUserConverter(securityUserDetailsService));
+        oidcUserService.setOauth2UserService(routingOauth2UserService());
         return oidcUserService;
     }
 

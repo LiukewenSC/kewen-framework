@@ -31,7 +31,7 @@ import java.util.Map;
  * @author kewen
  * @since 2026-10-19
  */
-public class SecurityUserSsoAssemblerTest {
+public class SsoSecurityUserConverterTest {
 
     /**
      * 只提供 admin 账号的用户来源，行为与业务实现一致：查不到就抛 UsernameNotFoundException
@@ -58,8 +58,8 @@ public class SecurityUserSsoAssemblerTest {
         }
     }
 
-    private final SecurityUserSsoAssembler assembler =
-            new SecurityUserSsoAssembler(new OnlyAdminUserDetailsService());
+    private final SsoSecurityUserConverter assembler =
+            new SsoSecurityUserConverter(new OnlyAdminUserDetailsService());
 
     /**
      * 身份源声明：本系统用户名取自 preferred_username，另带一个与本地权限无关的声明
@@ -81,7 +81,7 @@ public class SecurityUserSsoAssemblerTest {
                 Collections.singletonList(new SimpleGrantedAuthority("SCOPE_read")),
                 claims(), "preferred_username");
 
-        Oauth2SecurityUser principal = assembler.assemble(nativeUser);
+        Oauth2SecurityUser principal = assembler.convert(nativeUser);
 
         Assert.assertNull("纯 OAuth2 客户端没有 ID Token", principal.getIdToken());
         Assert.assertNull("纯 OAuth2 客户端没有 UserInfo", principal.getUserInfo());
@@ -107,7 +107,7 @@ public class SecurityUserSsoAssemblerTest {
         List<GrantedAuthority> authorities =
                 Collections.singletonList(new SimpleGrantedAuthority("SCOPE_openid"));
 
-        Oauth2SecurityUser principal = assembler.assemble(
+        Oauth2SecurityUser principal = assembler.convert(
                 new DefaultOidcUser(authorities, idToken, userInfo, "preferred_username"));
 
         Assert.assertSame("ID Token 必须原样保留，不能是重建的等价对象", idToken, principal.getIdToken());
@@ -129,7 +129,7 @@ public class SecurityUserSsoAssemblerTest {
                 attributes, "preferred_username");
 
         try {
-            assembler.assemble(nativeUser);
+            assembler.convert(nativeUser);
             Assert.fail("本系统无对应账号时必须失败");
         } catch (OAuth2AuthenticationException e) {
             Assert.assertEquals(SsoErrorCodes.LOCAL_USER_NOT_FOUND, e.getError().getErrorCode());
@@ -148,7 +148,7 @@ public class SecurityUserSsoAssemblerTest {
                 Instant.now().plusSeconds(600), attributes);
 
         try {
-            assembler.assemble(new DefaultOidcUser(
+            assembler.convert(new DefaultOidcUser(
                     Collections.<GrantedAuthority>emptyList(), idToken, null, "preferred_username"));
             Assert.fail("本系统无对应账号时必须失败");
         } catch (OAuth2AuthenticationException e) {

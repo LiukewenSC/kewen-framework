@@ -17,9 +17,9 @@ public class SecurityUserOidcUserService extends OidcUserService {
     /**
      * 身份源主体到统一认证主体的装配器
      */
-    private final SecurityUserSsoAssembler assembler;
+    private final SsoSecurityUserConverter assembler;
 
-    public SecurityUserOidcUserService(SecurityUserSsoAssembler assembler) {
+    public SecurityUserOidcUserService(SsoSecurityUserConverter assembler) {
         this.assembler = assembler;
     }
 
@@ -32,6 +32,6 @@ public class SecurityUserOidcUserService extends OidcUserService {
      */
     @Override
     public OidcUser loadUser(OidcUserRequest userRequest) throws OAuth2AuthenticationException {
-        return assembler.assemble(super.loadUser(userRequest));
+        return assembler.convert(super.loadUser(userRequest));
     }
 }

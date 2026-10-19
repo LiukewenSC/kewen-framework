@@ -81,7 +81,7 @@ SecurityUser  (UserDetails, AuthenticatedPrincipal)      <- 业务唯一认识�
 
 ### D3 各协议只动官方已经留出的钩子
 
-- **OAuth2**：`oauth2UserService()` 那张按 registrationId 的分发表**一行不动**（含 `SECURE_FALLBACK` 静态兜底与 `ignore-ssl` 的 `RestOperations` 注入），装配统一主体发生在它外面：`mappedUserService()` 取该 Bean 的结果再过一次 `SecurityUserSsoAssembler`。原计划是派生一个 `DefaultOAuth2UserService` 子类塞进表里，实现时改为在外层包装——表内实例类型不变，`Oauth2UserServiceWiringTest` 里"实例必须等于 `SECURE_FALLBACK`"那类断言才不用跟着改，且 `identity/oauth2-login` 的四条要求完全不涉及。
+- **OAuth2**：`oauth2UserService()` 那张按 registrationId 的分发表 **一行不动**（含 `SECURE_FALLBACK` 静态兜底与 `ignore-ssl` 的 `RestOperations` 注入），装配统一主体发生在它外面：`mappedUserService()` 取该 Bean 的结果再过一次 `SsoSecurityUserConverter`。原计划是派生一个 `DefaultOAuth2UserService` 子类塞进表里，实现时改为在外层包装——表内实例类型不变，`Oauth2UserServiceWiringTest` 里"实例必须等于 `SECURE_FALLBACK`"那类断言才不用跟着改，且 `identity/oauth2-login` 的四条要求完全不涉及。
 - **OIDC**：`OidcUserService` 子类化，覆写 `loadUser(OidcUserRequest)`，把 `super.loadUser()` 结果的 claims / idToken / userInfo 落到 `Oauth2SecurityUser`。它的内部 userinfo 服务仍指向那张分发表（与现状 `oidcUserService()` 复用 `oauth2UserService()` 一致）——注意必须指向**未装配**的那个 Bean，否则同一次登录会查两遍本地账号。
 - **SAML**：`OpenSamlAuthenticationProvider.setResponseAuthenticationConverter(...)` 里产出 `new Saml2Authentication(samlSecurityUser, saml2Response, authorities)`，组装时委托 `createDefaultResponseAuthenticationConverter()` 拿回属性/NameID/registrationId，只补会话索引。校验不受影响：provider 的顺序是 `parse → process(全部校验) → converter`。
   **但必须同时给 `saml2Login` 指定专属 `ProviderManager`**：`Saml2LoginConfigurer` 自己会再注册一个默认 provider，只靠 `http.authenticationProvider(...)` 时实测默认那个胜出（主体仍是 `DefaultSaml2AuthenticatedPrincipal`），因此原来那句 `http.authenticationProvider(...)` 换成 `.authenticationManager(new ProviderManager(provider))`，SAML 的认证器与共享 manager 脱钩。

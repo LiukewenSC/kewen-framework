@@ -119,7 +119,7 @@ public class SecurityUserOAuth2UserServiceTest {
         CountingUserDetailsService userDetailsService = new CountingUserDetailsService();
         StubRoutingUserService router = new StubRoutingUserService(nativeUser("admin"));
         SecurityUserOAuth2UserService service = new SecurityUserOAuth2UserService(router,
-                new SecurityUserSsoAssembler(userDetailsService));
+                new SsoSecurityUserConverter(userDetailsService));
 
         OAuth2User loaded = service.loadUser(userRequest());
 
@@ -142,7 +142,7 @@ public class SecurityUserOAuth2UserServiceTest {
         CountingUserDetailsService userDetailsService = new CountingUserDetailsService();
         StubRoutingUserService router = new StubRoutingUserService(nativeUser("stranger"));
         SecurityUserOAuth2UserService service = new SecurityUserOAuth2UserService(router,
-                new SecurityUserSsoAssembler(userDetailsService));
+                new SsoSecurityUserConverter(userDetailsService));
 
         try {
             service.loadUser(userRequest());
