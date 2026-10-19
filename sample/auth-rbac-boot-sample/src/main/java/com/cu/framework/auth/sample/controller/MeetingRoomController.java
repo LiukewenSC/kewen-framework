@@ -2,15 +2,14 @@ package com.cu.framework.auth.sample.controller;
 
 import com.cu.framework.auth.core.AuthDataAdaptor;
 import com.cu.framework.auth.core.AuthDataOperation;
-import com.cu.framework.auth.core.AuthDataRange;
 import com.cu.framework.auth.core.AuthMenu;
+import com.cu.framework.auth.sample.mp.entity.MeetingRoom;
 import com.cu.framework.auth.sample.mp.service.MeetingRoomMpService;
 import com.cu.framework.auth.sample.model.MeetingRoomResult;
 import com.cu.framework.auth.sample.model.MeetingRoomUpdateReq;
 import com.cu.framework.basic.model.PageReq;
 import com.cu.framework.basic.model.PageResult;
 import com.cu.framework.basic.model.Result;
-import com.cu.framework.basic.support.utils.MybatisPageExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 
@@ -76,24 +76,22 @@ public class MeetingRoomController {
     }
 
     /**
-     * 查询可编辑列表
+     * 查询可编辑列表。
+     * 数据范围声明在 MeetingRoomMpMapper 的查询方法上，这里只做结果转换与权限填充
      *
      * @param pageReq
      * @return
      */
     @GetMapping(value = "/page")
-    @AuthDataRange(businessFunction = BUSINESS_FUNCTION, operate = OPERATE_EDIT_INFO)
     public Result<PageResult<MeetingRoomResult>> pageQuery(@Validated PageReq pageReq) {
-        PageResult<MeetingRoomResult> meetingRoomPageResult = MybatisPageExecutor.pageAndConvert(
-                pageReq,
-                meetingRoomService,
-                null,
-                meetingRooms -> meetingRooms.stream().map(m -> {
-                    MeetingRoomResult result = MeetingRoomResult.from(m);
-                    authDataAdaptor.fillDataAuths(BUSINESS_FUNCTION, m.getId(), OPERATE_APPROVE, result.getAuthObject());
-                    return result;
-                }).collect(Collectors.toList())
-        );
+        PageResult<MeetingRoom> page = meetingRoomService.pageEditAble(pageReq);
+        List<MeetingRoomResult> data = page.getData().stream().map(m -> {
+            MeetingRoomResult result = MeetingRoomResult.from(m);
+            authDataAdaptor.fillDataAuths(BUSINESS_FUNCTION, m.getId(), OPERATE_APPROVE, result.getAuthObject());
+            return result;
+        }).collect(Collectors.toList());
+        PageResult<MeetingRoomResult> meetingRoomPageResult =
+                PageResult.of(page.getPage(), page.getSize(), page.getTotal(), data);
         return Result.success(meetingRoomPageResult);
     }
 

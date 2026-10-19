@@ -1,8 +1,6 @@
 package com.cu.framework.auth.sample.controller;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cu.framework.auth.core.AuthDataOperation;
-import com.cu.framework.auth.core.AuthDataRange;
 import com.cu.framework.auth.core.AuthMenu;
 import com.cu.framework.auth.core.data.edit.IdDataEdit;
 import com.cu.framework.auth.sample.mp.entity.TestauthAnnotationBusiness;
@@ -10,7 +8,6 @@ import com.cu.framework.auth.sample.mp.service.TestauthAnnotationBusinessMpServi
 import com.cu.framework.basic.model.PageReq;
 import com.cu.framework.basic.model.PageResult;
 import com.cu.framework.basic.model.Result;
-import com.cu.framework.basic.support.utils.MybatisPageExecutor;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
@@ -32,13 +29,13 @@ public class TestAuthAnnotationController {
     TestauthAnnotationBusinessMpService testauthAnnotationBusinessMpService;
 
     /**
-     * 测试数据范围
+     * 测试数据范围。
+     * 数据范围声明在 TestauthAnnotationBusinessMpMapper 的查询方法上
      * @return
      */
-    @AuthDataRange(businessFunction = "testrange")
     @GetMapping("/dataRange")
     public Object testDataRange() {
-        List<TestauthAnnotationBusiness> list = testauthAnnotationBusinessMpService.list();
+        List<TestauthAnnotationBusiness> list = testauthAnnotationBusinessMpService.listAuthRange();
         System.out.println(list);
         Assert.isTrue(list.size()==1, "菜单列表为空");
         return list;
@@ -46,16 +43,13 @@ public class TestAuthAnnotationController {
 
 
     /**
-     * 测试数据范围
+     * 测试数据范围的分页版本，列表与计数各是一条声明过的语句，总数与行集口径一致
      * @return
      */
-    @AuthDataRange(businessFunction = "testrange")
     @GetMapping("/pageDataRange")
     public Object pageDataRange(PageReq pageReq) {
-        Page<TestauthAnnotationBusiness> page = new Page<>(pageReq.getPage(),pageReq.getSize());
-        Page<TestauthAnnotationBusiness> mpPage = testauthAnnotationBusinessMpService.page(page);
-        Assert.isTrue(!mpPage.getRecords().isEmpty(), "测试的表数据为空");
-        PageResult<TestauthAnnotationBusiness> result = MybatisPageExecutor.baomidouPage2PageResult(mpPage);
+        PageResult<TestauthAnnotationBusiness> result = testauthAnnotationBusinessMpService.pageAuthRange(pageReq);
+        Assert.isTrue(!result.getData().isEmpty(), "测试的表数据为空");
         return Result.success(result);
     }
 

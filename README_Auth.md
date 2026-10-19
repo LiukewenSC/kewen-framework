@@ -370,27 +370,34 @@ where ${business_table}.{business_id} in
 
 **使用方法**：
 
-在对应的Controller上的方法上添加注解@AuthDataRange，填上必填项businessFunction即可
-业务中正常查询数据，数据库层面会自动添加上范围条件查询
+在 MyBatis 的 **Mapper 接口查询方法**上添加注解 `@AuthDataRange`，填上必填项 `businessFunction` 即可。
+权限条件只注入该注解所在方法对应的那一条语句，业务代码正常查询，不需要为了权限主动关联 `sys_auth_data`。
+
+一条语句绑定一个 `businessFunction` + `operate`；同一张表要按不同操作过滤时，为每个操作各写一个查询方法。
+MyBatis-Plus 从 `BaseMapper` 继承来的方法（`selectList`、`page` 等）没有挂载点，不受本注解管辖，
+需要按权限过滤的查询要在自己的 Mapper 接口上显式写出来。
 
 ```java
-@RestController
-@RequestMapping("/test")
-public class TestAuthAnnotationController {
+@Mapper
+public interface TestauthAnnotationBusinessMpMapper extends BaseMapper<TestauthAnnotationBusiness> {
+
        /**
-     * 测试数据范围
-     * @return
+     * testrange 槽位下当前登录人可见的数据
+     * @return 可见数据列表
      */
     @AuthDataRange(businessFunction = "testrange")
-    @GetMapping("/dataRange")
-    public Object testDataRange() {
-        List<TestauthAnnotationBusiness> list = testauthAnnotationBusinessMpService.list();
-        System.out.println(list);
-        Assert.isTrue(list.size()==1, "菜单列表为空");
-        return list;
-    }
+    @Select("select * from testauth_annotation_business order by id")
+    List<TestauthAnnotationBusiness> selectAuthRangeList();
 }
 ```
+
+**启动期校验**：应用启动时会遍历全部声明，以下情况直接启动失败，而不是运行期静默放开过滤：
+
+- 声明所在方法解析不到映射语句（方法名与映射语句 id 不一致）
+- 声明所在语句不是查询语句
+- 声明所在语句启用了二级缓存（缓存键在权限条件注入之前就已计算，两者不能共存）
+- 静态可得的 SQL 中找不到 `table` 声明的目标表（只能运行期拼出的动态 SQL 跳过此项，改为执行期抛异常）
+- 声明出现在 Mapper 接口以外的方法上（旧用法位置）
 
 **支持类型示例**：
 

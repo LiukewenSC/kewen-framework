@@ -79,6 +79,24 @@ public class SqlAuthInject {
     }
 
     /**
+     * 校验 SQL 中能定位到声明指定的目标表，供启动期校验静态可得的 SQL。
+     * 与 {@link #convert2NewSql} 复用同一套表匹配规则，只解析不改写、不触碰权限集合
+     *
+     * @param sql       待校验的 SQL
+     * @param authRange 声明模板（不含权限集合）
+     * @throws JSQLParserException SQL 解析失败，或匹配不到声明的目标表
+     */
+    public void validateTargetTable(String sql, AuthRange authRange) throws JSQLParserException {
+        Select parse = (Select) CCJSqlParserUtil.parse(sql);
+        PlainSelect plainSelect = parse.getPlainSelect();
+
+        if (findAuthPlainSelect(plainSelect, buildOriginalTable(authRange)) == null) {
+            throw new JSQLParserException(String.format("没有匹配到SQL<%s>对应的表<%s,%s>，请检查",
+                    sql, authRange.getTable(), authRange.getTableAlias()));
+        }
+    }
+
+    /**
      * 构造原始表， 需要有tableName才有alias
      * @param authRange
      * @return
