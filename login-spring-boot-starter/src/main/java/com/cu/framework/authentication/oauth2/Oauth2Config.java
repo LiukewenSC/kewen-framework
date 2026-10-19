@@ -22,7 +22,6 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.ClientRegistrations;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
-import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
@@ -48,14 +47,6 @@ import java.util.stream.Collectors;
 public class Oauth2Config implements HttpSecurityCustomizer {
 
     private static final Logger log = LoggerFactory.getLogger(Oauth2Config.class);
-
-    /**
-     * 执行标准证书校验的用户信息服务。
-     * 既作为 ignore-ssl 未开启的客户端的默认实现，也作为 registrationId 查不到配置时的兜底，
-     * 使配置缺失时的失败方向是"登录不上"而不是"悄悄不校验证书"
-     */
-    static final OAuth2UserService<OAuth2UserRequest, OAuth2User> SECURE_FALLBACK =
-            new DefaultOAuth2UserService();
 
     /** OAuth2 登录成功处理器，配置到 oauth2Login 的 successHandler */
     @Autowired
@@ -92,23 +83,14 @@ public class Oauth2Config implements HttpSecurityCustomizer {
     }
 
     /**
-     * 按 registrationId 分发的 userinfo 用户信息服务。
-     * <p>是否跳过 SSL 证书校验由每个客户端自己的 {@code ignore-ssl} 决定，默认执行标准校验。
-     * <p>之所以按 registrationId 查表而不是用 {@code DelegatingOAuth2UserService}：本仓库依赖的
-     * Spring Security 5.7.11 中 {@code OAuth2UserService} 没有 supports() 方法，而
-     * {@code DelegatingOAuth2UserService.loadUser} 会对列表里每个 delegate 都调用一次 loadUser，
-     * 等于向每个 IDP 各发一次 userinfo 请求。
-     * <p>{@code RestOperationBuilder} 的作用不止 SSL：它还替换了消息转换器与错误处理器，
-     * 用于容忍部分 IDP 返回的非标准 userinfo 响应（如 HTML 错误页）。
-     * 其来历见 docs/说明文档/已废弃实现与决策记录.md 第二节。
+     * 按 registrationId 分发的 userinfo 用户信息服务，只负责发请求、不负责换主体。
+     * <p>本 Bean 同时供两处使用：OAuth2 协议端点用它作原始主体来源（外面再包一层装配），
+     * 以及 {@link #oidcUserService()} 内部拉取 userinfo。
      * @return 按客户端配置决定证书校验行为的用户信息服务
      */
     @Bean
-    public OAuth2UserService<OAuth2UserRequest, OAuth2User> oauth2UserService() {
-        Map<String, OAuth2UserService<OAuth2UserRequest, OAuth2User>> byRegistrationIdMap = buildUserServiceMap();
-        return userRequest -> resolveUserService(byRegistrationIdMap,
-                        userRequest.getClientRegistration().getRegistrationId())
-                .loadUser(userRequest);
+    public RoutingOAuth2UserService oauth2UserService() {
+        return new RoutingOAuth2UserService(oauth2OidcProperties);
     }
 
     /**
@@ -118,47 +100,9 @@ public class Oauth2Config implements HttpSecurityCustomizer {
      * 装配只在认证链路的末端发生一次。
      * @return 产出统一认证主体的用户信息服务
      */
-    private OAuth2UserService<OAuth2UserRequest, OAuth2User> mappedUserService() {
-        SecurityUserSsoAssembler assembler = new SecurityUserSsoAssembler(securityUserDetailsService);
-        OAuth2UserService<OAuth2UserRequest, OAuth2User> nativeUserService = oauth2UserService();
-        return userRequest -> assembler.assemble(nativeUserService.loadUser(userRequest));
-    }
-
-    /**
-     * 按 registrationId 取出对应的用户信息服务。
-     * <p>查不到时返回 {@link #SECURE_FALLBACK} 而不是任一已配置的实例，
-     * 使"配置里漏写某个客户端"的后果是走加密通道然后失败，而不是误用了别的客户端的豁免配置。
-     * @param byRegistrationId registrationId 到用户信息服务的映射
-     * @param registrationId 本次 userinfo 请求所属的客户端
-     * @return 对应的用户信息服务，未匹配时为标准证书校验实例
-     */
-    static OAuth2UserService<OAuth2UserRequest, OAuth2User> resolveUserService(
-            Map<String, OAuth2UserService<OAuth2UserRequest, OAuth2User>> byRegistrationId,
-            String registrationId) {
-        return byRegistrationId.getOrDefault(registrationId, SECURE_FALLBACK);
-    }
-
-    /**
-     * 按客户端配置构造 registrationId 到用户信息服务的映射。
-     * 只有显式 ignore-ssl=true 的客户端会得到替换过 RestOperations 的实例，其余一律复用
-     * {@link #SECURE_FALLBACK}。
-     * @return registrationId 到用户信息服务的映射
-     */
-    Map<String, OAuth2UserService<OAuth2UserRequest, OAuth2User>> buildUserServiceMap() {
-        Map<String, OAuth2UserService<OAuth2UserRequest, OAuth2User>> byRegistrationId = new HashMap<>();
-        for (Oauth2OidcRegistrationClientProperties client : oauth2OidcProperties.getClients()) {
-            String registrationId = client.getRegistrationId();
-            if (client.isIgnoreSsl()) {
-                log.warn("OAuth2 客户端 [{}] 配置了 ignore-ssl=true，其 userinfo 请求将跳过证书与主机名校验，"
-                        + "该配置只应用于测试环境", registrationId);
-                DefaultOAuth2UserService insecureUserService = new DefaultOAuth2UserService();
-                insecureUserService.setRestOperations(new RestOperationBuilder().enableSsl(false).build());
-                byRegistrationId.put(registrationId, insecureUserService);
-            } else {
-                byRegistrationId.put(registrationId, SECURE_FALLBACK);
-            }
-        }
-        return byRegistrationId;
+    private SecurityUserOAuth2UserService securityUserOAuth2UserService() {
+        return new SecurityUserOAuth2UserService(oauth2UserService(),
+                new SecurityUserSsoAssembler(securityUserDetailsService));
     }
 
     /**
@@ -196,7 +140,7 @@ public class Oauth2Config implements HttpSecurityCustomizer {
                     })
                     //userinfo配置 配置的是拿到 token 后怎么去获取用户信息（用什么 HTTP 客户端、是否校验 SSL 等）
                     .userInfoEndpoint(endpoint -> {
-                        endpoint.userService(mappedUserService());
+                        endpoint.userService(securityUserOAuth2UserService());
                         endpoint.oidcUserService(oidcUserService());
                     })
                     .loginProcessingUrl(oauth2OidcProperties.getLoginProcessingUrl())
@@ -256,8 +200,12 @@ public class Oauth2Config implements HttpSecurityCustomizer {
 
     /**
      * 创建 OIDC UserService 用于处理 OIDC 协议的用户信息获取及 ID Token 验证。
-     * <p>其 userinfo 拉取复用 {@link #oauth2UserService()}，因此同样按客户端的 ignore-ssl
-     * 决定是否校验证书；不调用时 OidcUserService 内部默认也是校验的，两者默认行为一致。
+     * <p>其 userinfo 拉取复用 {@link #oauth2UserService()} 那个<b>只路由不装配</b>的
+     * {@link RoutingOAuth2UserService}，因此同样按客户端的 ignore-ssl 决定是否校验证书；
+     * 不调用时 OidcUserService 内部默认也是校验的，两者默认行为一致。
+     * 这里 MUST NOT 换成 {@link SecurityUserOAuth2UserService}：{@code OidcUserService} 只消费
+     * 委托返回主体的声明集，最终主体由它自己用 ID Token 另建，换过去等于每次 OIDC 登录多查
+     * 一遍本地账号库，且装配失败会抢在 ID Token 与 UserInfo 的 sub 一致性校验之前抛出。
      * <p>返回的主体由 {@link SecurityUserOidcUserService} 装配成统一认证主体，ID Token 与
      * 声明原样保留在该主体上，依赖 {@code principal instanceof OidcUser} 的会话终止功能不受影响。
      */

@@ -6,6 +6,8 @@ import com.cu.framework.authentication.service.SecurityUserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.OAuth2Error;
+import org.springframework.security.oauth2.core.oidc.OidcIdToken;
+import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
@@ -30,27 +32,28 @@ public class SecurityUserSsoAssembler {
     }
 
     /**
-     * 装配 OAuth2 协议（无 ID Token）的认证主体
+     * 把身份源返回的原生主体装配为统一认证主体，OAuth2 与 OIDC 两条协议链路共用本方法。
+     * <p>OIDC 的 ID Token 与 UserInfo 只在主体是 {@link OidcUser} 时取出：纯 OAuth2 客户端没有
+     * ID Token，此时这两个字段为 null，依赖 ID Token 的协议功能本来就只对 OIDC 客户端有意义。
+     * <p>调用方 MUST 只在各协议链路的末端调用一次，不要把它放进取 userinfo 的那一层：
+     * OIDC 的内部委托只消费返回主体的 {@code getAttributes()}，在其内部装配会使本地账号库
+     * 每次登录被查两遍，且 {@code LOCAL_USER_NOT_FOUND} 会抢在 ID Token 与 UserInfo 的
+     * {@code sub} 一致性校验之前抛出。
      *
-     * @param source 用户信息端点返回的主体，其 name 为本系统的用户名
+     * @param source 用户信息端点或 ID Token 产出的原生主体，其 name 为本系统的用户名
      * @return 统一认证主体
      * @throws OAuth2AuthenticationException 本系统没有对应账号
      */
     public Oauth2SecurityUser assemble(OAuth2User source) {
         SecurityUser localUser = loadLocalUser(source.getName());
-        return Oauth2SecurityUser.of(localUser, source.getAttributes(), null, null);
-    }
-
-    /**
-     * 装配 OIDC 协议的认证主体，保留 ID Token 与 UserInfo 供会话终止等协议功能使用
-     *
-     * @param source 用户信息服务返回的主体，其 name 为本系统的用户名
-     * @return 统一认证主体
-     * @throws OAuth2AuthenticationException 本系统没有对应账号
-     */
-    public Oauth2SecurityUser assemble(OidcUser source) {
-        SecurityUser localUser = loadLocalUser(source.getName());
-        return Oauth2SecurityUser.of(localUser, source.getAttributes(), source.getIdToken(), source.getUserInfo());
+        OidcIdToken idToken = null;
+        OidcUserInfo userInfo = null;
+        if (source instanceof OidcUser) {
+            OidcUser oidcSource = (OidcUser) source;
+            idToken = oidcSource.getIdToken();
+            userInfo = oidcSource.getUserInfo();
+        }
+        return Oauth2SecurityUser.of(localUser, source.getAttributes(), idToken, userInfo);
     }
 
     /**
