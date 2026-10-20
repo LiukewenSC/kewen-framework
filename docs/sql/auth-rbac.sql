@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS `sys_auth_data`;
 CREATE TABLE `sys_auth_data` (
     `id`                bigint       NOT NULL AUTO_INCREMENT COMMENT '主键ID',
     `business_function` varchar(64)  NOT NULL COMMENT '业务功能',
-    `data_id`           bigint       NOT NULL COMMENT '数据ID 应用中业务的主键ID',
+    `data_id`           bigint       NOT NULL COMMENT '数据ID 应用中业务的主键ID；列类型随业务主键，业务主键为字符串时此处用varchar，框架代码不假设类型',
     `operate`           varchar(64)  NOT NULL DEFAULT 'unified' COMMENT '操作类型 unified modify delete 等,应用可以自定义操作名称',
     `authority`         varchar(100) NOT NULL COMMENT '权限字符串',
     `description`       varchar(200) NOT NULL COMMENT '权限描述',
