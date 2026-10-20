@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 资产：主键列名是 asset_id，声明里用 dataIdColumn 指出，框架不假设主键一定叫 id -->
+<mapper namespace="com.cu.framework.sample.authcore.mapper.AssetMapper">
+
+    <resultMap id="assetMap" type="com.cu.framework.sample.authcore.entity.Asset">
+        <id column="asset_id" property="assetId"/>
+        <result column="name" property="name"/>
+        <result column="dept" property="dept"/>
+    </resultMap>
+
+    <select id="listRange" resultMap="assetMap">
+        select asset_id, name, dept
+        from demo_asset
+    </select>
+
+    <select id="listAll" resultMap="assetMap">
+        select asset_id, name, dept
+        from demo_asset
+    </select>
+
+    <update id="updateName">
+        update demo_asset
+        set name = #{name}
+        where asset_id = #{assetId}
+    </update>
+
+</mapper>

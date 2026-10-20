@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+  工单查询。每条语句的权限作用范围由接口方法上的 @AuthDataRange 决定：
+  标在哪个方法，就只注入那一条语句；这里刻意混排了"已声明 / 未声明 / 动态 / 多表 / 写语句"几种形态
+-->
+<mapper namespace="com.cu.framework.sample.authcore.mapper.WorkOrderMapper">
+
+    <sql id="orderColumns">
+        id, title, customer_id, booking_customer_id, amount, status
+    </sql>
+
+    <resultMap id="workOrderMap" type="com.cu.framework.sample.authcore.entity.WorkOrder">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="customer_id" property="customerId"/>
+        <result column="booking_customer_id" property="bookingCustomerId"/>
+        <result column="amount" property="amount"/>
+        <result column="status" property="status"/>
+    </resultMap>
+
+    <!-- 嵌套查询：外层与内层各自带声明，两个槽位互不覆盖 -->
+    <resultMap id="nestedWorkOrderMap" type="com.cu.framework.sample.authcore.entity.WorkOrder" extends="workOrderMap">
+        <collection property="sameCustomerOrders" column="customer_id" select="listSameCustomer"/>
+    </resultMap>
+
+    <select id="listRangeIn" resultMap="workOrderMap">
+        select <include refid="orderColumns"/> from demo_work_order
+    </select>
+
+    <select id="listRangeExists" resultMap="workOrderMap">
+        select <include refid="orderColumns"/> from demo_work_order
+    </select>
+
+    <select id="countRange" resultType="int">
+        select count(*) from demo_work_order
+    </select>
+
+    <select id="listEditable" resultMap="workOrderMap">
+        select <include refid="orderColumns"/> from demo_work_order
+    </select>
+
+    <select id="listApprovable" resultMap="workOrderMap">
+        select <include refid="orderColumns"/> from demo_work_order
+    </select>
+
+    <!-- 没有声明的对照语句：永远原文下发 -->
+    <select id="listAll" resultMap="workOrderMap">
+        select <include refid="orderColumns"/> from demo_work_order
+    </select>
+
+    <select id="listNested" resultMap="nestedWorkOrderMap">
+        select <include refid="orderColumns"/> from demo_work_order
+    </select>
+
+    <select id="listSameCustomer" resultMap="workOrderMap">
+        select <include refid="orderColumns"/>
+        from demo_work_order
+        where customer_id = #{customerId}
+    </select>
+
+    <!-- 同一张 demo_customer 参与两次，只有别名能说明条件该挂到哪一次 -->
+    <select id="listJoinCu" resultMap="workOrderMap">
+        select o.id, o.title, o.customer_id, o.booking_customer_id, o.amount, o.status
+        from demo_work_order o
+        join demo_customer cu on o.customer_id = cu.id
+        join demo_customer cb on o.booking_customer_id = cb.id
+    </select>
+
+    <select id="listJoinCb" resultMap="workOrderMap">
+        select o.id, o.title, o.customer_id, o.booking_customer_id, o.amount, o.status
+        from demo_work_order o
+        join demo_customer cu on o.customer_id = cu.id
+        join demo_customer cb on o.booking_customer_id = cb.id
+    </select>
+
+    <!-- 动态语句：SQL 运行期才拼得出，启动阶段跳过目标表校验，执行期照常注入 -->
+    <select id="listDynamic" resultMap="workOrderMap">
+        select <include refid="orderColumns"/>
+        from demo_work_order
+        where 1 = 1
+        <if test="status != null">
+            and status = #{status}
+        </if>
+    </select>
+
+    <!-- 动态语句的失败面：withJoin=false 时运行期拼不出声明的 demo_customer，必须抛而不是放开过滤 -->
+    <select id="listDynamicMissingTable" resultMap="workOrderMap">
+        select o.id, o.title, o.customer_id, o.booking_customer_id, o.amount, o.status
+        from demo_work_order o
+        <if test="withJoin">
+            join demo_customer cu on o.customer_id = cu.id
+        </if>
+    </select>
+
+    <update id="updateStatus">
+        update demo_work_order
+        set status = #{status}
+        where id = #{id}
+    </update>
+
+</mapper>

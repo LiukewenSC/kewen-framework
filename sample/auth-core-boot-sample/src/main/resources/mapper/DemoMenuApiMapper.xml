@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 菜单行存储：示例自己决定表结构与主键来源，框架只调 list/saveBatch -->
+<mapper namespace="com.cu.framework.sample.authcore.mapper.DemoMenuApiMapper">
+
+    <resultMap id="menuApiMap" type="com.cu.framework.sample.authcore.entity.MenuApiPO">
+        <id column="id" property="id"/>
+        <result column="path" property="path"/>
+        <result column="name" property="name"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <select id="listAll" resultMap="menuApiMap">
+        select id, path, name, parent_id, remark
+        from demo_menu_api
+        order by path
+    </select>
+
+    <insert id="insertBatch">
+        insert into demo_menu_api (id, path, name, parent_id)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id}, #{item.path}, #{item.name}, #{item.parentId})
+        </foreach>
+    </insert>
+
+    <!-- 人工改写已有行，只为给"启动不覆写"这条规格制造可核对的前后状态 -->
+    <update id="touchByPath">
+        update demo_menu_api
+        set name = #{name}, remark = #{remark}
+        where path = #{path}
+    </update>
+
+</mapper>

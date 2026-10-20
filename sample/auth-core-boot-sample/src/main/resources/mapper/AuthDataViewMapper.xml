@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 只读观察通道：把框架读写的那张表读回来给人看，不参与任何判定 -->
+<mapper namespace="com.cu.framework.sample.authcore.mapper.AuthDataViewMapper">
+
+    <resultMap id="authDataRowMap" type="com.cu.framework.sample.authcore.entity.AuthDataRow">
+        <id column="pk" property="pk"/>
+        <result column="biz_module" property="bizModule"/>
+        <result column="biz_data_id" property="bizDataId"/>
+        <result column="action" property="action"/>
+        <result column="auth_str" property="authStr"/>
+        <result column="auth_desc" property="authDesc"/>
+    </resultMap>
+
+    <resultMap id="tableCountMap" type="com.cu.framework.sample.authcore.entity.TableCount">
+        <result column="table_name" property="tableName"/>
+        <result column="row_count" property="rowCount"/>
+    </resultMap>
+
+    <select id="listSlot" resultMap="authDataRowMap">
+        select pk, biz_module, biz_data_id, action, auth_str, auth_desc
+        from demo_auth_data
+        where biz_module = #{bizModule}
+          and action = #{action}
+          and biz_data_id = #{bizDataId}
+        order by pk
+    </select>
+
+    <select id="listByModule" resultMap="authDataRowMap">
+        select pk, biz_module, biz_data_id, action, auth_str, auth_desc
+        from demo_auth_data
+        where biz_module = #{bizModule}
+        order by pk
+    </select>
+
+    <select id="tableCounts" resultMap="tableCountMap">
+        select 'demo_auth_data' as table_name, count(*) as row_count from demo_auth_data
+        union all
+        select 'demo_user_auth', count(*) from demo_user_auth
+        union all
+        select 'demo_menu_auth', count(*) from demo_menu_auth
+        union all
+        select 'demo_menu_api', count(*) from demo_menu_api
+        union all
+        select 'demo_work_order', count(*) from demo_work_order
+        union all
+        select 'demo_asset', count(*) from demo_asset
+        union all
+        select 'demo_customer', count(*) from demo_customer
+        union all
+        select 'demo_execution_log', count(*) from demo_execution_log
+    </select>
+
+</mapper>

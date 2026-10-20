@@ -19,6 +19,7 @@
         <module>storage-boot-sample</module>
         <module>auth-rbac-boot-sample</module>
         <module>login-boot-sample</module>
+        <module>auth-core-boot-sample</module>
     </modules>
 
     <properties>

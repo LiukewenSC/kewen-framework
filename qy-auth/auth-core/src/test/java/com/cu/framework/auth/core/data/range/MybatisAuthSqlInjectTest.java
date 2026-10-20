@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 public class MybatisAuthSqlInjectTest {
 
@@ -179,5 +180,39 @@ public class MybatisAuthSqlInjectTest {
                             ")" +
                         ") SELECT * FROM t_a WHERE 1 = 1",
                 newSql);
+    }
+
+    /**
+     * 权限集合为空时必须注入恒假条件：语句仍带过滤，只是恒不成立。
+     * 原来这条路会渲染出 `authority in ( )`，整条语句在库里不成立
+     */
+    @Test
+    public void emptyAuthoritiesInjectsAlwaysFalse() throws JSQLParserException {
+        AuthRange authRange = getAuthRange();
+        authRange.setAuthorities(Collections.<BaseAuth>emptyList());
+
+        authRange.setMatchMethod(MatchMethod.IN);
+        String inSql = sqlAuthInject.convert2NewSql("select * from meeting_room where 1=1", authRange);
+        log.info(inSql);
+        Assert.assertEquals("SELECT * FROM meeting_room WHERE 1 = 1 AND 1 = 0", inSql);
+
+        authRange.setMatchMethod(MatchMethod.EXISTS);
+        String existsSql = sqlAuthInject.convert2NewSql("select * from meeting_room where 1=1", authRange);
+        log.info(existsSql);
+        Assert.assertEquals("SELECT * FROM meeting_room WHERE 1 = 1 AND 1 = 0", existsSql);
+        Assert.assertFalse("恒假条件不应再去查权限表", existsSql.contains("sys_auth_data"));
+    }
+
+    /**
+     * 权限集合为 null 与空集合按同一路径处理，不能抛空指针
+     */
+    @Test
+    public void nullAuthoritiesInjectsAlwaysFalse() throws JSQLParserException {
+        AuthRange authRange = getAuthRange();
+        authRange.setAuthorities(null);
+
+        String sql = sqlAuthInject.convert2NewSql("select * from meeting_room", authRange);
+        log.info(sql);
+        Assert.assertEquals("SELECT * FROM meeting_room WHERE 1 = 0", sql);
     }
 }
