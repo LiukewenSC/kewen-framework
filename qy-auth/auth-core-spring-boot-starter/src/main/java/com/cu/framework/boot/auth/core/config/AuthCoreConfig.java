@@ -63,8 +63,8 @@ public class AuthCoreConfig {
 
     /**
      * 数据权限处理器。
-     * 持久化组件必须显式装配：该类只有 Lombok 的 {@code @Setter}、字段上没有 {@code @Autowired}，
-     * 漏设会在读写权限数据时抛空指针
+     * 持久化组件必须显式装配：{@link JdbcAuthDataHandler} 与 {@link JdbcAuthDataPersistent} 都靠 setter 注入、
+     * 字段上没有 {@code @Autowired}，漏设会在读写权限数据时抛空指针
      *
      * @return 数据权限处理器
      */

@@ -388,7 +388,7 @@ public interface MeetingRoomMpMapper extends BaseMapper<MeetingRoom> {
 
 #### 3. `@AuthDataOperation` - 数据操作权限注解
 
-校验是否对单条数据有操作权限，避免通过接口进行越权攻击。
+校验是否对某一条或某一批数据有操作权限，避免通过接口进行越权攻击。请求体实现 `DataIdCarrier` 交出本次涉及的全部业务数据ID，切面逐个判定，全部命中才放行，任一条无权限即整体拒绝；一次调用去重后最多 100 个ID，业务主键类型不限。
 
 ```java
 @RestController

@@ -3,7 +3,7 @@ package com.cu.framework.auth.sample.controller;
 import com.cu.framework.auth.core.AuthDataOperation;
 import com.cu.framework.auth.core.AuthMenu;
 import com.cu.framework.auth.core.AuthMenuDoc;
-import com.cu.framework.auth.core.data.edit.IdDataEdit;
+import com.cu.framework.auth.core.data.edit.DataIdCarrier;
 import com.cu.framework.auth.sample.mp.entity.TestauthAnnotationBusiness;
 import com.cu.framework.auth.sample.mp.service.TestauthAnnotationBusinessMpService;
 import com.cu.framework.basic.model.PageReq;
@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -60,9 +62,20 @@ public class TestAuthAnnotationController {
      */
     @PostMapping("/dataEdit")
     @AuthDataOperation(businessFunction = "testedit")
-    public Result testDataEdit(@RequestBody EditIdDataEdit editBusinessData) {
+    public Result testDataEdit(@RequestBody EditDataIdCarrier editBusinessData) {
         System.out.println("successEdit");
         return Result.success(editBusinessData);
+    }
+
+    /**
+     * 测试批量数据编辑：一次提交多条业务数据ID，全部命中才放行，任一条无权限即整体拒绝
+     * @return
+     */
+    @PostMapping("/dataEditBatch")
+    @AuthDataOperation(businessFunction = "testedit")
+    public Result testDataEditBatch(@RequestBody List<EditDataIdCarrier> editBusinessDataList) {
+        System.out.println("successBatchEdit");
+        return Result.success(editBusinessDataList);
     }
 
 
@@ -88,13 +101,13 @@ public class TestAuthAnnotationController {
     }
 
     /**
-     * 测试数据编辑接口的请求体，实现 IdDataEdit 以提供业务数据 ID，
+     * 测试数据编辑接口的请求体，实现 DataIdCarrier 交出业务数据 ID，
      * 供 @AuthDataOperation 切面校验当前登录人对该数据的操作权限
      * @author kewen
      * @since 2026-02-12
      */
     @Data
-    public static class EditIdDataEdit implements IdDataEdit<Long> {
+    public static class EditDataIdCarrier implements DataIdCarrier<Long> {
 
         /** 业务数据 ID，即数据权限校验时的 dataId */
         private Long id;
@@ -102,8 +115,8 @@ public class TestAuthAnnotationController {
         private String name;
 
         @Override
-        public Long getDataId() {
-            return id;
+        public Collection<Long> getDataIds() {
+            return Collections.singletonList(id);
         }
     }
 }

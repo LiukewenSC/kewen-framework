@@ -1,10 +1,8 @@
 package com.cu.framework.auth.core.data;
 
-import com.cu.framework.auth.core.exception.AuthServiceException;
 import lombok.Setter;
 import net.sf.jsqlparser.expression.Expression;
-import net.sf.jsqlparser.expression.LongValue;
-import net.sf.jsqlparser.expression.StringValue;
+import net.sf.jsqlparser.expression.JdbcParameter;
 import net.sf.jsqlparser.expression.operators.conditional.AndExpression;
 import net.sf.jsqlparser.expression.operators.relational.EqualsTo;
 import net.sf.jsqlparser.expression.operators.relational.ExpressionList;
@@ -16,22 +14,28 @@ import net.sf.jsqlparser.statement.select.PlainSelect;
 import net.sf.jsqlparser.statement.select.SelectItem;
 import net.sf.jsqlparser.statement.select.Values;
 import net.sf.jsqlparser.util.SelectUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
+ * 权限表 sys_auth_data 的读写。
+ * <p>
+ * 语句结构一律由 JSqlParser 构造（表、列、条件、值列表都在 AST 上组装），与其他模块保持一致；
+ * 但叶子位置放的是 {@link JdbcParameter} 而不是字面量：业务功能、数据ID、操作类型、权限串、权限描述
+ * 全部作为参数下发。这样既不需要判断数据ID是什么类型，调用方提供的值也不可能改变查询语义。
+ *
  * @author kewen
  * @since 2024-08-14
  */
 @Setter
 public class JdbcAuthDataPersistent implements InitializingBean {
 
-    private static final Logger log = LoggerFactory.getLogger(JdbcAuthDataPersistent.class);
     /** 执行数据权限 SQL 的 JdbcTemplate */
     private JdbcTemplate jdbcTemplate;
 
@@ -39,23 +43,26 @@ public class JdbcAuthDataPersistent implements InitializingBean {
     private AuthDataTable authDataTable;
 
     /**
-     * 批量插入
+     * 批量插入：向权限表插入 businessFunction、dataId、operate、authority、description 五列，值全部按参数下发
      *
-     * @param datas
-     * @return
+     * @param datas 待插入的数据权限记录
+     * @return 是否有记录写入
      */
     public boolean insertBatchAuthData(Collection<AuthDataDO> datas) {
-        String sql = buildInsertBatchSql(datas);
-        int update = jdbcTemplate.update(sql);
-        return update > 0;
-    }
+        if (datas == null || datas.isEmpty()) {
+            return false;
+        }
+        List<Expression> valueTuples = new ArrayList<>(datas.size());
+        List<Object> args = new ArrayList<>(datas.size() * 5);
+        for (AuthDataDO data : datas) {
+            valueTuples.add(new ParenthesedExpressionList(jdbcParameters(5)));
+            args.add(data.getBusinessFunction());
+            args.add(data.getDataId());
+            args.add(data.getOperate());
+            args.add(data.getAuthority());
+            args.add(data.getDescription());
+        }
 
-    /**
-     * 构造批量插入 SQL：向权限表插入 businessFunction、dataId、operate、authority、description 五列
-     * @param datas 待插入的数据权限记录
-     * @return 拼接完成的 insert 语句
-     */
-    private String buildInsertBatchSql(Collection<AuthDataDO> datas) {
         Insert insert = new Insert();
         insert.withTable(authDataTable.getTable())
                 .withColumns(new ExpressionList().withExpressions(
@@ -65,169 +72,113 @@ public class JdbcAuthDataPersistent implements InitializingBean {
                         authDataTable.getAuthorityColumn(),
                         authDataTable.getDescriptionColumn()
                 ))
-                .withSelect(new Values().withExpressions(new ExpressionList(
-                        datas.stream().map(d -> new ParenthesedExpressionList(
-                                new StringValue(d.getBusinessFunction()),
-                                new StringValue(d.getDataId().toString()),
-                                new StringValue(d.getOperate()),
-                                new StringValue(d.getAuthority()),
-                                new StringValue(d.getDescription())
-                        )).collect(Collectors.toList())
-                )));
-        return insert.toString();
+                .withSelect(new Values().withExpressions(new ExpressionList(valueTuples)));
+        int update = jdbcTemplate.update(insert.toString(), args.toArray());
+        return update > 0;
     }
 
     /**
-     * 批量删除
+     * 按权限表主键批量删除，主键就是 {@link #listAuthData} 读回的原值，原样绑定
      *
-     * @param ids
-     * @return
-     */
-    public <Object> int deleteBatchAuthData(List ids) {
-        String sql = removeByIdsSql(ids);
-        return jdbcTemplate.update(sql);
-    }
-
-    /**
-     * 构造按主键批量删除的 SQL（id IN (...)），Long / Integer 转为数值字面量，StringValue 转为字符串字面量，其余类型抛出异常
      * @param ids 主键列表
-     * @return 拼接完成的 delete 语句
-     * @throws RuntimeException ID 类型不受支持时抛出
+     * @return 删除的行数
      */
-    private  String removeByIdsSql(List ids) {
-        ArrayList<Expression> expressions = new ArrayList<>();
-        for (Object id : ids) {
-            if (id instanceof Long) {
-                Long id1 = (Long) id;
-                expressions.add(new LongValue(id1));
-            } else if (id instanceof Integer) {
-                Integer id1 = (Integer) id;
-                expressions.add(new LongValue(id1));
-            } else if (id instanceof String) {
-                expressions.add(new StringValue(id.toString()));
-            } else {
-                throw new RuntimeException("ID类型异常");
-            }
+    public int deleteBatchAuthData(List<Object> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return 0;
         }
         Delete delete = new Delete();
         delete.withTable(authDataTable.getTable())
                 .withWhere(new InExpression()
                         .withLeftExpression(authDataTable.getIdColumn())
-                        .withRightExpression(new ParenthesedExpressionList(expressions))
+                        .withRightExpression(new ParenthesedExpressionList(jdbcParameters(ids.size())))
                 );
-        return delete.toString();
+        return jdbcTemplate.update(delete.toString(), ids.toArray());
     }
 
     /**
      * 根据业务功能和dataID删除数据权限，即清空功能下特定ID的所有权限
-     * @param businessFunction
-     * @param dataId
-     * @param <Object>
-     * @return
-     */
-    public <Object> int deleteBusinessFunctionDataIdAuth(String businessFunction, Object dataId) {
-        String sql = removeBusinessFunctionDataIdSql(businessFunction,dataId);
-        return jdbcTemplate.update(sql);
-    }
-    /**
-     * 构造按 业务功能 + 数据ID 删除权限记录的 SQL
      * @param businessFunction 业务功能
-     * @param dataId 数据ID，仅支持 String / Long / Integer 类型
-     * @return 拼接完成的 delete 语句
-     * @throws AuthServiceException dataId 类型不受支持时抛出
+     * @param dataId 业务数据ID，类型不限
+     * @return 删除的行数
      */
-    private <Object> String removeBusinessFunctionDataIdSql(String businessFunction, Object dataId) {
+    public int deleteBusinessFunctionDataIdAuth(String businessFunction, Object dataId) {
         Delete delete = new Delete();
-
-        Expression dataIdExpression;
-        if (dataId instanceof String){
-            dataIdExpression = new StringValue(dataId.toString());
-        } else if (dataId instanceof Long){
-            dataIdExpression = new LongValue(dataId.toString());
-        } else if (dataId instanceof Integer){
-            dataIdExpression = new LongValue(dataId.toString());
-        } else {
-            throw new AuthServiceException("ID类型不正确");
-        }
-
         delete.withTable(authDataTable.getTable())
-                .withWhere(
-                        new AndExpression(
-                                new EqualsTo(authDataTable.getBusinessFunctionColumn(),new StringValue(businessFunction)),
-                                new EqualsTo(authDataTable.getDataIdColumn(), dataIdExpression)
-                        )
-                );
-        return delete.toString();
+                .withWhere(new AndExpression(
+                        new EqualsTo(authDataTable.getBusinessFunctionColumn(), new JdbcParameter()),
+                        new EqualsTo(authDataTable.getDataIdColumn(), new JdbcParameter())
+                ));
+        return jdbcTemplate.update(delete.toString(), businessFunction, dataId);
     }
 
+    /**
+     * 根据业务功能、数据ID集合、操作类型查询权限。
+     * 只查询 id、data_id、authority、description 四列，数据ID取自查询结果而不是入参，
+     * 调用方据此区分命中的究竟是哪条数据
+     *
+     * @param businessFunction 业务功能
+     * @param dataIds 业务数据ID集合
+     * @param operate 操作类型
+     * @return 权限记录
+     */
+    public List<AuthDataDO> listAuthData(String businessFunction, Collection<Object> dataIds, String operate) {
+        if (dataIds == null || dataIds.isEmpty()) {
+            return Collections.emptyList();
+        }
+        PlainSelect plainSelect = SelectUtils.buildSelectFromTable(authDataTable.getTable()).getPlainSelect();
+        plainSelect.withSelectItems(Arrays.asList(
+                new SelectItem<>(authDataTable.getIdColumn()),
+                new SelectItem<>(authDataTable.getDataIdColumn()),
+                new SelectItem<>(authDataTable.getAuthorityColumn()),
+                new SelectItem<>(authDataTable.getDescriptionColumn())
+        )).withWhere(
+                new AndExpression(
+                        new AndExpression(
+                                new EqualsTo(authDataTable.getBusinessFunctionColumn(), new JdbcParameter()),
+                                new EqualsTo(authDataTable.getOperateColumn(), new JdbcParameter())
+                        ),
+                        new InExpression(authDataTable.getDataIdColumn(),
+                                new ParenthesedExpressionList(jdbcParameters(dataIds.size())))
+                )
+        );
+
+        //参数顺序必须与渲染出的占位符顺序一致：业务功能、操作类型、然后才是 data_id IN (...)
+        List<Object> args = new ArrayList<>(dataIds.size() + 2);
+        args.add(businessFunction);
+        args.add(operate);
+        args.addAll(dataIds);
+
+        return jdbcTemplate.query(plainSelect.toString(), args.toArray(), (rs, rowNum) ->
+                new AuthDataDO(
+                        rs.getObject(1),
+                        businessFunction,
+                        rs.getObject(2),
+                        operate,
+                        rs.getString(3),
+                        rs.getString(4)));
+    }
 
     /**
      * 校验依赖是否已注入，jdbcTemplate 或 authDataTable 为空时启动失败
-     * @throws Exception 依赖缺失时抛出 RuntimeException
      */
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         if (jdbcTemplate == null || authDataTable == null) {
-            throw new RuntimeException("jdbcTemplate or authDataTable is null");
+            throw new IllegalStateException("jdbcTemplate or authDataTable is null");
         }
     }
 
     /**
-     * 根据业务方法，数据ID，操作类型查询权限
-     *
-     * @param businessFunction
-     * @param dataId
-     * @param operate
-     * @return
+     * 生成指定数量的位置参数占位符
+     * @param count 占位符个数
+     * @return 占位符表达式列表
      */
-    public List<AuthDataDO> listAuthData(String businessFunction, Object dataId, String operate) {
-        String sql = listAuthDataSql(businessFunction, dataId, operate);
-
-        List<AuthDataDO> list = jdbcTemplate.query(sql, (rs, rowNum) -> {
-            Object id;
-            if (dataId instanceof Long) {
-                id = Long.valueOf(rs.getLong(1));
-            } else if (dataId instanceof Integer) {
-                id = Integer.valueOf(rs.getInt(1));
-            } else if (dataId instanceof String) id = (Object) rs.getString(1);
-            else {
-                log.error("ID类型不正确 {}", rs);
-                id = null;
-            }
-            String authority = rs.getString(2);
-            String description = rs.getString(3);
-            return new AuthDataDO(id, businessFunction, dataId, operate, authority, description);
-        });
-        if (list == null) {
-            return Collections.emptyList();
+    private static List<Expression> jdbcParameters(int count) {
+        List<Expression> parameters = new ArrayList<>(count);
+        for (int i = 0; i < count; i++) {
+            parameters.add(new JdbcParameter());
         }
-        return list;
-
-    }
-
-    /**
-     * 构造按 业务功能 + 数据ID + 操作类型 查询权限的 SQL，只查询 id、authority、description 三列
-     * @param businessFunction 业务功能
-     * @param dataId 数据ID
-     * @param operate 操作类型
-     * @return 拼接完成的 select 语句
-     */
-    private <Object> String listAuthDataSql(String businessFunction, Object dataId, String operate) {
-        PlainSelect plainSelect = SelectUtils.buildSelectFromTable(authDataTable.getTable()).getPlainSelect();
-        plainSelect.withWhere(
-                new AndExpression(
-                        new AndExpression(
-                                new EqualsTo(authDataTable.getBusinessFunctionColumn(), new StringValue(businessFunction)),
-                                new EqualsTo(authDataTable.getDataIdColumn(), new StringValue(dataId.toString()))
-                        ),
-                        new EqualsTo(authDataTable.getOperateColumn(), new StringValue(operate))
-                )
-        ).withSelectItems(Arrays.asList(
-                new SelectItem<>(authDataTable.getIdColumn()),
-                new SelectItem<>(authDataTable.getAuthorityColumn()),
-                new SelectItem<>(authDataTable.getDescriptionColumn())
-        ))
-        ;
-        return plainSelect.toString();
+        return parameters;
     }
 }

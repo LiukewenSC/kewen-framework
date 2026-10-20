@@ -232,7 +232,7 @@ public Result updateById(@RequestBody MeetingRoomUpdateReq entity){
 @AuthDataOperation(businessFunction = "meeting_room",operate = "edit_info")
 public Result updateById(@RequestBody MeetingRoomUpdateReq entity){
    meetingRoomService.updateById(entity);
-   authDataService.editDataAuths("meeting_room",entity.getDataId(),"appointment",entity.getAuthObject());
+   authDataService.editDataAuths("meeting_room",entity.getId(),"appointment",entity.getAuthObject());
    return Result.success();
 }
 ```

@@ -464,8 +464,7 @@ LEFT JOIN (select * from dept d  where
 
 ```java
 /**
- * @descrpition 校验是否有编辑单条数据的权限
- * dataId需要关联获取 {@link com.cu.framework.auth.core.data.edit.IdDataEdit}
+ * @descrpition 校验是否有编辑单条或若干条数据的权限
  * @author kewen
  * @since 2022-11-23
  */
@@ -491,18 +490,38 @@ public @interface AuthDataOperation {
 - businessFunction()： 业务功能
 - operate()： 操作
 
-实现了此注解会根据传入的模块ID和操作以及业务ID自动判定是否有执行此操作的权限，数据库层面如下
+判定单位是业务数据ID而不是调用：切面从方法实参中收集所有 `DataIdCarrier` 交出的ID（含一层数组与集合元素），逐个判定，**全部命中才放行**，任一条无权限即整体拒绝、方法体不执行。数据库层面按下面这条查询取回候选数据的授权记录，当前登录人的权限集合在内存中比对、不进查询条件：
 
 ```sql
-select business_id from sys_auth_data
-where business_function=#{business_function} and operate=#{operate} and data_id=#{dataId} 
-   and authority in ( #{用户权限集合} )
-limit 1
+select data_id, authority from sys_auth_data
+where business_function=#{businessFunction} and operate=#{operate} and data_id in ( #{本次涉及的数据ID} )
 ```
+
+一次调用涉及的数据ID去重后最多 100 条，超出直接失败，由调用方分批提交。业务主键类型不限，整型、长整型、字符串都可以，比对时按字符串归一化，同一主键的不同类型形态视为同一条数据。所有值都作为参数下发，不会拼进语句。
 
 **使用方法**：
 
 在方法上添加相应的注解即可，此处不一定是Controller，Service也是可以的，但是要保证能正常开启切面(如不能是内部调用)。
+
+请求体需要实现 `DataIdCarrier`，交出本次涉及的全部业务数据ID；只表示一条数据时返回单元素集合即可：
+
+```java
+@Data
+public static class EditDataIdCarrier implements DataIdCarrier<Long> {
+
+    /** 业务数据 ID，即数据权限校验时的 dataId */
+    private Long id;
+
+    private String name;
+
+    @Override
+    public Collection<Long> getDataIds() {
+        return Collections.singletonList(id);
+    }
+}
+```
+
+单条与批量的接口写法：
 
 ```java
 /**
@@ -510,11 +529,25 @@ limit 1
  * @return
  */
 @AuthDataOperation(businessFunction = "testedit")
-public Result testDataEdit(@RequestBody EditIdDataEdit editBusinessData) {
+public Result testDataEdit(@RequestBody EditDataIdCarrier editBusinessData) {
    System.out.println("successEdit");
    return Result.success(editBusinessData);
 }
+
+/**
+ * 测试批量数据编辑：一次提交多条业务数据ID，全部命中才放行，任一条无权限即整体拒绝
+ * @return
+ */
+@AuthDataOperation(businessFunction = "testedit")
+public Result testDataEditBatch(@RequestBody List<EditDataIdCarrier> editBusinessDataList) {
+   System.out.println("successBatchEdit");
+   return Result.success(editBusinessDataList);
+}
 ```
+
+一个载体也可以交出多条ID（`getDataIds()` 返回那一批），效果与上面按集合传参一致。
+
+**失败分两类**：实参中没有承载对象、ID集合为空、含空值、超出上限，属于用法错误；权限未命中属于权限拒绝，对外只给统一的拒绝语义，未命中的明细只进日志。
 
 ## 7.4. `@AuthDataAuthEdit`
 
