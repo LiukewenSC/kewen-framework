@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 权限装载：这条查询没有声明数据范围，是"同一调用链上的其他语句不受影响"的现场观察对象 -->
+<mapper namespace="com.cu.framework.sample.authcore.mapper.DemoUserAuthMapper">
+
+    <resultMap id="baseAuthMap" type="com.cu.framework.auth.core.entity.BaseAuth">
+        <result column="auth_str" property="auth"/>
+        <result column="auth_desc" property="description"/>
+    </resultMap>
+
+    <select id="listByUsername" resultMap="baseAuthMap">
+        select auth_str, auth_desc
+        from demo_user_auth
+        where username = #{username}
+        order by pk
+    </select>
+
+</mapper>

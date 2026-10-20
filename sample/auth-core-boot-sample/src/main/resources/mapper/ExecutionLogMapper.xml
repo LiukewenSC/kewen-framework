@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 副作用证据：拒绝发生在方法体之前，所以计数不增长就是"方法体没执行" -->
+<mapper namespace="com.cu.framework.sample.authcore.mapper.ExecutionLogMapper">
+
+    <resultMap id="executionLogMap" type="com.cu.framework.sample.authcore.entity.ExecutionLog">
+        <id column="pk" property="pk"/>
+        <result column="api_key" property="apiKey"/>
+        <result column="biz_data_id" property="bizDataId"/>
+        <result column="memo" property="memo"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+    <insert id="insert">
+        insert into demo_execution_log (api_key, biz_data_id, memo)
+        values (#{apiKey}, #{bizDataId}, #{memo})
+    </insert>
+
+    <select id="countByApiKey" resultType="int">
+        select count(*)
+        from demo_execution_log
+        where api_key = #{apiKey}
+    </select>
+
+    <select id="listByApiKey" resultMap="executionLogMap">
+        select pk, api_key, biz_data_id, memo, create_time
+        from demo_execution_log
+        where api_key = #{apiKey}
+        order by pk
+    </select>
+
+</mapper>

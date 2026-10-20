@@ -1,0 +1,85 @@
+server:
+  port: 8082
+  servlet:
+    # B5 场景的载体：菜单鉴权用的身份是去掉 contextPath 之后的应用内路径，
+    # 所以本示例所有 curl 都要带 /coredemo 前缀，而 demo_menu_auth 里登记的是不带前缀的路径
+    context-path: /coredemo
+
+spring:
+  application:
+    name: auth-core-boot-sample
+  # 默认用项目 data/ 目录下的 H2 文件库，本机不需要装任何数据库；
+  # 换本地 MySQL 用 --spring.profiles.active=mysql
+  profiles:
+    active: h2
+
+# ---- 与数据库无关的配置，留在公共段 ----
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+
+# 观察点：改写前后的 SQL、实际下发的语句、权限表的读写语句都要能在日志里看到
+logging:
+  level:
+    com.cu.framework.sample.authcore.mapper: debug
+    com.cu.framework.auth.core: debug
+    org.springframework.jdbc.core: debug
+
+cu:
+  auth:
+    # 七项全部映射到本示例自有的表和列，与框架默认约定（sys_auth_data 等）完全不同。
+    # 框架代码里只要有任何一处硬编码了表名或列名，本示例立刻就会失败
+    auth-data-table:
+      table-name: demo_auth_data
+      id-column: pk
+      business-function-column: biz_module
+      data-id-column: biz_data_id
+      operate-column: action
+      authority-column: auth_str
+      description-column: auth_desc
+
+---
+# H2 文件数据源。H2 相关的一切只写在本段内。
+# 数据文件在启动目录的 data/ 下，从模块目录启动即 sample/auth-core-boot-sample/data/，已加进 .gitignore
+spring:
+  config:
+    activate:
+      on-profile: h2
+  datasource:
+    url: jdbc:h2:file:./data/auth_core_sample;MODE=MySQL;DATABASE_TO_LOWER=TRUE;CASE_INSENSITIVE_IDENTIFIERS=TRUE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+    hikari:
+      maximum-pool-size: 5
+      pool-name: HikariCP-H2-File
+  # 脚本都在本模块 sql/ 下（由本模块 pom 的 <resources> 挂到 classpath:sql/）。
+  # schema 与 seed 全部幂等：建表用 IF NOT EXISTS、种子用 WHERE NOT EXISTS，
+  # 所以 mode 可以一直是 always——首启自动建好表，之后重启既不丢手工改过的授权，也不会重复灌种子
+  sql:
+    init:
+      mode: always
+      encoding: UTF-8
+      schema-locations: classpath:sql/schema.sql
+      data-locations: classpath:sql/seed-data.sql
+  # H2 Web 控制台：http://localhost:8082/coredemo/h2-console （JDBC URL 填上方 datasource.url）
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+---
+# 本地 MySQL 数据源。本段不执行任何建表与种子脚本，需要自行按 README 执行本模块 sql/ 下两个脚本
+spring:
+  config:
+    activate:
+      on-profile: mysql
+  datasource:
+    url: jdbc:mysql://localhost:3306/your_database
+    username: your_username
+    password: your_password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  sql:
+    init:
+      mode: never

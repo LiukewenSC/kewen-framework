@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 菜单授权读取：路径未登记视为没有授予任何人，不因为查不到而放行 -->
+<mapper namespace="com.cu.framework.sample.authcore.mapper.DemoMenuAuthMapper">
+
+    <select id="listAuthsByPath" resultType="java.lang.String">
+        select auth_str
+        from demo_menu_auth
+        where path = #{path}
+    </select>
+
+    <select id="countByPath" resultType="int">
+        select count(*)
+        from demo_menu_auth
+        where path = #{path}
+    </select>
+
+</mapper>

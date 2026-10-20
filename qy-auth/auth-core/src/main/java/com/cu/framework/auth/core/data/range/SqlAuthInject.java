@@ -48,6 +48,9 @@ public class SqlAuthInject {
 
     private static final Logger log = LoggerFactory.getLogger(SqlAuthInject.class);
 
+    /** 权限集合为空时注入的恒假条件 */
+    private static final String ALWAYS_FALSE_CONDITION = "1 = 0";
+
     /** 数据权限表的表名与字段名映射配置，注入的权限子查询以此表构造 */
     AuthDataTable authDataTable;
 
@@ -120,7 +123,11 @@ public class SqlAuthInject {
         Table authTable = plainSelectAndTable.table;
         PlainSelect authPlainSelect = plainSelectAndTable.plainSelect;
         Expression condition;
-        if (authRange.getMatchMethod() == MatchMethod.IN) {
+        if (authRange.getAuthorities() == null || authRange.getAuthorities().isEmpty()) {
+            //权限集合为空 = 看不到任何行，与 AuthDataHandler.hasDataOperateAuths 的空集合即拒绝同一语义。
+            // 这里不能照样构造权限子查询：空值列表会渲染成 `authority in ( )`，整条语句直接不成立
+            condition = parseAlwaysFalseExpression();
+        } else if (authRange.getMatchMethod() == MatchMethod.IN) {
             //获取到 `id in (a,b,c)` 表达式
             condition = parseIdInExpression(authRange, authTable);
         } else if (authRange.getMatchMethod() == MatchMethod.EXISTS) {
@@ -135,6 +142,17 @@ public class SqlAuthInject {
             //组合现在的和原来的
             authPlainSelect.setWhere(new AndExpression(where, condition));
         }
+    }
+
+    /**
+     * 构造恒假条件，用于权限集合为空时替代权限子查询。
+     * 语句仍然带着过滤条件，只是恒不成立，因此返回零行——既不是放开过滤，也不是语法错误
+     *
+     * @return 恒假表达式
+     * @throws JSQLParserException 常量条件解析失败
+     */
+    private Expression parseAlwaysFalseExpression() throws JSQLParserException {
+        return CCJSqlParserUtil.parseCondExpression(ALWAYS_FALSE_CONDITION);
     }
 
     /**
@@ -375,6 +393,13 @@ public class SqlAuthInject {
     /**
      * 构造 权限表的条件
      * business_function=#{meeting_room} and operate=#{edit} and authority in ( 'd_1','r_1' )
+     * <p>
+     * TODO 这里把权限串作为字面量拼进语句，没有转义：串里含单引号时会改变语句语义。
+     * 当前不可达的前提是 {@code BaseAuth.getAuth()} 只由权限实体的各位置 <b>ID</b> 拼成，
+     * 而本框架的业务主键与权限ID都是整型，引号进不来；带名字的 description 不参与拼接。
+     * 一旦有外部项目用字符串权限ID接入，这条就是可打通的注入面，届时需要在此做字面量转义
+     * （单引号双写），而不是改成 JdbcParameter——改写发生在已渲染的语句文本上，
+     * 加占位符会打乱 MyBatis 的 parameterMappings。2026-10-20 裁决本轮不改，只登记债务。
      *
      * @param authRange
      * @return
