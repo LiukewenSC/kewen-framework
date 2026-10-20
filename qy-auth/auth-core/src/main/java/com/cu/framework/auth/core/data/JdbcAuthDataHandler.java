@@ -1,13 +1,16 @@
 package com.cu.framework.auth.core.data;
 
 import com.cu.framework.auth.core.entity.BaseAuth;
-import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -18,7 +21,7 @@ import java.util.stream.Collectors;
 
 public class JdbcAuthDataHandler implements AuthDataHandler {
 
-    /** 数据权限持久化组件，执行权限表的增删查 SQL */
+    /** 数据权限持久化组件，执行权限表的增删查 */
 
     private JdbcAuthDataPersistent jdbcAuthDataPersistent;
 
@@ -27,7 +30,7 @@ public class JdbcAuthDataHandler implements AuthDataHandler {
         //这里为了保证baseAuths不为空，需要为空的时候设置为emptyList，但是直接赋值 lambda中会报错
         Collection<BaseAuth> baseAuthsTemplate = baseAuths==null?Collections.emptyList():baseAuths;
 
-        List<AuthDataDO> dbList=jdbcAuthDataPersistent.listAuthData(businessFunction,dataId,operate);
+        List<AuthDataDO> dbList = jdbcAuthDataPersistent.listAuthData(businessFunction, Collections.singletonList(dataId), operate);
         //需要添加的
         List<AuthDataDO> adds = baseAuthsTemplate.stream()
                 .filter(
@@ -56,16 +59,46 @@ public class JdbcAuthDataHandler implements AuthDataHandler {
         }
     }
 
+    /**
+     * 逐个判定这些业务数据在指定槽位下是否都有操作权限，任一未命中即返回 false。
+     * <p>
+     * 权限串的比对留在内存：用户权限集合的规模不可控，不放进查询条件。
+     * 数据ID按字符串归一化后比对，避免同一主键的不同类型形态被当成两条数据。
+     * @param auths 用户权限
+     * @param businessFunction 模块
+     * @param dataIds 业务id集合
+     * @param operate 操作
+     * @return 是否全部数据都有权限
+     */
     @Override
-    public boolean hasDataOperateAuths(Collection<BaseAuth> auths, String businessFunction, Object dataId,String operate) {
-        List<AuthDataDO> authDataList = jdbcAuthDataPersistent.listAuthData(businessFunction, dataId, operate);
-        //匹配任意一个权限就返回有权限
-        return auths.stream().anyMatch(a -> authDataList.stream().anyMatch(ad -> ad.getAuthority().equals(a.getAuth())));
+    public boolean hasDataOperateAuths(Collection<BaseAuth> auths, String businessFunction, Collection<Object> dataIds, String operate) {
+        if (CollectionUtils.isEmpty(auths) || CollectionUtils.isEmpty(dataIds)) {
+            return false;
+        }
+        List<AuthDataDO> authDataList = jdbcAuthDataPersistent.listAuthData(businessFunction, dataIds, operate);
+
+        Set<String> userAuths = auths.stream()
+                .map(BaseAuth::getAuth)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+        Map<String, Set<String>> authoritiesByDataId = new HashMap<>();
+        for (AuthDataDO authData : authDataList) {
+            authoritiesByDataId.computeIfAbsent(normalize(authData.getDataId()), key -> new HashSet<>())
+                    .add(authData.getAuthority());
+        }
+
+        for (Object dataId : dataIds) {
+            Set<String> authorities = authoritiesByDataId.get(normalize(dataId));
+            if (authorities == null || Collections.disjoint(authorities, userAuths)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
     public Collection<BaseAuth> getDataAuths(String businessFunction, Object dataId, String operate) {
-        List<AuthDataDO> authDataDOS = jdbcAuthDataPersistent.listAuthData(businessFunction, dataId, operate);
+        List<AuthDataDO> authDataDOS = jdbcAuthDataPersistent.listAuthData(businessFunction, Collections.singletonList(dataId), operate);
         return authDataDOS.stream().map(
                 a -> new BaseAuth(a.getAuthority(), a.getDescription())
         ).collect(Collectors.toList());
@@ -74,6 +107,10 @@ public class JdbcAuthDataHandler implements AuthDataHandler {
     @Override
     public void deleteBusinessFunctionAuthByDataId(String businessFunction, Object dataId) {
         int i = jdbcAuthDataPersistent.deleteBusinessFunctionDataIdAuth(businessFunction, dataId);
+    }
+
+    private static String normalize(Object dataId) {
+        return String.valueOf(dataId);
     }
 
     public void setJdbcAuthDataPersistent(JdbcAuthDataPersistent jdbcAuthDataPersistent) {

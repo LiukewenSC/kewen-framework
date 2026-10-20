@@ -1,18 +1,20 @@
 package com.cu.framework.auth.sample.model;
 
-import com.cu.framework.auth.core.data.edit.IdDataEdit;
+import com.cu.framework.auth.core.data.edit.DataIdCarrier;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
+import java.util.Collection;
+import java.util.Collections;
 
 /**
- * 预约会议室的请求体示例，实现 IdDataEdit 提供业务数据 ID，
+ * 预约会议室的请求体示例，实现 DataIdCarrier 交出业务数据 ID，
  * 供 @AuthDataOperation 切面校验当前登录人对该会议室的预约权限
  * @author kewen
  * @since 2026-02-12
  */
 @Data
-public class MeetingRoomApproveReq implements IdDataEdit<Long> {
+public class MeetingRoomApproveReq implements DataIdCarrier<Long> {
 
     /** 会议室 ID，必填 */
     @NotNull
@@ -21,7 +23,7 @@ public class MeetingRoomApproveReq implements IdDataEdit<Long> {
     String time;
 
     @Override
-    public Long getDataId() {
-        return id;
+    public Collection<Long> getDataIds() {
+        return Collections.singletonList(id);
     }
 }

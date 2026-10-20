@@ -13,7 +13,8 @@ import lombok.experimental.Accessors;
 public class AuthDataDO {
 
     /**
-     * 数据权限记录的主键ID
+     * 数据权限记录的主键ID。
+     * 由查询按列的实际类型读回，删除时原样绑定，不参与业务数据ID的类型判断
      */
     private Object id;
     /**
@@ -21,7 +22,7 @@ public class AuthDataDO {
      */
     private String businessFunction;
     /**
-     * 业务ID存储
+     * 业务ID存储，取自查询结果，类型随业务主键
      */
     private Object dataId;
     /**

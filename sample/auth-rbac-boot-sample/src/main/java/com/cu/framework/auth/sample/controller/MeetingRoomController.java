@@ -62,8 +62,8 @@ public class MeetingRoomController {
     AuthDataAdaptor authDataAdaptor;
 
     /**
-     * 编辑会议室方式2，
-     * 不依赖@AuthDataAuthEdit
+     * 编辑会议室方式2：
+     * 编辑权限由 @AuthDataOperation 校验，预约权限的写入直接调用 AuthDataAdaptor
      *
      * @param entity
      * @return
@@ -73,7 +73,7 @@ public class MeetingRoomController {
     @AuthDataOperation(businessFunction = BUSINESS_FUNCTION, operate = OPERATE_EDIT_INFO)
     public Result updateByIdMethod(@RequestBody MeetingRoomUpdateReq entity) {
         meetingRoomService.updateById(entity);
-        authDataAdaptor.editDataAuths(BUSINESS_FUNCTION, entity.getDataId(), OPERATE_APPROVE, entity.getAuthObject());
+        authDataAdaptor.editDataAuths(BUSINESS_FUNCTION, entity.getId(), OPERATE_APPROVE, entity.getAuthObject());
         return Result.success(entity);
     }
 
