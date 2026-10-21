@@ -4,7 +4,7 @@ package com.cu.framework.auth.core.data.edit;
 import com.cu.framework.auth.core.AuthCurrentUserContextHolder;
 import com.cu.framework.auth.core.AuthDataOperation;
 import com.cu.framework.auth.core.data.AuthDataHandler;
-import com.cu.framework.auth.core.entity.BaseAuth;
+import com.cu.framework.auth.core.entity.FlatteningAuthority;
 import com.cu.framework.auth.core.exception.AuthException;
 import com.cu.framework.auth.core.exception.AuthServiceException;
 import org.aspectj.lang.JoinPoint;
@@ -82,7 +82,7 @@ public class DataCheckAspect {
      */
     void checkDataOperationAuths(Object[] args, String businessFunction, String operate) {
         Collection<Object> dataIds = collectDataIds(args);
-        Collection<BaseAuth> auths = authCurrentUserContextHolder.getAuths();
+        Collection<FlatteningAuthority> auths = authCurrentUserContextHolder.getAuths();
         boolean hasAuth = annotationAuthHandler.hasDataOperateAuths(auths, businessFunction, dataIds, operate);
         if (!hasAuth) {
             log.info("数据操作权限校验不通过，业务功能<{}>操作<{}>涉及数据ID<{}>条", businessFunction, operate, dataIds.size());

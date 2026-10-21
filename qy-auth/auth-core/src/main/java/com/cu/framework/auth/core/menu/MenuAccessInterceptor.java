@@ -2,7 +2,7 @@ package com.cu.framework.auth.core.menu;
 
 import com.cu.framework.auth.core.AuthCurrentUserContextHolder;
 import com.cu.framework.auth.core.AuthMenu;
-import com.cu.framework.auth.core.entity.BaseAuth;
+import com.cu.framework.auth.core.entity.FlatteningAuthority;
 import com.cu.framework.auth.core.exception.AuthException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.method.HandlerMethod;
@@ -53,7 +53,7 @@ public class MenuAccessInterceptor implements HandlerInterceptor {
 
 
         //获取当前用户的权限
-        Collection<BaseAuth> auths = authCurrentUserContextHolder.getAuths();
+        Collection<FlatteningAuthority> auths = authCurrentUserContextHolder.getAuths();
 
         //检查是否有菜单访问权限
         boolean hasMenuAuth = authMenuHandler.hasMenuAccessAuth(

@@ -1,7 +1,7 @@
 package com.cu.framework.sample.authcore.trace;
 
 import com.cu.framework.auth.core.data.AuthDataHandler;
-import com.cu.framework.auth.core.entity.BaseAuth;
+import com.cu.framework.auth.core.entity.FlatteningAuthority;
 
 import java.util.Collection;
 
@@ -30,20 +30,20 @@ public class DemoAuthDataHandlerProbe implements AuthDataHandler {
      * 委托执行判定，并记录本次真的去读了权限表
      */
     @Override
-    public boolean hasDataOperateAuths(Collection<BaseAuth> auths, String businessFunction,
+    public boolean hasDataOperateAuths(Collection<FlatteningAuthority> auths, String businessFunction,
                                        Collection<Object> dataIds, String operate) {
         demoSqlTrace.recordJudge(businessFunction, operate, dataIds == null ? 0 : dataIds.size());
         return delegate.hasDataOperateAuths(auths, businessFunction, dataIds, operate);
     }
 
     @Override
-    public void editDataAuths(String businessFunction, Object dataId, String operate, Collection<BaseAuth> auths) {
+    public void editDataAuths(String businessFunction, Object dataId, String operate, Collection<FlatteningAuthority> auths) {
         demoSqlTrace.recordJudge(businessFunction, operate, auths == null ? 0 : auths.size());
         delegate.editDataAuths(businessFunction, dataId, operate, auths);
     }
 
     @Override
-    public Collection<BaseAuth> getDataAuths(String businessFunction, Object dataId, String operate) {
+    public Collection<FlatteningAuthority> getDataAuths(String businessFunction, Object dataId, String operate) {
         return delegate.getDataAuths(businessFunction, dataId, operate);
     }
 

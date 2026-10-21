@@ -28,14 +28,4 @@ public class DeptWithParents extends Dept {
         this.id=id;
         this.name=name;
     }
-
-
-    /**
-     * 权限标记
-     * @return
-     */
-    @Override
-    public String flag() {
-        return "DEPT";
-    }
 }

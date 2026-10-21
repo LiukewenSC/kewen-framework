@@ -10,7 +10,7 @@ import java.io.Serializable;
  */
 public interface IAuthEntity extends Serializable {
 
-    BaseAuth getAuth();
+    FlatteningAuthority getAuth();
 
 
 }

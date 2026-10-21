@@ -2,7 +2,7 @@ package com.cu.framework.auth.core.data.range;
 
 import com.cu.framework.auth.core.AuthCurrentUserContextHolder;
 import com.cu.framework.auth.core.AuthDataRange;
-import com.cu.framework.auth.core.entity.BaseAuth;
+import com.cu.framework.auth.core.entity.FlatteningAuthority;
 import com.cu.framework.auth.core.entity.CurrentUser;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -126,16 +126,16 @@ public class AuthRangeStatementScopeTest {
         Assert.assertEquals(1, first.getAuthorities().size());
 
         holder.setAuthorities(Arrays.asList(
-                new BaseAuth("ROLE__1", "ROLE__超级管理员"),
-                new BaseAuth("ROLE__3", "ROLE__普通角色")));
+                new FlatteningAuthority("ROLE__1", "ROLE__超级管理员"),
+                new FlatteningAuthority("ROLE__3", "ROLE__普通角色")));
         AuthRange second = interceptor.resolveRange(ms);
         Assert.assertEquals("第二次调用应拿到当时的权限集合", 2, second.getAuthorities().size());
         Assert.assertEquals("第一次调用的范围不应被改写", 1, first.getAuthorities().size());
         Assert.assertNull("缓存模板不应被写回权限集合", cache.find(statementId("selectEditAble")).getAuthorities());
     }
 
-    private static List<BaseAuth> adminOnly() {
-        return Arrays.asList(new BaseAuth("ROLE__1", "ROLE__超级管理员"));
+    private static List<FlatteningAuthority> adminOnly() {
+        return Arrays.asList(new FlatteningAuthority("ROLE__1", "ROLE__超级管理员"));
     }
 
     /**
@@ -181,9 +181,9 @@ public class AuthRangeStatementScopeTest {
     /** 只提供权限集合的桩实现，权限集合可在测试中替换 */
     private static class StubHolder implements AuthCurrentUserContextHolder {
 
-        private Collection<BaseAuth> authorities = Collections.emptyList();
+        private Collection<FlatteningAuthority> authorities = Collections.emptyList();
 
-        void setAuthorities(Collection<BaseAuth> authorities) {
+        void setAuthorities(Collection<FlatteningAuthority> authorities) {
             this.authorities = authorities;
         }
 
@@ -193,7 +193,7 @@ public class AuthRangeStatementScopeTest {
         }
 
         @Override
-        public Collection<BaseAuth> getAuths() {
+        public Collection<FlatteningAuthority> getAuths() {
             return authorities;
         }
     }

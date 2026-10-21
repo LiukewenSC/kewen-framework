@@ -1,7 +1,7 @@
 package com.cu.framework.sample.authcore.authobject;
 
 import com.cu.framework.auth.core.entity.AbstractAuthObject;
-import com.cu.framework.auth.core.entity.BaseAuth;
+import com.cu.framework.auth.core.entity.FlatteningAuthority;
 import com.cu.framework.auth.core.entity.IFlagAuthEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -45,18 +45,18 @@ public class DemoAuthObject extends AbstractAuthObject {
      * 从归位后的对象重新拼出权限串，用 Set 去重
      */
     @Override
-    public Collection<BaseAuth> listBaseAuth() {
-        Collection<BaseAuth> baseAuths = new HashSet<>();
+    public Collection<FlatteningAuthority> listBaseAuth() {
+        Collection<FlatteningAuthority> flatteningAuthorities = new HashSet<>();
         for (DemoUser demoUser : demoUsers) {
-            baseAuths.add(demoUser.getAuth());
+            flatteningAuthorities.add(demoUser.getAuth());
         }
         for (DemoRole demoRole : demoRoles) {
-            baseAuths.add(demoRole.getAuth());
+            flatteningAuthorities.add(demoRole.getAuth());
         }
         for (DeptRole deptRole : deptRoles) {
-            baseAuths.add(deptRole.getAuth());
+            flatteningAuthorities.add(deptRole.getAuth());
         }
-        return baseAuths;
+        return flatteningAuthorities;
     }
 
     /**

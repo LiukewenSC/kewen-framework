@@ -2,15 +2,14 @@ package com.cu.framework.auth.rbac.composite.model;
 
 
 import com.cu.framework.auth.core.entity.AbstractAuthObject;
-import com.cu.framework.auth.core.entity.BaseAuth;
+import com.cu.framework.auth.core.entity.FlatteningAuthority;
 import com.cu.framework.auth.core.entity.IFlagAuthEntity;
 import com.cu.framework.auth.rbac.composite.SysUserComposite;
-import com.cu.framework.auth.rbac.mp.entity.SysDept;
+import com.cu.framework.basic.exception.BizException;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * 用户权限体集合体
@@ -60,37 +59,42 @@ public class UserAuthInfo extends AbstractAuthObject {
      * @return 汇总后的基础权限集合
      */
     @Override
-    public Collection<BaseAuth> listBaseAuth() {
-        Collection<BaseAuth> baseAuths = new HashSet<>();
+    public Collection<FlatteningAuthority> listBaseAuth() {
+        Collection<FlatteningAuthority> flatteningAuthorities = new HashSet<>();
         if (users != null) {
             for (User user : users) {
-                baseAuths.add(user.getAuth());
+                flatteningAuthorities.add(user.getAuth());
             }
         }
         if (roles != null) {
             for (Role role : roles) {
-                baseAuths.add(role.getAuth());
+                flatteningAuthorities.add(role.getAuth());
             }
         }
         if (depts != null) {
-            for (Dept dept : depts) {
-                baseAuths.add(dept.getAuth());
+            for (DeptWithParents dept : depts) {
+                flatteningAuthorities.add(dept.getAuth());
+                if (dept.getParents() != null){
+                    for (ParentDept parent : dept.getParents()) {
+                        flatteningAuthorities.add(parent.getAuth());
+                    }
+                }
             }
         }
         if (deptRoles != null) {
             for (DeptRole deptRole : deptRoles) {
-                baseAuths.add(deptRole.getAuth());
+                flatteningAuthorities.add(deptRole.getAuth());
             }
         }
-        addAnotherBashAuth(baseAuths);
-        return baseAuths;
+        addAnotherBashAuth(flatteningAuthorities);
+        return flatteningAuthorities;
     }
 
     /**
      * 添加其他权限对象，若子类继承可以扩展这里，也可以覆写listBaseAuth()
-     * @param baseAuths
+     * @param flatteningAuthorities
      */
-    protected void addAnotherBashAuth(Collection<BaseAuth>  baseAuths){
+    protected void addAnotherBashAuth(Collection<FlatteningAuthority> flatteningAuthorities){
 
     }
 
@@ -103,9 +107,6 @@ public class UserAuthInfo extends AbstractAuthObject {
                 roles.add(((Role) abstractAuthEntity));
             } else if (abstractAuthEntity instanceof DeptWithParents) {
                 depts.add(((DeptWithParents) abstractAuthEntity));
-            } else if (abstractAuthEntity instanceof Dept) {
-                DeptWithParents dwp = new DeptWithParents(((Dept) abstractAuthEntity).getId(), ((Dept) abstractAuthEntity).getName());
-                depts.add(dwp);
             } else if (abstractAuthEntity instanceof DeptRole){
                 deptRoles.add(((DeptRole) abstractAuthEntity));
             }else {
@@ -139,5 +140,16 @@ public class UserAuthInfo extends AbstractAuthObject {
                 dept.getParents().addAll(parentChain);
             }
         }
+    }
+
+    /**
+     * 用户权限不应该逆向，因为没有场景会根据用户的扁平化权限查询实际的权限；
+     *
+     * @param flatteningAuthority 基础权限
+     * @return
+     */
+    @Override
+    public IFlagAuthEntity parseBaseAuth(FlatteningAuthority flatteningAuthority) {
+        throw new BizException("用户权限不应该逆向");
     }
 }

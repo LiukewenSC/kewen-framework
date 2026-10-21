@@ -24,12 +24,12 @@ public interface IAuthObject extends Serializable {
      * 获取得到基本权限
      * @return
      */
-    Collection<BaseAuth> listBaseAuth();
+    Collection<FlatteningAuthority> listBaseAuth();
 
     /**
      * 通过BaseAuth设置权限体的权限属性值
-     * @param baseAuths
+     * @param flatteningAuthorities
      */
-    void setProperties(Collection<BaseAuth> baseAuths);
+    void setProperties(Collection<FlatteningAuthority> flatteningAuthorities);
 
 }

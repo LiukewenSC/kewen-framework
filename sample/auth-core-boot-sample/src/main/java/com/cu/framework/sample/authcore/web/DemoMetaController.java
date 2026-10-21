@@ -1,6 +1,6 @@
 package com.cu.framework.sample.authcore.web;
 
-import com.cu.framework.auth.core.entity.BaseAuth;
+import com.cu.framework.auth.core.entity.FlatteningAuthority;
 import com.cu.framework.sample.authcore.authobject.DemoAuthObject;
 import com.cu.framework.sample.authcore.context.DemoAuthContextHolder;
 import com.cu.framework.sample.authcore.context.DemoUserContext;
@@ -67,8 +67,8 @@ public class DemoMetaController {
     @GetMapping("/current-user")
     public Result<Map<String, Object>> currentUser() {
         DemoAuthObject authObject = authContextHolder.loadAuthObject();
-        Collection<BaseAuth> raw = authContextHolder.loadRawFromStore();
-        Collection<BaseAuth> reSerialised = authObject.listBaseAuth();
+        Collection<FlatteningAuthority> raw = authContextHolder.loadRawFromStore();
+        Collection<FlatteningAuthority> reSerialised = authObject.listBaseAuth();
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("username", DemoUserContext.username());
         body.put("authObject", authObject);
@@ -84,9 +84,9 @@ public class DemoMetaController {
      * @param auths 权限集合
      * @return 权限串集合
      */
-    private static Set<String> toStringSet(Collection<BaseAuth> auths) {
+    private static Set<String> toStringSet(Collection<FlatteningAuthority> auths) {
         Set<String> values = new TreeSet<>();
-        for (BaseAuth auth : auths) {
+        for (FlatteningAuthority auth : auths) {
             values.add(auth.getAuth());
         }
         return values;

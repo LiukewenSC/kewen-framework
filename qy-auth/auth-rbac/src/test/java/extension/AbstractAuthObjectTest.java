@@ -2,7 +2,7 @@ package extension;
 
 
 import com.alibaba.fastjson.JSONObject;
-import com.cu.framework.auth.core.entity.BaseAuth;
+import com.cu.framework.auth.core.entity.FlatteningAuthority;
 import com.cu.framework.auth.rbac.composite.model.*;
 import org.junit.Assert;
 import org.junit.Test;
@@ -25,13 +25,13 @@ public class AbstractAuthObjectTest {
                 new DeptRole(new Dept(12L,"部门12"),new Role(12L,"角色12"))
         );
 
-        Collection<BaseAuth> baseAuths = object.listBaseAuth();
-        Assert.assertEquals(baseAuths.size(),11);
+        Collection<FlatteningAuthority> flatteningAuthorities = object.listBaseAuth();
+        Assert.assertEquals(flatteningAuthorities.size(),11);
 
 
         SimpleAuthObject simpleAuthObject = new SimpleAuthObject();
 
-        simpleAuthObject.setProperties(baseAuths);
+        simpleAuthObject.setProperties(flatteningAuthorities);
         Assert.assertNotNull(simpleAuthObject.getUsers().get(0).getId());
         Assert.assertNotNull(simpleAuthObject.getDepts().get(0).getId());
         Assert.assertNotNull(simpleAuthObject.getRoles().get(0).getId());

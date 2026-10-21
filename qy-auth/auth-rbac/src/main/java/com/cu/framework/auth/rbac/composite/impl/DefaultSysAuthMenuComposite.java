@@ -5,7 +5,7 @@ import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
-import com.cu.framework.auth.core.entity.BaseAuth;
+import com.cu.framework.auth.core.entity.FlatteningAuthority;
 import com.cu.framework.auth.rbac.composite.AuthMenuStore;
 import com.cu.framework.auth.rbac.composite.SysAuthMenuComposite;
 import com.cu.framework.auth.rbac.composite.model.SimpleAuthObject;
@@ -67,7 +67,7 @@ public class DefaultSysAuthMenuComposite implements SysAuthMenuComposite {
     private final AuthMenuStore authMenuStore;
 
     @Override
-    public boolean hasMenuAuth(Collection<BaseAuth> authorities, String requestPath) {
+    public boolean hasMenuAuth(Collection<FlatteningAuthority> authorities, String requestPath) {
         Optional<SysMenuApi> sysMenuOptional = getApiMenus().stream().filter(m -> Objects.equals(m.getPath(), requestPath)).findFirst();
         if (!sysMenuOptional.isPresent()){
             return false;
@@ -89,8 +89,8 @@ public class DefaultSysAuthMenuComposite implements SysAuthMenuComposite {
                 .peek(m-> {
                     List<SysAuthMenu> SysAuthMenus = authByMenuMap.get(m.getId());
                     if (SysAuthMenus != null){
-                        List<BaseAuth> authList = SysAuthMenus.stream()
-                                .map(a -> new BaseAuth(a.getAuthority(), a.getDescription()))
+                        List<FlatteningAuthority> authList = SysAuthMenus.stream()
+                                .map(a -> new FlatteningAuthority(a.getAuthority(), a.getDescription()))
                                 .collect(Collectors.toList());
                         SimpleAuthObject authObject = new SimpleAuthObject();
                         authObject.setProperties(authList);
@@ -106,7 +106,7 @@ public class DefaultSysAuthMenuComposite implements SysAuthMenuComposite {
      * 已删除的API菜单不包含
      */
     @Override
-    public List<MenuApiAndAuthResp> getApiAuthMenuTree(Collection<BaseAuth> authorities) {
+    public List<MenuApiAndAuthResp> getApiAuthMenuTree(Collection<FlatteningAuthority> authorities) {
         //得到全部树
         List<MenuApiAndAuthResp> trees = getApiAuthMenuTree(false);
         //移除掉不是自己的
@@ -133,7 +133,7 @@ public class DefaultSysAuthMenuComposite implements SysAuthMenuComposite {
      * @return
      */
     @Override
-    public List<MenuRouteResp> getRouteAuthMenuTree(Collection<BaseAuth> authorities) {
+    public List<MenuRouteResp> getRouteAuthMenuTree(Collection<FlatteningAuthority> authorities) {
         List<MenuApiAndAuthResp> trees = getApiAuthMenuTree(authorities);
         //克隆副本并转换成 MenuRequestResp
         List<MenuApiResp> requestRespTrees = TreeUtil.convertList(trees, MenuApiResp.class);
@@ -154,16 +154,16 @@ public class DefaultSysAuthMenuComposite implements SysAuthMenuComposite {
 
     @Override
     @Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRED)
-    public void editMenuAuthorities(Long apiId, Collection<BaseAuth> baseAuths) {
+    public void editMenuAuthorities(Long apiId, Collection<FlatteningAuthority> flatteningAuthorities) {
 
         List<SysAuthMenu> authMenus = menuAuthService.list(new LambdaQueryWrapper<SysAuthMenu>().eq(SysAuthMenu::getApiId, apiId));
 
         //需要移除的
         List<SysAuthMenu> removes = authMenus.stream().filter(
-                db -> baseAuths.stream().noneMatch(b -> b.getAuth().equals(db.getAuthority()))
+                db -> flatteningAuthorities.stream().noneMatch(b -> b.getAuth().equals(db.getAuthority()))
         ).collect(Collectors.toList());
         //需要添加的
-        List<SysAuthMenu> adds = baseAuths.stream().filter(
+        List<SysAuthMenu> adds = flatteningAuthorities.stream().filter(
                 b -> authMenus.stream().noneMatch(db -> db.getAuthority().equals(b.getAuth()))
         ).map(
                 b -> new SysAuthMenu().setApiId(apiId).setAuthority(b.getAuth()).setDescription(b.getDescription())
@@ -213,13 +213,13 @@ public class DefaultSysAuthMenuComposite implements SysAuthMenuComposite {
      * @param sysMenuApi
      * @return
      */
-    private boolean hasMenuAuth(Collection<BaseAuth> authorities, SysMenuApi sysMenuApi){
+    private boolean hasMenuAuth(Collection<FlatteningAuthority> authorities, SysMenuApi sysMenuApi){
         //基于自己的权限
         if (MenuTypeConstant.AUTH_TYPE.OWNER.getCode().equals(sysMenuApi.getAuthType())){
             Long apiId = sysMenuApi.getId();
             return getSysMenuAuths().stream()
                     .filter(a -> a.getApiId().equals(apiId))
-                    .map(a->new BaseAuth(a.getAuthority(),a.getDescription()))
+                    .map(a->new FlatteningAuthority(a.getAuthority(),a.getDescription()))
                     .anyMatch(authorities::contains);
         } else if (MenuTypeConstant.AUTH_TYPE.PARENT.getCode().equals(sysMenuApi.getAuthType())){
             //基于父菜单的权限

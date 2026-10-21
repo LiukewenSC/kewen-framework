@@ -1,7 +1,7 @@
 package com.cu.framework.auth.rbac.controller;
 
 import com.cu.framework.auth.core.AuthCurrentUserContextHolder;
-import com.cu.framework.auth.core.entity.BaseAuth;
+import com.cu.framework.auth.core.entity.FlatteningAuthority;
 import com.cu.framework.auth.rbac.composite.SysAuthMenuComposite;
 import com.cu.framework.auth.rbac.extension.RbacCurrentUserService;
 import com.cu.framework.auth.rbac.model.req.UpdatePasswordReq;
@@ -40,7 +40,7 @@ public class RbacCurrentUserController {
      */
     @GetMapping("/routeMenus")
     public Result<List<MenuRouteResp>> routeTrees(){
-        Collection<BaseAuth> auths = authCurrentUserContextHolder.getAuths();
+        Collection<FlatteningAuthority> auths = authCurrentUserContextHolder.getAuths();
         List<MenuRouteResp> menuTree = sysAuthMenuComposite.getRouteAuthMenuTree(auths);
         return Result.success(menuTree);
     }

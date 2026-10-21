@@ -2,8 +2,8 @@ package com.cu.framework.auth.rbac.composite.model;
 
 
 import com.cu.framework.auth.core.entity.AbstractAuthObject;
+import com.cu.framework.auth.core.entity.FlatteningAuthority;
 import com.cu.framework.auth.core.entity.IFlagAuthEntity;
-import com.cu.framework.auth.core.entity.BaseAuth;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -57,37 +57,37 @@ public class SimpleAuthObject extends AbstractAuthObject {
      * @return 汇总后的基础权限集合
      */
     @Override
-    public Collection<BaseAuth> listBaseAuth() {
-        Collection<BaseAuth> baseAuths = new HashSet<>();
+    public Collection<FlatteningAuthority> listBaseAuth() {
+        Collection<FlatteningAuthority> flatteningAuthorities = new HashSet<>();
         if (users != null) {
             for (User user : users) {
-                baseAuths.add(user.getAuth());
+                flatteningAuthorities.add(user.getAuth());
             }
         }
         if (roles != null) {
             for (Role role : roles) {
-                baseAuths.add(role.getAuth());
+                flatteningAuthorities.add(role.getAuth());
             }
         }
         if (depts != null) {
             for (Dept dept : depts) {
-                baseAuths.add(dept.getAuth());
+                flatteningAuthorities.add(dept.getAuth());
             }
         }
         if (deptRoles != null) {
             for (DeptRole deptRole : deptRoles) {
-                baseAuths.add(deptRole.getAuth());
+                flatteningAuthorities.add(deptRole.getAuth());
             }
         }
-        addAnotherBashAuth(baseAuths);
-        return baseAuths;
+        addAnotherBashAuth(flatteningAuthorities);
+        return flatteningAuthorities;
     }
 
     /**
      * 添加其他权限对象，若子类继承可以扩展这里，也可以覆写listBaseAuth()
-     * @param baseAuths
+     * @param flatteningAuthorities
      */
-    protected void addAnotherBashAuth(Collection<BaseAuth>  baseAuths){
+    protected void addAnotherBashAuth(Collection<FlatteningAuthority> flatteningAuthorities){
 
     }
 

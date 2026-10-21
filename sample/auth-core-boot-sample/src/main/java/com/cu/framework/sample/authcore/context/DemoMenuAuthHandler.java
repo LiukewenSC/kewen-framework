@@ -1,6 +1,6 @@
 package com.cu.framework.sample.authcore.context;
 
-import com.cu.framework.auth.core.entity.BaseAuth;
+import com.cu.framework.auth.core.entity.FlatteningAuthority;
 import com.cu.framework.auth.core.menu.AuthMenuHandler;
 import com.cu.framework.sample.authcore.mapper.DemoMenuAuthMapper;
 
@@ -39,7 +39,7 @@ public class DemoMenuAuthHandler implements AuthMenuHandler {
      * @return 有交集则放行；路径未登记或权限集合为空时拒绝
      */
     @Override
-    public boolean hasMenuAccessAuth(Collection<BaseAuth> auths, String path) {
+    public boolean hasMenuAccessAuth(Collection<FlatteningAuthority> auths, String path) {
         List<String> granted = demoMenuAuthMapper.listAuthsByPath(path);
         if (granted == null || granted.isEmpty()) {
             return false;
@@ -48,7 +48,7 @@ public class DemoMenuAuthHandler implements AuthMenuHandler {
             return false;
         }
         Set<String> mine = new HashSet<>();
-        for (BaseAuth auth : auths) {
+        for (FlatteningAuthority auth : auths) {
             if (auth.getAuth() != null) {
                 mine.add(auth.getAuth());
             }
