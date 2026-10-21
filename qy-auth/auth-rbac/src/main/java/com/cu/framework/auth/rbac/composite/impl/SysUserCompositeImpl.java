@@ -2,9 +2,10 @@ package com.cu.framework.auth.rbac.composite.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.cu.framework.auth.rbac.composite.model.CurrentUserSimpleAuthObject;
+import com.cu.framework.auth.rbac.composite.model.UserFullAuthObject;
 import com.cu.framework.auth.rbac.composite.SysUserComposite;
 import com.cu.framework.auth.rbac.composite.mapper.SysUserUnionCompositeMapper;
+import com.cu.framework.auth.rbac.composite.model.SimpleAuthObject;
 import com.cu.framework.auth.rbac.model.UserAuthObject;
 import com.cu.framework.auth.rbac.mp.entity.SysUser;
 import com.cu.framework.auth.rbac.mp.entity.SysUserCredential;
@@ -68,10 +69,13 @@ public class SysUserCompositeImpl implements SysUserComposite {
         }
         userAuthObject.setSysUserCredential(credential);
         //查找用户权限体
-        CurrentUserSimpleAuthObject authObject = unionCompositeMapper.getUserAuthObject(user.getId());
-        authObject.fillUserAuth();
-        userAuthObject.setAuthObject(authObject);
-
+        SimpleAuthObject authObject = unionCompositeMapper.getUserAuthObject(user.getId());
+        if (authObject == null){
+            return userAuthObject;
+        }
+        UserFullAuthObject userFullAuthObject = new UserFullAuthObject(authObject);
+        userFullAuthObject.fillUserAuth();
+        userAuthObject.setAuthObject(userFullAuthObject);
         return userAuthObject;
     }
 
