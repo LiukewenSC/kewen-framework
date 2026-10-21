@@ -20,6 +20,7 @@ public class Dept extends AbstractIdNameFlagAuthEntity<Long> {
     }
 
     public Dept(Long id , String name) {
+        super();
         this.id=id;
         this.name=name;
     }

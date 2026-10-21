@@ -1,7 +1,7 @@
 package com.cu.framework.rbac.security;
 
 import com.cu.framework.auth.rbac.composite.SysUserComposite;
-import com.cu.framework.auth.rbac.composite.model.SimpleAuthObject;
+import com.cu.framework.auth.rbac.composite.model.UserAuthInfo;
 import com.cu.framework.auth.rbac.model.UserAuthObject;
 import com.cu.framework.auth.rbac.mp.entity.SysUser;
 import com.cu.framework.auth.rbac.mp.entity.SysUserCredential;
@@ -45,7 +45,7 @@ public class RbacSecurityUserDetailsService implements SecurityUserDetailsServic
         }
         SysUser sysUser = userAuthObject.getSysUser();
         SysUserCredential credential = userAuthObject.getSysUserCredential();
-        SimpleAuthObject authObject = userAuthObject.getAuthObject();
+        UserAuthInfo authObject = userAuthObject.getAuthInfo();
         //用户存在但凭证或权限体缺失时，装载结果无法组装，按认证失败处理而不是抛空指针
         if (credential == null || authObject == null) {
             throw new UsernameNotFoundException("用户凭证或权限集合缺失");

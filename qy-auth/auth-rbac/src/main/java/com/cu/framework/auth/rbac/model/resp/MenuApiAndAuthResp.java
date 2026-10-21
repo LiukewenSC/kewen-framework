@@ -2,8 +2,8 @@ package com.cu.framework.auth.rbac.model.resp;
 
 import com.cu.framework.auth.rbac.composite.model.SimpleAuthObject;
 import com.cu.framework.auth.rbac.mp.entity.SysMenuApi;
-import com.cu.framework.auth.rbac.utils.BeanUtil;
-import com.cu.framework.auth.rbac.utils.TreeUtil;
+import com.cu.framework.basic.utils.BeanUtil;
+import com.cu.framework.basic.utils.TreeUtil;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

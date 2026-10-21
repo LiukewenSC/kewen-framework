@@ -1,6 +1,6 @@
 package com.cu.framework.auth.rbac.composite.mapper;
 
-import com.cu.framework.auth.rbac.composite.model.SimpleAuthObject;
+import com.cu.framework.auth.rbac.composite.model.UserAuthInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -17,5 +17,5 @@ public interface SysUserUnionCompositeMapper {
      * @param id
      * @return
      */
-    SimpleAuthObject getUserAuthObject(@Param("id") Long id);
+    UserAuthInfo getUserAuthInfo(@Param("id") Long id);
 }

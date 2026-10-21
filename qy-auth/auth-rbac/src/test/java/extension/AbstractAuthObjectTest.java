@@ -18,7 +18,7 @@ public class AbstractAuthObjectTest {
     public  void testAuthObject2BaseAuth(){
         SimpleAuthObject object = new SimpleAuthObject();
         object.addUsers(new User(1L,"用户1"),new User(2L,"用户2"),new User(3L,"用户3"));
-        object.addDepts(new Dept(1L,"部门1"),new Dept(2L,"部门2"),new Dept(3L,"部门3"));
+        object.addDepts(new DeptWithParents(1L,"部门1"),new DeptWithParents(2L,"部门2"),new DeptWithParents(3L,"部门3"));
         object.addRoles(new Role(1L,"角色1"),new Role(2L,"角色2"),new Role(3L,"角色3"));
         object.addDeptRoles(
                 new DeptRole(new Dept(11L,"部门11"),new Role(11L,"角色11")),

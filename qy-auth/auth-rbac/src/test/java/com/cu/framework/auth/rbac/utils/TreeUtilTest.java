@@ -1,6 +1,7 @@
 package com.cu.framework.auth.rbac.utils;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cu.framework.basic.utils.TreeUtil;
 import lombok.Data;
 import org.junit.Test;
 import org.springframework.util.CollectionUtils;

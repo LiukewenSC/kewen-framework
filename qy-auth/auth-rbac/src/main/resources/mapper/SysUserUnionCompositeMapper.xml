@@ -2,12 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cu.framework.auth.rbac.composite.mapper.SysUserUnionCompositeMapper">
 
-    <resultMap id="UserAuthObjectResult" type="com.cu.framework.auth.rbac.composite.model.SimpleAuthObject">
+    <resultMap id="UserAuthObjectResult" type="com.cu.framework.auth.rbac.composite.model.UserAuthInfo">
         <collection property="users" ofType="com.cu.framework.auth.rbac.composite.model.User">
             <id property="id" column="user_id"/>
             <result property="name" column="user_name"/>
         </collection>
-        <collection property="depts" ofType="com.cu.framework.auth.rbac.composite.model.Dept">
+        <collection property="depts" ofType="com.cu.framework.auth.rbac.composite.model.DeptWithParents">
             <id property="id" column="dept_id"/>
             <result property="name" column="dept_name"/>
         </collection>
@@ -16,7 +16,7 @@
             <result property="name" column="role_name"/>
         </collection>
     </resultMap>
-    <select id="getUserAuthObject" resultMap="UserAuthObjectResult" >
+    <select id="getUserAuthInfo" resultMap="UserAuthObjectResult" >
         select u.id user_id, u.name user_name, d.id dept_id, d.name dept_name, r.id role_id, r.name role_name
         from sys_user u
                  left join sys_user_dept ud on u.id = ud.user_id

@@ -32,4 +32,4 @@
 ## 6. 集成验证
 
 - [x] 6.1 以 `h2` profile 启动 `auth-rbac-boot-sample`，依次打 `/test/dataRange`、`/test/pageDataRange`、`/meetingRoom/page`、`/meetingRoomApprove/page`、`/test/checkMenu`，确认启动期校验无报错、四个受控接口返回按权限过滤的数据、`/meetingRoom/page` 返回 200 且权限数据被填充
-- [x] 6.2 验证跨语句隔离：在 debug 日志下确认一次 `/meetingRoom/page` 请求里除声明过的两条语句外，其它 SQL（含 `fillDataAuths` 走的权限表查询）未被追加范围条件；同时确认 `/test/checkMenuNone` 仍按设计返回 500 权限拒绝而不是被本次改造影响。实测补充：`fillDataAuths` 走 `JdbcTemplate` 而非映射语句，本就不在拦截器路径内；被隔离的是 MyBatis-Plus 的 `SysUserMpMapper.selectList`、`SysMenuApiMpMapper.selectList`、`sys_auth_menu`、`getUserAuthObject` 等一批同请求内的语句，日志显示它们全部按"未声明→不增强"原样执行
+- [x] 6.2 验证跨语句隔离：在 debug 日志下确认一次 `/meetingRoom/page` 请求里除声明过的两条语句外，其它 SQL（含 `fillDataAuths` 走的权限表查询）未被追加范围条件；同时确认 `/test/checkMenuNone` 仍按设计返回 500 权限拒绝而不是被本次改造影响。实测补充：`fillDataAuths` 走 `JdbcTemplate` 而非映射语句，本就不在拦截器路径内；被隔离的是 MyBatis-Plus 的 `SysUserMpMapper.selectList`、`SysMenuApiMpMapper.selectList`、`sys_auth_menu`、`getAuthInfo` 等一批同请求内的语句，日志显示它们全部按"未声明→不增强"原样执行

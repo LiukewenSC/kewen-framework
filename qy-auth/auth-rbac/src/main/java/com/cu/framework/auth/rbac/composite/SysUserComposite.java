@@ -1,7 +1,12 @@
 package com.cu.framework.auth.rbac.composite;
 
+import com.cu.framework.auth.rbac.composite.model.Dept;
+import com.cu.framework.auth.rbac.composite.model.ParentDept;
 import com.cu.framework.auth.rbac.model.UserAuthObject;
+import com.cu.framework.auth.rbac.mp.entity.SysDept;
 import com.cu.framework.auth.rbac.mp.entity.SysUserCredential;
+
+import java.util.List;
 
 /**
  * 用户权限组合服务接口，负责按用户名装载用户权限对象以及修改用户密码
@@ -11,6 +16,18 @@ import com.cu.framework.auth.rbac.mp.entity.SysUserCredential;
 public interface SysUserComposite{
 
 
+    /**
+     * 根据部门ID获取部门列表
+     * @param deptId 部门ID
+     * @return 部门列表
+     */
+    List<ParentDept> getDeptListByDeptId(Long deptId);
+
+    /**
+     * 根据用户名获取用户凭证
+     * @param username 用户名
+     * @return 用户凭证
+     */
     SysUserCredential getUserCredentialByUsername(String username);
 
     /**

@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 import java.util.*;
 
 /**
- * 权限对象集合体，设置权限的时候此传入此结构体
+ * 配置权限对象集合体，设置权限的时候此传入此结构体
  * @author kewen
  * @since 2023-12-27
  */
