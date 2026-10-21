@@ -4,6 +4,8 @@ import com.cu.framework.auth.rbac.composite.model.UserAuthInfo;
 import com.cu.framework.auth.rbac.mp.entity.SysUser;
 import com.cu.framework.auth.rbac.mp.entity.SysUserCredential;
 import lombok.Data;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 
 /**
  * @author kewen
@@ -12,9 +14,12 @@ import lombok.Data;
 @Data
 public class UserAuthObject{
     /** 用户基本信息，对应 sys_user 表记录 */
+
     private SysUser sysUser;
     /** 用户凭证，对应 sys_user_credential 表记录，用户无凭证时为 null */
+    @Nullable
     private SysUserCredential sysUserCredential;
-    /** 用户权限集合体，含用户/角色/部门及部门角色组合权限，用户无凭证时为 null */
+    /** 用户权限集合体，含用户/角色/部门及部门角色组合权限，可以null */
+
     private UserAuthInfo authInfo;
 }

@@ -28,8 +28,9 @@ public class AuthBootSampleCurrentUserContextHolder implements AuthCurrentUserCo
     }
 
     @Override
-    public Collection<FlatteningAuthority> getAuths() { UserAuthObject authObject = getUserAuthObjectByUsername(getUsername());
-        if (authObject == null || authObject.getAuthInfo() == null){
+    public Collection<FlatteningAuthority> getAuths() {
+        UserAuthObject authObject = getUserAuthObjectByUsername(getUsername());
+        if (authObject == null){
             return Collections.emptyList();
         }
         return authObject.getAuthInfo().listBaseAuth();

@@ -24,7 +24,7 @@ public class UserAuthInfo extends AbstractAuthObject {
     /**
      * 用户集合
      */
-    protected List<User> users = new ArrayList<>();
+    protected User user;
     /**
      * 角色集合
      */
@@ -38,10 +38,6 @@ public class UserAuthInfo extends AbstractAuthObject {
      * 部门角色集合
      */
     protected List<DeptRole> deptRoles = new ArrayList<>();
-
-    public void addUsers(User... users){
-        this.users.addAll(Arrays.asList(users));
-    }
     public void addDepts(DeptWithParents... depts){
         this.depts.addAll(Arrays.asList(depts));
     }
@@ -56,16 +52,13 @@ public class UserAuthInfo extends AbstractAuthObject {
     /**
      * 将 users、roles、depts、deptRoles 中所有权限实体的权限字符串汇总为 BaseAuth 集合（Set 去重），
      * 并回调 addAnotherBashAuth 供子类追加其他权限
-     * @return 汇总后的基础权限集合
+     * @return 汇总后的基础权限集合，只在用户需要匹配权限字符串的时候使用，不会有逆向操作，因此可以放心构建；
+     * 当需要扩展用户权限时，如需要支持跨层级的部门+角色、如支持角色树等，可以扩展此处；
      */
     @Override
     public Collection<FlatteningAuthority> listBaseAuth() {
         Collection<FlatteningAuthority> flatteningAuthorities = new HashSet<>();
-        if (users != null) {
-            for (User user : users) {
-                flatteningAuthorities.add(user.getAuth());
-            }
-        }
+        flatteningAuthorities.add(user.getAuth());
         if (roles != null) {
             for (Role role : roles) {
                 flatteningAuthorities.add(role.getAuth());
@@ -102,7 +95,7 @@ public class UserAuthInfo extends AbstractAuthObject {
     protected void setBaseAuth(List<IFlagAuthEntity> abstractAuthEntities) {
         for (IFlagAuthEntity abstractAuthEntity : abstractAuthEntities) {
             if (abstractAuthEntity instanceof User) {
-                users.add(((User) abstractAuthEntity));
+                setUser(((User) abstractAuthEntity));
             } else if (abstractAuthEntity instanceof Role) {
                 roles.add(((Role) abstractAuthEntity));
             } else if (abstractAuthEntity instanceof DeptWithParents) {
