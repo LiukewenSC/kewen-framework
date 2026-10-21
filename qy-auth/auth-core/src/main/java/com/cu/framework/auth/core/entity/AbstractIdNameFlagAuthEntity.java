@@ -22,7 +22,7 @@ import java.util.function.Function;
  * @since 2023-12-26
  */
 @Data
-public abstract class AbstractIdNameFlagAuthEntity<ID> implements IFlagAuthEntity<ID> {
+public abstract class AbstractIdNameFlagAuthEntity<ID> implements IFlagAuthEntity {
 
     private static final long serialVersionUID = 5347275476740629152L;
 

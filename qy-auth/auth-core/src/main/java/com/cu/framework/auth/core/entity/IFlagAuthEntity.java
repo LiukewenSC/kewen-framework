@@ -10,7 +10,7 @@ import org.apache.commons.lang3.tuple.Pair;
  * @author kewen
  * @since 2023-12-28
  */
-public interface IFlagAuthEntity<ID> extends IAuthEntity {
+public interface IFlagAuthEntity extends IAuthEntity {
 
     /**
      * 获取权限标记类型

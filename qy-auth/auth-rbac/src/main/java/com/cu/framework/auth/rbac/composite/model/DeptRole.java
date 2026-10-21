@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
  * @since 2024-09-05
  */
 @Data
-public class DeptRole implements IFlagAuthEntity<Long> {
+public class DeptRole implements IFlagAuthEntity {
 
     private static final long serialVersionUID = 1243051459093859539L;
     private static final Logger log = LoggerFactory.getLogger(DeptRole.class);
