@@ -1,6 +1,8 @@
 package com.cu.framework.auth.rbac.composite.model;
 
 
+import com.cu.framework.basic.utils.BeanUtil;
+
 import java.util.List;
 
 /**
@@ -8,8 +10,12 @@ import java.util.List;
  * @author kewen
  * @since 2024-09-05
  */
-public class CurrentUserSimpleAuthObject  extends SimpleAuthObject {
+public class UserFullAuthObject extends SimpleAuthObject {
     private static final long serialVersionUID = 842909202036381753L;
+
+    public UserFullAuthObject(SimpleAuthObject simpleAuthObject) {
+        BeanUtil.copy(simpleAuthObject, this);
+    }
 
     /**
      * 填充用户的权限，如用户 有 role 和 dept ，那么用户也有 role+dept的组合权限

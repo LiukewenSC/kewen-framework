@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cu.framework.auth.rbac.composite.mapper.SysUserUnionCompositeMapper">
 
-    <resultMap id="UserAuthObjectResult" type="com.cu.framework.auth.rbac.composite.model.CurrentUserSimpleAuthObject">
+    <resultMap id="UserAuthObjectResult" type="com.cu.framework.auth.rbac.composite.model.SimpleAuthObject">
         <collection property="users" ofType="com.cu.framework.auth.rbac.composite.model.User">
             <id property="id" column="user_id"/>
             <result property="name" column="user_name"/>
