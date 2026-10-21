@@ -52,10 +52,10 @@ fi
 
 # ---------------- A 装配与接缝 ----------------
 BODY=$(curl -s -H 'X-Demo-User: dave' "$BASE/demo/current-user")
-if printf '%s' "$BODY" | grep -q 'DEPT_ROLE' && printf '%s' "$BODY" | grep -q '"reSerialised":\[{"auth":"DEPT_ROLE__100_20"'; then
-  ok A4 "双位置权限串解析后重新序列化一致（DEPT_ROLE__100_20）"
+if printf '%s' "$BODY" | grep -q '"roundTripConsistent":true'    && printf '%s' "$BODY" | grep -q '"deptRoles":\[{"deptId":100'    && printf '%s' "$BODY" | grep -q '"reSerialised":\[{"auth":"DEPT_ROLE__100_20"'; then
+  ok A4 "权限体是对象形态（deptRoles 是带字段名的对象），且串→对象→串往返一致"
 else
-  no A4 "权限串往返一致" "reSerialised 含 DEPT_ROLE__100_20" "$(printf '%s' "$BODY" | head -c 200)"
+  no A4 "对象形态 + 往返一致" "roundTripConsistent:true / deptRoles 嵌对象 / reSerialised 含 DEPT_ROLE__100_20" "$(printf '%s' "$BODY" | head -c 300)"
 fi
 
 # ---------------- B 菜单鉴权 ----------------

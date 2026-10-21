@@ -1,7 +1,6 @@
 package com.cu.framework.sample.authcore.web;
 
 import com.cu.framework.auth.core.entity.BaseAuth;
-import com.cu.framework.auth.core.entity.IFlagAuthEntity;
 import com.cu.framework.sample.authcore.authobject.DemoAuthObject;
 import com.cu.framework.sample.authcore.context.DemoAuthContextHolder;
 import com.cu.framework.sample.authcore.context.DemoUserContext;
@@ -21,10 +20,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * 观察台。
@@ -54,30 +55,41 @@ public class DemoMetaController {
     private DemoAuthAdminService demoAuthAdminService;
 
     /**
-     * 当前身份与权限集合体：装载的原始权限串、解析出的实体、由实体重新序列化出的权限串。
-     * 三者必须一致，否则说明 {@code 标记__ID_名} 这套编解码规则在示例里没走通
+     * 当前身份的权限集合体，<b>以对象形态返回</b>：{@code users/roles/depts/deptRoles} 四个列表，
+     * 组合权限里嵌着 dept 与 role 两个子对象。
+     * <p>
+     * 同时给出两份串做对照：{@code rawFromStore} 是从存储原样读出的串（未编解码），
+     * {@code reSerialised} 是从对象结构重新拼出的串，{@code roundTripConsistent} 是两者是否一致。
+     * 不一致就说明 {@code 标记__ID} 与 {@code 标记__名} 这套规则在示例里没走通
      *
-     * @return 身份、权限原文、解析实体、重序列化结果
+     * @return 身份、对象形态的权限体、两份权限串与一致性结论
      */
     @GetMapping("/current-user")
     public Result<Map<String, Object>> currentUser() {
         DemoAuthObject authObject = authContextHolder.loadAuthObject();
+        Collection<BaseAuth> raw = authContextHolder.loadRawFromStore();
+        Collection<BaseAuth> reSerialised = authObject.listBaseAuth();
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("username", DemoUserContext.username());
-        body.put("declaredUser", authContextHolder.getUser());
-        List<Map<String, Object>> entities = new ArrayList<>();
-        for (IFlagAuthEntity entity : authObject.getEntities()) {
-            Map<String, Object> one = new LinkedHashMap<>();
-            one.put("flag", entity.flag());
-            one.put("auth", entity.getAuth().getAuth());
-            one.put("description", entity.getAuth().getDescription());
-            one.put("entity", entity);
-            entities.add(one);
-        }
-        body.put("parsedEntities", entities);
-        body.put("reSerialised", authObject.listBaseAuth());
-        body.put("empty", authObject.isEmpty());
+        body.put("authObject", authObject);
+        body.put("rawFromStore", raw);
+        body.put("reSerialised", reSerialised);
+        body.put("roundTripConsistent", toStringSet(raw).equals(toStringSet(reSerialised)));
         return Result.success(body);
+    }
+
+    /**
+     * 把权限集合折成"串集合"，只按权限串本身比对，忽略描述与顺序
+     *
+     * @param auths 权限集合
+     * @return 权限串集合
+     */
+    private static Set<String> toStringSet(Collection<BaseAuth> auths) {
+        Set<String> values = new TreeSet<>();
+        for (BaseAuth auth : auths) {
+            values.add(auth.getAuth());
+        }
+        return values;
     }
 
     /**

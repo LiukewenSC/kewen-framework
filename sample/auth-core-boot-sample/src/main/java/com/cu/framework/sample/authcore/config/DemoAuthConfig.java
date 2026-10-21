@@ -1,7 +1,9 @@
 package com.cu.framework.sample.authcore.config;
 
 import com.cu.framework.auth.core.AuthDataAdaptor;
+import com.cu.framework.auth.core.data.AuthDataHandler;
 import com.cu.framework.auth.core.data.JdbcAuthDataHandler;
+import com.cu.framework.auth.core.data.JdbcAuthDataPersistent;
 import com.cu.framework.sample.authcore.context.DemoAuthContextHolder;
 import com.cu.framework.sample.authcore.context.DemoMenuAuthHandler;
 import com.cu.framework.sample.authcore.mapper.DemoMenuApiMapper;
@@ -62,8 +64,8 @@ public class DemoAuthConfig {
      * Service 层直接操作数据权限的入口（不依赖注解的那条路）
      */
     @Bean
-    AuthDataAdaptor authDataAdaptor() {
-        return new AuthDataAdaptor();
+    AuthDataAdaptor authDataAdaptor(AuthDataHandler authDataHandler) {
+        return new AuthDataAdaptor(authDataHandler);
     }
 
     /**
@@ -75,13 +77,18 @@ public class DemoAuthConfig {
     }
 
     /**
-     * 包住框架处理器，只为把"判定确实读了权限表"变成可断言的事实；判定逻辑本身一行不改
+     * 包住框架处理器，只为把"判定确实读了权限表"变成可断言的事实；判定逻辑本身一行不改。
+     * <p>
+     * 框架的 {@code jdbcAuthDataHandler} 带 {@code @ConditionalOnMissingBean(AuthDataHandler.class)}，
+     * 而本探针就是一个 {@code AuthDataHandler}，所以框架默认实现会主动让位——
+     * 被代理的对象因此由本方法用持久化组件自己构造，而不是从容器里取。
+     * 这条让位规则本身就是 auth/starter-assembly 要演的行为
      */
     @Bean
     @Primary
-    DemoAuthDataHandlerProbe demoAuthDataHandlerProbe(JdbcAuthDataHandler jdbcAuthDataHandler,
+    DemoAuthDataHandlerProbe demoAuthDataHandlerProbe(JdbcAuthDataPersistent jdbcAuthDataPersistent,
                                                       DemoSqlTrace demoSqlTrace) {
-        return new DemoAuthDataHandlerProbe(jdbcAuthDataHandler, demoSqlTrace);
+        return new DemoAuthDataHandlerProbe(new JdbcAuthDataHandler(jdbcAuthDataPersistent), demoSqlTrace);
     }
 
     /**

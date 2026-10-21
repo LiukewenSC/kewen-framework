@@ -8,10 +8,21 @@ import com.cu.framework.auth.core.entity.AbstractIdNameFlagAuthEntity;
  * @author kewen
  * @since 2026-10-20
  */
-public class RoleFlagAuthEntity extends AbstractIdNameFlagAuthEntity<String> {
+public class DemoRole extends AbstractIdNameFlagAuthEntity<String> {
+
+    private static final long serialVersionUID = 1L;
 
     /** 权限标记 */
     public static final String FLAG = "ROLE";
+
+    public DemoRole() {
+        super();
+    }
+
+    public DemoRole(String id, String name) {
+        setId(id);
+        setName(name);
+    }
 
     @Override
     public String flag() {
