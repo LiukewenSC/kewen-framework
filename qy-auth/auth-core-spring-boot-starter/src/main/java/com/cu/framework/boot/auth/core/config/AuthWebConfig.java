@@ -1,7 +1,6 @@
 package com.cu.framework.boot.auth.core.config;
 
 import com.cu.framework.auth.core.menu.MenuAccessInterceptor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -14,8 +13,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class AuthWebConfig implements WebMvcConfigurer {
 
-    @Autowired
-    MenuAccessInterceptor menuAccessInterceptor;
+    private final MenuAccessInterceptor menuAccessInterceptor;
+
+    public AuthWebConfig(MenuAccessInterceptor menuAccessInterceptor) {
+        this.menuAccessInterceptor = menuAccessInterceptor;
+    }
 
     /**
      * 添加菜单拦截器，拦截请求接口，可以在mvc层鉴权

@@ -29,8 +29,7 @@ public class JdbcAuthDataHandlerTest {
     @Before
     public void setUp() {
         persistent = new StubPersistent();
-        handler = new JdbcAuthDataHandler();
-        handler.setJdbcAuthDataPersistent(persistent);
+        handler = new JdbcAuthDataHandler(persistent);
     }
 
     /** 只提供内存结果的权限表替身，记录查询与写入次数 */
@@ -39,6 +38,10 @@ public class JdbcAuthDataHandlerTest {
         final List<Collection<AuthDataDO>> inserted = new ArrayList<>();
         final List<List<Object>> deleted = new ArrayList<>();
         int queryCount;
+
+        StubPersistent() {
+            super(new org.springframework.jdbc.core.JdbcTemplate(), new AuthDataTable());
+        }
 
         @Override
         public List<AuthDataDO> listAuthData(String businessFunction, Collection<Object> dataIds, String operate) {

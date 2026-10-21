@@ -3,9 +3,9 @@ package com.cu.framework.auth.rbac.extension;
 import cn.hutool.core.util.IdUtil;
 import com.cu.framework.auth.core.menu.MenuApiEntity;
 import com.cu.framework.auth.core.menu.MenuApiService;
+import com.cu.framework.auth.rbac.model.MenuTypeConstant;
 import com.cu.framework.auth.rbac.mp.entity.SysMenuApi;
 import com.cu.framework.auth.rbac.mp.service.SysMenuApiMpService;
-import lombok.Setter;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,11 +15,13 @@ import java.util.stream.Collectors;
  * @author kewen
  * @since 2024-08-09
  */
-@Setter
 public class RbacMenuApiService implements MenuApiService<Long> {
 
+    private final SysMenuApiMpService sysMenuApiMpService;
 
-    SysMenuApiMpService sysMenuApiMpService;
+    public RbacMenuApiService(SysMenuApiMpService sysMenuApiMpService) {
+        this.sysMenuApiMpService = sysMenuApiMpService;
+    }
 
     @Override
     public List<MenuApiEntity<Long>> list() {
@@ -51,7 +53,9 @@ public class RbacMenuApiService implements MenuApiService<Long> {
      * @return 权限类型值，对应 MenuTypeConstant.AUTH_TYPE
      */
     public Integer fillAuthType(Long parentId){
-        return (parentId==null || parentId == 0L) ? 1 : 2;
+        return (parentId==null || parentId == 0L)
+                ? MenuTypeConstant.AUTH_TYPE.OWNER.getCode()
+                : MenuTypeConstant.AUTH_TYPE.PARENT.getCode();
     }
     @Override
     public Long getRootParentId() {

@@ -34,9 +34,7 @@ public class JdbcAuthDataPersistentSqlSafetyTest {
     @Before
     public void setUp() {
         jdbcTemplate = new RecordingJdbcTemplate();
-        persistent = new JdbcAuthDataPersistent();
-        persistent.setJdbcTemplate(jdbcTemplate);
-        persistent.setAuthDataTable(TABLE);
+        persistent = new JdbcAuthDataPersistent(jdbcTemplate, TABLE);
     }
 
     @Test

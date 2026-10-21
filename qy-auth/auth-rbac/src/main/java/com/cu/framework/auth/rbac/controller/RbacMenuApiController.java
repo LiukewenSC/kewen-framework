@@ -1,14 +1,13 @@
 package com.cu.framework.auth.rbac.controller;
 
+import com.cu.framework.auth.core.AuthCurrentUserContextHolder;
 import com.cu.framework.auth.core.AuthMenu;
 import com.cu.framework.auth.core.AuthMenuDoc;
-import com.cu.framework.auth.core.AuthCurrentUserContextHolder;
-import com.cu.framework.auth.core.entity.BaseAuth;
 import com.cu.framework.auth.rbac.composite.SysAuthMenuComposite;
 import com.cu.framework.auth.rbac.model.MenuTypeConstant;
 import com.cu.framework.auth.rbac.model.req.MenuApiSaveReq;
 import com.cu.framework.auth.rbac.model.resp.MenuApiAndAuthResp;
-import com.cu.framework.auth.rbac.model.resp.MenuApiResp;
+import com.cu.framework.basic.exception.BizException;
 import com.cu.framework.basic.model.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -54,13 +52,12 @@ public class RbacMenuApiController {
      * @return 操作结果，data 恒为 null
      */
     @PostMapping("/update")
-    public Result<List<MenuApiResp>> updateMenu(@RequestBody MenuApiSaveReq req){
+    public Result<Void> updateMenu(@RequestBody MenuApiSaveReq req){
         if (isOwnerWithoutAuthObject(req)){
-            throw new RuntimeException("这样谁都没有权限查看了");
+            throw new BizException("这样谁都没有权限查看了");
         }
-        Collection<BaseAuth> auths = authCurrentUserContextHolder.getAuths();
         sysAuthMenuComposite.updateMenu(req);
-        return Result.success(null);
+        return Result.success();
     }
 
     /**
@@ -70,7 +67,7 @@ public class RbacMenuApiController {
      * @return 需要拒绝该请求时为 true
      */
     static boolean isOwnerWithoutAuthObject(MenuApiSaveReq req) {
-        return Objects.equals(req.getAuthType(), MenuTypeConstant.AUTH_TYPE.OWNER)
+        return Objects.equals(req.getAuthType(), MenuTypeConstant.AUTH_TYPE.OWNER.getCode())
                 && (req.getAuthObject() == null || req.getAuthObject().isEmpty());
     }
 }

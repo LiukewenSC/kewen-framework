@@ -39,7 +39,9 @@ public class TreeUtil {
                 iterator.remove();
             }
         }
-        /* 检测环路 貌似不需要检测环路
+        /* TODO 环检测待讨论：目前依赖数据自身不允许出现父子环；若启用检测需评估对
+           既有 build 流程的影响（异常类型、启动期还是运行期抛出、脏数据清理策略），
+           参见 2026-10-21 权限系统评审。
         List<String> combine = ts.stream().map(
                 t -> t.getParentId() == null ? t.getId().toString() : t.getId().toString().concat(t.getParentId().toString())
         ).collect(Collectors.toList());

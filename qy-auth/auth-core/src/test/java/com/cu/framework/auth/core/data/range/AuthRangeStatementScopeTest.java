@@ -151,16 +151,13 @@ public class AuthRangeStatementScopeTest {
         Object wrapped = new ChainedInterceptor().plugin(new ChainedInterceptor().plugin(handler));
         Assert.assertTrue("应当确实被包成了代理", Proxy.isProxyClass(wrapped.getClass()));
 
-        MybatisDataRangeInterceptor interceptor = new MybatisDataRangeInterceptor();
+        MybatisDataRangeInterceptor interceptor = new MybatisDataRangeInterceptor(null, null);
         Assert.assertSame(ms, interceptor.resolveMappedStatement(interceptor.unwrapPluginProxy(wrapped)));
         Assert.assertSame(ms, interceptor.resolveMappedStatement(interceptor.unwrapPluginProxy(handler)));
     }
 
     private MybatisDataRangeInterceptor interceptorWith(AuthCurrentUserContextHolder holder) {
-        MybatisDataRangeInterceptor interceptor = new MybatisDataRangeInterceptor();
-        interceptor.setAuthRangeCache(cache);
-        interceptor.setAuthCurrentUserContextHolder(holder);
-        return interceptor;
+        return new MybatisDataRangeInterceptor(cache, holder);
     }
 
     private MappedStatement mappedStatement(String methodName) {

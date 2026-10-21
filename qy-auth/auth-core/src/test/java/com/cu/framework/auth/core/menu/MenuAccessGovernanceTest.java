@@ -7,11 +7,9 @@ import com.cu.framework.auth.core.entity.CurrentUser;
 import com.cu.framework.auth.core.exception.AuthException;
 import org.junit.Assert;
 import org.junit.Test;
-import org.springframework.util.ReflectionUtils;
 import org.springframework.web.method.HandlerMethod;
 
 import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.Field;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -115,16 +113,7 @@ public class MenuAccessGovernanceTest {
     }
 
     private MenuAccessInterceptor interceptor(AuthMenuHandler menuHandler) {
-        MenuAccessInterceptor interceptor = new MenuAccessInterceptor();
-        setField(interceptor, "authMenuHandler", menuHandler);
-        setField(interceptor, "authCurrentUserContextHolder", new EmptyContext());
-        return interceptor;
-    }
-
-    private void setField(Object target, String fieldName, Object value) {
-        Field field = ReflectionUtils.findField(MenuAccessInterceptor.class, fieldName);
-        ReflectionUtils.makeAccessible(field);
-        ReflectionUtils.setField(field, target, value);
+        return new MenuAccessInterceptor(menuHandler, new EmptyContext());
     }
 
     private HandlerMethod handler(Class<?> controller, String methodName) {

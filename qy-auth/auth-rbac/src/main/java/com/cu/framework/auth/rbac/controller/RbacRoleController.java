@@ -8,6 +8,7 @@ import com.cu.framework.basic.model.IdReq;
 import com.cu.framework.basic.model.PageReq;
 import com.cu.framework.basic.model.PageResult;
 import com.cu.framework.basic.model.Result;
+import com.cu.framework.basic.exception.BizException;
 import com.cu.framework.basic.support.utils.MybatisPageExecutor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -77,7 +78,7 @@ public class RbacRoleController {
     @AuthMenuDoc(name = "修改角色")
     public Result<Boolean> update(@RequestBody SysRole sysRole){
         if (sysRole.getId()==null){
-            throw new RuntimeException("角色ID为空");
+            throw new BizException("角色ID为空");
         }
         boolean b = sysRoleMpService.updateById(sysRole);
         return Result.success(b);

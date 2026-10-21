@@ -21,8 +21,9 @@ import com.cu.framework.auth.rbac.mp.service.SysAuthMenuMpService;
 import com.cu.framework.auth.rbac.mp.service.SysMenuApiMpService;
 import com.cu.framework.auth.rbac.mp.service.SysMenuRouteMpService;
 import com.cu.framework.auth.rbac.utils.TreeUtil;
+import com.cu.framework.basic.exception.BizException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -38,16 +39,14 @@ import java.util.stream.Collectors;
  */
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class DefaultSysAuthMenuComposite implements SysAuthMenuComposite {
     /** 菜单API（sys_menu_api 表）数据服务 */
-    @Autowired
-    private SysMenuApiMpService sysMenuPathMpService;
+    private final SysMenuApiMpService sysMenuApiMpService;
     /** 菜单路由（sys_menu_route 表）数据服务 */
-    @Autowired
-    private SysMenuRouteMpService sysMenuRouteMpService;
+    private final SysMenuRouteMpService sysMenuRouteMpService;
     /** 菜单权限（sys_auth_menu 表）数据服务 */
-    @Autowired
-    private SysAuthMenuMpService menuAuthService;
+    private final SysAuthMenuMpService menuAuthService;
 
     /** 是否缓存菜单与权限数据，读取配置 cu.auth.cache-auth，默认 false（每次直接查库） */
     @Value("${cu.auth.cache-auth:false}")
@@ -65,8 +64,7 @@ public class DefaultSysAuthMenuComposite implements SysAuthMenuComposite {
     ));
 
     /** 菜单缓存存储，isCache 为 true 时经由它读写菜单与权限数据 */
-    @Autowired
-    private AuthMenuStore authMenuStore;
+    private final AuthMenuStore authMenuStore;
 
     @Override
     public boolean hasMenuAuth(Collection<BaseAuth> authorities, String requestPath) {
@@ -204,7 +202,7 @@ public class DefaultSysAuthMenuComposite implements SysAuthMenuComposite {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateMenu(MenuApiSaveReq req) {
-        sysMenuPathMpService.update(buildUpdatableWrapper(req));
+        sysMenuApiMpService.update(buildUpdatableWrapper(req));
         Long apiId = req.getId();
         editMenuAuthorities(apiId,req.getAuthObject().listBaseAuth());
     }
@@ -217,13 +215,13 @@ public class DefaultSysAuthMenuComposite implements SysAuthMenuComposite {
      */
     private boolean hasMenuAuth(Collection<BaseAuth> authorities, SysMenuApi sysMenuApi){
         //基于自己的权限
-        if (MenuTypeConstant.AUTH_TYPE.OWNER.equals(sysMenuApi.getAuthType())){
+        if (MenuTypeConstant.AUTH_TYPE.OWNER.getCode().equals(sysMenuApi.getAuthType())){
             Long apiId = sysMenuApi.getId();
             return getSysMenuAuths().stream()
                     .filter(a -> a.getApiId().equals(apiId))
                     .map(a->new BaseAuth(a.getAuthority(),a.getDescription()))
                     .anyMatch(authorities::contains);
-        } else if (MenuTypeConstant.AUTH_TYPE.PARENT.equals(sysMenuApi.getAuthType())){
+        } else if (MenuTypeConstant.AUTH_TYPE.PARENT.getCode().equals(sysMenuApi.getAuthType())){
             //基于父菜单的权限
             Long parentId = sysMenuApi.getParentId();
             Optional<SysMenuApi> first = getApiMenus().stream().filter(m -> m.getId().equals(parentId)).findFirst();
@@ -234,7 +232,7 @@ public class DefaultSysAuthMenuComposite implements SysAuthMenuComposite {
             }
             return hasMenuAuth(authorities,first.get());
         } else {
-            throw new RuntimeException("菜单权限类型错误: "+sysMenuApi.getAuthType());
+            throw new BizException("菜单权限类型错误: " + sysMenuApi.getAuthType());
         }
     }
 
@@ -254,9 +252,9 @@ public class DefaultSysAuthMenuComposite implements SysAuthMenuComposite {
      */
     private List<SysMenuApi> getApiMenus(){
         if (!isCache){
-            return sysMenuPathMpService.list();
+            return sysMenuApiMpService.list();
         }
-        return authMenuStore.getApiMenus(() -> sysMenuPathMpService.list());
+        return authMenuStore.getApiMenus(() -> sysMenuApiMpService.list());
     }
     /**
      * 获取菜单权限

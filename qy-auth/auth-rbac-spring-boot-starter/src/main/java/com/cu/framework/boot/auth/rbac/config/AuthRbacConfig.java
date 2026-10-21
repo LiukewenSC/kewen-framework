@@ -1,7 +1,7 @@
 package com.cu.framework.boot.auth.rbac.config;
 
 import com.cu.framework.auth.core.AuthDataAdaptor;
-import com.cu.framework.auth.core.data.JdbcAuthDataPersistent;
+import com.cu.framework.auth.core.data.AuthDataHandler;
 import com.cu.framework.auth.core.menu.AuthMenuHandler;
 import com.cu.framework.auth.rbac.RbacAnnotationAuthHandler;
 import com.cu.framework.auth.rbac.composite.AuthMenuStore;
@@ -11,7 +11,8 @@ import com.cu.framework.auth.rbac.composite.impl.MemoryExpiredAuthMenuStore;
 import com.cu.framework.auth.rbac.extension.RbacCurrentUserService;
 import com.cu.framework.auth.rbac.extension.RbacMenuApiService;
 import com.cu.framework.auth.rbac.mp.service.SysMenuApiMpService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.cu.framework.boot.auth.core.config.AuthCoreConfig;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,12 +25,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * @since 2023-12-28
  */
 @Configuration
+@AutoConfigureAfter({AuthCoreConfig.class, AuthRbacScanConfig.class})
 public class AuthRbacConfig {
 
-    @Autowired
-    SysMenuApiMpService sysMenuApiMpService;
-    @Autowired
-    JdbcAuthDataPersistent jdbcAuthDataPersistent;
     /**
      * 注解权限处理器
      * 在引入了<cu-auth-impl> 依赖的情况下配置
@@ -39,9 +37,7 @@ public class AuthRbacConfig {
     @Bean
     @ConditionalOnMissingBean(AuthMenuHandler.class)
     public RbacAnnotationAuthHandler annotationAuthHandler(SysAuthMenuComposite sysAuthMenuComposite){
-        RbacAnnotationAuthHandler handler = new RbacAnnotationAuthHandler();
-        handler.setSysAuthMenuComposite(sysAuthMenuComposite);
-        return handler;
+        return new RbacAnnotationAuthHandler(sysAuthMenuComposite);
     }
 
     /**
@@ -49,29 +45,22 @@ public class AuthRbacConfig {
      * @return
      */
     @Bean
-    public AuthDataAdaptor authDateAdaptor(){
-        return new AuthDataAdaptor();
+    public AuthDataAdaptor authDataAdaptor(AuthDataHandler authDataHandler){
+        return new AuthDataAdaptor(authDataHandler);
     }
 
     @Bean
     RbacCurrentUserService rbacCurrentUserService(
             SysUserComposite sysUserComposite, PasswordEncoder passwordEncoder){
-
-        RbacCurrentUserService service = new RbacCurrentUserService();
-        service.setSysUserComposite(sysUserComposite);
-        service.setPasswordEncoder(passwordEncoder);
-        return service;
-
+        return new RbacCurrentUserService(sysUserComposite, passwordEncoder);
     }
     /**
      * 菜单API服务
      * @return
      */
     @Bean
-    RbacMenuApiService rbacMenuApiStore(){
-        RbacMenuApiService store = new RbacMenuApiService();
-        store.setSysMenuApiMpService(sysMenuApiMpService);
-        return store;
+    RbacMenuApiService rbacMenuApiService(SysMenuApiMpService sysMenuApiMpService){
+        return new RbacMenuApiService(sysMenuApiMpService);
     }
 
     /**
