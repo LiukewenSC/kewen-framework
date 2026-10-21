@@ -51,21 +51,28 @@ public class DemoAuthContextHolder implements AuthCurrentUserContextHolder {
     }
 
     /**
-     * 装载并解析当前请求的权限集合体，供 /demo/current-user 回显解析结果
+     * 装载并解析当前请求的权限集合体，供 /demo/current-user 回显对象形态
      *
      * @return 解析后的权限集合体，无身份或无授权时为空集合体
      */
     public DemoAuthObject loadAuthObject() {
         DemoAuthObject authObject = new DemoAuthObject();
+        authObject.setProperties(loadRawFromStore());
+        return authObject;
+    }
+
+    /**
+     * 从存储里原样读出的权限串，<b>没有</b>经过任何编解码。
+     * 与 {@link DemoAuthObject#listBaseAuth()} 对照即可验证"串→对象→串"的往返一致性
+     *
+     * @return 权限串集合，无身份时为空集合
+     */
+    public List<BaseAuth> loadRawFromStore() {
         String username = DemoUserContext.username();
         if (username == null) {
-            return authObject;
+            return Collections.emptyList();
         }
         List<BaseAuth> rows = demoUserAuthMapper.listByUsername(username);
-        if (rows == null) {
-            rows = Collections.emptyList();
-        }
-        authObject.setProperties(rows);
-        return authObject;
+        return rows == null ? Collections.<BaseAuth>emptyList() : rows;
     }
 }
