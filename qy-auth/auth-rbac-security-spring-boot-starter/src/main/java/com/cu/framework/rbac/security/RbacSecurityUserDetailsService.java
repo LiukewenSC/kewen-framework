@@ -27,11 +27,13 @@ public class RbacSecurityUserDetailsService implements SecurityUserDetailsServic
 
     private SysUserComposite sysUserComposite;
 
-    public UserAuthObject getUserAuthObjectByUsername(String username){
+    public UserAuthObject getUserAuthObjectByUsername(String username) {
         return sysUserComposite.getUserAuthObjectByUsername(username);
     }
-/**
+
+    /**
      * 按用户名加载用户、凭证与权限对象并组装为 SecurityUser
+     *
      * @param username 登录用户名
      * @return 组装完成的安全用户
      * @throws UsernameNotFoundException 用户名不存在时抛出
@@ -44,14 +46,8 @@ public class RbacSecurityUserDetailsService implements SecurityUserDetailsServic
             throw new UsernameNotFoundException("未找到用户");
         }
         SysUser sysUser = userAuthObject.getSysUser();
-        SysUserCredential credential = userAuthObject.getSysUserCredential();
-        UserAuthInfo authObject = userAuthObject.getAuthInfo();
-        //用户存在但凭证或权限体缺失时，装载结果无法组装，按认证失败处理而不是抛空指针
-        if (credential == null || authObject == null) {
-            throw new UsernameNotFoundException("用户凭证或权限集合缺失");
-        }
 
-        return new SecurityUser()
+        SecurityUser securityUser = new SecurityUser()
                 .setId(sysUser.getId())
                 .setName(sysUser.getName())
                 .setUsername(sysUser.getUsername())
@@ -59,21 +55,32 @@ public class RbacSecurityUserDetailsService implements SecurityUserDetailsServic
                 .setPhone(sysUser.getPhone())
                 .setEmail(sysUser.getEmail())
                 .setAvatarFileId(sysUser.getAvatarFileId())
-                .setPassword(credential.getPassword())
                 // 库中 gender 是 tinyint，认证模型里是 String（单点登录子类型要实现 OidcUser 的标准声明访问器）
                 .setGender(sysUser.getGender() == null ? null : String.valueOf(sysUser.getGender()))
-                .setUserAuthorities(authObject.listBaseAuth().stream().map(a->new SecurityUserAuthority(a.getAuth(), a.getDescription())).collect(Collectors.toList()))
-                .setPasswordExpiredTime(credential.getPasswordExpiredTime())
-                .setAccountLockedDeadline(credential.getAccountLockedDeadline())
-                .setEnabled(credential.getEnabled())
                 .setCreateTime(sysUser.getCreateTime())
-                .setUpdateTime(sysUser.getUpdateTime())
-                ;
+                .setUpdateTime(sysUser.getUpdateTime());
+        SysUserCredential credential = userAuthObject.getSysUserCredential();
+        UserAuthInfo userAuthInfo = userAuthObject.getAuthInfo();
+        securityUser.setUserAuthorities(
+                userAuthInfo.listBaseAuth().stream().map(
+                        a -> new SecurityUserAuthority(a.getAuth(), a.getDescription())
+                ).collect(Collectors.toList())
+        );
+
+        if (credential != null) {
+            securityUser
+                    .setPassword(credential.getPassword())
+                    .setPasswordExpiredTime(credential.getPasswordExpiredTime())
+                    .setAccountLockedDeadline(credential.getAccountLockedDeadline())
+                    .setEnabled(credential.getEnabled());
+        }
+        return securityUser;
     }
 
-/**
+    /**
      * 更新指定用户的密码
-     * @param user 待更新的用户
+     *
+     * @param user                 待更新的用户
      * @param encryptedNewPassword 已加密的新密码
      * @return 原用户对象
      * @throws RuntimeException 密码更新失败时抛出
