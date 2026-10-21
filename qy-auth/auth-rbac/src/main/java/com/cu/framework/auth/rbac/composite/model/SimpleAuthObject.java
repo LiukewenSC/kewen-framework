@@ -31,6 +31,11 @@ public class SimpleAuthObject extends AbstractAuthObject {
      * 部门集合
      */
     protected List<Dept> depts = new ArrayList<>();
+    /**
+     * 关联部门集合
+     * 这里指需要设置此部门及以下的人可见的部门；
+     */
+    protected List<ParentDept> relationDepts = new ArrayList<>();
 
     /**
      * 部门角色集合
@@ -48,6 +53,9 @@ public class SimpleAuthObject extends AbstractAuthObject {
     }
     public void addDeptRoles(DeptRole... roles){
         this.deptRoles.addAll(Arrays.asList(roles));
+    }
+    public void addRelationDepts(ParentDept... relationDepts){
+        this.relationDepts.addAll(Arrays.asList(relationDepts));
     }
 
 
@@ -77,6 +85,11 @@ public class SimpleAuthObject extends AbstractAuthObject {
         if (deptRoles != null) {
             for (DeptRole deptRole : deptRoles) {
                 flatteningAuthorities.add(deptRole.getAuth());
+            }
+        }
+        if (relationDepts != null) {
+            for (ParentDept relationDept : relationDepts) {
+                flatteningAuthorities.add(relationDept.getAuth());
             }
         }
         addAnotherBashAuth(flatteningAuthorities);
