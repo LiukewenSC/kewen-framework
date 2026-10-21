@@ -862,7 +862,7 @@ RBAC默认目前只实现了基于部门-用户-角色的三个维度的权限�
 }
  ```
 
-- 3. 实现`SysUserComposite`或继承`SysUserCompositeImpl`，重写通过用户加载权限的方法`loadByUsername()`，要替换`UserAuthObject`中的`authObject`字段
+- 3. 实现`SysUserComposite`或继承`SysUserCompositeImpl`，重写通过用户加载权限的方法`loadByUsername()`，要替换`UserAuthInfo`中的`authInfo`字段
      这部分可以参考`SysUserCompositeImpl`来实现
 
 ```java

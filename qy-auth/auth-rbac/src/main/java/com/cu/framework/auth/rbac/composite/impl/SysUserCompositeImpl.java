@@ -2,13 +2,15 @@ package com.cu.framework.auth.rbac.composite.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.cu.framework.auth.rbac.composite.model.UserFullAuthObject;
 import com.cu.framework.auth.rbac.composite.SysUserComposite;
 import com.cu.framework.auth.rbac.composite.mapper.SysUserUnionCompositeMapper;
-import com.cu.framework.auth.rbac.composite.model.SimpleAuthObject;
+import com.cu.framework.auth.rbac.composite.model.ParentDept;
+import com.cu.framework.auth.rbac.composite.model.UserAuthInfo;
 import com.cu.framework.auth.rbac.model.UserAuthObject;
+import com.cu.framework.auth.rbac.mp.entity.SysDept;
 import com.cu.framework.auth.rbac.mp.entity.SysUser;
 import com.cu.framework.auth.rbac.mp.entity.SysUserCredential;
+import com.cu.framework.auth.rbac.mp.service.SysDeptMpService;
 import com.cu.framework.auth.rbac.mp.service.SysUserCredentialMpService;
 import com.cu.framework.auth.rbac.mp.service.SysUserMpService;
 import com.cu.framework.basic.exception.BizException;
@@ -16,6 +18,9 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author kewen
@@ -31,6 +36,28 @@ public class SysUserCompositeImpl implements SysUserComposite {
     private final SysUserCredentialMpService credentialMpService;
 
     private final SysUserUnionCompositeMapper unionCompositeMapper;
+    private final SysDeptMpService deptMpService;
+
+    @Override
+    public List<ParentDept> getDeptListByDeptId(Long deptId) {
+        List<SysDept> reverseParents = new ArrayList<>();
+        Long currentId = deptId;
+        while (currentId != null && currentId != 0L) {
+            SysDept dept = deptMpService.getOne(
+                    new LambdaQueryWrapper<SysDept>().eq(SysDept::getId, currentId)
+            );
+            if (dept == null) {
+                break;
+            }
+            reverseParents.add(dept);
+            currentId = dept.getParentId();
+        }
+        List<ParentDept> parents = new ArrayList<>(reverseParents.size());
+        for (int i = reverseParents.size() - 1; i >= 0; i--) {
+            parents.add(new ParentDept(reverseParents.get(i).getId(), reverseParents.get(i).getName(),i+1));
+        }
+        return parents;
+    }
 
     @Override
     public SysUserCredential getUserCredentialByUsername(String username) {
@@ -69,13 +96,11 @@ public class SysUserCompositeImpl implements SysUserComposite {
         }
         userAuthObject.setSysUserCredential(credential);
         //查找用户权限体
-        SimpleAuthObject authObject = unionCompositeMapper.getUserAuthObject(user.getId());
-        if (authObject == null){
-            return userAuthObject;
+        UserAuthInfo userAuthInfo = unionCompositeMapper.getUserAuthInfo(user.getId());
+        if (userAuthInfo != null){
+            userAuthInfo.fillUserAuth(this);
         }
-        UserFullAuthObject userFullAuthObject = new UserFullAuthObject(authObject);
-        userFullAuthObject.fillUserAuth();
-        userAuthObject.setAuthObject(userFullAuthObject);
+        userAuthObject.setAuthInfo(userAuthInfo);
         return userAuthObject;
     }
 

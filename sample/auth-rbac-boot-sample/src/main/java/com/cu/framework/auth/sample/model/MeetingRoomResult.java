@@ -4,7 +4,7 @@ package com.cu.framework.auth.sample.model;
 
 import com.cu.framework.auth.core.entity.IAuthObject;
 import com.cu.framework.auth.rbac.composite.model.SimpleAuthObject;
-import com.cu.framework.auth.rbac.utils.BeanUtil;
+import com.cu.framework.basic.utils.BeanUtil;
 import com.cu.framework.auth.sample.mp.entity.MeetingRoom;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

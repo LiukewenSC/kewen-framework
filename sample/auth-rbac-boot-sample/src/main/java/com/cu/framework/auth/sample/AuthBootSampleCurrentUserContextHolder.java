@@ -3,7 +3,6 @@ package com.cu.framework.auth.sample;
 import com.cu.framework.auth.core.AuthCurrentUserContextHolder;
 import com.cu.framework.auth.core.entity.BaseAuth;
 import com.cu.framework.auth.core.entity.CurrentUser;
-import com.cu.framework.auth.core.entity.IAuthObject;
 import com.cu.framework.auth.rbac.composite.SysUserComposite;
 import com.cu.framework.auth.rbac.model.UserAuthObject;
 import lombok.Setter;
@@ -30,10 +29,10 @@ public class AuthBootSampleCurrentUserContextHolder implements AuthCurrentUserCo
 
     @Override
     public Collection<BaseAuth> getAuths() { UserAuthObject authObject = getUserAuthObjectByUsername(getUsername());
-        if (authObject == null || authObject.getAuthObject() == null){
+        if (authObject == null || authObject.getAuthInfo() == null){
             return Collections.emptyList();
         }
-        return authObject.getAuthObject().listBaseAuth();
+        return authObject.getAuthInfo().listBaseAuth();
     }
 
     public UserAuthObject getUserAuthObjectByUsername(String username){
