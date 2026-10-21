@@ -93,10 +93,19 @@ public class MenuApiGeneratorProcessor implements ApplicationContextAware,Runnab
                     //如果父path和自己是相同的，则把自己设置为根
                     if (apiEntity.getPath().equals(apiEntity.getParentPath()) || apiEntity.getParentPath() == null) {
                         apiEntity.setParentId(menuApiService.getRootParentId());
-                    } else {
-                        //根据parentPath设置parentId
-                        apiEntity.setParentId(menuApiMap.get(apiEntity.getParentPath()).getId());
+                        return;
                     }
+                    //按 parentPath 取父：类上 @RequestMapping 值为空或 "/" 时未生成虚拟路径，
+                    //或父路径本身尚未入库且未落在本次扫描集合内，都会让这里取到 null；
+                    //此时降级为根节点，避免因单条父链断裂让整个菜单生成线程抛 NPE 静默失败
+                    MenuApiEntity parent = menuApiMap.get(apiEntity.getParentPath());
+                    if (parent == null || parent.getId() == null) {
+                        log.warn("菜单 <{}> 的父路径 <{}> 未在已注册菜单中找到，按根节点入库",
+                                apiEntity.getPath(), apiEntity.getParentPath());
+                        apiEntity.setParentId(menuApiService.getRootParentId());
+                        return;
+                    }
+                    apiEntity.setParentId(parent.getId());
                 }).collect(Collectors.toList());
         if (!CollectionUtils.isEmpty(apiSaves)) {
             menuApiService.saveBatch(apiSaves);

@@ -10,6 +10,7 @@ import com.cu.framework.auth.core.data.range.AuthRangeCache;
 import com.cu.framework.auth.core.data.range.AuthRangeStartupValidator;
 import com.cu.framework.auth.core.data.range.MybatisDataRangeInterceptor;
 import com.cu.framework.auth.core.data.range.SqlAuthInject;
+import com.cu.framework.auth.core.menu.AuthMenuHandler;
 import com.cu.framework.auth.core.menu.MenuAccessInterceptor;
 import com.cu.framework.auth.core.menu.MenuApiGeneratorProcessor;
 import com.cu.framework.boot.auth.core.AuthExceptionHandler;
@@ -46,10 +47,7 @@ public class AuthCoreConfig {
      */
     @Bean
     DataCheckAspect dataCheckAspect(AuthDataHandler annotationAuthHandler, AuthCurrentUserContextHolder authCurrentUserContextHolder) {
-        DataCheckAspect aspect = new DataCheckAspect();
-        aspect.setAnnotationAuthHandler(annotationAuthHandler);
-        aspect.setAuthCurrentUserContextHolder(authCurrentUserContextHolder);
-        return aspect;
+        return new DataCheckAspect(annotationAuthHandler, authCurrentUserContextHolder);
     }
 
     /**
@@ -65,16 +63,14 @@ public class AuthCoreConfig {
 
     /**
      * 数据权限处理器。
-     * 持久化组件必须显式装配：{@link JdbcAuthDataHandler} 与 {@link JdbcAuthDataPersistent} 都靠 setter 注入、
-     * 字段上没有 {@code @Autowired}，漏设会在读写权限数据时抛空指针
+     * 使用方若提供了自己的 {@link AuthDataHandler}（例如基于缓存的实现），本 bean 让位，避免类型冲突
      *
      * @return 数据权限处理器
      */
     @Bean
+    @ConditionalOnMissingBean(AuthDataHandler.class)
     JdbcAuthDataHandler jdbcAuthDataHandler(JdbcAuthDataPersistent jdbcAuthDataPersistent) {
-        JdbcAuthDataHandler handler = new JdbcAuthDataHandler();
-        handler.setJdbcAuthDataPersistent(jdbcAuthDataPersistent);
-        return handler;
+        return new JdbcAuthDataHandler(jdbcAuthDataPersistent);
     }
 
     /**
@@ -117,10 +113,7 @@ public class AuthCoreConfig {
     @Bean
     MybatisDataRangeInterceptor mybatisDataRangeInterceptor(AuthRangeCache authRangeCache,
                                                             @Lazy AuthCurrentUserContextHolder authCurrentUserContextHolder) {
-        MybatisDataRangeInterceptor interceptor = new MybatisDataRangeInterceptor();
-        interceptor.setAuthRangeCache(authRangeCache);
-        interceptor.setAuthCurrentUserContextHolder(authCurrentUserContextHolder);
-        return interceptor;
+        return new MybatisDataRangeInterceptor(authRangeCache, authCurrentUserContextHolder);
     }
 
     /**
@@ -152,11 +145,8 @@ public class AuthCoreConfig {
      * @return
      */
     @Bean
-    JdbcAuthDataPersistent jdbcAuthDataPersistent(AuthDataTableProperties authDataTableProperties,JdbcTemplate jdbcTemplate) {
-        JdbcAuthDataPersistent jdbcAuthDataPersistent = new JdbcAuthDataPersistent();
-        jdbcAuthDataPersistent.setJdbcTemplate(jdbcTemplate);
-        jdbcAuthDataPersistent.setAuthDataTable(authDataTable(authDataTableProperties));
-        return jdbcAuthDataPersistent;
+    JdbcAuthDataPersistent jdbcAuthDataPersistent(AuthDataTable authDataTable, JdbcTemplate jdbcTemplate) {
+        return new JdbcAuthDataPersistent(jdbcTemplate, authDataTable);
     }
 
 
@@ -186,8 +176,9 @@ public class AuthCoreConfig {
      * @return
      */
     @Bean
-    MenuAccessInterceptor menuAccessInterceptor() {
-        return new MenuAccessInterceptor();
+    MenuAccessInterceptor menuAccessInterceptor(AuthMenuHandler authMenuHandler,
+                                                AuthCurrentUserContextHolder authCurrentUserContextHolder) {
+        return new MenuAccessInterceptor(authMenuHandler, authCurrentUserContextHolder);
     }
 
     /**
@@ -207,8 +198,6 @@ public class AuthCoreConfig {
      */
     @Bean
     InitMenuApiCommandLineRunner initMenuApiCommandLineRunner(MenuApiGeneratorProcessor menuApiGeneratorProcessor) {
-        InitMenuApiCommandLineRunner runner = new InitMenuApiCommandLineRunner();
-        runner.setMenuApiGeneratorProcessor(menuApiGeneratorProcessor);
-        return runner;
+        return new InitMenuApiCommandLineRunner(menuApiGeneratorProcessor);
     }
 }

@@ -4,7 +4,7 @@ package com.cu.framework.auth.rbac.extension;
 import com.cu.framework.auth.core.entity.CurrentUser;
 import com.cu.framework.auth.rbac.composite.SysUserComposite;
 import com.cu.framework.auth.rbac.mp.entity.SysUserCredential;
-import lombok.Setter;
+import com.cu.framework.basic.exception.BizException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
@@ -12,14 +12,18 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * @author kewen
  * @since 2024-08-22
  */
-@Setter
 public class RbacCurrentUserService {
 
-    private SysUserComposite sysUserComposite;
+    private final SysUserComposite sysUserComposite;
 
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    /**PasswordEncoder passwordEncoder
+    public RbacCurrentUserService(SysUserComposite sysUserComposite, PasswordEncoder passwordEncoder) {
+        this.sysUserComposite = sysUserComposite;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    /**
      * 更新密码
      * @param currentUser 当前登录人
      * @param oldPassword 旧密码，未加密
@@ -28,7 +32,7 @@ public class RbacCurrentUserService {
      public void updatePassword(CurrentUser currentUser, String oldPassword, String newPassword){
          SysUserCredential credential = sysUserComposite.getUserCredentialByUsername(currentUser.getUsername());
          if (!passwordEncoder.matches(oldPassword, credential.getPassword())) {
-             throw new RuntimeException("旧密码不正确");
+             throw new BizException("旧密码不正确");
          }
          String encryptedNewPassword = passwordEncoder.encode(newPassword);
 

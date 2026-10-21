@@ -43,9 +43,7 @@ public class DataCheckAspectTest {
     @Before
     public void setUp() {
         handler = new RecordingHandler();
-        aspect = new DataCheckAspect();
-        aspect.setAnnotationAuthHandler(handler);
-        aspect.setAuthCurrentUserContextHolder(new FixedContext());
+        aspect = new DataCheckAspect(handler, new FixedContext());
     }
 
     /** 交出若干业务数据ID的载体 */

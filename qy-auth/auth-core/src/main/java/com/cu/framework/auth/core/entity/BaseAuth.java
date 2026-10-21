@@ -11,9 +11,9 @@ import java.util.Objects;
 
 public class BaseAuth {
     /** 权限字符串，唯一标识一条权限，equals / hashCode 均基于此字段 */
-    String auth;
+    private String auth;
     /** 权限描述，与权限字符串格式对应的可读名称部分 */
-    String description;
+    private String description;
 
     public BaseAuth() {
     }

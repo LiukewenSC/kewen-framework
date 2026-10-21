@@ -1,11 +1,10 @@
 package com.cu.framework.auth.core.menu;
 
+import com.cu.framework.auth.core.AuthCurrentUserContextHolder;
 import com.cu.framework.auth.core.AuthMenu;
 import com.cu.framework.auth.core.entity.BaseAuth;
-import com.cu.framework.auth.core.AuthCurrentUserContextHolder;
 import com.cu.framework.auth.core.exception.AuthException;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -22,10 +21,14 @@ import java.util.Collection;
 public class MenuAccessInterceptor implements HandlerInterceptor {
 
     /** 菜单权限处理器，校验当前用户是否有菜单路径的访问权限 */
-    @Autowired
-    private AuthMenuHandler authMenuHandler;
-    @Autowired
-    private AuthCurrentUserContextHolder authCurrentUserContextHolder;
+    private final AuthMenuHandler authMenuHandler;
+    private final AuthCurrentUserContextHolder authCurrentUserContextHolder;
+
+    public MenuAccessInterceptor(AuthMenuHandler authMenuHandler,
+                                 AuthCurrentUserContextHolder authCurrentUserContextHolder) {
+        this.authMenuHandler = authMenuHandler;
+        this.authCurrentUserContextHolder = authCurrentUserContextHolder;
+    }
 
     /**
      * 请求进入 Controller 方法前校验菜单权限：

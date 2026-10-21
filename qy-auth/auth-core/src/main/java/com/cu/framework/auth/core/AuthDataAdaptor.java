@@ -2,7 +2,6 @@ package com.cu.framework.auth.core;
 
 import com.cu.framework.auth.core.data.AuthDataHandler;
 import com.cu.framework.auth.core.entity.IAuthObject;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *  数据权限控制器，使用此服务也可以不依赖 @AuthDataAuthEdit，可以直接在Service层调用
@@ -12,9 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class AuthDataAdaptor {
 
     /** 数据权限处理器，实际执行权限数据的读写 */
-    @Autowired
-    private AuthDataHandler annotationAuthHandler;
+    private final AuthDataHandler annotationAuthHandler;
 
+    public AuthDataAdaptor(AuthDataHandler annotationAuthHandler) {
+        this.annotationAuthHandler = annotationAuthHandler;
+    }
 
     /**
      * 编辑某条 数据权限

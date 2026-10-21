@@ -5,6 +5,7 @@ import com.cu.framework.auth.core.AuthMenuDoc;
 import com.cu.framework.auth.rbac.composite.SysAuthMenuComposite;
 import com.cu.framework.auth.rbac.model.resp.MenuRouteResp;
 import com.cu.framework.basic.model.Result;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

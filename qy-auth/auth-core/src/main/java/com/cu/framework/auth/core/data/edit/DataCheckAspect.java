@@ -40,10 +40,14 @@ public class DataCheckAspect {
     private static final int MAX_DATA_IDS = 100;
 
     /** 数据权限处理器，用于校验当前用户对数据的操作权限 */
-    private AuthDataHandler annotationAuthHandler;
-    private AuthCurrentUserContextHolder authCurrentUserContextHolder;
+    private final AuthDataHandler annotationAuthHandler;
+    private final AuthCurrentUserContextHolder authCurrentUserContextHolder;
 
-
+    public DataCheckAspect(AuthDataHandler annotationAuthHandler,
+                           AuthCurrentUserContextHolder authCurrentUserContextHolder) {
+        this.annotationAuthHandler = annotationAuthHandler;
+        this.authCurrentUserContextHolder = authCurrentUserContextHolder;
+    }
 
     /**
      * 切入标注了 {@link com.cu.framework.auth.core.AuthDataOperation} 注解的方法
@@ -140,13 +144,6 @@ public class DataCheckAspect {
         if (candidate instanceof DataIdCarrier) {
             carriers.add((DataIdCarrier<?>) candidate);
         }
-    }
-
-    public void setAnnotationAuthHandler(AuthDataHandler annotationAuthHandler) {
-        this.annotationAuthHandler = annotationAuthHandler;
-    }
-    public void setAuthCurrentUserContextHolder(AuthCurrentUserContextHolder authCurrentUserContextHolder) {
-        this.authCurrentUserContextHolder = authCurrentUserContextHolder;
     }
 
 }

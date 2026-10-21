@@ -11,9 +11,9 @@ import com.cu.framework.auth.rbac.mp.entity.SysUserCredential;
 import com.cu.framework.auth.rbac.mp.service.SysUserCredentialMpService;
 import com.cu.framework.auth.rbac.mp.service.SysUserMpService;
 import com.cu.framework.basic.exception.BizException;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -21,23 +21,20 @@ import org.springframework.stereotype.Service;
  * @since 2024-05-11
  */
 @Service
+@RequiredArgsConstructor
 public class SysUserCompositeImpl implements SysUserComposite {
 
     private static final Logger log = LoggerFactory.getLogger(SysUserCompositeImpl.class);
-    @Autowired
-    SysUserMpService userMpService;
+    private final SysUserMpService userMpService;
 
-    @Autowired
-    SysUserCredentialMpService credentialMpService;
+    private final SysUserCredentialMpService credentialMpService;
 
-    @Autowired
-    SysUserUnionCompositeMapper unionCompositeMapper;
+    private final SysUserUnionCompositeMapper unionCompositeMapper;
 
     @Override
     public SysUserCredential getUserCredentialByUsername(String username) {
         SysUser user = userMpService.getOne(
                 new LambdaQueryWrapper<SysUser>().eq(SysUser::getUsername, username)
-                        .select()
         );
         if (user == null){
             throw new BizException("用户不存在");
@@ -65,7 +62,6 @@ public class SysUserCompositeImpl implements SysUserComposite {
         userAuthObject.setSysUser(user);
         SysUserCredential credential = credentialMpService.getOne(
                 new LambdaQueryWrapper<SysUserCredential>().eq(SysUserCredential::getUserId, user.getId())
-                        .select()
         );
         if (credential == null){
             return userAuthObject;

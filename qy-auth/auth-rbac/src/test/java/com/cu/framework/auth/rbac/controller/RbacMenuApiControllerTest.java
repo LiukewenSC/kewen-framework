@@ -38,23 +38,23 @@ public class RbacMenuApiControllerTest {
     @Test
     public void ownerWithMissingAuthObjectIsRejected() {
         Assert.assertTrue(RbacMenuApiController.isOwnerWithoutAuthObject(
-                req(MenuTypeConstant.AUTH_TYPE.OWNER, null)));
+                req(MenuTypeConstant.AUTH_TYPE.OWNER.getCode(), null)));
         Assert.assertTrue("权限集合体为空集合同样应被拒绝",
                 RbacMenuApiController.isOwnerWithoutAuthObject(
-                        req(MenuTypeConstant.AUTH_TYPE.OWNER, new SimpleAuthObject())));
+                        req(MenuTypeConstant.AUTH_TYPE.OWNER.getCode(), new SimpleAuthObject())));
     }
 
     @Test
     public void ownerWithAuthObjectIsAccepted() {
         Assert.assertFalse(RbacMenuApiController.isOwnerWithoutAuthObject(
-                req(MenuTypeConstant.AUTH_TYPE.OWNER, authObjectWithOneUser())));
+                req(MenuTypeConstant.AUTH_TYPE.OWNER.getCode(), authObjectWithOneUser())));
     }
 
     @Test
     public void parentTypeNeverRejected() {
         Assert.assertFalse(RbacMenuApiController.isOwnerWithoutAuthObject(
-                req(MenuTypeConstant.AUTH_TYPE.PARENT, null)));
+                req(MenuTypeConstant.AUTH_TYPE.PARENT.getCode(), null)));
         Assert.assertFalse(RbacMenuApiController.isOwnerWithoutAuthObject(
-                req(MenuTypeConstant.AUTH_TYPE.PARENT, new SimpleAuthObject())));
+                req(MenuTypeConstant.AUTH_TYPE.PARENT.getCode(), new SimpleAuthObject())));
     }
 }

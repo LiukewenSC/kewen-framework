@@ -3,7 +3,6 @@ package com.cu.framework.auth.core.data.range;
 
 import com.cu.framework.auth.core.AuthCurrentUserContextHolder;
 import com.cu.framework.auth.core.entity.BaseAuth;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.BoundSql;
@@ -44,18 +43,14 @@ import java.util.Properties;
  */
 @Slf4j
 @Intercepts({@Signature(type = StatementHandler.class, method = "prepare", args = {Connection.class, Integer.class})})
-@Setter
 public class MybatisDataRangeInterceptor implements Interceptor, ApplicationContextAware {
 
-    public MybatisDataRangeInterceptor() {
-    }
-
     /** SQL 权限注入器，未直接注入时首次使用从 Spring 容器懒加载 */
-    SqlAuthInject sqlAuthInject;
+    volatile SqlAuthInject sqlAuthInject;
     /** 数据范围声明缓存，语句 id -> 声明模板 */
-    private AuthRangeCache authRangeCache;
+    private final AuthRangeCache authRangeCache;
     /** 当前登录用户上下文，执行期取权限集合 */
-    private AuthCurrentUserContextHolder authCurrentUserContextHolder;
+    private final AuthCurrentUserContextHolder authCurrentUserContextHolder;
     /**
      * Mybatis的插件先于spring容器的完全初始化 ,因此不能直接通过注入等方式获取到容器中的Bean，需要在第一次使用的时候才进行初始化
      * 可以先加载ApplicationContext，再使用时加载AnnotationAuthHandler，
@@ -65,6 +60,12 @@ public class MybatisDataRangeInterceptor implements Interceptor, ApplicationCont
      * private AnnotationAuthHandler annotationAuthHandler
      */
     private ApplicationContext applicationContext;
+
+    public MybatisDataRangeInterceptor(AuthRangeCache authRangeCache,
+                                       AuthCurrentUserContextHolder authCurrentUserContextHolder) {
+        this.authRangeCache = authRangeCache;
+        this.authCurrentUserContextHolder = authCurrentUserContextHolder;
+    }
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
@@ -139,10 +140,6 @@ public class MybatisDataRangeInterceptor implements Interceptor, ApplicationCont
      * @return 用于注入的范围定义；该语句未声明数据范围、或不是查询语句时返回 null
      */
     AuthRange resolveRange(MappedStatement mappedStatement) {
-        if (authRangeCache == null) {
-            throw new IllegalStateException("数据范围声明缓存未装配，无法判定语句<"
-                    + mappedStatement.getId() + ">是否需要过滤");
-        }
         AuthRange template = authRangeCache.find(mappedStatement.getId());
         if (template == null) {
             return null;

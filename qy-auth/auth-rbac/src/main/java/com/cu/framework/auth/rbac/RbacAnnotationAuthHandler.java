@@ -1,9 +1,8 @@
 package com.cu.framework.auth.rbac;
 
-import com.cu.framework.auth.core.menu.AuthMenuHandler;
 import com.cu.framework.auth.core.entity.BaseAuth;
+import com.cu.framework.auth.core.menu.AuthMenuHandler;
 import com.cu.framework.auth.rbac.composite.SysAuthMenuComposite;
-import lombok.Setter;
 
 import java.util.Collection;
 
@@ -13,11 +12,13 @@ import java.util.Collection;
  * @author kewen
  * @since 2023-12-28
  */
-@Setter
 public class RbacAnnotationAuthHandler implements AuthMenuHandler {
 
-    private SysAuthMenuComposite sysAuthMenuComposite;
+    private final SysAuthMenuComposite sysAuthMenuComposite;
 
+    public RbacAnnotationAuthHandler(SysAuthMenuComposite sysAuthMenuComposite) {
+        this.sysAuthMenuComposite = sysAuthMenuComposite;
+    }
 
     @Override
     public boolean hasMenuAccessAuth(Collection<BaseAuth> auths, String path) {

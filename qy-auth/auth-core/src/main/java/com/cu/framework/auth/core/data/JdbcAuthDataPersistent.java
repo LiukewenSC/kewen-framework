@@ -1,6 +1,5 @@
 package com.cu.framework.auth.core.data;
 
-import lombok.Setter;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.JdbcParameter;
 import net.sf.jsqlparser.expression.operators.conditional.AndExpression;
@@ -14,7 +13,6 @@ import net.sf.jsqlparser.statement.select.PlainSelect;
 import net.sf.jsqlparser.statement.select.SelectItem;
 import net.sf.jsqlparser.statement.select.Values;
 import net.sf.jsqlparser.util.SelectUtils;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.ArrayList;
@@ -33,14 +31,21 @@ import java.util.List;
  * @author kewen
  * @since 2024-08-14
  */
-@Setter
-public class JdbcAuthDataPersistent implements InitializingBean {
+public class JdbcAuthDataPersistent {
 
     /** 执行数据权限 SQL 的 JdbcTemplate */
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     /** 数据权限表的表名与字段名映射配置 */
-    private AuthDataTable authDataTable;
+    private final AuthDataTable authDataTable;
+
+    public JdbcAuthDataPersistent(JdbcTemplate jdbcTemplate, AuthDataTable authDataTable) {
+        if (jdbcTemplate == null || authDataTable == null) {
+            throw new IllegalStateException("jdbcTemplate or authDataTable is null");
+        }
+        this.jdbcTemplate = jdbcTemplate;
+        this.authDataTable = authDataTable;
+    }
 
     /**
      * 批量插入：向权限表插入 businessFunction、dataId、operate、authority、description 五列，值全部按参数下发
@@ -157,16 +162,6 @@ public class JdbcAuthDataPersistent implements InitializingBean {
                         operate,
                         rs.getString(3),
                         rs.getString(4)));
-    }
-
-    /**
-     * 校验依赖是否已注入，jdbcTemplate 或 authDataTable 为空时启动失败
-     */
-    @Override
-    public void afterPropertiesSet() {
-        if (jdbcTemplate == null || authDataTable == null) {
-            throw new IllegalStateException("jdbcTemplate or authDataTable is null");
-        }
     }
 
     /**

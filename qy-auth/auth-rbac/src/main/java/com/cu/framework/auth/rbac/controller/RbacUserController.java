@@ -8,7 +8,9 @@ import com.cu.framework.basic.model.IdReq;
 import com.cu.framework.basic.model.PageReq;
 import com.cu.framework.basic.model.PageResult;
 import com.cu.framework.basic.model.Result;
+import com.cu.framework.basic.exception.BizException;
 import com.cu.framework.basic.support.utils.MybatisPageExecutor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -69,24 +71,28 @@ public class RbacUserController {
         return Result.success(b);
     }
     /**
-     * 按 ID 修改用户（POST /rbac/user/update），请求体未携带 ID 时抛出异常
+     * 按 ID 修改用户（POST /rbac/user/update，菜单权限"修改用户"），请求体未携带 ID 时抛出异常
      * @param sysUser 待更新的用户，ID 必填
      * @return 是否修改成功
      */
     @PostMapping("/update")
+    @AuthMenu
+    @AuthMenuDoc(name = "修改用户")
     public Result<Boolean> update(@RequestBody SysUser sysUser){
         if (sysUser.getId()==null){
-            throw new RuntimeException("用户ID为空");
+            throw new BizException("用户ID为空");
         }
         boolean b = sysUserMpService.updateById(sysUser);
         return Result.success(b);
     }
     /**
-     * 按 ID 删除用户（POST /rbac/user/delete）
+     * 按 ID 删除用户（POST /rbac/user/delete，菜单权限"删除用户"）
      * @param idReq 携带用户 ID 的请求体
      * @return 是否删除成功
      */
     @PostMapping("/delete")
+    @AuthMenu
+    @AuthMenuDoc(name = "删除用户")
     public Result<Boolean> delete(@RequestBody @Validated IdReq idReq){
         boolean b = sysUserMpService.removeById(idReq.getId());
         return Result.success(b);
