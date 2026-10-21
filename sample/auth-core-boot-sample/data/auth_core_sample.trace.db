@@ -1,0 +1,30 @@
+2026-10-20 15:03:19 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Data conversion error converting "900' OR '1'='1"; SQL statement:
+SELECT pk, biz_data_id, auth_str, auth_desc FROM demo_auth_data WHERE biz_module = ? AND action = ? AND biz_data_id IN (?) [22018-214]
+2026-10-20 15:03:54 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Data conversion error converting "900' OR '1'='1"; SQL statement:
+SELECT pk, biz_data_id, auth_str, auth_desc FROM demo_auth_data WHERE biz_module = ? AND action = ? AND biz_data_id IN (?) [22018-214]
+2026-10-20 15:17:49 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Data conversion error converting "900' OR '1'='1"; SQL statement:
+SELECT pk, biz_data_id, auth_str, auth_desc FROM demo_auth_data WHERE biz_module = ? AND action = ? AND biz_data_id IN (?) [22018-214]
+2026-10-20 15:19:18 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Data conversion error converting "900' OR '1'='1"; SQL statement:
+SELECT pk, biz_data_id, auth_str, auth_desc FROM demo_auth_data WHERE biz_module = ? AND action = ? AND biz_data_id IN (?) [22018-214]
+2026-10-20 15:19:36 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Data conversion error converting "900' OR '1'='1"; SQL statement:
+SELECT pk, biz_data_id, auth_str, auth_desc FROM demo_auth_data WHERE biz_module = ? AND action = ? AND biz_data_id IN (?) [22018-214]
+2026-10-20 15:20:39 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Data conversion error converting "900' OR '1'='1"; SQL statement:
+SELECT pk, biz_data_id, auth_str, auth_desc FROM demo_auth_data WHERE biz_module = ? AND action = ? AND biz_data_id IN (?) [22018-214]
+2026-10-21 09:24:21 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Data conversion error converting "900' OR '1'='1"; SQL statement:
+SELECT pk, biz_data_id, auth_str, auth_desc FROM demo_auth_data WHERE biz_module = ? AND action = ? AND biz_data_id IN (?) [22018-214]
+2026-10-21 10:27:23 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Data conversion error converting "900' OR '1'='1"; SQL statement:
+SELECT pk, biz_data_id, auth_str, auth_desc FROM demo_auth_data WHERE biz_module = ? AND action = ? AND biz_data_id IN (?) [22018-214]
+2026-10-21 11:01:33 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Data conversion error converting "900' OR '1'='1"; SQL statement:
+SELECT pk, biz_data_id, auth_str, auth_desc FROM demo_auth_data WHERE biz_module = ? AND action = ? AND biz_data_id IN (?) [22018-214]
+2026-10-21 11:36:18 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Data conversion error converting "900' OR '1'='1"; SQL statement:
+SELECT pk, biz_data_id, auth_str, auth_desc FROM demo_auth_data WHERE biz_module = ? AND action = ? AND biz_data_id IN (?) [22018-214]

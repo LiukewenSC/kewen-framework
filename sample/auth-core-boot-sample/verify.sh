@@ -58,6 +58,18 @@ else
   no A4 "对象形态 + 往返一致" "roundTripConsistent:true / deptRoles 嵌对象 / reSerialised 含 DEPT_ROLE__100_20" "$(printf '%s' "$BODY" | head -c 300)"
 fi
 
+# A4b：含角色的用户。归位分支漏掉某一个类型时，该角色的串会从 listBaseAuth() 里静默消失，
+# 表现为"权限明明在库里但判定不通过"——所以必须逐类比对原文与重序列化的出现次数
+BODY=$(curl -s -H 'X-Demo-User: alice' "$BASE/demo/current-user")
+RC=$(printf '%s' "$BODY" | grep -c '"roundTripConsistent":true')
+NROLE=$(printf '%s' "$BODY" | grep -o '"auth":"ROLE__10"' | wc -l | tr -d ' ')
+NUSER=$(printf '%s' "$BODY" | grep -o '"auth":"USER__1"' | wc -l | tr -d ' ')
+if [ "$RC" = "1" ] && [ "$NROLE" -ge 2 ] && [ "$NUSER" -ge 2 ]; then
+  ok A4b "含角色的用户不丢权限：ROLE__10 与 USER__1 在原文和重序列化里都在"
+else
+  no A4b "角色/用户两类都不许丢" "roundTripConsistent=true 且每条串至少出现 2 次" "rc=$RC role=$NROLE user=$NUSER $(printf '%s' "$BODY" | head -c 240)"
+fi
+
 # ---------------- B 菜单鉴权 ----------------
 BODY=$(get_as bob /methodLevel/guarded); [ "$(code_of "$BODY")" = "403" ] && ok B1a "方法级声明：bob 被拒" || no B1a "方法级声明拒绝" 403 "$BODY"
 BODY=$(get_as bob /methodLevel/free);   [ "$(code_of "$BODY")" = "200" ] && ok B1b "同类未声明端点放行" || no B1b "同类未声明端点放行" 200 "$BODY"

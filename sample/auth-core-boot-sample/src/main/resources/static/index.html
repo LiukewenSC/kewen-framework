@@ -156,7 +156,7 @@ const S = [
  {id:'D12',g:'E',name:'改写后的最终语句可观测',demoUser:'alice',m:'GET',p:'/workOrder/rangeList',traceHas:"biz_module = 'work_order'",ex:'trace 里能看到注入的槽位子查询',ck:(r,t)=>t.includes('demo_auth_data')},
  {id:'D10',g:'E',name:'写语句不被追加权限条件',demoUser:'alice',m:'POST',p:'/workOrder/updateUnchecked',b:{id:5},ex:'update 语句存在，且其中不含权限子查询',ck:(r,t)=>{const q=sqlOf(t,'update demo_work_order');return q.length>0&&q.every(x=>x.indexOf('demo_auth_data')<0)}},
  {id:'E1',g:'E',name:'权限表表名与六个列名全部由配置映射生效',demoUser:'alice',m:'GET',p:'/workOrder/rangeList',traceHas:'auth_str',ex:'注入用的是自定义列名',ck:(r,t)=>t.includes('SELECT biz_data_id FROM demo_auth_data WHERE auth_str')},
- {id:'A4',g:'A',name:'权限体是对象形态，且串→对象→串往返一致（双位置组合）',demoUser:'dave',m:'GET',p:'/demo/current-demoUser',ex:'authObject.deptRoles 是对象、roundTripConsistent=true',ck:r=>{const d=r.data||{};return d.roundTripConsistent===true&&JSON.stringify(d.authObject||{}).indexOf('"deptRoles":[{"deptId":100')>=0&&JSON.stringify(d.reSerialised||[]).indexOf('DEPT_ROLE__100_20')>=0;}}
+ {id:'A4',g:'A',name:'权限体是对象形态，且串→对象→串往返一致（双位置组合）',demoUser:'dave',m:'GET',p:'/demo/current-user',ex:'authObject.deptRoles 是对象、roundTripConsistent=true',ck:r=>{const d=r.data||{};return d.roundTripConsistent===true&&JSON.stringify(d.authObject||{}).indexOf('"deptRoles":[{"deptId":100')>=0&&JSON.stringify(d.reSerialised||[]).indexOf('DEPT_ROLE__100_20')>=0;}}
 ];
 
 function range(a,b){const o=[];for(let i=a;i<b;i++)o.push(i);return o}
@@ -302,7 +302,7 @@ document.getElementById('runAll').onclick = async () => {
 
 document.getElementById('whoami').onclick = async () => {
   const u = document.getElementById('demoUser').value;
-  const r = await call('GET', '/demo/current-demoUser', null, u, null);
+  const r = await call('GET', '/demo/current-user', null, u, null);
   document.getElementById('pUser').textContent = u ? JSON.stringify(r.data, null, 1) : '（未提供身份）' + JSON.stringify(r.data, null, 1);
 };
 document.getElementById('counts').onclick = async () => {
