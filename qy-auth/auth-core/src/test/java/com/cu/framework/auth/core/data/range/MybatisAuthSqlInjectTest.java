@@ -1,7 +1,7 @@
 package com.cu.framework.auth.core.data.range;
 
 import com.cu.framework.auth.core.data.AuthDataTable;
-import com.cu.framework.auth.core.entity.BaseAuth;
+import com.cu.framework.auth.core.entity.FlatteningAuthority;
 import net.sf.jsqlparser.JSQLParserException;
 import org.junit.Assert;
 import org.junit.Before;
@@ -58,8 +58,8 @@ public class MybatisAuthSqlInjectTest {
                 .setDataIdColumn("id")
                 .setMatchMethod(MatchMethod.IN)
                 .setAuthorities(Arrays.asList(
-                        new BaseAuth("ROLE_1", "ROLE_admin"),
-                        new BaseAuth("USER_kewen", "USER_科文"))
+                        new FlatteningAuthority("ROLE_1", "ROLE_admin"),
+                        new FlatteningAuthority("USER_kewen", "USER_科文"))
                 );
         return authRange;
     }
@@ -189,7 +189,7 @@ public class MybatisAuthSqlInjectTest {
     @Test
     public void emptyAuthoritiesInjectsAlwaysFalse() throws JSQLParserException {
         AuthRange authRange = getAuthRange();
-        authRange.setAuthorities(Collections.<BaseAuth>emptyList());
+        authRange.setAuthorities(Collections.<FlatteningAuthority>emptyList());
 
         authRange.setMatchMethod(MatchMethod.IN);
         String inSql = sqlAuthInject.convert2NewSql("select * from meeting_room where 1=1", authRange);

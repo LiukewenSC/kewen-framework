@@ -3,7 +3,7 @@ package com.cu.framework.sample.authcore;
 import com.cu.framework.auth.core.AuthCurrentUserContextHolder;
 import com.cu.framework.auth.core.AuthDataRange;
 import com.cu.framework.auth.core.data.range.AuthRangeCache;
-import com.cu.framework.auth.core.entity.BaseAuth;
+import com.cu.framework.auth.core.entity.FlatteningAuthority;
 import com.cu.framework.auth.core.entity.CurrentUser;
 import com.cu.framework.boot.auth.core.config.AuthCoreConfig;
 import org.apache.ibatis.annotations.CacheNamespace;
@@ -14,7 +14,6 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.stereotype.Service;
@@ -111,7 +110,7 @@ public class AuthRangeStartupFailureTest {
         }
 
         @Override
-        public Collection<BaseAuth> getAuths() {
+        public Collection<FlatteningAuthority> getAuths() {
             return Collections.emptyList();
         }
     }

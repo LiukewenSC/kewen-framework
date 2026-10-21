@@ -1,6 +1,6 @@
 package com.cu.framework.sample.authcore.mapper;
 
-import com.cu.framework.auth.core.entity.BaseAuth;
+import com.cu.framework.auth.core.entity.FlatteningAuthority;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -22,5 +22,5 @@ public interface DemoUserAuthMapper {
      * @param username 用户名
      * @return 权限串集合，用户不存在时为空集合
      */
-    List<BaseAuth> listByUsername(@Param("username") String username);
+    List<FlatteningAuthority> listByUsername(@Param("username") String username);
 }

@@ -2,7 +2,7 @@ package com.cu.framework.auth.rbac.composite;
 
 
 
-import com.cu.framework.auth.core.entity.BaseAuth;
+import com.cu.framework.auth.core.entity.FlatteningAuthority;
 import com.cu.framework.auth.rbac.model.req.MenuApiSaveReq;
 import com.cu.framework.auth.rbac.model.resp.MenuApiAndAuthResp;
 import com.cu.framework.auth.rbac.model.resp.MenuRouteResp;
@@ -22,7 +22,7 @@ public interface SysAuthMenuComposite {
      * @param requestPath 请求路径
      * @return 是否有权限
      */
-    boolean hasMenuAuth(Collection<BaseAuth> authorities, String requestPath) ;
+    boolean hasMenuAuth(Collection<FlatteningAuthority> authorities, String requestPath) ;
 
     /**
      * 获取树形结构菜单
@@ -36,7 +36,7 @@ public interface SysAuthMenuComposite {
      * @param authorities
      * @return
      */
-    List<MenuApiAndAuthResp> getApiAuthMenuTree(Collection<BaseAuth> authorities);
+    List<MenuApiAndAuthResp> getApiAuthMenuTree(Collection<FlatteningAuthority> authorities);
 
     /**
      * 获取所有菜单路由树（管理使用）
@@ -48,7 +48,7 @@ public interface SysAuthMenuComposite {
      * @param authorities
      * @return
      */
-    List<MenuRouteResp> getRouteAuthMenuTree(Collection<BaseAuth> authorities);
+    List<MenuRouteResp> getRouteAuthMenuTree(Collection<FlatteningAuthority> authorities);
 
 
     /**
@@ -56,7 +56,7 @@ public interface SysAuthMenuComposite {
      * @param apiId 菜单id
      * @param auths 权限结构
      */
-    void editMenuAuthorities(Long apiId, Collection<BaseAuth> auths);
+    void editMenuAuthorities(Long apiId, Collection<FlatteningAuthority> auths);
 
     void updateMenu(MenuApiSaveReq req);
 

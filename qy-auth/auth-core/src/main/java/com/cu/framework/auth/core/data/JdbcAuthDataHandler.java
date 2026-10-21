@@ -1,6 +1,6 @@
 package com.cu.framework.auth.core.data;
 
-import com.cu.framework.auth.core.entity.BaseAuth;
+import com.cu.framework.auth.core.entity.FlatteningAuthority;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Collection;
@@ -30,13 +30,13 @@ public class JdbcAuthDataHandler implements AuthDataHandler {
     }
 
     @Override
-    public void editDataAuths(String businessFunction, Object dataId, String operate, Collection<BaseAuth> baseAuths) {
+    public void editDataAuths(String businessFunction, Object dataId, String operate, Collection<FlatteningAuthority> flatteningAuthorities) {
         //这里为了保证baseAuths不为空，需要为空的时候设置为emptyList，但是直接赋值 lambda中会报错
-        Collection<BaseAuth> baseAuthsTemplate = baseAuths==null?Collections.emptyList():baseAuths;
+        Collection<FlatteningAuthority> flatteningBaseAuthsTemplate = flatteningAuthorities ==null?Collections.emptyList(): flatteningAuthorities;
 
         List<AuthDataDO> dbList = jdbcAuthDataPersistent.listAuthData(businessFunction, Collections.singletonList(dataId), operate);
         //需要添加的
-        List<AuthDataDO> adds = baseAuthsTemplate.stream()
+        List<AuthDataDO> adds = flatteningBaseAuthsTemplate.stream()
                 .filter(
                         as -> dbList.stream().noneMatch(db -> db.getAuthority().equals(as.getAuth()))
                 ).map(as -> new AuthDataDO(
@@ -49,7 +49,7 @@ public class JdbcAuthDataHandler implements AuthDataHandler {
                 ).collect(Collectors.toList());
         //需要移除的
         List<Object> removes = dbList.stream()
-                .filter(db -> !baseAuthsTemplate.contains(new BaseAuth(db.getAuthority(), db.getDescription())))
+                .filter(db -> !flatteningBaseAuthsTemplate.contains(new FlatteningAuthority(db.getAuthority(), db.getDescription())))
                 .map(AuthDataDO::getId)
                 .collect(Collectors.toList());
 
@@ -75,14 +75,14 @@ public class JdbcAuthDataHandler implements AuthDataHandler {
      * @return 是否全部数据都有权限
      */
     @Override
-    public boolean hasDataOperateAuths(Collection<BaseAuth> auths, String businessFunction, Collection<Object> dataIds, String operate) {
+    public boolean hasDataOperateAuths(Collection<FlatteningAuthority> auths, String businessFunction, Collection<Object> dataIds, String operate) {
         if (CollectionUtils.isEmpty(auths) || CollectionUtils.isEmpty(dataIds)) {
             return false;
         }
         List<AuthDataDO> authDataList = jdbcAuthDataPersistent.listAuthData(businessFunction, dataIds, operate);
 
         Set<String> userAuths = auths.stream()
-                .map(BaseAuth::getAuth)
+                .map(FlatteningAuthority::getAuth)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toSet());
         Map<String, Set<String>> authoritiesByDataId = new HashMap<>();
@@ -101,10 +101,10 @@ public class JdbcAuthDataHandler implements AuthDataHandler {
     }
 
     @Override
-    public Collection<BaseAuth> getDataAuths(String businessFunction, Object dataId, String operate) {
+    public Collection<FlatteningAuthority> getDataAuths(String businessFunction, Object dataId, String operate) {
         List<AuthDataDO> authDataDOS = jdbcAuthDataPersistent.listAuthData(businessFunction, Collections.singletonList(dataId), operate);
         return authDataDOS.stream().map(
-                a -> new BaseAuth(a.getAuthority(), a.getDescription())
+                a -> new FlatteningAuthority(a.getAuthority(), a.getDescription())
         ).collect(Collectors.toList());
     }
 

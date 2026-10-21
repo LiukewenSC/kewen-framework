@@ -3,7 +3,7 @@
 <!-- 权限装载：这条查询没有声明数据范围，是"同一调用链上的其他语句不受影响"的现场观察对象 -->
 <mapper namespace="com.cu.framework.sample.authcore.mapper.DemoUserAuthMapper">
 
-    <resultMap id="baseAuthMap" type="com.cu.framework.auth.core.entity.BaseAuth">
+    <resultMap id="baseAuthMap" type="com.cu.framework.auth.core.entity.FlatteningAuthority">
         <result column="auth_str" property="auth"/>
         <result column="auth_desc" property="description"/>
     </resultMap>

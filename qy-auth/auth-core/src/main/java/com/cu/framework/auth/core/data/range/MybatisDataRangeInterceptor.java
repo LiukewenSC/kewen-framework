@@ -2,7 +2,7 @@ package com.cu.framework.auth.core.data.range;
 
 
 import com.cu.framework.auth.core.AuthCurrentUserContextHolder;
-import com.cu.framework.auth.core.entity.BaseAuth;
+import com.cu.framework.auth.core.entity.FlatteningAuthority;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.BoundSql;
@@ -148,7 +148,7 @@ public class MybatisDataRangeInterceptor implements Interceptor, ApplicationCont
         if (mappedStatement.getSqlCommandType() != SqlCommandType.SELECT) {
             return null;
         }
-        Collection<BaseAuth> auths = authCurrentUserContextHolder.getAuths();
+        Collection<FlatteningAuthority> auths = authCurrentUserContextHolder.getAuths();
         return template.copy().setAuthorities(auths);
     }
 

@@ -3,7 +3,7 @@ package com.cu.framework.auth.core.data.edit;
 import com.cu.framework.auth.core.AuthCurrentUserContextHolder;
 import com.cu.framework.auth.core.AuthDataOperation;
 import com.cu.framework.auth.core.data.AuthDataHandler;
-import com.cu.framework.auth.core.entity.BaseAuth;
+import com.cu.framework.auth.core.entity.FlatteningAuthority;
 import com.cu.framework.auth.core.entity.CurrentUser;
 import com.cu.framework.auth.core.exception.AuthException;
 import com.cu.framework.auth.core.exception.AuthServiceException;
@@ -66,7 +66,7 @@ public class DataCheckAspectTest {
         final Set<String> granted = new HashSet<>();
 
         @Override
-        public boolean hasDataOperateAuths(Collection<BaseAuth> auths, String businessFunction, Collection<Object> dataIds, String operate) {
+        public boolean hasDataOperateAuths(Collection<FlatteningAuthority> auths, String businessFunction, Collection<Object> dataIds, String operate) {
             asked.add(new LinkedHashSet<>(dataIds));
             for (Object dataId : dataIds) {
                 if (!granted.contains(String.valueOf(dataId))) {
@@ -77,11 +77,11 @@ public class DataCheckAspectTest {
         }
 
         @Override
-        public void editDataAuths(String businessFunction, Object dataId, String operate, Collection<BaseAuth> auths) {
+        public void editDataAuths(String businessFunction, Object dataId, String operate, Collection<FlatteningAuthority> auths) {
         }
 
         @Override
-        public Collection<BaseAuth> getDataAuths(String businessFunction, Object dataId, String operate) {
+        public Collection<FlatteningAuthority> getDataAuths(String businessFunction, Object dataId, String operate) {
             return Collections.emptyList();
         }
 
@@ -102,8 +102,8 @@ public class DataCheckAspectTest {
         }
 
         @Override
-        public Collection<BaseAuth> getAuths() {
-            return Collections.singletonList(new BaseAuth("ROLE__1", "ROLE__超级管理员"));
+        public Collection<FlatteningAuthority> getAuths() {
+            return Collections.singletonList(new FlatteningAuthority("ROLE__1", "ROLE__超级管理员"));
         }
     }
 

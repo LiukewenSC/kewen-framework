@@ -1,7 +1,7 @@
 package com.cu.framework.sample.authcore.service;
 
 import com.cu.framework.auth.core.AuthDataAdaptor;
-import com.cu.framework.auth.core.entity.BaseAuth;
+import com.cu.framework.auth.core.entity.FlatteningAuthority;
 import com.cu.framework.sample.authcore.authobject.DemoAuthObject;
 import com.cu.framework.sample.authcore.authobject.RawAuthObject;
 import com.cu.framework.sample.authcore.entity.AuthDataRow;
@@ -48,7 +48,7 @@ public class DemoAuthAdminService {
      */
     public Map<String, Object> grant(GrantReq req) {
         RawAuthObject target = new RawAuthObject(
-                Collections.singletonList(new BaseAuth(req.getAuthStr(), req.getAuthDesc())));
+                Collections.singletonList(new FlatteningAuthority(req.getAuthStr(), req.getAuthDesc())));
         authDataAdaptor.editDataAuths(req.getBizModule(), req.getBizDataId(), req.getAction(), target);
         executionLogMapper.insert("authData.grant", String.valueOf(req.getBizDataId()), req.getBizModule());
         return slotView(req.getBizModule(), req.getAction(), req.getBizDataId());
@@ -82,7 +82,7 @@ public class DemoAuthAdminService {
         DemoAuthObject authObject = new DemoAuthObject();
         authDataAdaptor.fillDataAuths(bizModule, bizDataId, action, authObject);
         Map<String, Object> result = slotView(bizModule, action, bizDataId);
-        Collection<BaseAuth> filled = authObject.listBaseAuth();
+        Collection<FlatteningAuthority> filled = authObject.listBaseAuth();
         result.put("filledIntoAuthObject", filled);
         return result;
     }

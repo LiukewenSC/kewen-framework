@@ -847,9 +847,9 @@ RBAC默认目前只实现了基于部门-用户-角色的三个维度的权限�
  public class PositionSimpleAuthObject extends SimpleAuthObject {
    /**
     * 添加其他权限对象，若子类继承可以扩展这里，也可以覆写listBaseAuth()
-    * @param baseAuths
+    * @param flatteningAuthorities
     */
-   public void addAnotherBashAuth(Collection<BaseAuth>  baseAuths){
+   public void addAnotherBashAuth(Collection<BaseAuth>  flatteningAuthorities){
 
    }
    /**

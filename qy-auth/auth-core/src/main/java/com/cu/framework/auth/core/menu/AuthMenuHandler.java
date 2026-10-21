@@ -1,8 +1,7 @@
 package com.cu.framework.auth.core.menu;
 
 
-import com.cu.framework.auth.core.entity.BaseAuth;
-import com.cu.framework.auth.core.entity.IAuthObject;
+import com.cu.framework.auth.core.entity.FlatteningAuthority;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,5 +23,5 @@ public interface AuthMenuHandler {
      * @param path
      * @return
      */
-    boolean hasMenuAccessAuth(Collection<BaseAuth> auths, String path) ;
+    boolean hasMenuAccessAuth(Collection<FlatteningAuthority> auths, String path) ;
 }

@@ -29,6 +29,6 @@ public class ParentDept extends AbstractIdNameFlagAuthEntity<Long> {
 
     @Override
     public String flag() {
-        return "PARENT" + AuthConstant.AUTH_SUB_SPLIT + "DEPT";
+        return "DEPT" + AuthConstant.AUTH_SUB_SPLIT + "RELATION";
     }
 }

@@ -33,7 +33,7 @@
 | 声明错误启动即失败 | 同上 | `AuthRangeStartupValidator` | auth/data-range |
 | 权限表读写 | 框架内置 `JdbcAuthDataHandler`（JdbcTemplate，全参数绑定） | `demo_auth_data` | auth/data-operation |
 | Service 层直接维护权限 | 注入 `AuthDataAdaptor` | edit / fill / delete | auth/data-operation |
-| 权限串编解码 | `BaseAuth` + `IFlagAuthEntity`（`标记__ID` 与 `标记__名`） | `AbstractAuthObject` | 见本文 3.2 |
+| 权限串编解码 | `FlatteningAuthority` + `IFlagAuthEntity`（`标记__ID` 与 `标记__名`） | `AbstractAuthObject` | 见本文 3.2 |
 | 表名列名可重命名 | `cu.auth.auth-data-table.*` 七项 | 所有权限表读写与注入 | 见本文 3.3 |
 | 统一拒绝响应 | starter 自动注册 `AuthExceptionHandler` | `AuthException`→code 403，`AuthServiceException`→code 400 | auth/starter-assembly |
 

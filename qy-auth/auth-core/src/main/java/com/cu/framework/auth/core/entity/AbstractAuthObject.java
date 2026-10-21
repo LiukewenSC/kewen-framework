@@ -54,12 +54,12 @@ public abstract class AbstractAuthObject implements IAuthObject {
      * 将 BaseAuth 解析为对应的权限实体：
      * 取权限字符串中 AUTH_SPLIT 之前的部分作为权限标记 flag，
      * 从启动时扫描注册的 authEntityMap 中找到实体类，实例化并填充属性值
-     * @param baseAuth 基础权限
+     * @param flatteningAuthority 基础权限
      * @return 解析出的权限实体
      * @throws AuthEntityException 权限标记未注册或实体实例化失败时抛出
      */
-    public IFlagAuthEntity parseBaseAuth(BaseAuth baseAuth) {
-        String[] strings = baseAuth.getAuth().split(AuthConstant.AUTH_SPLIT);
+    public IFlagAuthEntity parseBaseAuth(FlatteningAuthority flatteningAuthority) {
+        String[] strings = flatteningAuthority.getAuth().split(AuthConstant.AUTH_SPLIT);
         String flag = strings[0];
         Class<? extends IFlagAuthEntity> aClass = authEntityMap.get(flag);
         if (aClass == null) {
@@ -71,14 +71,14 @@ public abstract class AbstractAuthObject implements IAuthObject {
         } catch (Exception e) {
             throw new AuthEntityException("实例化["+aClass.getName()+"]错误",e);
         }
-        abstractAuthEntity.setProperties(baseAuth);
+        abstractAuthEntity.setProperties(flatteningAuthority);
         return abstractAuthEntity;
     }
 
     @Override
-    public void setProperties(Collection<BaseAuth> auths) {
+    public void setProperties(Collection<FlatteningAuthority> auths) {
         List<IFlagAuthEntity> abstractAuthEntities = new ArrayList<>();
-        for (BaseAuth auth : auths) {
+        for (FlatteningAuthority auth : auths) {
             abstractAuthEntities.add(parseBaseAuth(auth));
         }
         setBaseAuth(abstractAuthEntities);

@@ -1,7 +1,7 @@
 package com.cu.framework.auth.core.data.range;
 
 import com.cu.framework.auth.core.data.AuthDataTable;
-import com.cu.framework.auth.core.entity.BaseAuth;
+import com.cu.framework.auth.core.entity.FlatteningAuthority;
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.expression.*;
 import net.sf.jsqlparser.expression.operators.conditional.AndExpression;
@@ -408,7 +408,7 @@ public class SqlAuthInject {
         //2 构造 `authority in ('d_1','r_1')` 条件
         //2.1 构造权限字符串列表
         ParenthesedExpressionList<StringValue> authValues = new ParenthesedExpressionList<>(
-                authRange.getAuthorities().stream().map(BaseAuth::getAuth).map(StringValue::new).collect(Collectors.toList())
+                authRange.getAuthorities().stream().map(FlatteningAuthority::getAuth).map(StringValue::new).collect(Collectors.toList())
         );
         //2.2 构造表达式
         InExpression authInExpression = new InExpression(authDataTable.getAuthorityColumn(), authValues);

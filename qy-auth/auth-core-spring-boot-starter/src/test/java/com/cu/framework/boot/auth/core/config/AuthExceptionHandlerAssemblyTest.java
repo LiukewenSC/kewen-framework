@@ -1,7 +1,7 @@
 package com.cu.framework.boot.auth.core.config;
 
 import com.cu.framework.auth.core.AuthCurrentUserContextHolder;
-import com.cu.framework.auth.core.entity.BaseAuth;
+import com.cu.framework.auth.core.entity.FlatteningAuthority;
 import com.cu.framework.auth.core.entity.CurrentUser;
 import com.cu.framework.auth.core.menu.AuthMenuHandler;
 import com.cu.framework.boot.auth.core.AuthExceptionHandler;
@@ -47,7 +47,7 @@ class AuthExceptionHandlerAssemblyTest {
         }
 
         @Override
-        public Collection<BaseAuth> getAuths() {
+        public Collection<FlatteningAuthority> getAuths() {
             return Collections.emptyList();
         }
     }

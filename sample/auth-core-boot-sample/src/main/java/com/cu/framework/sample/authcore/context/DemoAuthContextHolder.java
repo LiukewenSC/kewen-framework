@@ -1,7 +1,7 @@
 package com.cu.framework.sample.authcore.context;
 
 import com.cu.framework.auth.core.AuthCurrentUserContextHolder;
-import com.cu.framework.auth.core.entity.BaseAuth;
+import com.cu.framework.auth.core.entity.FlatteningAuthority;
 import com.cu.framework.auth.core.entity.CurrentUser;
 import com.cu.framework.sample.authcore.authobject.DemoAuthObject;
 import com.cu.framework.sample.authcore.mapper.DemoUserAuthMapper;
@@ -14,7 +14,7 @@ import java.util.List;
  * auth-core 的第一个强制扩展点：当前请求的权限从哪来。
  * <p>
  * 框架不关心身份是怎么确定的（这里来自请求头），也不关心权限是怎么组织的，
- * 只要求交出 {@link BaseAuth} 集合。本实现每次都按用户名查一次 demo_user_auth，
+ * 只要求交出 {@link FlatteningAuthority} 集合。本实现每次都按用户名查一次 demo_user_auth，
  * 并故意<b>不做请求内缓存</b>：那条查询没有声明数据范围，正好充当
  * "同一调用链上的其他语句不受影响"的现场观察对象
  * <p>
@@ -46,7 +46,7 @@ public class DemoAuthContextHolder implements AuthCurrentUserContextHolder {
      * 当前请求的权限集合；没有身份或该用户没有任何授权行时为空集合
      */
     @Override
-    public Collection<BaseAuth> getAuths() {
+    public Collection<FlatteningAuthority> getAuths() {
         return loadAuthObject().listBaseAuth();
     }
 
@@ -67,12 +67,12 @@ public class DemoAuthContextHolder implements AuthCurrentUserContextHolder {
      *
      * @return 权限串集合，无身份时为空集合
      */
-    public List<BaseAuth> loadRawFromStore() {
+    public List<FlatteningAuthority> loadRawFromStore() {
         String username = DemoUserContext.username();
         if (username == null) {
             return Collections.emptyList();
         }
-        List<BaseAuth> rows = demoUserAuthMapper.listByUsername(username);
-        return rows == null ? Collections.<BaseAuth>emptyList() : rows;
+        List<FlatteningAuthority> rows = demoUserAuthMapper.listByUsername(username);
+        return rows == null ? Collections.<FlatteningAuthority>emptyList() : rows;
     }
 }

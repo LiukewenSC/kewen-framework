@@ -21,11 +21,11 @@ public interface IFlagAuthEntity<ID> extends IAuthEntity {
 
     /**
      * 根据基础权限设置值
-     * @param baseAuth
+     * @param flatteningAuthority
      */
-    default void setProperties(BaseAuth baseAuth){
-        String auth = baseAuth.getAuth();
-        String description = baseAuth.getDescription();
+    default void setProperties(FlatteningAuthority flatteningAuthority){
+        String auth = flatteningAuthority.getAuth();
+        String description = flatteningAuthority.getDescription();
         String[] authSplit = auth.split(AuthConstant.AUTH_SPLIT);
         String[] descSplit = description.split(AuthConstant.AUTH_SPLIT);
         String flag = authSplit[0];
@@ -40,7 +40,7 @@ public interface IFlagAuthEntity<ID> extends IAuthEntity {
                 deSerialize(i,idSplit[i],nameSplit[i]);
             }
         } catch (Exception e) {
-            throw new AuthEntityException("解析BaseAuth异常"+baseAuth);
+            throw new AuthEntityException("解析BaseAuth异常"+ flatteningAuthority);
         }
     }
 
@@ -62,7 +62,7 @@ public interface IFlagAuthEntity<ID> extends IAuthEntity {
      * @return 组装后的基础权限对象
      */
     @Override
-    default BaseAuth getAuth() {
+    default FlatteningAuthority getAuth() {
         String flag = flag();
         //获取到由多少个对象拼接的
         int totalPosition = flag().split(AuthConstant.AUTH_SUB_SPLIT).length;
@@ -83,7 +83,7 @@ public interface IFlagAuthEntity<ID> extends IAuthEntity {
         }
         String auth = StrUtil.removeSuffix(authBuilder.toString(), AuthConstant.AUTH_SUB_SPLIT);
         String description = StrUtil.removeSuffix(descriptionBuilder.toString(), AuthConstant.AUTH_SUB_SPLIT);
-        return new BaseAuth(auth,description);
+        return new FlatteningAuthority(auth,description);
     }
 
     /**

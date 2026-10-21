@@ -1,6 +1,6 @@
 package com.cu.framework.auth.core.data.range;
 
-import com.cu.framework.auth.core.entity.BaseAuth;
+import com.cu.framework.auth.core.entity.FlatteningAuthority;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -38,7 +38,7 @@ class AuthRange {
     /**
      * 用户权限字符串
      */
-    private Collection<BaseAuth> authorities;
+    private Collection<FlatteningAuthority> authorities;
 
 
     /**

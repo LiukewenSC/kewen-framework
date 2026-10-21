@@ -1,6 +1,6 @@
 package com.cu.framework.auth.rbac;
 
-import com.cu.framework.auth.core.entity.BaseAuth;
+import com.cu.framework.auth.core.entity.FlatteningAuthority;
 import com.cu.framework.auth.core.menu.AuthMenuHandler;
 import com.cu.framework.auth.rbac.composite.SysAuthMenuComposite;
 
@@ -21,7 +21,7 @@ public class RbacAnnotationAuthHandler implements AuthMenuHandler {
     }
 
     @Override
-    public boolean hasMenuAccessAuth(Collection<BaseAuth> auths, String path) {
+    public boolean hasMenuAccessAuth(Collection<FlatteningAuthority> auths, String path) {
         return sysAuthMenuComposite.hasMenuAuth(auths, path);
     }
 }

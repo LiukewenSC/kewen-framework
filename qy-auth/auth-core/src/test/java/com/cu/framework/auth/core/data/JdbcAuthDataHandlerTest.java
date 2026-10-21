@@ -1,6 +1,6 @@
 package com.cu.framework.auth.core.data;
 
-import com.cu.framework.auth.core.entity.BaseAuth;
+import com.cu.framework.auth.core.entity.FlatteningAuthority;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -66,10 +66,10 @@ public class JdbcAuthDataHandlerTest {
         return new AuthDataDO(1L, BUSINESS_FUNCTION, dataId, OPERATE, authority, "desc");
     }
 
-    private static Collection<BaseAuth> userAuths(String... authorities) {
-        List<BaseAuth> list = new ArrayList<>();
+    private static Collection<FlatteningAuthority> userAuths(String... authorities) {
+        List<FlatteningAuthority> list = new ArrayList<>();
         for (String authority : authorities) {
-            list.add(new BaseAuth(authority, "desc"));
+            list.add(new FlatteningAuthority(authority, "desc"));
         }
         return list;
     }
@@ -131,7 +131,7 @@ public class JdbcAuthDataHandlerTest {
 
         Assert.assertFalse(handler.hasDataOperateAuths(Collections.emptyList(), BUSINESS_FUNCTION,
                 Collections.singletonList(1L), OPERATE));
-        Assert.assertFalse(handler.hasDataOperateAuths((Collection<BaseAuth>) null, BUSINESS_FUNCTION,
+        Assert.assertFalse(handler.hasDataOperateAuths((Collection<FlatteningAuthority>) null, BUSINESS_FUNCTION,
                 Collections.singletonList(1L), OPERATE));
         Assert.assertEquals("权限集合为空时不应发起查询", 0, persistent.queryCount);
     }
@@ -149,8 +149,8 @@ public class JdbcAuthDataHandlerTest {
     @Test
     public void editDataAuthsKeepsSingleRecordSemantics() {
         persistent.rows.add(row(1L, "ROLE__1"));
-        BaseAuth keep = new BaseAuth("ROLE__1", "desc");
-        BaseAuth added = new BaseAuth("ROLE__2", "desc");
+        FlatteningAuthority keep = new FlatteningAuthority("ROLE__1", "desc");
+        FlatteningAuthority added = new FlatteningAuthority("ROLE__2", "desc");
 
         handler.editDataAuths(BUSINESS_FUNCTION, 1L, OPERATE, Arrays.asList(keep, added));
 

@@ -1,6 +1,6 @@
 package com.cu.framework.auth.core.data;
 
-import com.cu.framework.auth.core.entity.BaseAuth;
+import com.cu.framework.auth.core.entity.FlatteningAuthority;
 import com.cu.framework.auth.core.entity.IAuthObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +31,7 @@ public interface AuthDataHandler {
      * @param operate 操作
      * @return 是否全部数据都有权限
      */
-    boolean hasDataOperateAuths(Collection<BaseAuth> auths, String businessFunction, Collection<Object> dataIds, String operate);
+    boolean hasDataOperateAuths(Collection<FlatteningAuthority> auths, String businessFunction, Collection<Object> dataIds, String operate);
     /**
      * 基于权限对象判断是否有这些数据的操作权限
      * @param authObject 权限集合体，为 null 时直接返回 false
@@ -57,7 +57,7 @@ public interface AuthDataHandler {
      * @param operate 操作
      * @param auths 权限结构
      */
-    void editDataAuths(String businessFunction,Object dataId,  String operate, Collection<BaseAuth> auths);
+    void editDataAuths(String businessFunction,Object dataId,  String operate, Collection<FlatteningAuthority> auths);
     /**
      * 基于权限对象编辑某条数据的权限
      * @param businessFunction 模块
@@ -80,7 +80,7 @@ public interface AuthDataHandler {
      * @param operate 操作
      * @return 该数据该操作下已配置的权限集合
      */
-    Collection<BaseAuth> getDataAuths(String businessFunction,Object dataId,  String operate);
+    Collection<FlatteningAuthority> getDataAuths(String businessFunction, Object dataId, String operate);
 
     /**
      * 填充数据，把某条数据已配置的权限写入权限对象

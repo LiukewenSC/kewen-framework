@@ -1,6 +1,6 @@
 package com.cu.framework.sample.authcore.authobject;
 
-import com.cu.framework.auth.core.entity.BaseAuth;
+import com.cu.framework.auth.core.entity.FlatteningAuthority;
 import com.cu.framework.auth.core.entity.IAuthObject;
 
 import java.util.ArrayList;
@@ -22,29 +22,29 @@ public class RawAuthObject implements IAuthObject {
     private static final long serialVersionUID = 1L;
 
     /** 原样保存的权限串 */
-    private final List<BaseAuth> auths = new ArrayList<>();
+    private final List<FlatteningAuthority> auths = new ArrayList<>();
 
     /**
      * 用一组权限串构造集合体
      *
-     * @param baseAuths 权限串，null 视为空集合
+     * @param flatteningAuthorities 权限串，null 视为空集合
      */
-    public RawAuthObject(Collection<BaseAuth> baseAuths) {
-        if (baseAuths != null) {
-            auths.addAll(baseAuths);
+    public RawAuthObject(Collection<FlatteningAuthority> flatteningAuthorities) {
+        if (flatteningAuthorities != null) {
+            auths.addAll(flatteningAuthorities);
         }
     }
 
     @Override
-    public Collection<BaseAuth> listBaseAuth() {
+    public Collection<FlatteningAuthority> listBaseAuth() {
         return auths;
     }
 
     @Override
-    public void setProperties(Collection<BaseAuth> baseAuths) {
+    public void setProperties(Collection<FlatteningAuthority> flatteningAuthorities) {
         auths.clear();
-        if (baseAuths != null) {
-            auths.addAll(baseAuths);
+        if (flatteningAuthorities != null) {
+            auths.addAll(flatteningAuthorities);
         }
     }
 }
