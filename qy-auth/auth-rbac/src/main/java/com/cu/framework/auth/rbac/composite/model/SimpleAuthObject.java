@@ -34,6 +34,7 @@ public class SimpleAuthObject extends AbstractAuthObject {
     /**
      * 关联部门集合
      * 这里指需要设置此部门及以下的人可见的部门；
+     * level不填
      */
     protected List<ParentDept> relationDepts = new ArrayList<>();
 
