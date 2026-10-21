@@ -19,7 +19,7 @@ import org.apache.commons.lang3.tuple.Pair;
  * @since 2026-10-20
  */
 @Data
-public class DeptRole implements IFlagAuthEntity<String> {
+public class DeptRole implements IFlagAuthEntity {
 
     private static final long serialVersionUID = 1L;
 
