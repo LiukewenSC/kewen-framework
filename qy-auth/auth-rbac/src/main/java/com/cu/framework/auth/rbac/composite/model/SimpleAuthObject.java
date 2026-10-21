@@ -31,11 +31,6 @@ public class SimpleAuthObject extends AbstractAuthObject {
      * 部门集合
      */
     protected List<Dept> depts = new ArrayList<>();
-    /**
-     * 关联部门集合
-     * 这里指需要设置此部门及以下的人可见的部门；
-     * level不填
-     */
     protected List<ParentDept> relationDepts = new ArrayList<>();
 
     /**
@@ -114,7 +109,9 @@ public class SimpleAuthObject extends AbstractAuthObject {
                 roles.add(((Role) abstractAuthEntity));
             } else if (abstractAuthEntity instanceof Dept) {
                 depts.add(((Dept) abstractAuthEntity));
-            } else if (abstractAuthEntity instanceof DeptRole){
+            } else if (abstractAuthEntity instanceof ParentDept){
+                relationDepts.add(((ParentDept) abstractAuthEntity));
+            }else if (abstractAuthEntity instanceof DeptRole){
                 deptRoles.add(((DeptRole) abstractAuthEntity));
             }else {
                 setAnotherBaseAuth(abstractAuthEntity);
