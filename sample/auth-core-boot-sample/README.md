@@ -72,7 +72,7 @@
 | `DEPT_ROLE__100_20` | `DEPT_ROLE__研发部_资产角色` | `DeptRoleFlagAuthEntity`（**双位置**，自己实现 `serialize/deSerialize`） |
 
 示例的 `DemoAuthObject` 刻意让 `listBaseAuth()` 从解析出的实体**重新序列化**，
-所以 `GET /demo/current-demoUser` 里"原文"和"重序列化"两栏必须一致——不一致就说明编解码没走通。
+所以 `GET /demo/current-user` 里"原文"和"重序列化"两栏必须一致——不一致就说明编解码没走通。
 两个约束要记住：权限标识里的名字不能含 `_`（会被当成第二个位置），也不能含 `__`。
 
 ## 3.3 权限存储被整张重命名
@@ -105,10 +105,11 @@ java -jar target/auth-core-boot-sample-0.0.1-SNAPSHOT-exec.jar
 
 它是本文第 6 节那张矩阵的可点击版本，52 条用例逐条标注"身份 / 期望 / 结果 / 证据"：
 
-- 顶部下拉框切换身份（alice / bob / carol / dave / erin / frank / 不带请求头），"全部运行"按当前身份逐条跑并给通过与否；
+- 顶部"手工身份"下拉框（alice / bob / carol / dave / erin / frank / 不带请求头）只影响"当前权限"回显与"自由调用"，切换后权限回显自动刷新；
+- 场景矩阵里每条用例自带固定身份（行内标注），"全部运行"按各用例自己的身份逐条跑并给通过与否；
 - 每条用例的证据栏回显**该次请求实际下发的 SQL**（含框架改写后的最终语句）与**副作用计数增量**——判定拒绝时看的是"没有新增行"，不是响应码；
 - 三个面板分别看当前权限的编解码往返、各表行数（重启后应不变）、`demo_menu_api` 的菜单树；
-- 底部"自由调用"可以手填路径与 JSON 体，按当前身份发一次并取回语句。
+- 底部"自由调用"可以手填路径与 JSON 体，按"手工身份"发一次并取回语句，结果首行标明本次使用的身份。
 
 页面里的用例编号与 `verify.sh` 完全一致，两边描述的是同一批场景。
 
@@ -147,7 +148,7 @@ java -jar target/auth-core-boot-sample-0.0.1-SNAPSHOT-exec.jar
 | A1 | 缺当前用户上下文 | 测试里不注册该 bean | 启动异常文本 | 启动失败且指到 `AuthCurrentUserContextHolder` | 测试 `StarterAssemblyTest` |
 | A2 | 缺菜单权限处理 | 测试里不注册该 bean | 启动异常文本 | 启动失败且指到 `AuthMenuHandler` | 测试 `StarterAssemblyTest` |
 | A3 | 缺菜单持久化 | 测试里不注册该 bean | 启动结果 + `processor.run()` | 正常启动，只记跳过 | 测试 `StarterAssemblyTest` |
-| A4 | 权限串编解码往返 | `DemoAuthObject.listBaseAuth()` 重新序列化 | `GET /demo/current-demoUser` | 原文与重序列化一致，双位置组合能解析 | 脚本 `A4` |
+| A4 | 权限串编解码往返 | `DemoAuthObject.listBaseAuth()` 重新序列化 | `GET /demo/current-user` | 原文与重序列化一致，双位置组合能解析 | 脚本 `A4` |
 | A5 | 权限体可反解与不可反解的不对称 | 同一条 `DEPTINHERIT__100` 分别喂 `DemoAuthObject` 与 `DemoUserAuthInfo` | `GET /demo/inherit-asymmetry` | 配置侧往返一致且归位 1 条；用户侧当场抛错，原因点名 `DEPTINHERIT` | 脚本 `A5`、测试 `DemoInheritAuthObjectTest` |
 
 ## B 菜单鉴权
