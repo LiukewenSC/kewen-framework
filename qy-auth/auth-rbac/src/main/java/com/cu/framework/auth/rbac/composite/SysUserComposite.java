@@ -17,11 +17,12 @@ public interface SysUserComposite{
 
 
     /**
-     * 根据部门ID获取部门列表
-     * @param deptId 部门ID
-     * @return 部门列表
+     * 取本部门的<b>严格上级链</b>，按"根在前、直接上级在后"返回，<b>不含本部门</b>。
+     * 本部门自身的权限由部门标记覆盖，与继承标记正交。
+     * @param deptId 本部门 ID
+     * @return 上级部门链，无上级时为空集合
      */
-    List<ParentDept> getDeptListByDeptId(Long deptId);
+    List<ParentDept> listAncestorDepts(Long deptId);
 
     /**
      * 根据用户名获取用户凭证

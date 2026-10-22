@@ -1,5 +1,6 @@
 package com.cu.framework.rbac.security;
 
+import com.cu.framework.auth.core.entity.FlatteningAuthority;
 import com.cu.framework.auth.rbac.composite.SysUserComposite;
 import com.cu.framework.auth.rbac.composite.model.UserAuthInfo;
 import com.cu.framework.auth.rbac.model.UserAuthObject;
@@ -12,6 +13,8 @@ import lombok.Setter;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.stream.Collectors;
 
 
@@ -61,8 +64,12 @@ public class RbacSecurityUserDetailsService implements SecurityUserDetailsServic
                 .setUpdateTime(sysUser.getUpdateTime());
         SysUserCredential credential = userAuthObject.getSysUserCredential();
         UserAuthInfo userAuthInfo = userAuthObject.getAuthInfo();
+        // 无凭证的用户不会被装载出权限体，这是合法状态而不是异常：给出空权限，让它继续走装载流程
+        Collection<FlatteningAuthority> baseAuths = userAuthInfo == null
+                ? Collections.<FlatteningAuthority>emptyList()
+                : userAuthInfo.listBaseAuth();
         securityUser.setUserAuthorities(
-                userAuthInfo.listBaseAuth().stream().map(
+                baseAuths.stream().map(
                         a -> new SecurityUserAuthority(a.getAuth(), a.getDescription())
                 ).collect(Collectors.toList())
         );

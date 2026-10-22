@@ -1,7 +1,10 @@
 package com.cu.framework.sample.authcore.web;
 
 import com.cu.framework.auth.core.entity.FlatteningAuthority;
+import com.cu.framework.auth.core.exception.AuthEntityException;
 import com.cu.framework.sample.authcore.authobject.DemoAuthObject;
+import com.cu.framework.sample.authcore.authobject.DemoInheritDept;
+import com.cu.framework.sample.authcore.authobject.DemoUserAuthInfo;
 import com.cu.framework.sample.authcore.context.DemoAuthContextHolder;
 import com.cu.framework.sample.authcore.context.DemoUserContext;
 import com.cu.framework.sample.authcore.entity.MenuApiPO;
@@ -21,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,6 +79,50 @@ public class DemoMetaController {
         body.put("rawFromStore", raw);
         body.put("reSerialised", reSerialised);
         body.put("roundTripConsistent", toStringSet(raw).equals(toStringSet(reSerialised)));
+        return Result.success(body);
+    }
+
+    /**
+     * 权限体"可反解 / 不可反解"的不对称。
+     * <p>
+     * 同一条 {@code DEPTINHERIT__100}：配置侧集合体 {@link DemoAuthObject} 能把它拆回实体、
+     * 再由实体拼回完全相同的串；用户侧集合体 {@link DemoUserAuthInfo} 遇到它必须当场失败，
+     * 因为串里没有"这是哪个部门的下级"这条信息，反解只能靠猜。
+     * <p>
+     * 失败在这里被当作数据回显而不是让它冒成一次拒绝：这条用例要观察的是"到底失败了没有"，
+     * 不是权限判定结果
+     *
+     * @return 标记、原始串、配置侧往返结论、用户侧失败原因
+     */
+    @GetMapping("/inherit-asymmetry")
+    public Result<Map<String, Object>> inheritAsymmetry() {
+        DemoInheritDept target = new DemoInheritDept(100L, "研发部");
+        FlatteningAuthority authority = target.getAuth();
+
+        DemoAuthObject granted = new DemoAuthObject();
+        granted.addInheritDepts(target);
+        DemoAuthObject parsed = new DemoAuthObject();
+        parsed.setProperties(granted.listBaseAuth());
+        Collection<FlatteningAuthority> reSerialised = parsed.listBaseAuth();
+
+        String userSideFailure = null;
+        boolean userSideRejected = false;
+        try {
+            new DemoUserAuthInfo(null, Collections.singletonList(target))
+                    .setProperties(Collections.singletonList(authority));
+        } catch (AuthEntityException e) {
+            userSideRejected = true;
+            userSideFailure = e.getMessage();
+        }
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("flag", DemoInheritDept.FLAG);
+        body.put("authority", authority);
+        body.put("userSideSerialised", new DemoUserAuthInfo(null, Collections.singletonList(target)).listBaseAuth());
+        body.put("configSideParsedInto", parsed.getInheritDepts().size());
+        body.put("configSideConsistent", toStringSet(granted.listBaseAuth()).equals(toStringSet(reSerialised)));
+        body.put("userSideRejected", userSideRejected);
+        body.put("userSideFailure", userSideFailure);
         return Result.success(body);
     }
 

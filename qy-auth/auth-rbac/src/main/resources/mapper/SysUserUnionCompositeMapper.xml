@@ -3,10 +3,14 @@
 <mapper namespace="com.cu.framework.auth.rbac.composite.mapper.SysUserUnionCompositeMapper">
 
     <resultMap id="UserAuthObjectResult" type="com.cu.framework.auth.rbac.composite.model.UserAuthInfo">
-        <collection property="users" ofType="com.cu.framework.auth.rbac.composite.model.User">
+        <!-- 父行鉴别列：一个用户多行 join 时靠它聚合成一个权限体，缺了它多部门用户会被拆成多个对象 -->
+        <id property="userId" column="user_id"/>
+        <!-- 用户权限体只对应一个用户，因此是 association 而不是 collection；
+             写成 collection 会让 user 字段永不为 null 的前提落空，listBaseAuth 拿不到用户 -->
+        <association property="user" javaType="com.cu.framework.auth.rbac.composite.model.User">
             <id property="id" column="user_id"/>
             <result property="name" column="user_name"/>
-        </collection>
+        </association>
         <collection property="depts" ofType="com.cu.framework.auth.rbac.composite.model.DeptWithParents">
             <id property="id" column="dept_id"/>
             <result property="name" column="dept_name"/>

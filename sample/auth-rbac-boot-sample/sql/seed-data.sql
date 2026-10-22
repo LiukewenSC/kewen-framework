@@ -40,15 +40,24 @@ INSERT INTO `sys_auth_menu`
 VALUES (8, 1825772501489168384, 'ROLE__1', 'ROLE__超级管理员', '2024-08-01 00:00:00', NULL);
 INSERT INTO `sys_auth_menu`
 VALUES (9, 1825734851692703749, 'ROLE__1', 'ROLE__超级管理员', '2024-08-01 00:00:00', NULL);
+-- 部门继承：只授予部门 2（总部）的子孙部门成员，总部自己的人不在这条授权的覆盖范围内
+INSERT INTO `sys_auth_menu`
+VALUES (10, 9100000000000000002, 'RELATIONDEPT__2', 'RELATIONDEPT__总部', '2024-08-01 00:00:00', NULL);
 
 
 -- ----------------------------
 -- Records of sys_dept
+-- 层级：1 根部门 -> 2 总部 -> 3 研发部；4 外部合作部是另一棵根，与 2 没有层级关系。
+-- 部门继承演示就靠这三个位置：2 的成员、2 的子部门(3) 成员、与 2 无关的部门(4) 成员
 -- ----------------------------
 INSERT INTO `sys_dept`
 VALUES (1, '根部门', 0, '2024-08-01 00:00:00', NULL);
 INSERT INTO `sys_dept`
-VALUES (2, '总部', 0, '2024-08-01 00:00:00', NULL);
+VALUES (2, '总部', 1, '2024-08-01 00:00:00', NULL);
+INSERT INTO `sys_dept`
+VALUES (3, '研发部', 2, '2024-08-01 00:00:00', NULL);
+INSERT INTO `sys_dept`
+VALUES (4, '外部合作部', 0, '2024-08-01 00:00:00', NULL);
 
 -- ----------------------------
 -- Records of sys_menu_api
@@ -165,6 +174,14 @@ VALUES (1825772501489168385, '/test/checkMenu', '测试>测试菜单控制', 182
         '2024-08-01 00:00:00', NULL, 0);
 INSERT INTO `sys_menu_api`
 VALUES (1825772501489168386, '/test/checkMenuNone', '测试>测试菜单控制无权限', 1825772501489168384, NULL, 1,
+        '2024-08-01 00:00:00', NULL, 0);
+-- 部门继承演示的两行：路径与 DeptInheritDemoController 一一对应，auth_type 都取 1（基于自身权限），
+-- 否则端点会去继承父菜单的 ROLE__1，演示不出"只有一条 RELATIONDEPT 授权"的判定结果。
+-- ID 写死是为了让上面的 sys_auth_menu 有可引用的 api_id；菜单注册只会补种子里不存在的路径
+INSERT INTO `sys_menu_api`
+VALUES (9100000000000000001, '/deptInherit', '部门继承演示', 0, NULL, 1, '2024-08-01 00:00:00', NULL, 0);
+INSERT INTO `sys_menu_api`
+VALUES (9100000000000000002, '/deptInherit/rooms', '部门继承演示>总部下级可见', 9100000000000000001, NULL, 1,
         '2024-08-01 00:00:00', NULL, 0);
 
 -- ----------------------------
@@ -305,19 +322,44 @@ VALUES (2, '系统用户2', '系统用户2', 'admin2', NULL, NULL, NULL, 2, '202
 INSERT INTO `sys_user`
 VALUES (7, '测试MenuAuth', '测试MenuAuth', '测试MenuAuth', '6019521325', 'test@example.us', NULL, 2,
         '2024-08-01 00:00:00', NULL);
+INSERT INTO `sys_user`
+VALUES (8, '外部协作用户', '外部协作用户', 'outsider', NULL, NULL, NULL, 1, '2024-08-01 00:00:00', NULL);
+INSERT INTO `sys_user`
+VALUES (9, '下级部门用户', '下级部门用户', 'subordinate', NULL, NULL, NULL, 1, '2024-08-01 00:00:00', NULL);
 
 -- ----------------------------
 -- Records of sys_user_credential
+-- 三个对照身份都要有凭证：没有凭证时装载器压根不产出权限体，
+-- 拒绝的原因就变成"没权限体"而不是"层级关系不匹配"，对照不成立
 -- ----------------------------
 INSERT INTO `sys_user_credential`
 VALUES (1, 1, '{bcrypt}$2a$10$uCJpehGeWfvENTq.6LVrquPrGhZ9/QJXHmXmkNlu9cvnevFra1YdW', '123456', NULL, NULL, 1,
         '2024-08-01 00:00:00', NULL);
+INSERT INTO `sys_user_credential`
+VALUES (2, 2, '{bcrypt}$2a$10$uCJpehGeWfvENTq.6LVrquPrGhZ9/QJXHmXmkNlu9cvnevFra1YdW', '123456', NULL, NULL, 1,
+        '2024-08-01 00:00:00', NULL);
+INSERT INTO `sys_user_credential`
+VALUES (3, 8, '{bcrypt}$2a$10$uCJpehGeWfvENTq.6LVrquPrGhZ9/QJXHmXmkNlu9cvnevFra1YdW', '123456', NULL, NULL, 1,
+        '2024-08-01 00:00:00', NULL);
+INSERT INTO `sys_user_credential`
+VALUES (4, 9, '{bcrypt}$2a$10$uCJpehGeWfvENTq.6LVrquPrGhZ9/QJXHmXmkNlu9cvnevFra1YdW', '123456', NULL, NULL, 1,
+        '2024-08-01 00:00:00', NULL);
 
 -- ----------------------------
 -- Records of sys_user_dept
+-- 三个对照身份：admin2 在总部(2)、subordinate 在研发部(3，总部的子部门)、outsider 在外部合作部(4，与总部无层级关系)
 -- ----------------------------
 INSERT INTO `sys_user_dept`
 VALUES (1, 1, 1, 1, '2024-08-01 00:00:00', NULL);
+INSERT INTO `sys_user_dept`
+VALUES (2, 2, 2, 1, '2024-08-01 00:00:00', NULL);
+INSERT INTO `sys_user_dept`
+VALUES (3, 9, 3, 1, '2024-08-01 00:00:00', NULL);
+INSERT INTO `sys_user_dept`
+VALUES (4, 8, 4, 1, '2024-08-01 00:00:00', NULL);
+-- admin2 同时挂在总部(2) 与外部合作部(4)：一次 join 出多行，用来验证权限体只聚合成一个对象、两个部门都装得进来
+INSERT INTO `sys_user_dept`
+VALUES (5, 2, 4, 0, '2024-08-01 00:00:00', NULL);
 
 -- ----------------------------
 -- Records of sys_user_role

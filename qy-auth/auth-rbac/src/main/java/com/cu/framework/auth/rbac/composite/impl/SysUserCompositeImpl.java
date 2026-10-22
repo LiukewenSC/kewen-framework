@@ -20,7 +20,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.function.Function;
 
 /**
  * @author kewen
@@ -39,22 +43,45 @@ public class SysUserCompositeImpl implements SysUserComposite {
     private final SysDeptMpService deptMpService;
 
     @Override
-    public List<ParentDept> getDeptListByDeptId(Long deptId) {
+    public List<ParentDept> listAncestorDepts(Long deptId) {
+        return listAncestorDepts(deptId,
+                id -> deptMpService.getOne(new LambdaQueryWrapper<SysDept>().eq(SysDept::getId, id)));
+    }
+
+    /**
+     * 从本部门向上走<b>严格上级链（不含自身）</b>，按"根在前、直接上级在后"返回。
+     * 查询动作以函数入参注入，使脏层级数据的终止行为能脱离数据库被直接断言。
+     *
+     * @param deptId     本部门 ID
+     * @param deptLookup 按 ID 查部门，查不到时返回 null
+     * @return 上级部门链，本部门是根或查不到时为空集合
+     */
+    static List<ParentDept> listAncestorDepts(Long deptId, Function<Long, SysDept> deptLookup) {
+        if (deptId == null) {
+            return Collections.emptyList();
+        }
+        SysDept self = deptLookup.apply(deptId);
+        if (self == null) {
+            return Collections.emptyList();
+        }
+        // 脏数据里 parent_id 可能自引用或成环，靠 visited 保证有限步内终止
+        Set<Long> visited = new HashSet<>();
+        visited.add(deptId);
         List<SysDept> reverseParents = new ArrayList<>();
-        Long currentId = deptId;
-        while (currentId != null && currentId != 0L) {
-            SysDept dept = deptMpService.getOne(
-                    new LambdaQueryWrapper<SysDept>().eq(SysDept::getId, currentId)
-            );
+        Long currentId = self.getParentId();
+        while (currentId != null && currentId != 0L && visited.add(currentId)) {
+            SysDept dept = deptLookup.apply(currentId);
             if (dept == null) {
                 break;
             }
             reverseParents.add(dept);
             currentId = dept.getParentId();
         }
+        // reverseParents 下标 0 就是直接上级，故 level = 下标 + 1 即"距自身的层级"
         List<ParentDept> parents = new ArrayList<>(reverseParents.size());
         for (int i = reverseParents.size() - 1; i >= 0; i--) {
-            parents.add(new ParentDept(reverseParents.get(i).getId(), reverseParents.get(i).getName(),i+1));
+            SysDept dept = reverseParents.get(i);
+            parents.add(new ParentDept(dept.getId(), dept.getName(), i + 1));
         }
         return parents;
     }
