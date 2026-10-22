@@ -43,7 +43,7 @@
 
 <div class="card">
   <div class="row">
-    <label>当前身份
+    <label>手工身份
       <select id="demoUser">
         <option value="">（不带请求头 = 无身份）</option>
         <option value="alice">alice（ROLE__10 工单管理员）</option>
@@ -54,11 +54,10 @@
         <option value="frank">frank（DEPTINHERIT__100 继承串）</option>
       </select>
     </label>
-    <button class="primary" id="runAll">全部运行</button>
+    <span class="kv">仅用于权限回显与自由调用；矩阵各用例身份固定</span>
     <button id="whoami">刷新当前权限</button>
     <button id="counts">刷新表行数</button>
     <button id="menuApi">刷新菜单登记</button>
-    <span class="summary" id="summary"></span>
   </div>
   <div class="panel" style="margin-top:12px">
     <div><b>当前权限（对象形态 + 往返核对）</b><pre id="pUser">点"刷新当前权限"</pre></div>
@@ -69,14 +68,21 @@
 
 <div class="card">
   <div class="row" style="justify-content:space-between">
-    <b>场景矩阵</b>
-    <div class="row">
-      <label><input type="checkbox" class="flt" data-g="A" checked> A 装配</label>
-      <label><input type="checkbox" class="flt" data-g="B" checked> B 菜单鉴权</label>
-      <label><input type="checkbox" class="flt" data-g="C" checked> C 行级判定</label>
-      <label><input type="checkbox" class="flt" data-g="D" checked> D 数据范围</label>
-      <label><input type="checkbox" class="flt" data-g="E" checked> E 配置/观察</label>
+    <div>
+      <b>场景矩阵</b>
+      <div class="kv">每条用例按自带身份执行（行内标注），不随上方手工身份变化</div>
     </div>
+    <div class="row">
+      <button class="primary" id="runAll">全部运行</button>
+      <span class="summary" id="summary"></span>
+    </div>
+  </div>
+  <div class="row" style="margin-top:8px">
+    <label><input type="checkbox" class="flt" data-g="A" checked> A 装配</label>
+    <label><input type="checkbox" class="flt" data-g="B" checked> B 菜单鉴权</label>
+    <label><input type="checkbox" class="flt" data-g="C" checked> C 行级判定</label>
+    <label><input type="checkbox" class="flt" data-g="D" checked> D 数据范围</label>
+    <label><input type="checkbox" class="flt" data-g="E" checked> E 配置/观察</label>
   </div>
   <table>
     <thead><tr><th style="width:56px">编号</th><th style="width:26%">场景</th><th>期望</th><th style="width:66px">结果</th><th style="width:190px">证据</th><th style="width:52px"></th></tr></thead>
@@ -85,19 +91,19 @@
 </div>
 
 <div class="card">
-  <b>自由调用</b>
+  <b>自由调用</b><span class="kv">身份取自上方的「手工身份」</span>
   <div class="row" style="margin-top:8px">
     <select id="m"><option>GET</option><option>POST</option></select>
     <input id="path" size="34" placeholder="/workOrder/editable" value="/workOrder/rangeList">
     <input id="body" size="46" placeholder='POST 时填 JSON：{"id":1}' value="">
-    <button id="call">按当前身份发送</button>
+    <button id="call">按手工身份发送</button>
   </div>
   <pre id="pCall">—</pre>
 </div>
 
 <script>
 // 场景定义与 README 第 6 节、verify.sh 的编号一一对应。
-// demoUser 省略 = 用下拉框当前身份；demoUser:'' = 强制不带身份头。
+// 每条用例必须声明 demoUser；demoUser:'' = 强制不带身份头。
 const S = [
  {id:'B1a',g:'B',name:'方法级声明只管辖该端点（bob 调 guarded）',demoUser:'bob',m:'GET',p:'/methodLevel/guarded',ex:'code 403',ck:r=>r.code===403},
  {id:'B1b',g:'B',name:'同类未声明端点直接放行（bob 调 free）',demoUser:'bob',m:'GET',p:'/methodLevel/free',ex:'code 200',ck:r=>r.code===200},
@@ -191,7 +197,7 @@ async function logOf(key) {
 }
 
 async function run(s) {
-  const demoUser = s.demoUser !== undefined ? s.demoUser : document.getElementById('demoUser').value;
+  const demoUser = s.demoUser;
   const traceId = 'ui-' + s.id + '-' + Date.now();
   let before = null;
   if (s.log) before = await logOf(s.log);
@@ -272,7 +278,7 @@ function build() {
     const tr = document.createElement('tr');
     tr.id = 'row-' + s.id;
     tr.innerHTML = '<td class="id">' + s.id + '</td>'
-      + '<td>' + esc(s.name) + '<div class="kv">' + (s.demoUser!==undefined?('身份：'+(s.demoUser||'无')):'身份：跟随下拉框') + (s.log?('　证据表：'+s.log):'') + '</div></td>'
+      + '<td>' + esc(s.name) + '<div class="kv">身份：' + (s.demoUser || '无') + '（固定）' + (s.log?('　证据表：'+s.log):'') + '</div></td>'
       + '<td>' + esc(s.ex) + '</td>'
       + '<td class="res"><span class="tag todo">待运行</span></td>'
       + '<td class="ev"><span class="kv">—</span></td>'
@@ -319,12 +325,17 @@ document.getElementById('menuApi').onclick = async () => {
 };
 document.getElementById('call').onclick = async () => {
   const m = document.getElementById('m').value, p = document.getElementById('path').value, b = document.getElementById('body').value;
+  const demoUser = document.getElementById('demoUser').value;
   const tid = 'ui-manual-' + Date.now();
-  const r = await call(m, p, b ? JSON.parse(b) : {}, document.getElementById('demoUser').value, tid);
+  const r = await call(m, p, b ? JSON.parse(b) : {}, demoUser, tid);
   const t = await traceOf(tid);
-  document.getElementById('pCall').textContent = 'HTTP ' + r.__http + '\n' + JSON.stringify(r, null, 1) + '\n\n本次下发的语句：\n' + prettifyTrace(t);
+  document.getElementById('pCall').textContent = '身份：' + (demoUser || '无') + '\nHTTP ' + r.__http + '\n' + JSON.stringify(r, null, 1) + '\n\n本次下发的语句：\n' + prettifyTrace(t);
 };
 Array.from(document.querySelectorAll('.flt')).forEach(c => c.onchange = build);
+document.getElementById('demoUser').onchange = () => {
+  document.getElementById('pCall').textContent = '—';
+  document.getElementById('whoami').click();
+};
 build();
 document.getElementById('demoUser').value = 'alice';
 document.getElementById('whoami').click();
