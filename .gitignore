@@ -46,3 +46,4 @@ cloud-alibaba/nacos-server/nacos-server-2.1.1/nacos/data/
 
 # 排除kewen的配置文件
 **/*-kewen.yml
+data/auth_core_sample.*.db
