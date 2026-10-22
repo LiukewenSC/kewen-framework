@@ -5,6 +5,7 @@
 -- ============================================================
 -- 1. 示例用户与权限串（AuthCurrentUserContextHolder 的数据来源）
 --    alice=工单管理员, bob=只读角色, dave=部门角色(双位置组合), erin=权限串含引号载荷
+--    frank=只持有一条继承型串 DEPTINHERIT__100（该串的管辖用例见 /deptInherit/ledger）
 --    carol 故意没有任何行，用来演"权限集合为空即拒绝"
 -- ============================================================
 INSERT INTO `demo_user_auth` (`username`, `auth_str`, `auth_desc`)
@@ -19,6 +20,10 @@ WHERE NOT EXISTS (SELECT 1 FROM `demo_user_auth` WHERE `username` = 'bob' AND `a
 INSERT INTO `demo_user_auth` (`username`, `auth_str`, `auth_desc`)
 SELECT 'dave', 'DEPT_ROLE__100_20', 'DEPT_ROLE__研发部_资产角色'
 WHERE NOT EXISTS (SELECT 1 FROM `demo_user_auth` WHERE `username` = 'dave' AND `auth_str` = 'DEPT_ROLE__100_20');
+-- frank 只持有继承型串，没有角色：用来证明"谁能进 /deptInherit/ledger"完全由这条串决定
+INSERT INTO `demo_user_auth` (`username`, `auth_str`, `auth_desc`)
+SELECT 'frank', 'DEPTINHERIT__100', 'DEPTINHERIT__研发部'
+WHERE NOT EXISTS (SELECT 1 FROM `demo_user_auth` WHERE `username` = 'frank' AND `auth_str` = 'DEPTINHERIT__100');
 -- erin 的权限串本身含单引号，用来验证权限串只作为数据参与比对、不会被解释成语句片段
 INSERT INTO `demo_user_auth` (`username`, `auth_str`, `auth_desc`)
 SELECT 'erin', 'ROLE__9'' OR ''1''=''1', 'ROLE__9'' OR ''1''=''1'
@@ -166,6 +171,9 @@ SELECT '/classNoDoc/all', 'ROLE__10' WHERE NOT EXISTS (SELECT 1 FROM `demo_menu_
 -- 同名文案的两个端点：只把 A 授给 ROLE__20，B 不授给任何人，用来证明两行相互独立
 INSERT INTO `demo_menu_auth` (`path`, `auth_str`)
 SELECT '/methodLevel/sameDocA', 'ROLE__20' WHERE NOT EXISTS (SELECT 1 FROM `demo_menu_auth` WHERE `path` = '/methodLevel/sameDocA' AND `auth_str` = 'ROLE__20');
+-- 继承型标记只授予 frank：核心层按串的整值相等判定，"下级部门"这层语义由持有方怎么装配决定
+INSERT INTO `demo_menu_auth` (`path`, `auth_str`)
+SELECT '/deptInherit/ledger', 'DEPTINHERIT__100' WHERE NOT EXISTS (SELECT 1 FROM `demo_menu_auth` WHERE `path` = '/deptInherit/ledger' AND `auth_str` = 'DEPTINHERIT__100');
 -- 工单写端点：alice 与 bob 都能进菜单，差异只体现在行级判定上
 INSERT INTO `demo_menu_auth` (`path`, `auth_str`)
 SELECT '/workOrder/update', 'ROLE__10' WHERE NOT EXISTS (SELECT 1 FROM `demo_menu_auth` WHERE `path` = '/workOrder/update' AND `auth_str` = 'ROLE__10');

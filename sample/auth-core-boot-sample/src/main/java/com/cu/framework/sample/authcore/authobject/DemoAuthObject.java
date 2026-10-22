@@ -22,8 +22,8 @@ import java.util.List;
  * 之所以要重新序列化而不是原样退回入参：判定用的串必须是从对象结构拼出来的，
  * 往返不一致就说明编解码规则没走通，问题会暴露在这里而不是藏在判定结果里。
  * <p>
- * 列表的个数与实体命名按示例实际需要来：本示例只有 {@code USER}、{@code ROLE}、
- * {@code DEPT_ROLE} 三种标记，因此只有三个列表——没有的标记不预留空列表
+ * 列表的个数与实体命名按示例实际需要来：本示例有 {@code USER}、{@code ROLE}、
+ * {@code DEPT_ROLE}、{@code DEPTINHERIT} 四种标记，因此只有四个列表——没有的标记不预留空列表
  *
  * @author kewen
  * @since 2026-10-20
@@ -40,6 +40,8 @@ public class DemoAuthObject extends AbstractAuthObject {
     private List<DemoRole> demoRoles = new ArrayList<>();
     /** 部门+角色的组合权限，标记 {@code DEPT_ROLE} */
     private List<DeptRole> deptRoles = new ArrayList<>();
+    /** 继承型权限，标记 {@code DEPTINHERIT}，语义由上层赋予，核心层只管编解码 */
+    private List<DemoInheritDept> inheritDepts = new ArrayList<>();
 
     /**
      * 从归位后的对象重新拼出权限串，用 Set 去重
@@ -56,6 +58,9 @@ public class DemoAuthObject extends AbstractAuthObject {
         for (DeptRole deptRole : deptRoles) {
             flatteningAuthorities.add(deptRole.getAuth());
         }
+        for (DemoInheritDept inheritDept : inheritDepts) {
+            flatteningAuthorities.add(inheritDept.getAuth());
+        }
         return flatteningAuthorities;
     }
 
@@ -67,6 +72,7 @@ public class DemoAuthObject extends AbstractAuthObject {
         demoUsers.clear();
         demoRoles.clear();
         deptRoles.clear();
+        inheritDepts.clear();
         for (IFlagAuthEntity entity : abstractAuthEntities) {
             if (entity instanceof DemoUser) {
                 demoUsers.add((DemoUser) entity);
@@ -74,6 +80,8 @@ public class DemoAuthObject extends AbstractAuthObject {
                 demoRoles.add((DemoRole) entity);
             } else if (entity instanceof DeptRole) {
                 deptRoles.add((DeptRole) entity);
+            } else if (entity instanceof DemoInheritDept) {
+                inheritDepts.add((DemoInheritDept) entity);
             }
         }
     }
@@ -88,5 +96,9 @@ public class DemoAuthObject extends AbstractAuthObject {
 
     public void addDeptRoles(DeptRole... items) {
         deptRoles.addAll(Arrays.asList(items));
+    }
+
+    public void addInheritDepts(DemoInheritDept... items) {
+        inheritDepts.addAll(Arrays.asList(items));
     }
 }

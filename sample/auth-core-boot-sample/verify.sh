@@ -70,6 +70,15 @@ else
   no A4b "角色/用户两类都不许丢" "roundTripConsistent=true 且每条串至少出现 2 次" "rc=$RC role=$NROLE user=$NUSER $(printf '%s' "$BODY" | head -c 240)"
 fi
 
+# A5：继承型标记的不对称。配置侧权限集合体能把 DEPTINHERIT__100 拆回实体再拼回同一条串；
+# 用户侧权限集合体遇到它必须当场失败——串里不含"这是哪个部门的下级"，反解只能靠猜
+BODY=$(curl -s "$BASE/demo/inherit-asymmetry")
+if printf '%s' "$BODY" | grep -q '"configSideConsistent":true'    && printf '%s' "$BODY" | grep -q '"configSideParsedInto":1'    && printf '%s' "$BODY" | grep -q '"userSideRejected":true'    && printf '%s' "$BODY" | grep -q 'DEPTINHERIT'; then
+  ok A5 "继承串在配置侧无损往返，用户权限体反解当场失败且点名 DEPTINHERIT"
+else
+  no A5 "往返一致 + 反解当场失败" "configSideConsistent:true / configSideParsedInto:1 / userSideRejected:true / 消息含 DEPTINHERIT" "$(printf '%s' "$BODY" | head -c 300)"
+fi
+
 # ---------------- B 菜单鉴权 ----------------
 BODY=$(get_as bob /methodLevel/guarded); [ "$(code_of "$BODY")" = "403" ] && ok B1a "方法级声明：bob 被拒" || no B1a "方法级声明拒绝" 403 "$BODY"
 BODY=$(get_as bob /methodLevel/free);   [ "$(code_of "$BODY")" = "200" ] && ok B1b "同类未声明端点放行" || no B1b "同类未声明端点放行" 200 "$BODY"
@@ -92,6 +101,9 @@ BODY=$(get_as bob /methodLevel/sameDocA); [ "$(code_of "$BODY")" = "200" ] && ok
 BODY=$(get_as bob /methodLevel/sameDocB); [ "$(code_of "$BODY")" = "403" ] && ok B9b "同名文案 B 仍独立拒绝（两行授权不共用）" || no B9b "B 应被拒" 403 "$BODY"
 BODY=$(get_as alice /classLevel/all); [ "$(code_of "$BODY")" = "200" ] && ok B10a "改文案后 alice 归属不变" || no B10a "改文案后放行" 200 "$BODY"
 BODY=$(get_as bob /classLevel/all);   [ "$(code_of "$BODY")" = "403" ] && ok B10b "改文案后 bob 仍被拒（身份只认 path）" || no B10b "改文案后拒绝" 403 "$BODY"
+# B11/B12：/deptInherit/ledger 只被授予 DEPTINHERIT__100 一条串，谁能进只取决于谁持有它
+BODY=$(get_as frank /deptInherit/ledger); [ "$(code_of "$BODY")" = "200" ] && ok B11 "继承型标记放行持有它的用户" || no B11 "frank 应放行" 200 "$BODY"
+BODY=$(get_as bob   /deptInherit/ledger); [ "$(code_of "$BODY")" = "403" ] && ok B12 "同一条串对不持有者拒绝（bob 只有 ROLE__20）" || no B12 "bob 应被拒" 403 "$BODY"
 
 # ---------------- C 行级数据操作权限 ----------------
 BEFORE=$(log_count workOrder.update)
@@ -268,7 +280,7 @@ if [ "$STAGE" = "restart" ]; then
     no B7b "人工备注保持" "manual-remark" "$ROW"
   fi
   TOTAL=$(curl -s "$BASE/demo/menu-api" | grep -o '"path"' | wc -l | tr -d ' ')
-  [ "$TOTAL" = "23" ] && ok E3a "菜单行不因重复启动增长" || no E3a "23 行不变" 23 "$TOTAL"
+  [ "$TOTAL" = "25" ] && ok E3a "菜单行不因重复启动增长" || no E3a "25 行不变" 25 "$TOTAL"
   for table in demo_auth_data demo_user_auth demo_menu_auth demo_work_order demo_asset demo_customer; do
     b=$(printf '%s' "$BEFORE" | grep -o "\"tableName\":\"$table\",\"rowCount\":[0-9]*" | cut -d: -f3)
     a=$(printf '%s' "$AFTER" | grep -o "\"tableName\":\"$table\",\"rowCount\":[0-9]*" | cut -d: -f3)

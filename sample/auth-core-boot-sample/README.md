@@ -103,9 +103,9 @@ java -jar target/auth-core-boot-sample-0.0.1-SNAPSHOT-exec.jar
 
 启动后打开 **`http://localhost:8082/coredemo/`**（就是 `src/main/resources/static/index.html`，纯静态页 + fetch，不引任何前端构建与模板引擎）。
 
-它是本文第 6 节那张矩阵的可点击版本，49 条用例逐条标注"身份 / 期望 / 结果 / 证据"：
+它是本文第 6 节那张矩阵的可点击版本，52 条用例逐条标注"身份 / 期望 / 结果 / 证据"：
 
-- 顶部下拉框切换身份（alice / bob / carol / dave / erin / 不带请求头），"全部运行"按当前身份逐条跑并给通过与否；
+- 顶部下拉框切换身份（alice / bob / carol / dave / erin / frank / 不带请求头），"全部运行"按当前身份逐条跑并给通过与否；
 - 每条用例的证据栏回显**该次请求实际下发的 SQL**（含框架改写后的最终语句）与**副作用计数增量**——判定拒绝时看的是"没有新增行"，不是响应码；
 - 三个面板分别看当前权限的编解码往返、各表行数（重启后应不变）、`demo_menu_api` 的菜单树；
 - 底部"自由调用"可以手填路径与 JSON 体，按当前身份发一次并取回语句。
@@ -148,6 +148,7 @@ java -jar target/auth-core-boot-sample-0.0.1-SNAPSHOT-exec.jar
 | A2 | 缺菜单权限处理 | 测试里不注册该 bean | 启动异常文本 | 启动失败且指到 `AuthMenuHandler` | 测试 `StarterAssemblyTest` |
 | A3 | 缺菜单持久化 | 测试里不注册该 bean | 启动结果 + `processor.run()` | 正常启动，只记跳过 | 测试 `StarterAssemblyTest` |
 | A4 | 权限串编解码往返 | `DemoAuthObject.listBaseAuth()` 重新序列化 | `GET /demo/current-demoUser` | 原文与重序列化一致，双位置组合能解析 | 脚本 `A4` |
+| A5 | 权限体可反解与不可反解的不对称 | 同一条 `DEPTINHERIT__100` 分别喂 `DemoAuthObject` 与 `DemoUserAuthInfo` | `GET /demo/inherit-asymmetry` | 配置侧往返一致且归位 1 条；用户侧当场抛错，原因点名 `DEPTINHERIT` | 脚本 `A5`、测试 `DemoInheritAuthObjectTest` |
 
 ## B 菜单鉴权
 
@@ -163,6 +164,8 @@ java -jar target/auth-core-boot-sample-0.0.1-SNAPSHOT-exec.jar
 | B8 | 文案缺失回落 | 类无 `@AuthMenuDoc`、方法无 | `demo_menu_api.name` | 分别是类简单名、`类名>方法名` | 脚本 `B8` |
 | B9 | 同文案两行独立 | `sameDocA`/`sameDocB` 同名 | bob 分别调两个 | A 通 B 拒 | 脚本 `B9` |
 | B10 | 改文案不改归属 | 把 `/classLevel/all` 的 name 改掉 | alice 通、bob 仍拒 | 授权归属只认 path | 脚本 `B10` |
+| B11 | 继承型标记只放行持有者 | `/deptInherit/ledger` 仅授予 `DEPTINHERIT__100`，frank 持有该串 | frank 调该端点 | 200 | 脚本 `B11` |
+| B12 | 同一条串对不持有者拒绝 | 同上，bob 只有 `ROLE__20` | bob 调同一端点 | 403 | 脚本 `B12` |
 
 ## C 行级数据操作权限
 

@@ -22,6 +22,12 @@ public class UserAuthInfo extends AbstractAuthObject {
 
     private static final long serialVersionUID = 842909202036381753L;
     /**
+     * 权限体所属的用户 ID。它同时是 resultMap 的父行鉴别列：根节点没有鉴别列时，
+     * MyBatis 会把嵌套集合的鉴别列并进父行键，隶属多个部门（或多个角色）的用户会被拆成多个权限体，
+     * 单值返回的查询随即抛 TooManyResults
+     */
+    protected Long userId;
+    /**
      * 用户集合
      */
     protected User user;
@@ -50,13 +56,18 @@ public class UserAuthInfo extends AbstractAuthObject {
 
 
     /**
-     * 将 users、roles、depts、deptRoles 中所有权限实体的权限字符串汇总为 BaseAuth 集合（Set 去重），
+     * 将 user、roles、depts（含各自的上级链）、deptRoles 中所有权限实体的权限字符串汇总为 BaseAuth 集合（Set 去重），
      * 并回调 addAnotherBashAuth 供子类追加其他权限
      * @return 汇总后的基础权限集合，只在用户需要匹配权限字符串的时候使用，不会有逆向操作，因此可以放心构建；
      * 当需要扩展用户权限时，如需要支持跨层级的部门+角色、如支持角色树等，可以扩展此处；
+     * 用户本身缺失时返回空集合：连用户都装载不出来的权限体，其任何权限都不可信，
+     * 让它参与判定等于把装载层的缺陷伪装成数据问题
      */
     @Override
     public Collection<FlatteningAuthority> listBaseAuth() {
+        if (user == null) {
+            return Collections.emptySet();
+        }
         Collection<FlatteningAuthority> flatteningAuthorities = new HashSet<>();
         flatteningAuthorities.add(user.getAuth());
         if (roles != null) {
@@ -118,19 +129,23 @@ public class UserAuthInfo extends AbstractAuthObject {
 
 
     /**
-     * 填充
-     * @param sysUserComposite
+     * 装载期填充：为每个部门展开严格上级链，并把部门与角色两两组合成部门角色权限。
+     * 可重复调用——两个集合都是先清空再写入，同一个权限体被装载多次不会累积。
+     * @param sysUserComposite 上级链的查询入口
      */
     public void fillUserAuth(SysUserComposite sysUserComposite){
         List<Role> roles1 = getRoles();
         List<DeptWithParents> depts1 = getDepts();
+        deptRoles.clear();
         for (DeptWithParents dept : depts1) {
+            List<ParentDept> parents = dept.getParents();
+            parents.clear();
             for (Role role : roles1) {
                 deptRoles.add(new DeptRole(dept,role));
             }
-            List<ParentDept> parentChain = sysUserComposite.getDeptListByDeptId(dept.getId());
-            if (parentChain != null && !parentChain.isEmpty()){
-                dept.getParents().addAll(parentChain);
+            List<ParentDept> parentChain = sysUserComposite.listAncestorDepts(dept.getId());
+            if (parentChain != null){
+                parents.addAll(parentChain);
             }
         }
     }

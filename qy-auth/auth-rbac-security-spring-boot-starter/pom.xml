@@ -28,5 +28,11 @@
             <artifactId>login-spring-boot-starter</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <!-- 仅测试用：断言凭证缺失时认证主体仍能装载出来 -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>

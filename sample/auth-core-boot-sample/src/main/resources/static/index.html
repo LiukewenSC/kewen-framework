@@ -51,6 +51,7 @@
         <option value="carol">carol（零权限）</option>
         <option value="dave">dave（DEPT_ROLE__100_20）</option>
         <option value="erin">erin（权限串含单引号）</option>
+        <option value="frank">frank（DEPTINHERIT__100 继承串）</option>
       </select>
     </label>
     <button class="primary" id="runAll">全部运行</button>
@@ -108,6 +109,8 @@ const S = [
  {id:'B9a',g:'B',name:'同名文案 A 已授予 bob',demoUser:'bob',m:'GET',p:'/methodLevel/sameDocA',ex:'code 200',ck:r=>r.code===200},
  {id:'B9b',g:'B',name:'同名文案 B 仍独立拒绝（两行不共用授权）',demoUser:'bob',m:'GET',p:'/methodLevel/sameDocB',ex:'code 403',ck:r=>r.code===403},
  {id:'B10',g:'B',name:'改文案不改归属：人工改过 name 后授权照旧',demoUser:'bob',m:'GET',p:'/classLevel/all',ex:'code 403（身份只认 path）',ck:r=>r.code===403},
+ {id:'B11',g:'B',name:'继承型标记只放行持有者（frank 调 ledger）',demoUser:'frank',m:'GET',p:'/deptInherit/ledger',ex:'code 200',ck:r=>r.code===200},
+ {id:'B12',g:'B',name:'同一条继承串对不持有者拒绝（bob 只有 ROLE__20）',demoUser:'bob',m:'GET',p:'/deptInherit/ledger',ex:'code 403',ck:r=>r.code===403},
 
  {id:'C1',g:'C',name:'单 ID 命中：alice 编辑工单 1',demoUser:'alice',m:'POST',p:'/workOrder/update',b:{id:1,title:'ui'},log:'workOrder.update',ex:'code 200 且副作用 +1',ck:(r,t,x,l)=>r.code===200&&l.delta===1},
  {id:'C2',g:'C',name:'单 ID 未命中：bob 编辑工单 1',demoUser:'bob',m:'POST',p:'/workOrder/update',b:{id:1,title:'ui'},log:'workOrder.update',ex:'code 403 且副作用不变（方法体没执行）',ck:(r,t,x,l)=>r.code===403&&l.delta===0},
@@ -156,7 +159,8 @@ const S = [
  {id:'D12',g:'E',name:'改写后的最终语句可观测',demoUser:'alice',m:'GET',p:'/workOrder/rangeList',traceHas:"biz_module = 'work_order'",ex:'trace 里能看到注入的槽位子查询',ck:(r,t)=>t.includes('demo_auth_data')},
  {id:'D10',g:'E',name:'写语句不被追加权限条件',demoUser:'alice',m:'POST',p:'/workOrder/updateUnchecked',b:{id:5},ex:'update 语句存在，且其中不含权限子查询',ck:(r,t)=>{const q=sqlOf(t,'update demo_work_order');return q.length>0&&q.every(x=>x.indexOf('demo_auth_data')<0)}},
  {id:'E1',g:'E',name:'权限表表名与六个列名全部由配置映射生效',demoUser:'alice',m:'GET',p:'/workOrder/rangeList',traceHas:'auth_str',ex:'注入用的是自定义列名',ck:(r,t)=>t.includes('SELECT biz_data_id FROM demo_auth_data WHERE auth_str')},
- {id:'A4',g:'A',name:'权限体是对象形态，且串→对象→串往返一致（双位置组合）',demoUser:'dave',m:'GET',p:'/demo/current-user',ex:'authObject.deptRoles 是对象、roundTripConsistent=true',ck:r=>{const d=r.data||{};return d.roundTripConsistent===true&&JSON.stringify(d.authObject||{}).indexOf('"deptRoles":[{"deptId":100')>=0&&JSON.stringify(d.reSerialised||[]).indexOf('DEPT_ROLE__100_20')>=0;}}
+ {id:'A4',g:'A',name:'权限体是对象形态，且串→对象→串往返一致（双位置组合）',demoUser:'dave',m:'GET',p:'/demo/current-user',ex:'authObject.deptRoles 是对象、roundTripConsistent=true',ck:r=>{const d=r.data||{};return d.roundTripConsistent===true&&JSON.stringify(d.authObject||{}).indexOf('"deptRoles":[{"deptId":100')>=0&&JSON.stringify(d.reSerialised||[]).indexOf('DEPT_ROLE__100_20')>=0;}},
+ {id:'A5',g:'A',name:'继承串在配置侧可反解、在用户权限体上当场失败',demoUser:'',m:'GET',p:'/demo/inherit-asymmetry',ex:'configSideConsistent=true、configSideParsedInto=1、userSideRejected=true 且失败原因点名 DEPTINHERIT',ck:r=>{const d=r.data||{};return d.configSideConsistent===true&&d.configSideParsedInto===1&&d.userSideRejected===true&&/DEPTINHERIT/.test(d.userSideFailure||'');}}
 ];
 
 function range(a,b){const o=[];for(let i=a;i<b;i++)o.push(i);return o}
