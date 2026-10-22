@@ -99,6 +99,13 @@ mvn -q package -DskipTests
 java -jar target/auth-core-boot-sample-0.0.1-SNAPSHOT-exec.jar
 ```
 
+> **启动目录必须是本模块目录。** Spring Boot 会同时读取工作目录下的 `application.yml`，且文件配置优先于 classpath。
+> 如果从仓库根目录启动，根目录的 `application.yml` 会把 `cu.auth.auth-data-table.table-name` 覆盖成 `sys_auth_data`，
+> 而本示例的 H2 库只有 `demo_auth_data`：菜单鉴权与权限回显正常，但所有 `@AuthDataRange` / `@AuthDataOperation`
+> 接口都会以 HTTP 500 报 `Table "sys_auth_data" not found`。
+> IDEA 运行配置里要把 **Working directory** 设为 `sample/auth-core-boot-sample`（或 `$MODULE_WORKING_DIR$`）；
+> 命令行启动就是上面那条 `cd`。
+
 ## 4.1 浏览器验证台
 
 启动后打开 **`http://localhost:8082/coredemo/`**（就是 `src/main/resources/static/index.html`，纯静态页 + fetch，不引任何前端构建与模板引擎）。
