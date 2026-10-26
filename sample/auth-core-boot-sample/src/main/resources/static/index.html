@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>auth-core 验证台</title>
+<title>auth-core 权限透视台</title>
 <style>
   :root { color-scheme: light dark; }
   body { font: 14px/1.6 -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif; margin: 0; padding: 24px; background: #f5f6f8; color: #1c1f23; }
@@ -15,6 +15,7 @@
   select, button, input { font: inherit; padding: 6px 10px; border-radius: 6px; border: 1px solid #c9ced6; background: #fff; }
   button { cursor: pointer; }
   button:hover { background: #eef2f7; }
+  button:disabled { opacity: .55; cursor: default; }
   button.primary { background: #1a56db; color: #fff; border-color: #1a56db; }
   button.primary:hover { background: #1447b8; }
   table { width: 100%; border-collapse: collapse; margin-top: 8px; }
@@ -25,321 +26,674 @@
   .pass { background: #e3f6e8; color: #17713a; }
   .fail { background: #fdecea; color: #b3261e; }
   .todo { background: #eef1f5; color: #5b6675; }
+  .info { background: #e8eefc; color: #274690; }
   .grp { background: #eef2ff; color: #3546a8; }
   pre { margin: 6px 0 0; padding: 8px; background: #f7f8fa; border-radius: 6px; white-space: pre-wrap; word-break: break-all; font-size: 12px; max-height: 190px; overflow: auto; }
   .kv { color: #555; font-size: 12px; }
-  .summary { font-size: 15px; font-weight: 700; }
+  .summary { font-size: 14px; font-weight: 700; }
   .panel { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
   code { background: #f2f4f7; padding: 1px 5px; border-radius: 4px; }
+  details { margin-top: 4px; }
+  summary { cursor: pointer; }
+  h4 { margin: 14px 0 4px; font-size: 14px; }
+  .ev button { margin-top: 6px; }
 </style>
 </head>
 <body>
 
-<h1>auth-core 验证台</h1>
+<h1>auth-core 权限透视台</h1>
 <div class="sub">
-  这份页面就是 <code>README.md</code> 第 6 节场景矩阵的可点击版本：每行标注声明位置、期望结果，运行后回显
-  <b>实际下发的 SQL</b> 与 <b>副作用计数</b>——判定拒绝时方法体到底有没有执行，看的是后者。
+  一行一个判权场景；顶部身份是镜头，切换后菜单层、行级层与数据范围层会一起刷新。
+  页面只做只读判定与只读查询，不执行编辑、审批、授权等写操作；“真实调用”只把请求填进自由调用面板。
 </div>
 
 <div class="card">
   <div class="row">
-    <label>手工身份
-      <select id="demoUser">
-        <option value="">（不带请求头 = 无身份）</option>
-        <option value="alice">alice（ROLE__10 工单管理员）</option>
+    <label>身份
+      <select id="identity">
+        <option value="alice">alice（ROLE__10 + USER__1）</option>
         <option value="bob">bob（ROLE__20 只读）</option>
         <option value="carol">carol（零权限）</option>
         <option value="dave">dave（DEPT_ROLE__100_20）</option>
         <option value="erin">erin（权限串含单引号）</option>
-        <option value="frank">frank（DEPTINHERIT__100 继承串）</option>
+        <option value="frank">frank（DEPTINHERIT__100）</option>
+        <option value="">（不带请求头 = 无身份）</option>
       </select>
     </label>
-    <span class="kv">仅用于权限回显与自由调用；矩阵各用例身份固定</span>
+    <button class="primary" id="refresh">刷新判定</button>
     <button id="whoami">刷新当前权限</button>
     <button id="counts">刷新表行数</button>
     <button id="menuApi">刷新菜单登记</button>
+    <span class="kv" id="refreshState"></span>
   </div>
+  <div class="kv" style="margin-top:6px">身份只来自请求头 X-Demo-User；“无身份”是显式选项，不回退到任何固定夹具。</div>
   <div class="panel" style="margin-top:12px">
-    <div><b>当前权限（对象形态 + 往返核对）</b><pre id="pUser">点"刷新当前权限"</pre></div>
-    <div><b>各表行数（重启后应不变）</b><pre id="pCounts">点"刷新表行数"</pre></div>
-    <div><b>菜单登记 demo_menu_api</b><pre id="pMenu">点"刷新菜单登记"</pre></div>
+    <div><b>当前权限（对象形态 + 往返核对）</b><pre id="pUser">点“刷新当前权限”</pre></div>
+    <div><b>各表行数（重启后应不变）</b><pre id="pCounts">点“刷新表行数”</pre></div>
+    <div><b>菜单登记 demo_menu_api</b><pre id="pMenu">点“刷新菜单登记”</pre></div>
   </div>
 </div>
 
 <div class="card">
   <div class="row" style="justify-content:space-between">
     <div>
-      <b>场景矩阵</b>
-      <div class="kv">每条用例按自带身份执行（行内标注），不随上方手工身份变化</div>
+      <b>权限主矩阵</b>
+      <div class="kv">菜单 = 能不能进接口；行级 = 能不能操作这条数据；数据范围 = 能看到哪些行。</div>
+      <div class="kv">权限串含引号的身份（erin）不跑数据范围行：示例刻意避免让引号串进入按字面量拼接的范围路径，见 README 第 10 节。</div>
     </div>
-    <div class="row">
-      <button class="primary" id="runAll">全部运行</button>
-      <span class="summary" id="summary"></span>
-    </div>
-  </div>
-  <div class="row" style="margin-top:8px">
-    <label><input type="checkbox" class="flt" data-g="A" checked> A 装配</label>
-    <label><input type="checkbox" class="flt" data-g="B" checked> B 菜单鉴权</label>
-    <label><input type="checkbox" class="flt" data-g="C" checked> C 行级判定</label>
-    <label><input type="checkbox" class="flt" data-g="D" checked> D 数据范围</label>
-    <label><input type="checkbox" class="flt" data-g="E" checked> E 配置/观察</label>
+    <span class="summary" id="summary"></span>
   </div>
   <table>
-    <thead><tr><th style="width:56px">编号</th><th style="width:26%">场景</th><th>期望</th><th style="width:66px">结果</th><th style="width:190px">证据</th><th style="width:52px"></th></tr></thead>
+    <thead>
+      <tr>
+        <th style="width:20%">用例</th>
+        <th style="width:8%">判定层</th>
+        <th style="width:12%">菜单</th>
+        <th style="width:19%">行级</th>
+        <th style="width:16%">数据 / 结论</th>
+        <th style="width:25%">依据 / 证据</th>
+      </tr>
+    </thead>
     <tbody id="tbody"></tbody>
   </table>
 </div>
 
-<div class="card">
-  <b>自由调用</b><span class="kv">身份取自上方的「手工身份」</span>
+<div class="card" id="freeCallCard">
+  <b>自由调用</b><span class="kv">身份取自上方的「身份」；“真实调用”只预填，不自动发送</span>
   <div class="row" style="margin-top:8px">
     <select id="m"><option>GET</option><option>POST</option></select>
-    <input id="path" size="34" placeholder="/workOrder/editable" value="/workOrder/rangeList">
+    <input id="path" size="34" placeholder="/workOrder/rangeList" value="/workOrder/rangeList">
     <input id="body" size="46" placeholder='POST 时填 JSON：{"id":1}' value="">
-    <button id="call">按手工身份发送</button>
+    <button class="primary" id="call">按当前身份发送</button>
   </div>
   <pre id="pCall">—</pre>
 </div>
 
+<div class="card">
+  <details>
+    <summary><b>覆盖核对</b><span class="kv">主表之外的场景由页面面板、verify.sh 或自动化测试覆盖</span></summary>
+    <div id="coverage" style="margin-top:10px"></div>
+  </details>
+</div>
+
 <script>
-// 场景定义与 README 第 6 节、verify.sh 的编号一一对应。
-// 每条用例必须声明 demoUser；demoUser:'' = 强制不带身份头。
-const S = [
- {id:'B1a',g:'B',name:'方法级声明只管辖该端点（bob 调 guarded）',demoUser:'bob',m:'GET',p:'/methodLevel/guarded',ex:'code 403',ck:r=>r.code===403},
- {id:'B1b',g:'B',name:'同类未声明端点直接放行（bob 调 free）',demoUser:'bob',m:'GET',p:'/methodLevel/free',ex:'code 200',ck:r=>r.code===200},
- {id:'B2a',g:'B',name:'类级声明：已授予的路径放行（alice 调 all）',demoUser:'alice',m:'GET',p:'/classLevel/all',ex:'code 200',ck:r=>r.code===200},
- {id:'B2b',g:'B',name:'类级声明下逐路径授权独立（two 无人授予）',demoUser:'alice',m:'GET',p:'/classLevel/two',ex:'code 403',ck:r=>r.code===403},
- {id:'B3',g:'B',name:'两处都没有声明的类不受管辖',demoUser:'bob',m:'GET',p:'/open/ping',ex:'code 200',ck:r=>r.code===200},
- {id:'B4',g:'B',name:'空权限集合（无身份）被拒',demoUser:'',m:'GET',p:'/methodLevel/guarded',ex:'code 403',ck:r=>r.code===403},
- {id:'B5',g:'B',name:'contextPath 已剥离：身份是不带前缀的应用内路径',demoUser:'bob',m:'GET',p:'/methodLevel/guarded',ex:'消息含 /methodLevel/guarded 且不含 /coredemo',ck:r=>/没有API菜单\/methodLevel\/guarded/.test(r.message||'')},
- {id:'B9a',g:'B',name:'同名文案 A 已授予 bob',demoUser:'bob',m:'GET',p:'/methodLevel/sameDocA',ex:'code 200',ck:r=>r.code===200},
- {id:'B9b',g:'B',name:'同名文案 B 仍独立拒绝（两行不共用授权）',demoUser:'bob',m:'GET',p:'/methodLevel/sameDocB',ex:'code 403',ck:r=>r.code===403},
- {id:'B10',g:'B',name:'改文案不改归属：人工改过 name 后授权照旧',demoUser:'bob',m:'GET',p:'/classLevel/all',ex:'code 403（身份只认 path）',ck:r=>r.code===403},
- {id:'B11',g:'B',name:'继承型标记只放行持有者（frank 调 ledger）',demoUser:'frank',m:'GET',p:'/deptInherit/ledger',ex:'code 200',ck:r=>r.code===200},
- {id:'B12',g:'B',name:'同一条继承串对不持有者拒绝（bob 只有 ROLE__20）',demoUser:'bob',m:'GET',p:'/deptInherit/ledger',ex:'code 403',ck:r=>r.code===403},
-
- {id:'C1',g:'C',name:'单 ID 命中：alice 编辑工单 1',demoUser:'alice',m:'POST',p:'/workOrder/update',b:{id:1,title:'ui'},log:'workOrder.update',ex:'code 200 且副作用 +1',ck:(r,t,x,l)=>r.code===200&&l.delta===1},
- {id:'C2',g:'C',name:'单 ID 未命中：bob 编辑工单 1',demoUser:'bob',m:'POST',p:'/workOrder/update',b:{id:1,title:'ui'},log:'workOrder.update',ex:'code 403 且副作用不变（方法体没执行）',ck:(r,t,x,l)=>r.code===403&&l.delta===0},
- {id:'C3',g:'C',name:'多 ID 全命中：alice 批量审批 4,5',demoUser:'alice',m:'POST',p:'/workOrder/batchApprove',b:{ids:[4,5]},log:'workOrder.batchApprove',ex:'code 200 且副作用 +1',ck:(r,t,x,l)=>r.code===200&&l.delta===1},
- {id:'C4',g:'C',name:'部分命中整体拒绝：4 有权、1 无权',demoUser:'alice',m:'POST',p:'/workOrder/batchApprove',b:{ids:[4,1]},log:'workOrder.batchApprove',ex:'code 403 且副作用为 0（已命中的那条也不许执行）',ck:(r,t,x,l)=>r.code===403&&l.delta===0},
- {id:'C5',g:'C',name:'ID 分散在散参/集合/数组三类位置',demoUser:'dave',m:'POST',p:'/asset/scattered',b:{primary:{assetId:101},many:[{assetId:103}],more:[{assetId:101}]},ex:'返回 collected=[101,103,101]',ck:r=>JSON.stringify((r.data||{}).collected||[])==='["101","103","101"]'},
- {id:'C6',g:'C',name:'实参里没有承载对象 = 用法错误',demoUser:'alice',m:'POST',p:'/probe/noCarrier?memo=x',b:{},ex:'code 400 + 未提供业务数据ID',ck:r=>r.code===400&&/未提供业务数据ID/.test(r.message||'')},
- {id:'C7',g:'C',name:'交出的 ID 集合为空 = 用法错误',demoUser:'alice',m:'POST',p:'/probe/emptyIds',b:{ids:[]},ex:'code 400',ck:r=>r.code===400},
- {id:'C8',g:'C',name:'集合含 null = 用法错误',demoUser:'alice',m:'POST',p:'/probe/nullId',b:{ids:[null]},ex:'code 400 + 业务数据ID不能为空',ck:r=>r.code===400&&/不能为空/.test(r.message||'')},
- {id:'C9',g:'C',name:'恰好 100 条：判定确实发生',demoUser:'alice',m:'POST',p:'/probe/bulk',b:{ids:range(1,101)},traceHas:'"idCount":100',ex:'trace 里有 judge 记录 idCount=100',ck:(r,t)=>t.includes('"type":"judge"')&&t.includes('"idCount":100')},
- {id:'C10',g:'C',name:'101 条：直接失败且一次权限查询都不发',demoUser:'alice',m:'POST',p:'/probe/bulk',b:{ids:range(1,102)},ex:'code 400 + trace 里没有 judge',ck:(r,t)=>r.code===400&&!t.includes('"type":"judge"')},
- {id:'C11',g:'C',name:'空权限集合即拒绝（库里 801 明明有授权）',demoUser:'',m:'POST',p:'/probe/call',b:{id:801},ex:'code 403',ck:r=>r.code===403},
- {id:'C12a',g:'C',name:'工单 1 只授了 approve 槽位给 bob：approve 放行',demoUser:'bob',m:'POST',p:'/workOrder/approve',b:{id:1},ex:'code 200',ck:r=>r.code===200},
- {id:'C12b',g:'C',name:'不跨操作回退：同一条数据 edit 槽位仍拒绝',demoUser:'bob',m:'POST',p:'/workOrder/update',b:{id:1},ex:'code 403',ck:r=>r.code===403},
- {id:'C13',g:'C',name:'整型短形态：Integer 交出、BIGINT 存储不误判',demoUser:'dave',m:'POST',p:'/asset/updateIntegerForm',b:{assetId:101},ex:'code 200',ck:r=>r.code===200},
- {id:'C15',g:'C',name:'含引号与注释符的权限描述原样入库',demoUser:'alice',m:'POST',p:'/authData/grant',b:{bizModule:'probe',bizDataId:803,action:'edit',authStr:'ROLE__77',authDesc:"ROLE__77'); DROP TABLE demo_auth_data; --",adminId:900},then:'/demo/auth-data?bizModule=probe&action=edit&bizDataId=803',ex:'描述原样存在、表仍在',ck:(r,t,extra)=>extra.includes('DROP TABLE demo_auth_data')&&extra.includes('"rowCount":1')},
- {id:'C16a',g:'C',name:'含引号的权限串按整值相等仍命中',demoUser:'erin',m:'POST',p:'/probe/quote/call',b:{rawId:'900'},ex:'code 200',ck:r=>r.code===200},
- {id:'C16b',g:'C',name:'不相等的值不命中',demoUser:'erin',m:'POST',p:'/probe/quote/call',b:{rawId:'901'},ex:'code 403',ck:r=>r.code===403},
- {id:'C18',g:'C',name:'未声明的写接口不判定，有受控记录也照常执行',demoUser:'bob',m:'POST',p:'/workOrder/updateUnchecked',b:{id:6},log:'workOrder.updateUnchecked',ex:'code 200 且副作用 +1',ck:(r,t,x,l)=>r.code===200&&l.delta===1},
- {id:'C19',g:'C',name:'授权后同一调用从拒绝变放行',demoUser:'alice',steps:[
-    {m:'POST',p:'/authData/remove',b:{bizModule:'probe',bizDataId:802,adminId:900}},
-    {m:'POST',p:'/authData/grant',b:{bizModule:'probe',bizDataId:802,action:'edit',authStr:'ROLE__10',authDesc:'ROLE__admin',adminId:900}},
-    {m:'POST',p:'/probe/call',b:{id:802}}],ex:'最后一步 code 200',ck:r=>r.code===200},
- {id:'C20',g:'C',name:'清空权限后回归拒绝',demoUser:'alice',steps:[
-    {m:'POST',p:'/authData/remove',b:{bizModule:'probe',bizDataId:802,adminId:900}},
-    {m:'POST',p:'/probe/call',b:{id:802}}],ex:'code 403',ck:r=>r.code===403},
- {id:'C21',g:'C',name:'读回某槽位的权限并填进权限集合体',demoUser:'alice',steps:[
-    {m:'POST',p:'/authData/grant',b:{bizModule:'probe',bizDataId:802,action:'edit',authStr:'ROLE__10',authDesc:'ROLE__admin',adminId:900}},
-    {m:'POST',p:'/authData/fill',b:{bizModule:'probe',bizDataId:802,action:'edit',adminId:900}}],ex:'rowCount=1 且有 filledIntoAuthObject',ck:r=>/filledIntoAuthObject/.test(JSON.stringify(r.data||{}))},
- {id:'C22',g:'C',name:'管理动作自身也受行级管辖（bob 无管理槽位权限）',demoUser:'bob',m:'POST',p:'/authData/grant',b:{bizModule:'probe',bizDataId:802,action:'edit',authStr:'ROLE__20',authDesc:'x',adminId:900},ex:'code 403',ck:r=>r.code===403},
-
- {id:'D1',g:'D',name:'被声明语句注入：alice 的 unified 列表',demoUser:'alice',m:'GET',p:'/workOrder/rangeList',ex:'只回 1,2,4',ck:r=>ids(r)==='1,2,4'},
- {id:'D6',g:'D',name:'EXISTS 匹配与 IN 行集一致',demoUser:'alice',m:'GET',p:'/workOrder/rangeListExists',ex:'只回 1,2,4',ck:r=>ids(r)==='1,2,4'},
- {id:'D4',g:'D',name:'同表两槽位各判各的（edit）',demoUser:'alice',m:'GET',p:'/workOrder/editable',ex:'回 1,2,3',ck:r=>ids(r)==='1,2,3'},
- {id:'D4b',g:'D',name:'同表两槽位各判各的（approve）',demoUser:'alice',m:'GET',p:'/workOrder/approvable',ex:'回 4,5',ck:r=>ids(r)==='4,5'},
- {id:'D5',g:'D',name:'同请求先后用两个槽位互不污染',demoUser:'alice',m:'GET',p:'/workOrder/twoSlots',ex:'editableAgain 仍是 1,2,3',ck:r=>/editableAgain":\[.*"id":3/.test(JSON.stringify(r.data||{}))},
- {id:'D7a',g:'D',name:'权限条件挂到别名 cu（归属客户）',demoUser:'alice',m:'GET',p:'/workOrder/joinCu',ex:'回 1,3,5',ck:r=>ids(r)==='1,3,5'},
- {id:'D7b',g:'D',name:'同一条多表语句挂到别名 cb（下单客户）',demoUser:'alice',m:'GET',p:'/workOrder/joinCb',ex:'回 3,4,6',ck:r=>ids(r)==='3,4,6'},
- {id:'D8',g:'D',name:'dataIdColumn 指向非 id 主键列',demoUser:'dave',m:'GET',p:'/asset/list',ex:'回 101,102',ck:r=>ids(r)==='101,102'},
- {id:'D9',g:'D',name:'未声明即不过滤（carol 零权限也拿全量）',demoUser:'carol',m:'GET',p:'/workOrder/all',ex:'回 6 行',ck:r=>ids(r)==='1,2,3,4,5,6'},
- {id:'D11',g:'D',name:'动态语句运行期拼得出目标表时照常注入',demoUser:'alice',m:'GET',p:'/workOrder/dynamic?status=open',ex:'回 1,2',ck:r=>ids(r)==='1,2'},
- {id:'D11b',g:'D',name:'拼不出目标表时抛异常，不返回未过滤结果',demoUser:'alice',m:'GET',p:'/workOrder/dynamicMissingTable?withJoin=false',ex:'服务端抛异常且不返回任何数据',ck:r=>r.__http>=500&&!r.data},
- {id:'D15',g:'D',name:'空权限集合返回零行而不是 SQL 语法错误',demoUser:'',m:'GET',p:'/workOrder/rangeList',traceHas:'1 = 0',ex:'data 为空数组，且语句带恒假条件',ck:(r,t)=>Array.isArray(r.data)&&r.data.length===0&&t.includes('1 = 0')},
-
- {id:'D2',g:'E',name:'同调用链上未声明的语句原文下发（装载权限那条）',demoUser:'alice',m:'GET',p:'/workOrder/rangeList',ex:'装载权限那条存在，且其中不含权限子查询',ck:(r,t)=>{const q=sqlOf(t,'demo_user_auth');return q.length>0&&q.every(x=>x.indexOf('demo_auth_data')<0)}},
- {id:'D12',g:'E',name:'改写后的最终语句可观测',demoUser:'alice',m:'GET',p:'/workOrder/rangeList',traceHas:"biz_module = 'work_order'",ex:'trace 里能看到注入的槽位子查询',ck:(r,t)=>t.includes('demo_auth_data')},
- {id:'D10',g:'E',name:'写语句不被追加权限条件',demoUser:'alice',m:'POST',p:'/workOrder/updateUnchecked',b:{id:5},ex:'update 语句存在，且其中不含权限子查询',ck:(r,t)=>{const q=sqlOf(t,'update demo_work_order');return q.length>0&&q.every(x=>x.indexOf('demo_auth_data')<0)}},
- {id:'E1',g:'E',name:'权限表表名与六个列名全部由配置映射生效',demoUser:'alice',m:'GET',p:'/workOrder/rangeList',traceHas:'auth_str',ex:'注入用的是自定义列名',ck:(r,t)=>t.includes('SELECT biz_data_id FROM demo_auth_data WHERE auth_str')},
- {id:'A4',g:'A',name:'权限体是对象形态，且串→对象→串往返一致（双位置组合）',demoUser:'dave',m:'GET',p:'/demo/current-user',ex:'authObject.deptRoles 是对象、roundTripConsistent=true',ck:r=>{const d=r.data||{};return d.roundTripConsistent===true&&JSON.stringify(d.authObject||{}).indexOf('"deptRoles":[{"deptId":100')>=0&&JSON.stringify(d.reSerialised||[]).indexOf('DEPT_ROLE__100_20')>=0;}},
- {id:'A5',g:'A',name:'继承串在配置侧可反解、在用户权限体上当场失败',demoUser:'',m:'GET',p:'/demo/inherit-asymmetry',ex:'configSideConsistent=true、configSideParsedInto=1、userSideRejected=true 且失败原因点名 DEPTINHERIT',ck:r=>{const d=r.data||{};return d.configSideConsistent===true&&d.configSideParsedInto===1&&d.userSideRejected===true&&/DEPTINHERIT/.test(d.userSideFailure||'');}}
+// 原场景编号的全集：页面主表覆盖判权场景，覆盖脚注负责能力/规格/启动类场景。
+// 每次加载都会把 S 的 covers 并起来核对，缺失的编号直接标红。
+const EXPECTED_IDS = [
+  'A1','A2','A3','A4','A5',
+  'B1','B1a','B1b','B2','B2a','B2b','B3','B4','B5','B6','B7','B8','B9','B9a','B9b','B10','B11','B12',
+  'C1','C2','C3','C4','C5','C6','C7','C8','C9','C10','C11','C12','C12a','C12b','C13','C15','C16','C16a','C16b','C17','C18','C19','C20','C21','C22',
+  'D1','D2','D3','D4','D4b','D5','D6','D7','D7a','D7b','D8','D9','D10','D11','D11b','D12','D13','D14','D15',
+  'E1','E2','E3'
 ];
 
-function range(a,b){const o=[];for(let i=a;i<b;i++)o.push(i);return o}
-function ids(r){const d=r&&r.data;if(!Array.isArray(d))return '';return d.map(x=>x.id!==undefined?x.id:x.assetId).sort((a,b)=>a-b).join(',')}
+const S = [
+  // ---- 判权行：type=perm，页面主表 ----
+  {id:'P1',type:'perm',name:'调用方法级受管端点',covers:['B1a','B1','B4'],
+   menu:'/methodLevel/guarded',real:{m:'GET',p:'/methodLevel/guarded'}},
+  {id:'P2',type:'perm',name:'调用类级受管端点（已授予路径）',covers:['B2a','B2','B10'],
+   menu:'/classLevel/all',real:{m:'GET',p:'/classLevel/all'}},
+  {id:'P3',type:'perm',name:'调用类级受管端点（未授予路径）',covers:['B2b'],
+   menu:'/classLevel/two',real:{m:'GET',p:'/classLevel/two'}},
+  {id:'P4',type:'perm',name:'调用同名文案端点 A',covers:['B9a','B9'],
+   menu:'/methodLevel/sameDocA',real:{m:'GET',p:'/methodLevel/sameDocA'}},
+  {id:'P5',type:'perm',name:'调用同名文案端点 B',covers:['B9b'],
+   menu:'/methodLevel/sameDocB',real:{m:'GET',p:'/methodLevel/sameDocB'}},
+  {id:'P6',type:'perm',name:'调用继承型标记端点',covers:['B11','B12'],
+   menu:'/deptInherit/ledger',real:{m:'GET',p:'/deptInherit/ledger'}},
+  {id:'P7',type:'perm',name:'编辑工单 1',covers:['C1','C2','C12b','C12'],
+   menu:'/workOrder/update',data:{module:'work_order',operate:'edit',ids:[1]},
+   real:{m:'POST',p:'/workOrder/update',b:{id:1,title:'权限透视'}}},
+  {id:'P8',type:'perm',name:'审批工单 1',covers:['C12a'],
+   menu:'/workOrder/approve',data:{module:'work_order',operate:'approve',ids:[1]},
+   real:{m:'POST',p:'/workOrder/approve',b:{id:1}}},
+  {id:'P9',type:'perm',name:'批量审批工单 4,5',covers:['C3'],
+   menu:'/workOrder/batchApprove',data:{module:'work_order',operate:'approve',ids:[4,5]},
+   real:{m:'POST',p:'/workOrder/batchApprove',b:{ids:[4,5]}}},
+  {id:'P10',type:'perm',name:'批量审批工单 4,1（部分命中）',covers:['C4'],
+   menu:'/workOrder/batchApprove',data:{module:'work_order',operate:'approve',ids:[4,1]},
+   real:{m:'POST',p:'/workOrder/batchApprove',b:{ids:[4,1]}}},
+  {id:'P11',type:'perm',name:'分散承载的资产编辑',covers:['C5'],
+   menu:'/asset/scattered',data:{module:'asset',operate:'edit',ids:[101,103,101]},
+   real:{m:'POST',p:'/asset/scattered',b:{primary:{assetId:101},many:[{assetId:103}],more:[{assetId:101}]}}},
+  {id:'P12',type:'perm',name:'编辑资产（Integer 短形态）',covers:['C13'],
+   menu:'/asset/updateIntegerForm',data:{module:'asset',operate:'edit',ids:[101]},
+   real:{m:'POST',p:'/asset/updateIntegerForm',b:{assetId:101}}},
+  {id:'P13',type:'perm',name:'管理权限槽位（grant/remove/fill）',covers:['C22'],
+   menu:'/authData/grant',data:{module:'demo_admin',operate:'unified',ids:[900]},
+   real:{m:'POST',p:'/authData/grant',b:{bizModule:'probe',bizDataId:802,action:'edit',authStr:'ROLE__10',authDesc:'ROLE__admin',adminId:900}}},
+  {id:'P14',type:'perm',name:'含引号的权限串命中 900',covers:['C16a','C16'],
+   data:{module:'quote_probe',operate:'unified',ids:[900]},
+   real:{m:'POST',p:'/probe/quote/call',b:{rawId:'900'}}},
+  {id:'P15',type:'perm',name:'含引号的权限串不命中 901',covers:['C16b'],
+   data:{module:'quote_probe',operate:'unified',ids:[901]},
+   real:{m:'POST',p:'/probe/quote/call',b:{rawId:'901'}}},
+  {id:'P16',type:'perm',name:'探针槽位 801',covers:['C11'],
+   data:{module:'probe',operate:'edit',ids:[801]},
+   real:{m:'POST',p:'/probe/call',b:{id:801}}},
+  {id:'P17',type:'perm',name:'工单 unified 列表（IN）',covers:['D1','D6','D15'],
+   range:{m:'GET',p:'/workOrder/rangeList',sum:'workOrderIds'}},
+  {id:'P18',type:'perm',name:'工单可编辑列表（edit）',covers:['D4'],
+   range:{m:'GET',p:'/workOrder/editable',sum:'workOrderIds'}},
+  {id:'P19',type:'perm',name:'工单可审批列表（approve）',covers:['D4b'],
+   range:{m:'GET',p:'/workOrder/approvable',sum:'workOrderIds'}},
+  {id:'P20',type:'perm',name:'同请求先后用两个槽位',covers:['D5'],
+   range:{m:'GET',p:'/workOrder/twoSlots',sum:'twoSlots'}},
+  {id:'P21',type:'perm',name:'嵌套声明：外层与内层各按自己的槽位',covers:['D3'],
+   range:{m:'GET',p:'/workOrder/nested',sum:'nested'}},
+  {id:'P22',type:'perm',name:'多表别名 cu（归属客户）',covers:['D7a','D7'],
+   range:{m:'GET',p:'/workOrder/joinCu',sum:'workOrderIds'}},
+  {id:'P23',type:'perm',name:'多表别名 cb（下单客户）',covers:['D7b'],
+   range:{m:'GET',p:'/workOrder/joinCb',sum:'workOrderIds'}},
+  {id:'P24',type:'perm',name:'资产列表（asset_id）',covers:['D8'],
+   range:{m:'GET',p:'/asset/list',sum:'assetIds'}},
+  {id:'P25',type:'perm',name:'动态语句（status=open）',covers:['D11'],
+   range:{m:'GET',p:'/workOrder/dynamic?status=open',sum:'workOrderIds'}},
 
-const BASE = location.pathname.replace(/\/(index\.html)?$/,'');
-let running = false;
+  // ---- 能力行：与身份无关，由页面面板或脚本观察 ----
+  {id:'K1',type:'cap',name:'方法级未声明端点直接放行',covers:['B1b'],where:'verify.sh B1b'},
+  {id:'K2',type:'cap',name:'两处都没有声明的类不受管辖',covers:['B3'],where:'verify.sh B3'},
+  {id:'K3',type:'cap',name:'用法错误：无承载、空集合、含 null',covers:['C6','C7','C8'],where:'verify.sh C6-C8'},
+  {id:'K4',type:'cap',name:'批量上限：100 判定、101 直接失败',covers:['C9','C10'],where:'verify.sh C9-C10'},
+  {id:'K5',type:'cap',name:'未声明的写接口不判定',covers:['C18'],where:'verify.sh C18'},
+  {id:'K6',type:'cap',name:'未声明的列表不过滤',covers:['D9'],where:'verify.sh D9'},
+  {id:'K7',type:'cap',name:'动态语句拼不出目标表时抛异常',covers:['D11b'],where:'verify.sh D11b'},
+  {id:'K8',type:'cap',name:'trace：未声明语句原文、写语句不改写、改写可观测',covers:['D2','D10','D12'],where:'verify.sh D2/D10/D12'},
+  {id:'K9',type:'cap',name:'权限表表名与列名由配置映射',covers:['E1'],where:'verify.sh E1'},
+  {id:'K10',type:'cap',name:'权限串对象形态与往返一致',covers:['A4'],where:'页面「当前权限」面板 + verify.sh A4'},
+  {id:'K11',type:'cap',name:'继承串在配置侧可反解、用户侧当场失败',covers:['A5'],where:'verify.sh A5'},
+  {id:'K12',type:'cap',name:'菜单行自动注册与文案回落',covers:['B6','B8'],where:'页面「菜单登记」面板 + verify.sh B6/B8'},
+  {id:'K13',type:'cap',name:'权限拒绝 403 与用法错误 400 可区分',covers:['C17'],where:'verify.sh C17'},
 
-async function call(method, path, body, demoUser, traceId) {
-  const h = {'Content-Type':'application/json; charset=utf-8'};
-  if (demoUser) h['X-Demo-User'] = demoUser;
-  if (traceId) h['X-Trace-Id'] = traceId;
-  const resp = await fetch(BASE + path, {method, headers:h, body: method==='POST' ? JSON.stringify(body||{}) : undefined});
+  // ---- 规格断言：需要在 verify.sh 里带固定夹具执行 ----
+  {id:'S1',type:'script',name:'拒绝消息里的身份不含 contextPath',covers:['B5'],where:'verify.sh B5'},
+  {id:'S2',type:'script',name:'已有菜单行重启后不被覆写',covers:['B7'],where:'verify.sh --stage=restart B7'},
+  {id:'S3',type:'script',name:'重启不重复灌种子、行数不变',covers:['E3'],where:'verify.sh --stage=restart E3'},
+  {id:'S4',type:'script',name:'含引号与注释符的权限描述原样入库',covers:['C15'],where:'verify.sh C15'},
+  {id:'S5',type:'script',name:'授权后同一调用从拒绝变放行',covers:['C19'],where:'verify.sh C19'},
+  {id:'S6',type:'script',name:'清空权限后回归拒绝',covers:['C20'],where:'verify.sh C20'},
+  {id:'S7',type:'script',name:'读回槽位权限并填进权限集合体',covers:['C21'],where:'verify.sh C21'},
+  {id:'S8',type:'script',name:'管理动作的行级拒绝消息',covers:['C22'],where:'verify.sh C22'},
+  {id:'S9',type:'script',name:'数据文件落在项目 data/ 下',covers:['E2'],where:'README 第 4 节 / H2 控制台'},
+
+  // ---- 启动期断言：自动化测试 ----
+  {id:'T1',type:'test',name:'缺当前用户/菜单权限/菜单持久化时的启动行为',covers:['A1','A2','A3'],where:'StarterAssemblyTest'},
+  {id:'T2',type:'test',name:'四类数据范围声明错误与声明位置错误',covers:['D13','D14'],where:'AuthRangeStartupFailureTest'}
+];
+
+const BASE = location.pathname.replace(/\/(index\.html)?$/, '');
+const identityEl = document.getElementById('identity');
+const state = {results: new Map(), seq: 0};
+
+function permRows() {
+  return S.filter(s => s.type === 'perm');
+}
+
+function esc(t) {
+  return String(t).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+}
+
+function listOr(arr, empty) {
+  return arr && arr.length ? arr.join('、') : empty;
+}
+
+function workOrderIds(d) {
+  if (!Array.isArray(d)) return '（非数组）';
+  const ids = d.map(x => x && x.id).filter(v => v !== undefined && v !== null).sort((a, b) => a - b);
+  return ids.length ? ids.join(',') + '（' + ids.length + ' 行）' : '空';
+}
+
+function assetIds(d) {
+  if (!Array.isArray(d)) return '（非数组）';
+  const ids = d.map(x => x && x.assetId).filter(v => v !== undefined && v !== null).sort((a, b) => a - b);
+  return ids.length ? ids.join(',') + '（' + ids.length + ' 行）' : '空';
+}
+
+function twoSlots(d) {
+  if (!d || typeof d !== 'object') return '（非对象）';
+  return 'edit ' + workOrderIds(d.editable)
+    + ' / approve ' + workOrderIds(d.approvable)
+    + ' / editAgain ' + workOrderIds(d.editableAgain);
+}
+
+function nested(d) {
+  if (!Array.isArray(d)) return '（非数组）';
+  const outer = d.map(x => x && x.id).filter(v => v !== undefined && v !== null).sort((a, b) => a - b);
+  const inner = d.map(x => Array.isArray(x.sameCustomerOrders) ? x.sameCustomerOrders.length : 0);
+  return (outer.length ? outer.join(',') + '（' + outer.length + ' 行）' : '空') + ' / 内层行数 ' + inner.join(',');
+}
+
+const SUMMARIZERS = {workOrderIds: workOrderIds, assetIds: assetIds, twoSlots: twoSlots, nested: nested};
+
+async function call(method, path, body, traceId) {
+  const headers = {'Content-Type': 'application/json; charset=utf-8'};
+  const identity = identityEl.value;
+  if (identity) headers['X-Demo-User'] = identity;
+  if (traceId) headers['X-Trace-Id'] = traceId;
+  let resp;
+  try {
+    resp = await fetch(BASE + path, {
+      method: method,
+      headers: headers,
+      body: method === 'POST' ? JSON.stringify(body || {}) : undefined
+    });
+  } catch (e) {
+    return {__error: '网络错误：' + e};
+  }
   let json;
-  try { json = await resp.json(); }
-  catch (e) { json = {code: null, message: '非 JSON 响应（服务端抛异常）', data: null, __nonJson: true}; }
+  try {
+    json = await resp.json();
+  } catch (e) {
+    json = {code: null, message: '非 JSON 响应（服务端抛异常）', data: null, __nonJson: true};
+  }
   json.__http = resp.status;
   return json;
 }
 
 async function traceOf(traceId) {
-  const r = await call('GET', '/demo/trace?traceId=' + encodeURIComponent(traceId), null, null, null);
+  const r = await call('GET', '/demo/trace?traceId=' + encodeURIComponent(traceId), null, null);
   return JSON.stringify(r.data || []);
 }
-async function logOf(key) {
-  const r = await call('GET', '/demo/log?apiKey=' + encodeURIComponent(key), null, null, null);
-  return (r.data || {}).count;
+
+function setBusy(busy) {
+  document.getElementById('refresh').disabled = busy;
+  document.getElementById('refreshState').textContent = busy ? '刷新中…' : '';
 }
 
-async function run(s) {
-  const demoUser = s.demoUser;
-  const traceId = 'ui-' + s.id + '-' + Date.now();
-  let before = null;
-  if (s.log) before = await logOf(s.log);
-  const steps = s.steps || [s];
-  let last = null;
-  for (const st of steps) last = await call(st.m, st.p, st.b, demoUser, traceId);
-  const trace = await traceOf(traceId);
-  let after = null, delta = null;
-  if (s.log) { after = await logOf(s.log); delta = after - before; }
-  let extra = '';
-  if (s.then) extra = JSON.stringify((await call('GET', s.then, null, demoUser, null)).data || {});
-  let pass = false, why = '';
-  const logInfo = {delta: delta, before: before, after: after};
-  try { pass = !!s.ck(last, trace, extra, logInfo); } catch (e) { why = '断言异常 ' + e; }
-  if (!pass && !why) why = '业务 code=' + last.code + '，行集=' + ids(last) + (s.log ? '，副作用Δ=' + delta : '');
-  // 拒绝在本项目里一律是 HTTP 200 + 业务 code 403/400（Result.failed 的形态），
-  // 两个值必须分开显示，否则 "HTTP 200" 会被误读成"这次放行了"
-  // Spring 自己的错误体没有 code 字段（只有 status），不能印成 undefined
-  const bodyCode = (last.code === undefined || last.code === null) ? null : last.code;
-  return {pass: pass, detail: why, http: last.__http, bodyCode: bodyCode, springStatus: last.status || null,
-          message: last.message, dataBrief: brief(last), trace: trace,
-          logDelta: delta, steps: steps.length, expect: s.ex};
+async function refreshAll() {
+  const seq = ++state.seq;
+  setBusy(true);
+  document.getElementById('summary').textContent = '身份 ' + (identityEl.value || '无') + '：刷新中…';
+
+  const rows = permRows();
+  const menuPaths = [];
+  const menuSeen = new Set();
+  const dataChecks = [];
+  const dataIdx = new Map();
+  for (const s of rows) {
+    if (s.menu && !menuSeen.has(s.menu)) {
+      menuSeen.add(s.menu);
+      menuPaths.push(s.menu);
+    }
+    if (s.data) {
+      dataIdx.set(s.id, dataChecks.length);
+      dataChecks.push({businessFunction: s.data.module, operate: s.data.operate, ids: s.data.ids});
+    }
+  }
+
+  const rangeRows = rows.filter(s => s.range);
+  const permPromise = call('POST', '/demo/permission-view', {menuPaths: menuPaths, dataChecks: dataChecks}, null);
+  const userPromise = call('GET', '/demo/current-user', null, null);
+
+  let permResp, userResp;
+  try {
+    const all = await Promise.all([permPromise, userPromise]);
+    permResp = all[0];
+    userResp = all[1];
+  } catch (e) {
+    if (seq === state.seq) {
+      setBusy(false);
+      document.getElementById('summary').textContent = '身份 ' + (identityEl.value || '无') + '：刷新失败';
+      document.getElementById('refreshState').textContent = '刷新失败：' + e;
+    }
+    return;
+  }
+  if (seq !== state.seq) return;
+
+  // 范围改写目前把权限串按字面量拼进 SQL（README 第 10 节债务）。
+  // 引号载荷只允许走参数绑定的读写路径与无范围声明的 quote_probe，页面也必须守住这条边界。
+  const authsForQuoteCheck = (permResp && permResp.data && permResp.data.auths)
+    || (userResp && userResp.data && (userResp.data.rawFromStore || []).map(x => x.auth))
+    || [];
+  const quotedAuthority = authsForQuoteCheck.some(a => a && a.indexOf("'") >= 0);
+  // 范围查询顺序执行：示例 Hikari 池只有 5 条连接，范围请求在拦截器持有一条连接的同时
+  // 还要再取一条鉴权连接，9 路并发会耗尽连接池；顺序执行把并发压到 1-2 条。
+  const rangeResps = [];
+  if (!quotedAuthority) {
+    try {
+      for (const s of rangeRows) {
+        if (seq !== state.seq) return;
+        const traceId = 'perm-' + s.id + '-' + Date.now();
+        const r = await call(s.range.m, s.range.p, null, traceId);
+        rangeResps.push({s: s, traceId: traceId, r: r});
+      }
+    } catch (e) {
+      if (seq === state.seq) {
+        setBusy(false);
+        document.getElementById('summary').textContent = '身份 ' + (identityEl.value || '无') + '：数据范围查询失败';
+        document.getElementById('refreshState').textContent = '数据范围查询失败：' + e;
+      }
+      return;
+    }
+  }
+
+  const permError = !permResp || permResp.__error || permResp.code !== 200
+    ? (permResp && (permResp.message || permResp.__error) || '预检请求失败')
+    : null;
+  const permData = permError ? null : (permResp.data || {});
+  const menuByPath = {};
+  if (permData) {
+    (permData.menu || []).forEach(m => { menuByPath[m.path] = m; });
+  }
+  const dataResults = permData ? (permData.data || []) : [];
+  const rangeById = new Map(rangeResps.map(x => [x.s.id, x]));
+
+  state.results = new Map();
+  for (const s of rows) {
+    const result = {
+      menu: null,
+      data: null,
+      range: null,
+      rangeError: null,
+      rangeSkip: null,
+      traceId: null,
+      permError: permError
+    };
+    if (s.menu) result.menu = menuByPath[s.menu] || null;
+    if (s.data) result.data = dataResults[dataIdx.get(s.id)] || null;
+    if (s.range) {
+      if (quotedAuthority) {
+        result.rangeSkip = '权限串含引号：示例刻意不让它进入按字面量拼接的数据范围路径（README 第 10 节已知债务），本页在该身份下跳过数据范围查询。';
+      } else {
+        const rangeInfo = rangeById.get(s.id);
+        if (rangeInfo) {
+          result.traceId = rangeInfo.traceId;
+          if (rangeInfo.r && !rangeInfo.r.__error && rangeInfo.r.code === 200) {
+            result.range = rangeInfo.r.data;
+          } else {
+            result.rangeError = rangeInfo.r && (rangeInfo.r.message || rangeInfo.r.__error) || '查询失败';
+          }
+        }
+      }
+    }
+    state.results.set(s.id, result);
+  }
+
+  const identity = identityEl.value;
+  const prefix = identity ? '' : '（未提供身份）';
+  document.getElementById('pUser').textContent = prefix + (userResp && userResp.data
+    ? JSON.stringify(userResp.data, null, 1)
+    : ('请求失败：' + (userResp && (userResp.message || userResp.__error) || '未知')));
+
+  render();
+  updateSummary();
+  setBusy(false);
+  document.getElementById('refreshState').textContent = '刷新于 ' + new Date().toLocaleTimeString();
 }
 
-/**
- * 取出本次请求里包含某关键字的语句原文。
- * "未被声明的语句不该出现权限子查询"这类断言必须按语句逐条判，
- * 不能在整个 trace 文本上做 include/not include——那样别的语句里的内容会被算进来
- *
- * @param traceJson trace 接口返回的 JSON 文本
- * @param keyword   定位用的关键字
- * @return 命中的语句列表
- */
-function sqlOf(traceJson, keyword) {
-  let arr = [];
-  try { arr = JSON.parse(traceJson) || []; } catch (e) { return []; }
-  return arr.filter(e => e.type === 'sql' && String(e.sql).indexOf(keyword) >= 0).map(e => String(e.sql));
+function summarize(s, res) {
+  if (!res || res.rangeError) return '查询失败';
+  const fn = SUMMARIZERS[s.range.sum];
+  if (!fn) return '（未知汇总方式）';
+  try {
+    return fn(res.range);
+  } catch (e) {
+    return '（结果格式无法识别）';
+  }
 }
 
-/** 把响应数据摘要成一行，便于核对行集 */
-function brief(r) {
-  const d = r.data;
-  if (Array.isArray(d)) return '[' + d.map(x => x.id !== undefined ? x.id : x.assetId).join(',') + ']';
-  if (d && typeof d === 'object') return JSON.stringify(d).slice(0, 120);
-  return (d === undefined || d === null) ? '—' : String(d);
+function verdictOf(s, res) {
+  if (!res) return {text: '待刷新', cls: 'todo'};
+  if (s.range) {
+    if (res.rangeSkip) return {text: '不适用', cls: 'todo'};
+    if (res.rangeError) return {text: '查询失败', detail: res.rangeError, cls: 'fail'};
+    const summary = summarize(s, res);
+    if (summary === '空') return {text: '空', cls: 'todo'};
+    if (summary.indexOf('（') === 0 || summary.indexOf('查询失败') === 0) {
+      return {text: '查询失败', detail: summary, cls: 'fail'};
+    }
+    return {text: '可见', detail: summary, cls: 'pass'};
+  }
+  if (s.menu && !res.menu) return {text: '判定失败', detail: res.permError, cls: 'fail'};
+  if (s.data && !res.data) return {text: '判定失败', detail: res.permError, cls: 'fail'};
+  if (res.menu && !res.menu.ok) return {text: '拒绝（菜单）', cls: 'fail'};
+  if (res.data) {
+    const failed = res.data.ids.filter(x => !x.ok).map(x => x.id);
+    if (failed.length) return {text: '拒绝（行级：' + failed.join('、') + '）', cls: 'fail'};
+  }
+  return {text: '允许', cls: 'pass'};
 }
 
-function render(s, res) {
-  const row = document.getElementById('row-' + s.id);
-  const cell = row.querySelector('.res');
-  const ev = row.querySelector('.ev');
-  cell.innerHTML = res === null ? '<span class="tag todo">待运行</span>'
-    : res.pass ? '<span class="tag pass">通过</span>'
-    : '<span class="tag fail">不通过</span>';
-  if (res === null) { ev.innerHTML = '<span class="kv">—</span>'; return; }
-  const head = '期望 ' + esc(res.expect)
-    + '<br>HTTP ' + res.http + ' · 业务 code <b>' + (res.bodyCode === null ? ('—（Spring 错误体 status=' + res.springStatus + '）') : res.bodyCode) + '</b>'
-    + (res.steps > 1 ? '（末次请求，共 ' + res.steps + ' 步）' : '')
-    + (res.dataBrief && res.dataBrief !== '—' ? '<br>返回 ' + esc(res.dataBrief) : '')
-    + (res.message ? '<br>消息 ' + esc(res.message) : '')
-    + (res.logDelta !== null && res.logDelta !== undefined ? '<br>副作用 Δ=' + res.logDelta : '');
-  const tail = res.pass ? '' : '<br><span style="color:#b3261e">判定未达成：' + esc(res.detail) + '</span>';
-  ev.innerHTML = '<span class="kv">' + head + tail + '</span>'
-      + (res.trace && res.trace.length > 4 ? '<pre>' + esc(prettifyTrace(res.trace)) + '</pre>' : '');
-}
-function esc(t){return String(t).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}
-function prettifyTrace(j){
-  try { const arr = JSON.parse(j); return arr.map(e => e.type==='judge' ? ('判定 ' + e.source + '/' + e.action + ' idCount=' + e.idCount)
-    : ('[' + e.source + '] ' + String(e.sql).replace(/\s+/g,' '))).join('\n'); } catch(e) { return j; }
+function menuCell(s, res) {
+  if (!s.menu) return '<span class="tag todo">未管辖</span>';
+  if (!res) return '<span class="kv">待刷新</span>';
+  if (!res.menu) return '<span class="tag fail">判定失败</span>';
+  return '<span class="tag ' + (res.menu.ok ? 'pass' : 'fail') + '">' + (res.menu.ok ? '通过' : '拒绝') + '</span>';
 }
 
-function build() {
+function rowCell(s, res) {
+  if (s.range) return '<span class="tag todo">未声明</span>';
+  if (!s.data) return '<span class="kv">—</span>';
+  if (!res) return '<span class="kv">待刷新</span>';
+  if (!res.data) return '<span class="tag fail">判定失败</span>';
+  return res.data.ids.map(x =>
+    '<span class="tag ' + (x.ok ? 'pass' : 'fail') + '">ID ' + esc(x.id) + ' ' + (x.ok ? '通过' : '拒绝') + '</span>'
+  ).join('<br>');
+}
+
+function verdictCell(s, res) {
+  const v = verdictOf(s, res);
+  let html = '<span class="tag ' + v.cls + '">' + esc(v.text) + '</span>';
+  if (v.detail) html += '<div class="kv">' + esc(v.detail) + '</div>';
+  return html;
+}
+
+function menuEvidence(m) {
+  return '<details><summary>菜单依据</summary><pre>' + esc(
+    '路径 ' + m.path + '\n'
+    + '要求 ' + listOr(m.required, '（路径未登记任何授权）') + '\n'
+    + '持有 ' + listOr(m.matched, '—') + '\n'
+    + '缺失 ' + listOr(m.missing, '—')
+  ) + '</pre></details>';
+}
+
+function dataEvidence(d) {
+  const lines = ['槽位 ' + d.businessFunction + ' / ' + d.operate];
+  for (const x of d.ids) {
+    lines.push('ID ' + x.id + '：' + (x.ok ? '通过' : '拒绝'));
+    lines.push('  要求 ' + listOr(x.required, '（该槽位未配置授权）'));
+    lines.push('  持有 ' + listOr(x.matched, '—'));
+    lines.push('  缺失 ' + listOr(x.missing, '—'));
+  }
+  return '<details><summary>行级依据</summary><pre>' + esc(lines.join('\n')) + '</pre></details>';
+}
+
+function rangeEvidence(s, res) {
+  if (res.rangeSkip) {
+    return '<div class="kv">不适用：' + esc(res.rangeSkip) + '</div>';
+  }
+  if (res.rangeError) {
+    return '<div class="kv" style="color:#b3261e">查询失败：' + esc(res.rangeError) + '</div>';
+  }
+  const summary = summarize(s, res);
+  let html = '<details><summary>数据范围依据</summary><pre>'
+    + esc('调用 ' + s.range.m + ' ' + s.range.p + '\n可见 ' + summary) + '</pre>';
+  if (res.traceId) {
+    html += '<button data-trace="' + s.id + '">查看 SQL</button><pre id="trace-' + s.id + '"></pre>';
+  }
+  html += '</details>';
+  return html;
+}
+
+function evidenceCell(s, res) {
+  if (!res) return '<span class="kv">—</span>';
+  let html = '';
+  if (res.permError && (s.menu || s.data)) {
+    html += '<div class="kv" style="color:#b3261e">预检失败：' + esc(res.permError) + '</div>';
+  }
+  if (s.menu && res.menu) html += menuEvidence(res.menu);
+  if (s.data && res.data) html += dataEvidence(res.data);
+  if (s.range) html += rangeEvidence(s, res);
+  const real = s.real || (s.range ? {m: s.range.m, p: s.range.p} : {m: 'GET', p: s.menu});
+  if (real) html += '<button data-real="' + s.id + '">真实调用</button>';
+  return html;
+}
+
+function render() {
   const tb = document.getElementById('tbody');
   tb.innerHTML = '';
-  const shown = document.querySelectorAll('.flt:checked');
-  const on = new Set(Array.from(shown).map(x=>x.dataset.g));
-  S.filter(s=>on.has(s.g)).forEach(s => {
+  for (const s of permRows()) {
+    const res = state.results.get(s.id);
+    const layer = s.range ? '数据范围' : (s.menu && s.data ? '菜单+行级' : (s.menu ? '菜单' : '行级'));
     const tr = document.createElement('tr');
     tr.id = 'row-' + s.id;
-    tr.innerHTML = '<td class="id">' + s.id + '</td>'
-      + '<td>' + esc(s.name) + '<div class="kv">身份：' + (s.demoUser || '无') + '（固定）' + (s.log?('　证据表：'+s.log):'') + '</div></td>'
-      + '<td>' + esc(s.ex) + '</td>'
-      + '<td class="res"><span class="tag todo">待运行</span></td>'
-      + '<td class="ev"><span class="kv">—</span></td>'
-      + '<td><button data-id="' + s.id + '">运行</button></td>';
+    tr.innerHTML = '<td class="id">' + s.id + '<div class="kv">覆盖 ' + esc(s.covers.join('、')) + '</div></td>'
+      + '<td>' + layer + '</td>'
+      + '<td>' + menuCell(s, res) + '</td>'
+      + '<td>' + rowCell(s, res) + '</td>'
+      + '<td>' + verdictCell(s, res) + '</td>'
+      + '<td class="ev">' + evidenceCell(s, res) + '</td>';
     tb.appendChild(tr);
+  }
+  tb.querySelectorAll('button[data-real]').forEach(btn => {
+    btn.onclick = () => prefill(btn.dataset.real);
   });
-  tb.querySelectorAll('button').forEach(b => b.onclick = async () => {
-    const s = S.find(x => x.id === b.dataset.id);
-    b.disabled = true;
-    render(s, null);
-    const res = await run(s);
-    render(s, res);
-    b.disabled = false;
+  tb.querySelectorAll('button[data-trace]').forEach(btn => {
+    btn.onclick = () => showTrace(btn.dataset.trace);
   });
 }
 
-document.getElementById('runAll').onclick = async () => {
-  if (running) return;
-  running = true; document.getElementById('runAll').disabled = true;
-  build();
-  let p = 0, f = 0;
-  const visible = Array.from(document.querySelectorAll('#tbody tr')).map(tr => S.find(s => s.id === tr.id.slice(4)));
-  for (const s of visible) {
-    const res = await run(s);
-    render(s, res);
-    if (res.pass) p++; else f++;
+function updateSummary() {
+  let allow = 0, deny = 0, empty = 0, fail = 0, skip = 0;
+  for (const s of permRows()) {
+    const res = state.results.get(s.id);
+    if (!res) continue;
+    if (s.range) {
+      if (res.rangeSkip) { skip++; continue; }
+      if (res.rangeError) { fail++; continue; }
+      const summary = summarize(s, res);
+      if (summary === '空') empty++;
+      else if (summary.indexOf('（') === 0 || summary.indexOf('查询失败') === 0) fail++;
+      else allow++;
+      continue;
+    }
+    if (res.permError || (s.menu && !res.menu) || (s.data && !res.data)) { fail++; continue; }
+    if (verdictOf(s, res).cls === 'pass') allow++;
+    else deny++;
   }
-  document.getElementById('summary').textContent = '一次跑完：通过 ' + p + '，不通过 ' + f + '（' + new Date().toLocaleTimeString() + '）';
-  running = false; document.getElementById('runAll').disabled = false;
+  document.getElementById('summary').textContent = '身份 ' + (identityEl.value || '无')
+    + '：允许/可见 ' + allow + ' · 拒绝 ' + deny + ' · 空 ' + empty + ' · 不适用 ' + skip + ' · 失败 ' + fail;
+}
+
+function renderCoverage() {
+  const covered = new Set();
+  for (const s of S) {
+    for (const c of s.covers) covered.add(c);
+  }
+  const missing = EXPECTED_IDS.filter(id => !covered.has(id));
+  const parts = [];
+  parts.push('<div class="kv">覆盖 ' + (EXPECTED_IDS.length - missing.length) + '/' + EXPECTED_IDS.length + ' 个原编号'
+    + (missing.length ? '；<b style="color:#b3261e">缺失：' + esc(missing.join('、')) + '</b>' : '；无缺失') + '</div>');
+  const groups = {
+    cap: '能力（与身份无关，由页面面板或脚本观察）',
+    script: '规格断言（verify.sh）',
+    test: '启动期断言（自动化测试）'
+  };
+  for (const type of Object.keys(groups)) {
+    const rows = S.filter(s => s.type === type);
+    if (!rows.length) continue;
+    parts.push('<h4>' + groups[type] + '</h4>');
+    parts.push('<table><thead><tr><th>编号</th><th>场景</th><th>覆盖原编号</th><th>验证位置</th></tr></thead><tbody>');
+    for (const s of rows) {
+      parts.push('<tr><td class="id">' + s.id + '</td><td>' + esc(s.name) + '</td><td>'
+        + esc(s.covers.join('、')) + '</td><td>' + esc(s.where || '—') + '</td></tr>');
+    }
+    parts.push('</tbody></table>');
+  }
+  document.getElementById('coverage').innerHTML = parts.join('');
+}
+
+function prefill(rowId) {
+  const s = S.find(x => x.id === rowId);
+  if (!s) return;
+  const real = s.real || (s.range ? {m: s.range.m, p: s.range.p} : {m: 'GET', p: s.menu});
+  document.getElementById('m').value = real.m || 'GET';
+  document.getElementById('path').value = real.p || '';
+  document.getElementById('body').value = real.b ? JSON.stringify(real.b) : '';
+  document.getElementById('pCall').textContent = '已按当前身份预填；点「按当前身份发送」才会真正执行。';
+  document.getElementById('freeCallCard').scrollIntoView({behavior: 'smooth', block: 'center'});
+  document.getElementById('call').focus();
+}
+
+async function showTrace(rowId) {
+  const res = state.results.get(rowId);
+  const pre = document.getElementById('trace-' + rowId);
+  if (!res || !res.traceId || !pre) return;
+  pre.textContent = '加载中…';
+  const t = await traceOf(res.traceId);
+  pre.textContent = prettifyTrace(t);
+}
+
+function prettifyTrace(j) {
+  try {
+    const arr = JSON.parse(j);
+    return arr.map(e => e.type === 'judge'
+      ? ('判定 ' + e.source + '/' + e.action + ' idCount=' + e.idCount)
+      : ('[' + e.source + '] ' + String(e.sql).replace(/\s+/g, ' '))).join('\n');
+  } catch (e) {
+    return j;
+  }
+}
+
+async function refreshUser() {
+  const r = await call('GET', '/demo/current-user', null, null);
+  const prefix = identityEl.value ? '' : '（未提供身份）';
+  document.getElementById('pUser').textContent = prefix + (r.data
+    ? JSON.stringify(r.data, null, 1)
+    : ('请求失败：' + (r.message || r.__error || '未知')));
+}
+
+document.getElementById('identity').onchange = () => {
+  document.getElementById('pCall').textContent = '—';
+  refreshAll();
 };
 
-document.getElementById('whoami').onclick = async () => {
-  const u = document.getElementById('demoUser').value;
-  const r = await call('GET', '/demo/current-user', null, u, null);
-  document.getElementById('pUser').textContent = u ? JSON.stringify(r.data, null, 1) : '（未提供身份）' + JSON.stringify(r.data, null, 1);
-};
+document.getElementById('refresh').onclick = refreshAll;
+document.getElementById('whoami').onclick = refreshUser;
+
 document.getElementById('counts').onclick = async () => {
-  const r = await call('GET', '/demo/counts', null, null, null);
-  document.getElementById('pCounts').textContent = (r.data||[]).map(x => x.tableName + ' = ' + x.rowCount).join('\n');
+  const r = await call('GET', '/demo/counts', null, null);
+  document.getElementById('pCounts').textContent = (r.data || [])
+    .map(x => x.tableName + ' = ' + x.rowCount).join('\n')
+    || ('请求失败：' + (r.message || r.__error || '未知'));
 };
+
 document.getElementById('menuApi').onclick = async () => {
-  const r = await call('GET', '/demo/menu-api', null, null, null);
-  document.getElementById('pMenu').textContent = (r.data||[]).map(x => (x.parentId && x.parentId !== 0 ? '  └ ' : '') + x.path + '  「' + x.name + '」' + (x.remark?(' 备注='+x.remark):'')).join('\n');
+  const r = await call('GET', '/demo/menu-api', null, null);
+  document.getElementById('pMenu').textContent = (r.data || [])
+    .map(x => (x.parentId && x.parentId !== 0 ? '  └ ' : '') + x.path + '  「' + x.name + '」' + (x.remark ? (' 备注=' + x.remark) : ''))
+    .join('\n')
+    || ('请求失败：' + (r.message || r.__error || '未知'));
 };
+
 document.getElementById('call').onclick = async () => {
-  const m = document.getElementById('m').value, p = document.getElementById('path').value, b = document.getElementById('body').value;
-  const demoUser = document.getElementById('demoUser').value;
-  const tid = 'ui-manual-' + Date.now();
-  const r = await call(m, p, b ? JSON.parse(b) : {}, demoUser, tid);
-  const t = await traceOf(tid);
-  document.getElementById('pCall').textContent = '身份：' + (demoUser || '无') + '\nHTTP ' + r.__http + '\n' + JSON.stringify(r, null, 1) + '\n\n本次下发的语句：\n' + prettifyTrace(t);
+  const method = document.getElementById('m').value;
+  const path = document.getElementById('path').value;
+  const raw = document.getElementById('body').value.trim();
+  let body = {};
+  if (raw) {
+    try {
+      body = JSON.parse(raw);
+    } catch (e) {
+      document.getElementById('pCall').textContent = '请求体不是合法 JSON：' + e.message;
+      return;
+    }
+  }
+  const identity = identityEl.value;
+  const traceId = 'ui-manual-' + Date.now();
+  const r = await call(method, path, body, traceId);
+  const t = await traceOf(traceId);
+  document.getElementById('pCall').textContent = '身份：' + (identity || '无')
+    + '\nHTTP ' + r.__http + '\n' + JSON.stringify(r, null, 1)
+    + '\n\n本次下发的语句：\n' + prettifyTrace(t);
 };
-Array.from(document.querySelectorAll('.flt')).forEach(c => c.onchange = build);
-document.getElementById('demoUser').onchange = () => {
-  document.getElementById('pCall').textContent = '—';
-  document.getElementById('whoami').click();
-};
-build();
-document.getElementById('demoUser').value = 'alice';
-document.getElementById('whoami').click();
+
+renderCoverage();
+render();
+identityEl.value = 'alice';
+refreshAll();
 document.getElementById('counts').click();
+document.getElementById('menuApi').click();
 </script>
 </body>
 </html>

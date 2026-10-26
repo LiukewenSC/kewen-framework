@@ -198,13 +198,20 @@ INSERT INTO `demo_menu_auth` (`path`, `auth_str`)
 SELECT '/asset/batchUpdate', 'DEPT_ROLE__100_20' WHERE NOT EXISTS (SELECT 1 FROM `demo_menu_auth` WHERE `path` = '/asset/batchUpdate' AND `auth_str` = 'DEPT_ROLE__100_20');
 INSERT INTO `demo_menu_auth` (`path`, `auth_str`)
 SELECT '/asset/scattered', 'DEPT_ROLE__100_20' WHERE NOT EXISTS (SELECT 1 FROM `demo_menu_auth` WHERE `path` = '/asset/scattered' AND `auth_str` = 'DEPT_ROLE__100_20');
--- 权限管理端点：只授给持有 demo_admin 槽位的 alice
+-- 权限管理端点：菜单层给 alice 与 bob，行级层只给持有 demo_admin 槽位的 alice。
+-- bob 能进管理接口、但动不了槽位，C22 才真正验证行级管辖
 INSERT INTO `demo_menu_auth` (`path`, `auth_str`)
 SELECT '/authData/grant', 'ROLE__10' WHERE NOT EXISTS (SELECT 1 FROM `demo_menu_auth` WHERE `path` = '/authData/grant' AND `auth_str` = 'ROLE__10');
 INSERT INTO `demo_menu_auth` (`path`, `auth_str`)
+SELECT '/authData/grant', 'ROLE__20' WHERE NOT EXISTS (SELECT 1 FROM `demo_menu_auth` WHERE `path` = '/authData/grant' AND `auth_str` = 'ROLE__20');
+INSERT INTO `demo_menu_auth` (`path`, `auth_str`)
 SELECT '/authData/remove', 'ROLE__10' WHERE NOT EXISTS (SELECT 1 FROM `demo_menu_auth` WHERE `path` = '/authData/remove' AND `auth_str` = 'ROLE__10');
 INSERT INTO `demo_menu_auth` (`path`, `auth_str`)
+SELECT '/authData/remove', 'ROLE__20' WHERE NOT EXISTS (SELECT 1 FROM `demo_menu_auth` WHERE `path` = '/authData/remove' AND `auth_str` = 'ROLE__20');
+INSERT INTO `demo_menu_auth` (`path`, `auth_str`)
 SELECT '/authData/fill', 'ROLE__10' WHERE NOT EXISTS (SELECT 1 FROM `demo_menu_auth` WHERE `path` = '/authData/fill' AND `auth_str` = 'ROLE__10');
+INSERT INTO `demo_menu_auth` (`path`, `auth_str`)
+SELECT '/authData/fill', 'ROLE__20' WHERE NOT EXISTS (SELECT 1 FROM `demo_menu_auth` WHERE `path` = '/authData/fill' AND `auth_str` = 'ROLE__20');
 
 -- ============================================================
 -- 12. 管理槽位：/authData/* 自身的行级管辖（固定数据ID 900）

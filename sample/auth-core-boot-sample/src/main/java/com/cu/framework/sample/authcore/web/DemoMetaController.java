@@ -1,16 +1,22 @@
 package com.cu.framework.sample.authcore.web;
 
+import com.cu.framework.auth.core.data.AuthDataHandler;
 import com.cu.framework.auth.core.entity.FlatteningAuthority;
 import com.cu.framework.auth.core.exception.AuthEntityException;
+import com.cu.framework.auth.core.exception.AuthServiceException;
 import com.cu.framework.sample.authcore.authobject.DemoAuthObject;
 import com.cu.framework.sample.authcore.authobject.DemoInheritDept;
 import com.cu.framework.sample.authcore.authobject.DemoUserAuthInfo;
 import com.cu.framework.sample.authcore.context.DemoAuthContextHolder;
+import com.cu.framework.sample.authcore.context.DemoMenuAuthHandler;
 import com.cu.framework.sample.authcore.context.DemoUserContext;
 import com.cu.framework.sample.authcore.entity.MenuApiPO;
 import com.cu.framework.sample.authcore.mapper.AuthDataViewMapper;
 import com.cu.framework.sample.authcore.mapper.DemoMenuApiMapper;
+import com.cu.framework.sample.authcore.mapper.DemoMenuAuthMapper;
 import com.cu.framework.sample.authcore.mapper.ExecutionLogMapper;
+import com.cu.framework.sample.authcore.model.DemoRequests.PermissionDataCheck;
+import com.cu.framework.sample.authcore.model.DemoRequests.PermissionViewReq;
 import com.cu.framework.sample.authcore.model.DemoRequests.RemoveReq;
 import com.cu.framework.sample.authcore.service.DemoAuthAdminService;
 import com.cu.framework.sample.authcore.trace.DemoSqlTrace;
@@ -23,9 +29,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -45,8 +53,21 @@ import java.util.TreeSet;
 @RequestMapping("/demo")
 public class DemoMetaController {
 
+    /** 预检一次最多接受的菜单路径数 */
+    private static final int MAX_MENU_PATHS = 50;
+    /** 预检一次最多接受的行级槽位数 */
+    private static final int MAX_DATA_CHECKS = 50;
+    /** 单个行级槽位一次最多接受的业务数据ID数 */
+    private static final int MAX_DATA_IDS = 100;
+
     @Autowired
     private DemoAuthContextHolder authContextHolder;
+    @Autowired
+    private DemoMenuAuthHandler demoMenuAuthHandler;
+    @Autowired
+    private DemoMenuAuthMapper demoMenuAuthMapper;
+    @Autowired
+    private AuthDataHandler authDataHandler;
     @Autowired
     private DemoSqlTrace demoSqlTrace;
     @Autowired
@@ -138,6 +159,188 @@ public class DemoMetaController {
             values.add(auth.getAuth());
         }
         return values;
+    }
+
+    /**
+     * 权限透视的只读预检：按当前请求的身份回答"菜单能不能进、这些数据能不能操作"。
+     * <p>
+     * 判定直接调用拦截器与切面使用的同一组处理器，不复制规则；不执行任何业务方法，
+     * 因此页面切换身份时可以安全地整表刷新。返回的 required/matched/missing 只是展示依据，
+     * 真正的通过与否仍以 ok 字段（处理器返回值）为准
+     *
+     * @param req 菜单路径与行级槽位
+     * @return 当前身份、持有的权限串、菜单与行级判定结果
+     */
+    @PostMapping("/permission-view")
+    public Result<Map<String, Object>> permissionView(@RequestBody PermissionViewReq req) {
+        Collection<FlatteningAuthority> auths = authContextHolder.getAuths();
+        Set<String> held = toAuthStrings(auths);
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("username", DemoUserContext.username());
+        body.put("auths", new ArrayList<>(held));
+        body.put("menu", menuView(req.getMenuPaths(), auths, held));
+        body.put("data", dataView(req.getDataChecks(), auths, held));
+        return Result.success(body);
+    }
+
+    /**
+     * 逐个菜单路径求判定与依据
+     *
+     * @param paths 应用内路径
+     * @param auths 当前身份的权限集合
+     * @param held  当前身份的权限串
+     * @return 每个路径的 required/matched/missing/ok
+     */
+    private List<Map<String, Object>> menuView(List<String> paths, Collection<FlatteningAuthority> auths,
+                                               Set<String> held) {
+        List<Map<String, Object>> result = new ArrayList<>();
+        if (paths == null || paths.isEmpty()) {
+            return result;
+        }
+        if (paths.size() > MAX_MENU_PATHS) {
+            throw new AuthServiceException("菜单路径数量超过上限" + MAX_MENU_PATHS);
+        }
+        for (String path : paths) {
+            if (path == null || path.trim().isEmpty()) {
+                throw new AuthServiceException("菜单路径不能为空");
+            }
+            List<String> required = distinct(demoMenuAuthMapper.listAuthsByPath(path));
+            Map<String, Object> item = new LinkedHashMap<>();
+            item.put("path", path);
+            item.put("ok", demoMenuAuthHandler.hasMenuAccessAuth(auths, path));
+            item.put("required", required);
+            item.put("matched", intersect(required, held));
+            item.put("missing", difference(required, held));
+            result.add(item);
+        }
+        return result;
+    }
+
+    /**
+     * 逐个槽位、逐个业务数据ID求判定与依据
+     *
+     * @param checks 行级槽位检查
+     * @param auths  当前身份的权限集合
+     * @param held   当前身份的权限串
+     * @return 每个槽位、每个ID的 required/matched/missing/ok
+     */
+    private List<Map<String, Object>> dataView(List<PermissionDataCheck> checks, Collection<FlatteningAuthority> auths,
+                                               Set<String> held) {
+        List<Map<String, Object>> result = new ArrayList<>();
+        if (checks == null || checks.isEmpty()) {
+            return result;
+        }
+        if (checks.size() > MAX_DATA_CHECKS) {
+            throw new AuthServiceException("行级判定项数量超过上限" + MAX_DATA_CHECKS);
+        }
+        for (PermissionDataCheck check : checks) {
+            if (check == null) {
+                continue;
+            }
+            String businessFunction = check.getBusinessFunction();
+            String operate = check.getOperate();
+            if (businessFunction == null || businessFunction.trim().isEmpty()
+                    || operate == null || operate.trim().isEmpty()) {
+                throw new AuthServiceException("业务功能与操作类型不能为空");
+            }
+            List<Long> rawIds = check.getIds() == null
+                    ? Collections.<Long>emptyList()
+                    : new ArrayList<>(new LinkedHashSet<>(check.getIds()));
+            if (rawIds.size() > MAX_DATA_IDS) {
+                throw new AuthServiceException("业务数据ID数量超过上限" + MAX_DATA_IDS + "，请分批提交");
+            }
+            List<Map<String, Object>> ids = new ArrayList<>();
+            for (Long id : rawIds) {
+                Map<String, Object> item = new LinkedHashMap<>();
+                item.put("id", id);
+                item.put("ok", id != null && authDataHandler.hasDataOperateAuths(
+                        auths, businessFunction, Collections.<Object>singletonList(id), operate));
+                Collection<FlatteningAuthority> configured = id == null
+                        ? Collections.<FlatteningAuthority>emptyList()
+                        : authDataHandler.getDataAuths(businessFunction, id, operate);
+                List<String> required = new ArrayList<>(toAuthStrings(configured));
+                item.put("required", required);
+                item.put("matched", intersect(required, held));
+                item.put("missing", difference(required, held));
+                ids.add(item);
+            }
+            Map<String, Object> item = new LinkedHashMap<>();
+            item.put("businessFunction", businessFunction);
+            item.put("operate", operate);
+            item.put("ids", ids);
+            result.add(item);
+        }
+        return result;
+    }
+
+    /**
+     * 把权限集合折成去重后的串集合，保持首次出现的顺序
+     *
+     * @param auths 权限集合，可为 null
+     * @return 权限串集合
+     */
+    private static Set<String> toAuthStrings(Collection<FlatteningAuthority> auths) {
+        Set<String> values = new LinkedHashSet<>();
+        if (auths != null) {
+            for (FlatteningAuthority auth : auths) {
+                if (auth != null && auth.getAuth() != null) {
+                    values.add(auth.getAuth());
+                }
+            }
+        }
+        return values;
+    }
+
+    /**
+     * 去空、去重并保持顺序
+     *
+     * @param values 原始串集合
+     * @return 清洗后的串列表
+     */
+    private static List<String> distinct(Collection<String> values) {
+        Set<String> result = new LinkedHashSet<>();
+        if (values != null) {
+            for (String value : values) {
+                if (value != null) {
+                    result.add(value);
+                }
+            }
+        }
+        return new ArrayList<>(result);
+    }
+
+    /**
+     * 要求的权限串里，当前身份持有的部分
+     *
+     * @param required 要求的权限串
+     * @param held     当前身份持有的权限串
+     * @return 交集，保持 required 的顺序
+     */
+    private static List<String> intersect(Collection<String> required, Set<String> held) {
+        List<String> result = new ArrayList<>();
+        for (String auth : required) {
+            if (auth != null && held.contains(auth)) {
+                result.add(auth);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 要求的权限串里，当前身份缺少的部分
+     *
+     * @param required 要求的权限串
+     * @param held     当前身份持有的权限串
+     * @return 差集，保持 required 的顺序
+     */
+    private static List<String> difference(Collection<String> required, Set<String> held) {
+        List<String> result = new ArrayList<>();
+        for (String auth : required) {
+            if (auth != null && !held.contains(auth)) {
+                result.add(auth);
+            }
+        }
+        return result;
     }
 
     /**

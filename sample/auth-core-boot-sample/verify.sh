@@ -198,7 +198,40 @@ post_as alice /authData/remove '{"bizModule":"probe","bizDataId":802,"adminId":9
 BODY=$(post_as alice /probe/call '{"id":802}')
 [ "$(code_of "$BODY")" = "403" ] && ok C20 "清空权限后回归拒绝" || no C20 "403" 403 "$BODY"
 BODY=$(post_as bob /authData/grant '{"bizModule":"probe","bizDataId":802,"action":"edit","authStr":"ROLE__20","authDesc":"ROLE__x","adminId":900}')
-[ "$(code_of "$BODY")" = "403" ] && ok C22 "管理动作自身受行级管辖：bob 没有管理槽位权限" || no C22 "403" 403 "$BODY"
+if [ "$(code_of "$BODY")" = "403" ] && printf '%s' "$BODY" | grep -q '权限校验不通过'; then
+  ok C22 "管理动作自身受行级管辖：bob 能进接口但管理槽位被拒"
+else
+  no C22 "403 且消息为权限校验不通过（行级拒绝）" "403/权限校验不通过" "$BODY"
+fi
+
+# ---------------- 只读预检一致性 ----------------
+# /demo/permission-view 复用拦截器与切面的处理器；这里用几条只读行对照真实结论，
+# 防止预检与真实判定漂移。断言依赖响应里 path/id 紧跟 ok 的字段顺序。
+BODY=$(post_as alice /demo/permission-view '{"menuPaths":["/methodLevel/guarded"],"dataChecks":[]}')
+printf '%s' "$BODY" | grep -q '"path":"/methodLevel/guarded","ok":true' \
+  && ok PV1 "预检：alice 对 guarded 菜单放行" \
+  || no PV1 "预检 alice 放行" '"path":"/methodLevel/guarded","ok":true' "$BODY"
+
+BODY=$(post_as bob /demo/permission-view '{"menuPaths":["/methodLevel/guarded"],"dataChecks":[]}')
+printf '%s' "$BODY" | grep -q '"path":"/methodLevel/guarded","ok":false' \
+  && ok PV2 "预检：bob 对 guarded 菜单拒绝" \
+  || no PV2 "预检 bob 拒绝" '"path":"/methodLevel/guarded","ok":false' "$BODY"
+
+BODY=$(post_as bob /demo/permission-view '{"menuPaths":["/workOrder/update"],"dataChecks":[{"businessFunction":"work_order","operate":"edit","ids":[1]}]}')
+if printf '%s' "$BODY" | grep -q '"path":"/workOrder/update","ok":true' \
+   && printf '%s' "$BODY" | grep -q '"id":1,"ok":false'; then
+  ok PV3 "预检：bob 能进 update 菜单，但工单1的行级判定拒绝"
+else
+  no PV3 "菜单通过 + 行级拒绝" '"/workOrder/update" ok=true 且 id1 ok=false' "$BODY"
+fi
+
+BODY=$(post_as bob /demo/permission-view '{"menuPaths":["/authData/grant"],"dataChecks":[{"businessFunction":"demo_admin","operate":"unified","ids":[900]}]}')
+if printf '%s' "$BODY" | grep -q '"path":"/authData/grant","ok":true' \
+   && printf '%s' "$BODY" | grep -q '"id":900,"ok":false'; then
+  ok PV4 "预检：bob 能进管理接口，但管理槽位被行级拒绝"
+else
+  no PV4 "管理菜单通过 + 槽位拒绝" '"/authData/grant" ok=true 且 id900 ok=false' "$BODY"
+fi
 
 # ---------------- D 数据范围 ----------------
 BODY=$(get_as alice /workOrder/rangeList)

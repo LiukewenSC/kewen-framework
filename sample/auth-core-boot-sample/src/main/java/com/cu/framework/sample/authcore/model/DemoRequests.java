@@ -221,4 +221,29 @@ public final class DemoRequests {
             return adminId == null ? Collections.<Long>emptyList() : Collections.singletonList(adminId);
         }
     }
+
+    /**
+     * 权限透视的只读预检请求：一次问一批菜单路径与行级槽位，
+     * 由服务端用与拦截器/切面相同的处理器回答，不执行任何业务方法
+     */
+    @Data
+    public static class PermissionViewReq {
+        /** 要检查的菜单路径，应用内路径，不含 contextPath */
+        private List<String> menuPaths = new ArrayList<>();
+        /** 要检查的行级槽位 */
+        private List<PermissionDataCheck> dataChecks = new ArrayList<>();
+    }
+
+    /**
+     * 一个行级槽位检查：业务功能 + 操作类型 + 一组业务数据ID
+     */
+    @Data
+    public static class PermissionDataCheck {
+        /** 业务功能 */
+        private String businessFunction;
+        /** 操作类型 */
+        private String operate;
+        /** 业务数据ID */
+        private List<Long> ids = new ArrayList<>();
+    }
 }
