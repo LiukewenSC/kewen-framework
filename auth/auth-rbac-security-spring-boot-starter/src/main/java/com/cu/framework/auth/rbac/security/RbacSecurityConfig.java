@@ -26,9 +26,9 @@ public class RbacSecurityConfig {
      * 当前登录用户上下文，使用方自己实现 AuthCurrentUserContextHolder 时不注册
      */
     @Bean
-    AuthCurrentUserContextHolder rbacSecurityCurrentUserAuthContextHolder(RbacSecurityUserDetailsService securityUserDetailsService){
+    @ConditionalOnMissingBean(AuthCurrentUserContextHolder.class)
+    AuthCurrentUserContextHolder rbacSecurityCurrentUserAuthContextHolder(){
         RbacSecurityAuthCurrentUserContextHolder holder = new RbacSecurityAuthCurrentUserContextHolder();
-        //holder.setRbacSecurityUserDetailsService(securityUserDetailsService);
         return holder;
     }
 

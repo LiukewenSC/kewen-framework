@@ -10,10 +10,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.stream.Collectors;
 
-//@Setter
 public class RbacSecurityAuthCurrentUserContextHolder implements AuthCurrentUserContextHolder {
-
-    //private RbacSecurityUserDetailsService rbacSecurityUserDetailsService;
 
     @Override
     public CurrentUser getUser() {
