@@ -71,7 +71,7 @@ spring:
     jdbc:
       # 会话表由 spring-session 执行 jar 内 schema-h2.sql 创建，示例脚本不再重复建同名表
       initialize-schema: embedded
-  # 建表脚本由 sample/pom.xml（docs/sql）与本模块 pom（sql/）挂到 classpath:sql/ 下。
+  # 建表脚本由 sample/pom.xml（relation/auth-rbac）与本模块 pom（sql/）挂到 classpath:sql/ 下。
   # 顺序：先框架 10 表与视图（auth-rbac.sql）、再示例自有表（schema.sql），最后灌种子数据。
   # mode 只写在本段：内存库每次启动都是空库，可以放心 always 重建；种子脚本非幂等，不许挂到 mysql 段。
   # encoding 必须显式指定，脚本里有中文注释，否则跟随平台默认编码。
@@ -89,9 +89,9 @@ spring:
 
 ---
 # 本地 MySQL 数据源（内容来自已删除的 application-dev.yml，凭据改为占位值）。
-# 本 profile 不执行任何建表脚本，需自行按 sample/auth-rbac-boot-sample/README.md 的 3.1 依次执行
-# docs/sql/auth-rbac.sql、sql/schema.sql、sql/seed-data.sql；
-# 会话表则执行 spring-session-jdbc jar 内的 org/springframework/session/jdbc/schema-mysql.sql。
+# 本 profile 不执行任何建表脚本，需自行按 sample/auth-rbac-boot-sample/README.md 的“零配置启动”依次执行
+# relation/auth-rbac/auth-rbac.sql、sql/schema.sql、sql/seed-data.sql；
+# 会话表则执行 relation/login-security/spring-session-mysql.sql。
 spring:
   config:
     activate:

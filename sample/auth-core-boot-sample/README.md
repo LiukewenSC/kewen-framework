@@ -1,6 +1,6 @@
-# auth-core 独立验证示例（auth-core-boot-sample）
+# auth-core-boot-sample
 
-# 1. 这个工程是干什么的
+## 这是什么
 
 `auth-core` 是权限框架的**接缝层**：它只规定"权限怎么声明、在哪一步判定、语句怎么改写"，
 不给任何具体权限模型——用户从哪来、路径怎么变成权限、权限行存在哪张表，全是用法侧的事。
@@ -8,7 +8,7 @@
 
 本工程的唯一目的，是**在完全不引用 auth-rbac 的前提下**，把 auth-core 的每一项能力跑通一遍：
 
-- 不依赖任何权限模型层的代码，也不引用任何 `sys_*` 表，不加载 `docs/sql/` 下的框架建表脚本；
+- 不依赖任何权限模型层的代码，也不引用任何 `sys_*` 表，不加载 `relation/` 下的框架建表脚本；
 - 示例自己实现三个扩展点，自己设计全部数据表；
 - 每一项规格场景都落到"一个声明位置 + 一条触发命令 + 一个可查的观察点"。
 
@@ -18,9 +18,9 @@
 场景编号与仓库 `openspec/specs/auth/`、`openspec/specs/sample/` 下的规格条目对应，
 `verify.sh` 按同一批编号逐条断言。
 
-# 2. 核心能力清单
+## 核心能力
 
-## 2.1 auth-core 交出的东西
+### auth-core 交出的东西
 
 | 能力 | 声明方式 | 生效位置 | 规格出处 |
 | --- | --- | --- | --- |
@@ -37,7 +37,7 @@
 | 表名列名可重命名 | `cu.auth.auth-data-table.*` 七项 | 所有权限表读写与注入 | 见本文 3.3 |
 | 统一拒绝响应 | starter 自动注册 `AuthExceptionHandler` | `AuthException`→code 403，`AuthServiceException`→code 400 | auth/starter-assembly |
 
-## 2.2 使用方必须自己交出的东西
+### 使用方必须自己交出的东西
 
 | 扩展点 | 强制？ | 缺失后果 | 本示例的实现 |
 | --- | --- | --- | --- |
@@ -46,9 +46,9 @@
 | `MenuApiService<T>` | 可选 | 只记一条"menuApiService is null"，启动照常 | `DemoMenuApiStore`：`demo_menu_api` + hutool 雪花 ID |
 | `AuthDataAdaptor` 的 bean | 需自己声明 | core 的自动配置里没有它（只有 rbac 层配了），不声明就没法在 Service 层直接维护权限 | `DemoAuthConfig` 里 `@Bean` |
 
-# 3. 示例的数据设计
+## 示例的数据设计
 
-## 3.1 八张表，全部示例自有
+### 八张表，全部示例自有
 
 | 表 | 作用 | 列设计里刻意的地方 |
 | --- | --- | --- |
@@ -61,7 +61,7 @@
 | `demo_customer` | 业务表 | 多表语句中的关联表 |
 | `demo_execution_log` | 副作用证据 | 拒绝发生在方法体之前 → 计数不增长就是"方法体没执行" |
 
-## 3.2 权限串的编解码
+### 权限串的编解码
 
 框架用两个分隔符：`AUTH_SPLIT="__"` 分开标记与值，`AUTH_SUB_SPLIT="_"` 分开组合权限的各个位置。
 
@@ -75,7 +75,7 @@
 所以 `GET /demo/current-user` 里"原文"和"重序列化"两栏必须一致——不一致就说明编解码没走通。
 两个约束要记住：权限标识里的名字不能含 `_`（会被当成第二个位置），也不能含 `__`。
 
-## 3.3 权限存储被整张重命名
+### 权限存储被整张重命名
 
 ```yaml
 cu.auth.auth-data-table:
@@ -91,7 +91,7 @@ cu.auth.auth-data-table:
 七项全部覆盖。框架只要有任何一处硬编码了表名或列名，本工程立刻起不来——这本身就是验证。
 业务主键与数据ID都是整型；框架代码不假设类型（泛型能力留给外部项目），但本示例只用整型形态。
 
-# 4. 启动、数据文件与重置
+## 启动、数据文件与重置
 
 ```bash
 cd sample/auth-core-boot-sample      # 必须从模块目录启动，数据与日志路径都是相对的
@@ -106,7 +106,7 @@ java -jar target/auth-core-boot-sample-0.0.1-SNAPSHOT-exec.jar
 > IDEA 运行配置里要把 **Working directory** 设为 `sample/auth-core-boot-sample`（或 `$MODULE_WORKING_DIR$`）；
 > 命令行启动就是上面那条 `cd`。
 
-## 4.1 浏览器权限透视台
+### 浏览器权限透视台
 
 启动后打开 **`http://localhost:8082/coredemo/`**（就是 `src/main/resources/static/index.html`，纯静态页 + fetch，不引任何前端构建与模板引擎）。
 
@@ -135,7 +135,7 @@ java -jar target/auth-core-boot-sample-0.0.1-SNAPSHOT-exec.jar
 - 换 MySQL：`--spring.profiles.active=mysql`，该 profile **不执行任何脚本**，
   需自行按顺序执行本工程 `sql/` 下两个脚本。
 
-# 5. 三条观察通道
+## 三条观察通道
 
 | 通道 | 看什么 | 怎么开 |
 | --- | --- | --- |
@@ -147,7 +147,7 @@ java -jar target/auth-core-boot-sample-0.0.1-SNAPSHOT-exec.jar
 只做记录、不参与任何判定；框架的 `MybatisDataRangeInterceptor` 改的是同一个 `BoundSql` 实例，
 所以取到的是**改写之后**的最终语句。
 
-# 6. 场景矩阵
+## 场景矩阵
 
 "已验证到"一栏写的是实际执行过的载体：`脚本` = verify.sh 里有对应断言；`测试` = src/test 断言。
 
@@ -233,7 +233,7 @@ java -jar target/auth-core-boot-sample-0.0.1-SNAPSHOT-exec.jar
 | E2 | 数据落在项目 `data/` 下，可用 H2 客户端直接打开 | `data/auth_core_sample.mv.db` | 人工 |
 | E3 | 重启后人工授权、人工改的菜单行仍在，种子不重复 | 三次重启实测行数一致 | 脚本 `--stage=restart` |
 
-## 6.1 页面判权行与原编号的映射
+### 页面判权行与原编号的映射
 
 页面主表只承载判权场景；下表把 P 编号映射回第 6 节的场景编号。`verify.sh` 的编号与断言不因页面合并而改变。
 
@@ -269,7 +269,7 @@ java -jar target/auth-core-boot-sample-0.0.1-SNAPSHOT-exec.jar
 
 每个 P 行在页面内带一张按 7 个身份展开的期望真值表（`allow` / `menu` / `row` / 空 / `n/a` / 数据ID）；切换身份时逐条比较期望与实际，“测试当前身份”汇总通过/不通过/不适用。真值表按种子数据维护，页面改动用例或种子时必须同步；不一致会在主表直接显示“不通过”。
 
-# 7. verify.sh 怎么用
+## verify.sh 怎么用
 
 ```bash
 cd sample/auth-core-boot-sample
@@ -280,7 +280,7 @@ BASE=http://localhost:8082/coredemo bash verify.sh   # 换地址
 
 脚本只做 curl 与断言，不启停应用。每条用例打印 `PASS/FAIL 编号 说明`，末尾汇总。
 
-# 8. 覆盖边界：这些不在本示例验证
+## 覆盖边界：这些不在本示例验证
 
 | 场景 | 为什么不在这里 | 由谁验证 |
 | --- | --- | --- |
@@ -290,7 +290,7 @@ BASE=http://localhost:8082/coredemo bash verify.sh   # 换地址
 | 登录、会话、记住我 | 属于 login 层 | `login-boot-sample` |
 | MySQL 上的实际执行 | 本机无 MySQL 实例，未实测；脚本只写 MySQL 与 H2 双方接受的语法，并由 `scripts/check-sql-compat.sh` 用 H2 实测 | 需要使用者在 MySQL 上跑一遍 |
 
-# 9. 本轮发现并修掉的框架问题
+## 本轮发现并修掉的框架问题
 
 这一条清单是搭 demo 的直接产出——纯 core 接入才暴露得出来。
 
@@ -304,13 +304,22 @@ BASE=http://localhost:8082/coredemo bash verify.sh   # 换地址
 
 影响面提醒：第 1、2 条改完之后，`auth-rbac-boot-sample` 的拒绝响应体从"basic 层 Throwable 兜底的 generic code"变成 `code=403 / 400`。按 code 判失败分支的前端需要同步确认。
 
-# 10. 已知债务（本轮按裁决不动）
+## 已知债务（本轮按裁决不动）
 
 - `SqlAuthInject.authTableWhereExpression` 把权限串作为**字面量**拼进改写后的语句。
   今天不可达的前提是权限串只由各位置的 **ID** 拼成，而 ID 是整型；
   一旦有外部项目用含引号的字符串权限ID接入，这里就是可打通的注入面。
   已就地留 TODO 注明触发条件与修法（做字面量转义，而不是改成 `?`——加占位符会打乱 MyBatis 的 parameterMappings）。
-  代码位置：[SqlAuthInject.java](file:///C:/Users/kewen/Projects/kewen-framework/auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/SqlAuthInject.java) 的 `authTableWhereExpression`。
+  代码位置：[SqlAuthInject.java](../../auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/SqlAuthInject.java) 的 `authTableWhereExpression`。
   本示例刻意让含引号的权限串只走 `demo_auth_data` 的读写路径（已参数绑定）与 `quote_probe` 这个**没有任何数据范围声明**的业务功能，避免撞上这条债务。
   验证台也遵守这条边界：当前身份的权限串含单引号（erin）时，数据范围行显示"不适用"并跳过 GET，而不是把这条债务表现成一次查询失败或权限拒绝。
 - `menu-access` 规格里"两个洞与启动校验仍搁置"那部分（端点覆盖、并发注册）不在本轮范围。
+
+## 相关文档
+
+- [auth 总览](../../auth/README.md)
+- [权限注解与权限编辑](../../auth/docs/annotations.md)
+- [RBAC 模型与扩展](../../auth/docs/rbac-and-extension.md)
+- [auth-core-spring-boot-starter](../../auth/auth-core-spring-boot-starter/README.md)
+- [auth-rbac 示例](../auth-rbac-boot-sample/README.md)
+- [项目根 README](../../README.md)

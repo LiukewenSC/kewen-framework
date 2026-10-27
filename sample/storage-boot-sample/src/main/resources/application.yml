@@ -26,7 +26,7 @@ spring:
     driver-class-name: org.h2.Driver
     username: sa
     password:
-  # 建表脚本只有 docs/sql 一份，由 sample/pom.xml 的 <resources> 挂到 classpath:sql/ 下
+  # 建表脚本只有 relation/basic-support 一份，由 sample/pom.xml 的 <resources> 挂到 classpath:sql/ 下
   # （basic-support.sql 含 file_detail / file_part_detail / sys_storage_file）。
   # encoding 必须显式指定，脚本里有中文注释，否则跟随平台默认编码。
   sql:
@@ -43,7 +43,7 @@ spring:
 ---
 # 本地 MySQL 数据源（沿用 p6spy 驱动，jdbc:p6spy 前缀不能少，否则 P6SpyDriver 不认）
 # 本 profile 不执行任何建表脚本：file_detail / file_part_detail / sys_storage_file
-# 请自行执行 docs/sql/basic-support.sql 建好后再启动。
+# 请自行执行 relation/basic-support/basic-support.sql 建好后再启动。
 spring:
   config:
     activate:

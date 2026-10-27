@@ -1,350 +1,184 @@
-# 1. 说明
+# auth-rbac-boot-sample
 
-此工程是[cu-framework-auth](https://gitee.com/LiuKewenSc/cu-framework-auth)框架的示例工程
+## 演示什么
 
-API接口已经发布在**Apifox**上[cu-framework-auth框架接口](https://apifox.com/apidoc/shared-56ea7395-f230-45b6-b650-14d27d36ce28/api-183461098)，可以配合使用
+默认 RBAC 实现的完整示例：用户-部门-角色-菜单权限、数据范围、行级数据操作权限与部门继承，都用会议室管理这个案例串起来。默认 H2 内存库，端口 8081。
 
-通过会议室管理这个具体的案例演示描述了权限框架的使用
+本示例**没有接入 Spring Security**：身份由请求头 `X-Demo-User` 声明，不带时回落到 `admin`。权限仍然按 `sys_user` / `sys_role` / `sys_dept` 实时装载，因此换身份就能看到不同的判权结果。
 
-单独列出示例工程描述`cu-framework-auth`的实际场景，一方面解决开源许可的冲突，一方面更能反映出对框架的引用，更具有独立性
+## 零配置启动
 
-本文以会议室、会议室预约功能举例说明
-
-# 2. 工程结构
-
-```text
-auth-rbac-boot-sample
-├─src/main/java/com/cu/framework/auth/sample
-│    ├─config                                   配置类
-│    ├─controller                               会议室接口，含各类权限注解的演示
-│    ├─model                                    请求/响应对象
-│    ├─mp                                       MyBatis-Plus 生成的实体与 Mapper
-│    ├─AuthBootSampleCurrentUserContextHolder   当前用户上下文
-│    └─AuthRbacBootSampleApp                    启动类
-└─src/main/resources
-     ├─application.yml                          配置（h2 / mysql 两个 profile 段）
-     ├─logback-spring.xml                       日志
-     ├─saml                                     SAML 元数据
-     └─spy.properties                           p6spy sql 打印配置
+```bash
+cd sample/auth-rbac-boot-sample
+mvn -q -DskipTests package
+java -jar target/auth-rbac-boot-sample-0.0.1-SNAPSHOT-exec.jar
 ```
 
-# 3. 初始化启动
+> 请用打包后的 exec jar 启动。当前工程用 `mvn spring-boot:run` 时，权限实体的类路径扫描可能不完整，表现为 `权限标记错误: ROLE`；`java -jar` 是验证过的方式。
 
-默认使用 H2 内存库，不需要初始化数据库、也不需要改任何配置，直接启动即可。
-要接自己的 MySQL，才需要下面这两步：先按 3.1 建表灌数据，再按 3.2 填好 `mysql` profile 的连接。
+默认 `h2` profile，启动时自动执行 `relation/auth-rbac/auth-rbac.sql` 与本模块的 `sql/schema.sql`、`sql/seed-data.sql`。H2 控制台：<http://localhost:8081/h2-console>，JDBC URL 用 `application.yml` 里的 `jdbc:h2:mem:auth_sample;...`。
 
-## 3.1. 初始化数据库
+接自己的 MySQL 时用 `--spring.profiles.active=mysql`，先手工按顺序执行：
 
-以下脚本在 `h2` profile 下由 `spring.sql.init` 自动执行，无需手动跑；手动执行只针对接自己 MySQL 的情况。
+1. `relation/auth-rbac/auth-rbac.sql`
+2. 本模块 `sql/schema.sql`
+3. 本模块 `sql/seed-data.sql`
 
-框架的初始化脚本统一放在仓库根目录的 `docs/sql/` 下，示例专用的建表和种子数据放在本模块的 `sql/` 下。
-执行顺序是先建表、再灌数据：
+MySQL 会话表执行 [relation/login-security/spring-session-mysql.sql](../../relation/login-security/spring-session-mysql.sql)，并把 `spring.session.jdbc.initialize-schema` 设为 `never`；H2 用 `embedded` 自动建表。
+
+脚本执行完后，用 `mysql` profile 启动同一个 exec jar；数据源用命令行覆盖：
+
+```bash
+java -jar target/auth-rbac-boot-sample-0.0.1-SNAPSHOT-exec.jar \
+  --spring.profiles.active=mysql \
+  --spring.datasource.url='jdbc:mysql://localhost:3306/your_database?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai' \
+  --spring.datasource.username=your_username \
+  --spring.datasource.password=your_password
+```
+
+MySQL 侧已验证到“建库 → 四个脚本 → 启动 → `/meetingRoom/page` 与 `/deptInherit/rooms` 返回符合预期”；示例不负责创建数据库。
+
+## 身份怎么来
+
+```bash
+curl -H "X-Demo-User: admin" http://localhost:8081/meetingRoom/page
+```
+
+| 身份 | 所属部门 | 角色 | 用途 |
+| --- | --- | --- | --- |
+| `admin`（缺省） | 根部门(1) | 超级管理员(`ROLE__1`) | 拥有种子里的会议室编辑/预约权限 |
+| `admin2` | 总部(2) | 无 | 部门继承的“本部门不放行”对照 |
+| `subordinate` | 研发部(3，总部子部门) | 无 | 部门继承的“子部门放行”对照 |
+| `outsider` | 外部合作部(4) | 无 | 与总部无层级关系的对照 |
+
+请求头只存在于示例；框架本身不读任何身份头。
+
+## 数据与种子
 
 | 脚本 | 内容 |
 | --- | --- |
-| `../../docs/sql/auth-rbac.sql` | 权限框架 10 张表的建表语句 + 查看用的视图（MySQL 与 H2 通用） |
-| `../../docs/sql/basic-support.sql` | 文件存储与请求日志表，本示例可选 |
-| `sql/schema.sql`（本模块） | 示例业务表建表（`testauth_annotation_business`、`meeting_room`） |
-| `sql/seed-data.sql`（本模块） | 上述两表与权限框架 10 张表的种子数据 |
+| [relation/auth-rbac/auth-rbac.sql](../../relation/auth-rbac/auth-rbac.sql) | 权限框架 10 张表 + `view_menu_api_auth` 视图 |
+| [relation/basic-support/basic-support.sql](../../relation/basic-support/basic-support.sql) | 文件存储与请求日志表，本示例可选 |
+| `sql/schema.sql` | 示例业务表 `meeting_room`、`testauth_annotation_business` |
+| `sql/seed-data.sql` | 上述两表与框架 10 张表的种子数据 |
 
-`../../docs/sql/auth-rbac.sql` 与 `sql/schema.sql` 必须先执行，`sql/seed-data.sql` 里的 INSERT 依赖这些表。
+种子数据包含部门树 `1 根部门 -> 2 总部 -> 3 研发部`、独立根 `4 外部合作部`，4 个角色，5 个用户，以及 1 间会议室（id=1）的编辑/预约权限。
 
-会话存储所需的表不在这里建：H2 由 `spring.session.jdbc.initialize-schema: embedded` 自动创建，
-`mysql` profile 用 `never`，需要自行执行 spring-session jar 内的
-`org/springframework/session/jdbc/schema-mysql.sql`。
+## 使用案例
 
-默认创建admin用户，超级管理员角色，可以直接用admin/123456登录。同时包含了所有API菜单权限、路由菜单权限等。
-默认创建一个会议室，可以管理和预约，可以直接使用。利用[kewen-web-admin](https://gitee.com/LiuKewenSc/kewen-web-admin)工程可以皮诶和直接在页面上直观的查看。
+### 可编辑会议室列表
 
-## 3.2. 配置
-
-默认不配也能跑：`spring.profiles.active` 已是 `h2`，用内存库，建表和种子数据由 `h2` profile 段里的
-`spring.sql.init` 自动执行。
-
-接自己的 MySQL 时加 `--spring.profiles.active=mysql`，并把该 profile 段的占位值改掉：
-
-```properties
-server.port=8081
-spring.datasource.url=jdbc:mysql://localhost:3306/your_database
-spring.datasource.username=your_username
-spring.datasource.password=your_password
-spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
-```
-
-`mysql` profile 不执行任何建表脚本，需先按 3.1 手动建表并灌入种子数据。
-
-SQL 打印看 `spy.properties`。当前 `mysql` profile 用的是官方 MySQL 驱动，不经过 p6spy；
-要用 p6spy 抓 SQL，需自行把 URL 改成 `jdbc:p6spy:mysql://` 并把驱动换成
-`com.p6spy.engine.spy.P6SpyDriver`（原先为绕开前缀问题写的 `KP6SpyDriver` 已删除）。
-
-## 3.3. 启动
-
-配置完成直接启动 `AuthRbacBootSampleApp` 类即可，端口 8081；命令行方式：
+`GET /meetingRoom/page`，类上 `@AuthMenu` 控制接口访问，方法内的查询由 `MeetingRoomMpMapper.selectEditAblePage` 上的 `@AuthDataRange` 过滤 `edit_info` 槽位。
 
 ```bash
-mvn -pl sample/auth-rbac-boot-sample spring-boot:run
+curl -H "X-Demo-User: admin" "http://localhost:8081/meetingRoom/page?page=1&size=10"
 ```
 
-启动后可以直接登录访问，默认账号密码 **admin/123456**
+返回的每条会议室会通过 `AuthDataAdaptor.fillDataAuths` 回填 `appointment` 槽位的权限对象。
 
-示例项目中包含了基本的注解使用，可以登录后调用相关接口验证。API 接口已经发布到 **Apifox** [cu-framework-auth框架接口](https://apifox.com/apidoc/shared-56ea7395-f230-45b6-b650-14d27d36ce28/api-183461098)，可以执行验证
+### 编辑会议室
 
-也可以配合[kewen-web-admin](https://gitee.com/LiuKewenSc/kewen-web-admin)工程启动登录之后在页面上验证查看。
-需要先下载nodejs（可以在官网下载，我下载的v18），配置好环境之后执行`npm install`安装依赖，然后执行 `npm run serve`
-
-这里建议把前端工程启动起来验证，可以查看一个完整的流程，只不过前端的启动需要nodejs相关的前端知识。
-
-# 4. 使用案例
-
-我们需要的功能有创建会议室、删除会议室、查看会议室可编辑列表、编辑会议室、查看会议室可预约列表、预约会议室
-我们将这些功能点进行分类，其中
-
-- 创建会议室、删除会议室因为是数据有无的概念，应当由菜单权限控制，这是比编辑数据更高的权限要求
-- 查看可编辑列表、编辑会议室是对会议室的基本信息的操作，其权限应当分为同一功能(meeting_room)下的一组操作类型(edit_info)
-- 查看会议室可预约列表、预约会议室对应会议室的使用，其权限应当分为同一功能(meeting_room)下的另一组操作类型(appointment)
-
-需要特别注意的是，编辑会议室可以编辑会议室的预约权限，这是合理的。
-
-## 4.1. 创建会议室
-
-创建会议室主要使用@AuthMenu注解校验是否拥有创建会议室的权限，由菜单API权限控制。
-创建会议室完成后需要添加会议室的管理权限。生活中一般有两种方式来控制，
-a. 一种方式是创建的人直接有权限处理，不需要每一个都分配管理人员，毕竟每条数据都分配一个权限会很麻烦，有的数据本身也不需要这么多维度的权限。
-b. 另一种方式是每个会议室都会分配管理的人，因为会议室这种属于不经常变动的资产，需要有人来管理它。
-
-我们这里使用第二种方案，即创建会议室时为会议室分配管理人员。
-
-除此之外，也可以添加会议室预约的权限。这里就直接创建一个会议室，先不允许预约
+`POST /meetingRoom/updateById`：
 
 ```java
-/**
- * 创建会议室
- * @param entity  需要实现接口 IdDataAuthEdit<ID> 
- * @return
- */
-@PostMapping("/meetingRoomPrimary/add")
-@Transactional(rollbackFor = Exception.class)
-@AuthMenu
-@AuthMenuDoc(name = "创建会议室")
-@AuthDataAuthEdit(businessFunction = "meeting_room",operate = "edit_info",before = false)
-public Result add(@RequestBody MeetingRoomAddReq entity){
-   meetingRoomService.save(entity);
-   return Result.success();
-}
-/**
- * 创建会议室,第二种写法，不依赖于注解
- * @param entity  需要实现接口 IdDataAuthEdit<ID> 
- * @return
- */
-@PostMapping("/meetingRoomPrimary/add2")
-@AuthMenu
-@AuthMenuDoc(name = "创建会议室")
-@Transactional(rollbackFor = Exception.class)
-public Result add2(@RequestBody MeetingRoomAddReq entity){
-   meetingRoomService.save(entity);
-   //引入 com.cu.framework.auth.core.AuthDataAdaptor;
-   authDataAdaptor.editDataAuths("meeting_room",entity.getDataId(),"edit_info",entity.getAuthObject());
-   return Result.success();
-}
-```
-
-**启动的时候会自动添加接口** `/meetingRoomPrimary;/meetingRoomPrimary/add;/meetingRoomPrimary/add2;`
-数据库查看`sys_menu_api`可以看到以下新增的
-|id|path|name|parent_id|auth_type|
-|---|---|---|---|---|
-|1823284778685722624|	/meetingRoomPrimary	|MeetingRoomPrimaryController	|0	|	1|
-|1823284778685722625|	/meetingRoomPrimary/add	|MeetingRoomPrimaryController>创建会议室|	1823284778685722624		|2	|
-|1823284778685722626|	/meetingRoomPrimary/add2	|MeetingRoomPrimaryController>创建会议室	|1823284778685722624	|	2	|
-
-然后需要我们在数据库找到对应接口权限的地方添加权限映射，由于有上下级关系，我们只需要在`/meetingRoom`对应的数据**id=1823284778685722624**配置权限即可，在此class下都有权限访问
-
-```sql
-INSERT into sys_auth_menu(api_id,authority,description) VALUES (1823284778685722624,'ROLE_1','ROLE_超级管理员');
-```
-
-上述SQL把超级管理员角色加了进去，超级管理员就有权限访问了，其他角色我们也可以按照此添加即可，也可以在页面上添加。
-
-然后启动执行创建会议室，就可以把数据添加进去了。
-
-`/meetingRoom/add`或`/meetingRoom/add2`
-
-```json
-{
-  "name": "1103大会议室",
-  "userCount": 32,
-  "place": "大门入口右转1103号大会议室",
-  "remark": "全景落地窗，尊享位置",
-  "isVideo": 1,
-  "isProjector": 1,
-  "isPhone": 1,
-  "authObject": {
-    "roles": [
-      {
-        "id": 1,
-        "name": "超级管理员"
-      },
-      {
-        "id": 4,
-        "name": "会议室管理员"
-      }
-    ]
-  }
-}
-```
-
-## 4.2. 删除会议室
-
-删除会议室同创建一致，注意菜单权限保持相同即可，（与创建会议均用父级class的权限就可以解决）
-//todo 删除会议室需要删除相关权限，是不是考虑单独做一个删除注解比较好
-
-`/meetingRoom/delete`
-
-同样菜单API会添加
-
-## 4.3. 编辑会议室
-
-编辑会议室需要有会议室的管理权限，这里定义角色为 **会议室管理角色**
-
-编辑会议室首先要校验`@AuthDataOperation`，判定是否有权限，然后再编辑会议室相关的信息及预约权限
-
-```java
-/**
- * 编辑会议室
- * @param entity
- * @return
- */
 @PostMapping("/updateById")
 @Transactional(rollbackFor = Exception.class)
-@AuthDataOperation(businessFunction = "meeting_room",operate = "edit_info")
-@AuthDataAuthEdit(businessFunction = "meeting_room",operate = "appointment")
-public Result updateById(@RequestBody MeetingRoomUpdateReq entity){
-   meetingRoomService.updateById(entity);
-   return Result.success();
-}
-/**
- * 编辑会议室方式2，
- * 不依赖@AuthDataAuthEdit
- * @param entity
- * @return
- */
-@PostMapping("/updateById")
-@Transactional(rollbackFor = Exception.class)
-@AuthDataOperation(businessFunction = "meeting_room",operate = "edit_info")
-public Result updateById(@RequestBody MeetingRoomUpdateReq entity){
-   meetingRoomService.updateById(entity);
-   authDataService.editDataAuths("meeting_room",entity.getId(),"appointment",entity.getAuthObject());
-   return Result.success();
+@AuthDataOperation(businessFunction = BUSINESS_FUNCTION, operate = OPERATE_EDIT_INFO)
+public Result updateByIdMethod(@RequestBody MeetingRoomUpdateReq entity) {
+    meetingRoomService.updateById(entity);
+    authDataAdaptor.editDataAuths(BUSINESS_FUNCTION, entity.getId(),
+            OPERATE_APPROVE, entity.getAuthObject());
+    return Result.success(entity);
 }
 ```
 
-编辑会议室除了编辑基本信息以外，还要编辑可预约权限，这里也可以使用两种方式进行
-需要注意的是校验是校验数据的`edit_info`操作，而插入的是预约权限`appointment`
-
-```json
-{
-  "id":1,
-  "name": "1103大会议室",
-  "userCount": 32,
-  "place": "大门入口右转1103号大会议室",
-  "remark": "全景落地窗，尊享位置 编辑之后",
-  "isVideo": 1,
-  "isProjector": 1,
-  "isPhone": 1,
-  "authObject": {
-    "roles": [
-      {
-        "id": 4,
-        "name": "会议室管理员"
-      }
-    ]
-  }
-}
+```bash
+curl -X POST http://localhost:8081/meetingRoom/updateById \
+  -H "Content-Type: application/json" -H "X-Demo-User: admin" \
+  -d '{"id":1,"name":"1103会议室","authObject":{"roles":[{"id":4,"name":"会议室管理员"}]}}'
 ```
 
-预约权限改成了只有会议室管理员可以编辑，因此后续超级管理员调用预约的时候的时候就会报没有权限。
-至于会议室编辑的权限，应当单独拎出来一个接口用创建会议室的权限来执行，这样权限才能统一
+- `@AuthDataOperation(edit_info)` 先校验当前人能否编辑这条数据。
+- 业务更新后，`AuthDataAdaptor.editDataAuths` 把请求里的 `authObject` 写到同一间会议室的 `appointment` 槽位。
+- 把预约权限改成只有角色 4 后，`admin` 再调用预约接口就会失去权限；这正是“编辑权限”和“预约权限”分开的例子。
 
-## 4.4. 会议室预约
+### 可预约列表与预约
 
-```java
-   /**
-    * 预约会议室
-    * @param req 会议室ID，其实还有其他的入参，比如时间段等，这里暂时不管
-    * @return
-    */
-   @PostMapping(value = "/appointmentMeetingRoom")
-   @AuthDataOperation(businessFunction = "meeting_room",operate = "appointment")
-   public Result appointmentMeetingRoom(@RequestBody @Validated MeetingRoomAppointmentReq req) {
-      String time = req.getTime();
-      //预约会议室的逻辑
-      log.info("预约成功{}", time);
-      return Result.success(time);
-   }
+`GET /meetingRoomApprove/page` 走 `selectApproveAblePage` 的 `appointment` 数据范围；`POST /meetingRoomApprove/approve` 走 `@AuthDataOperation(appointment)`。
+
+```bash
+curl -H "X-Demo-User: admin" "http://localhost:8081/meetingRoomApprove/page?page=1&size=10"
+
+curl -X POST http://localhost:8081/meetingRoomApprove/approve \
+  -H "Content-Type: application/json" -H "X-Demo-User: admin" \
+  -d '{"id":1,"time":"2024-11-10"}'
 ```
 
-请求数据：
+没有预约权限时返回 `code=403`；请求体不实现 `DataIdCarrier` 或 ID 为空时返回 `code=400`。
 
-```json
-{
-  "id":1,
-  "time":"2024-11-10"
-}
+### 部门继承权限
+
+`GET /deptInherit/rooms`，类上 `@AuthMenu` 批量管辖；菜单上只挂了一条 `RELATIONDEPT__2`（总部）。
+
+```bash
+curl -H "X-Demo-User: subordinate" http://localhost:8081/deptInherit/rooms   # 200
+curl -H "X-Demo-User: admin2"      http://localhost:8081/deptInherit/rooms   # 403
+curl -H "X-Demo-User: outsider"    http://localhost:8081/deptInherit/rooms   # 403
 ```
 
-现在，超级管理员已经没有办法预约会议室了，因为没有权限、（至于超级管理员应当有最大权限这回事则应该在角色层级里面处理，有超管角色就应当有其余所有角色）
+| 身份 | 与总部(2)的关系 | 期望 |
+| --- | --- | --- |
+| `subordinate` | 子部门(3) | 200 放行 |
+| `admin2` | 本人就在总部 | 403 拒绝 |
+| `outsider` | 无层级关系 | 403 拒绝 |
+| 不带请求头 | 根部门(1) | 403 拒绝 |
 
-我们在数据库的`sys_auth_data`中插入一条功能为会议室**meeting_room**ID为**1**的操作为**appointment**的数据，角色把超级管理员**ROLE_1**加进去
+`RELATIONDEPT__2` 只覆盖总部的严格子孙部门，不含总部自己。要放行 `admin2`，需要另外配 `DEPT__2`；自动化用例 `DeptInheritanceSampleTest#grantingTheDeptsOwnFlagAdmitsItsOwnMember` 在运行时补上这条并验证。
 
-```sql
-insert into sys_auth_data(business_function,data_id,operate,authority,description) 
-VALUES ('meeting_room',1,'appointment','ROLE_1','ROLE_超级管理员');
-```
+### 调试端点
 
-再次访问接口，成功的预约上了。
-
-以上就是一个完整的功能示例演示。主要需要注意的就是各接口需要的功能即操作类型不能搞混了。
-
-## 4.5. 部门继承权限：授权挂在父部门，子孙部门生效
-
-部门权限有两种标记，二者正交：`DEPT__<部门ID>` 覆盖**该部门自己的成员**，
-`RELATIONDEPT__<部门ID>` 覆盖**该部门的严格子孙部门成员，不含本部门自己**。
-后者的展开发生在装载用户权限的时候：用户的每个部门会实时向上查出严格上级链，
-把链上每个部门都拼成一条 `RELATIONDEPT__` 串，所以调整部门层级不需要重刷任何人的授权数据。
-
-这条用例的四要素：
-
-| 要素 | 内容 |
+| 请求 | 用途 |
 | --- | --- |
-| 声明位置 | `DeptInheritDemoController`（类上 `@AuthMenu` 批量管辖）；菜单行与授权行都预先写在 `sql/seed-data.sql` 里并给出固定 ID |
-| 触发方式 | `curl -H 'X-Demo-User: <用户名>' http://localhost:8081/deptInherit/rooms` |
-| 观察点 | 响应体的 `code`（权限拒绝不体现在 HTTP 状态码上） |
-| 期望结果 | 见下表 |
+| `GET /test/dataRange` | 单表数据范围查询 |
+| `GET /test/pageDataRange` | 分页数据范围（列表与计数各一条语句） |
+| `POST /test/dataEdit` | 单条 `@AuthDataOperation` |
+| `POST /test/dataEditBatch` | 批量 `@AuthDataOperation`，全部命中才放行 |
+| `GET /test/checkMenu` / `checkMenuNone` | 菜单鉴权正反例 |
 
-种子数据里的部门层级是 `1 根部门 -> 2 总部 -> 3 研发部`，另有一棵独立的根 `4 外部合作部`；
-菜单上只挂了一条 `RELATIONDEPT__2`（总部）：
+## 菜单注册与授权
 
-| 身份（`X-Demo-User`） | 所属部门 | 与总部(2) 的关系 | 期望 `code` |
-| --- | --- | --- | --- |
-| `subordinate` | 研发部(3) | 总部的子部门 | `200` 放行 |
-| `admin2` | 总部(2)、外部合作部(4) | 本人就在总部 | `403` 拒绝 |
-| `outsider` | 外部合作部(4) | 无层级关系 | `403` 拒绝 |
-| 不带该头 | 根部门(1)（缺省 admin） | 总部的上级 | `403` 拒绝 |
+启动时 `MenuApiGeneratorProcessor` 把带 `@AuthMenu` 的端点写进 `sys_menu_api`，只补缺失行，不覆写已有行。类上有 `@RequestMapping` 时生成虚拟父菜单，方法行通过 `parent_id` 挂在下面。
 
-`admin2` 那行是关键对照：它隶属的部门之一正是被授权的总部，但继承标记不含本部门，
-所以它进不来。要在同一个端点上放行它，得另外配一条 `DEPT__2`——
-自动化用例 `DeptInheritanceSampleTest#grantingTheDeptsOwnFlagAdmitsItsOwnMember` 就是在运行时补上这一条、
-验证同一个人随即被放行，以此证明判据走的是层级关系而不是写死的结果。
+授权在 `sys_auth_menu` 中配置，`api_id` 指向 `sys_menu_api.id`。示例种子已经给出固定 ID 与授权；自己新增接口时，按路径找到行再插入授权：
 
-身份由请求头 `X-Demo-User` 声明，是因为本示例没有接入 Spring Security 的登录态，
-`AuthBootSampleCurrentUserContextHolder` 直接按该用户名从 `sys_user` 体系实时装载权限；
-不带该头时缺省仍是 `admin`。头部名与 auth-core 示例一致，为的是"换身份"在两个示例里是同一个动作。
-这个口子只存在于示例，框架不读任何身份请求头。
+```sql
+INSERT INTO sys_auth_menu (api_id, authority, description)
+SELECT id, 'ROLE__1', 'ROLE__超级管理员'
+FROM sys_menu_api
+WHERE path = '/your/api/path';
+```
 
-自动化载体：`mvn -pl sample/auth-rbac-boot-sample test`，即上表四行各一条断言，
-外加 `multiDeptUserLoadsOneAuthInfoCarryingBothDepts` 验证一个隶属多部门的用户装载出的是**一个**权限体、两个部门都在里面。
+菜单行由路径定位，更新菜单不能改路径；带路径变量的端点会被恒拒绝。完整规则见 [auth/docs/annotations.md](../../auth/docs/annotations.md)。
 
-# 5. 权限粒度说明
-- 数据创建、删除的权限应当由菜单权限控制，同时，需要有一个编辑接口专门编辑主权限（即创建之后交于其他人管理的最大权限，其他人应当可以管理除了主权限之外的信息），这样实现了管理分离
-- 菜单权限拥有对接口的最大控制，没有接口权限不能访问任何数据。建议在高级接口才使用菜单权限控制，其余的数据的操作接口，可以设置为所有人均拥有权限（避免两种权限搞混）
-- 对于只有单一控制的数据如日程（创建之后数据基本就形成了，没有再复杂的逻辑），因为数据本身就之归属于某个人或一组人，因此菜单权限保证数据的增删改查，数据权限就仅剩下数据对应的范围。
-- 对于有多重复杂控制的数据如会议室（创建了之后还需要以此为中心执行其他的业务逻辑），因为数据本身固定，但会提供给其他，因此菜单建议控制添加、删除、修改主权限，其余的交予数据权限来控制。
+## 权限粒度
+
+- 数据创建、删除由菜单权限控制；当前示例没有创建/删除端点。
+- 数据编辑由 `@AuthDataOperation(edit_info)` 控制。
+- 数据使用（预约）由 `@AuthDataOperation(appointment)` 控制。
+- 主权限管理应单独用菜单权限控制，避免把“主权限”交给普通数据操作。
+
+## 不覆盖什么
+
+- 不演示登录 / SSO；身份是请求头，登录示例见 [login-boot-sample](../login-boot-sample/README.md)。
+- 不演示创建/删除会议室；示例只保留编辑、预约与数据范围。
+- 不覆盖 MySQL 上的实际执行；脚本用 H2 实测，MySQL 需自行跑一遍。
+- 不覆盖前端页面；示例只提供 JSON 接口。
+
+## 相关文档
+
+- [auth 总览](../../auth/README.md)
+- [权限注解与权限编辑](../../auth/docs/annotations.md)
+- [RBAC 模型与扩展](../../auth/docs/rbac-and-extension.md)
+- [auth-rbac-spring-boot-starter](../../auth/auth-rbac-spring-boot-starter/README.md)
+- [auth-core 验证示例](../auth-core-boot-sample/README.md)
+- [项目根 README](../../README.md)

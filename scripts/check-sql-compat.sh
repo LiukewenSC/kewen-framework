@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# 用 H2 的 MySQL 兼容模式实测 docs/sql 与各 sample/sql 下的脚本。
+# 用 H2 的 MySQL 兼容模式实测 relation/auth-rbac、relation/basic-support 与各 sample/sql 下的脚本。
+# relation/login-security/spring-session-mysql.sql 是 MySQL 专用脚本，不在此检查。
 # 校验三件事：每条语句 H2 都接受、脚本可重复执行（spring.sql.init 每次启动都会重跑）、表真的建出来了。
 # MySQL 侧不由这里验证：脚本只写两边都接受的语法，改完仍需在 MySQL 上过一遍。
 #
@@ -15,7 +16,7 @@ JAVA=${JAVA_BIN:-java}
 [ -f "$CHECKER" ] || { echo "找不到 $CHECKER"; exit 1; }
 [ -f "$H2_JAR" ] || { echo "找不到 h2 jar，先用 mvn dependency:get 拉一个，或用 H2_JAR 指定"; exit 1; }
 
-mapfile -t FILES < <(ls "$ROOT"/docs/sql/*.sql "$ROOT"/sample/*/sql/*.sql 2>/dev/null | sort)
+mapfile -t FILES < <(ls "$ROOT"/relation/auth-rbac/*.sql "$ROOT"/relation/basic-support/*.sql "$ROOT"/sample/*/sql/*.sql 2>/dev/null | sort)
 [ "${#FILES[@]}" -gt 0 ] || { echo "没有发现任何 .sql"; exit 1; }
 # 统一成 C:/ 形式的绝对路径，Java 与 H2 都认
 if command -v cygpath >/dev/null 2>&1; then

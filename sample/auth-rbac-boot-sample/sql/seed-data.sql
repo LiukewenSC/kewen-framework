@@ -1,4 +1,4 @@
--- 示例种子数据：sys_* 的数据依赖 docs/sql/auth-rbac.sql 已建表，自有表的数据依赖 sql/schema.sql 已建表
+-- 示例种子数据：sys_* 的数据依赖 relation/auth-rbac/auth-rbac.sql 已建表，自有表的数据依赖 sql/schema.sql 已建表
 -- INSERT 不带列名，因此列顺序必须与上述建表脚本一致
 -- 本脚本带显式主键、非幂等：只在 h2 profile 由 spring.sql.init.data-locations 自动执行；
 -- MySQL 侧按需手动导入一次，不要挂进自动执行

@@ -1,5 +1,5 @@
 -- 示例自有表建表脚本：MySQL 与 H2(MODE=MySQL) 通用，不写 ENGINE / CHARACTER SET / COLLATE
--- 只放 auth-rbac-boot-sample 自己定义的表；框架表 sys_* 的 DDL 在 docs/sql/auth-rbac.sql，此处不重复
+-- 只放 auth-rbac-boot-sample 自己定义的表；框架表 sys_* 的 DDL 在 relation/auth-rbac/auth-rbac.sql，此处不重复
 -- 会话存储所需的表由 spring-session 的 spring.session.jdbc.initialize-schema 创建，此处不建
 -- 兼容性由 scripts/check-sql-compat.sh 用 H2 实测校验
 

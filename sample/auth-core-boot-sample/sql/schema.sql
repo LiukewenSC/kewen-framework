@@ -2,7 +2,7 @@
 -- 1) 一律 CREATE TABLE IF NOT EXISTS，不写 DROP —— 本示例的数据文件是持久的，
 --    删除语义会在每次重启时清掉使用者手工授予/回收的权限
 -- 2) 不写 ENGINE / CHARACTER SET / COLLATE，交给各库自己的默认值
--- 3) 本示例不引用任何框架表（sys_*），docs/sql 下的脚本也不进本模块 classpath
+-- 3) 本示例不引用任何框架表（sys_*），relation/ 下的脚本也不进本模块 classpath
 -- 4) 兼容性由 scripts/check-sql-compat.sh 用 H2 实测校验
 
 -- ----------------------------

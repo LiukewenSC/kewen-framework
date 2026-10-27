@@ -19,7 +19,7 @@ cu:
   # ==================== basic-spring-boot-starter ====================
   request:
     persistent:
-      # 是否把请求日志持久化到数据库；需要 sys_request_log 等表（docs/sql/basic-support.sql）。默认 false
+      # 是否把请求日志持久化到数据库；需要 sys_request_log 等表（relation/basic-support/basic-support.sql）。默认 false
       database: false
     message:
       # 是否把请求来源 IP 推送到方糖；还需 cu.notify.fang-tang.enabled=true 才生效。默认 false

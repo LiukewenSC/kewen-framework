@@ -60,7 +60,7 @@
 
     <build>
         <!-- 子模块的 <resources> 是整体覆盖而非追加。这里故意只挂本模块的 sql 目录，
-             让 docs/sql 下的框架建表脚本完全不进本示例的 classpath——本示例不使用任何框架表 -->
+             让 relation/ 下的框架建表脚本完全不进本示例的 classpath——本示例不使用任何框架表 -->
         <resources>
             <resource>
                 <directory>${project.basedir}/src/main/resources</directory>

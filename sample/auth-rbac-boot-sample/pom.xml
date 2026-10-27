@@ -76,13 +76,13 @@
 
     <build>
         <!-- 子模块的 <resources> 是整体覆盖而非追加，所以这里必须把父 pom 继承来的
-             docs/sql 挂载一并重写，否则框架建表脚本会从 classpath 上消失 -->
+             relation/auth-rbac 挂载一并重写，否则框架建表脚本会从 classpath 上消失 -->
         <resources>
             <resource>
                 <directory>${project.basedir}/src/main/resources</directory>
             </resource>
             <resource>
-                <directory>${project.basedir}/../../docs/sql</directory>
+                <directory>${project.basedir}/../../relation/auth-rbac</directory>
                 <targetPath>sql</targetPath>
                 <includes>
                     <include>*.sql</include>

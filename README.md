@@ -1,249 +1,124 @@
 # Kewen Framework
 
-> 基于 Spring Boot 的企业级权限管理框架，提供完整的 RBAC 权限控制、多租户支持、文件存储等企业级功能
+> 基于 Spring Boot 的企业级权限与登录安全框架：注解驱动的菜单 / 数据权限、默认 RBAC 实现、账号密码与 OAuth2 / OIDC / SAML2 单点登录，以及基础 Web、文件存储与多租户能力。
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![JDK](https://img.shields.io/badge/JDK-8+-green.svg)]()
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.7.18-brightgreen.svg)]()
 [![Maven](https://img.shields.io/badge/Maven-3.6+-red.svg)]()
 
-## 📖 目录
+## 这是什么
 
-- [项目简介](#项目简介)
-- [核心特性](#核心特性)
-- [技术栈](#技术栈)
-- [项目结构](#项目结构)
-- [快速开始](#快速开始)
-- [权限系统详解](#权限系统详解)
-- [模块说明](#模块说明)
-- [配置指南](#配置指南)
-- [使用示例](#使用示例)
-- [常见问题](#常见问题)
-- [参与贡献](#参与贡献)
-- [许可证](#许可证)
+Kewen Framework 是一个 Java + Spring Boot 多模块框架，专注解决企业应用里的权限与登录问题。它把“菜单能不能进、列表能看哪些行、这条数据能不能改、权限怎么配”拆成四个可组合的能力，并提供一套默认的用户-部门-角色-菜单实现。你可以整套引入，也可以只用注解与接缝层，自建权限模型。
 
-## 🎯 项目简介
+## 能力与状态
 
-Kewen Framework 是一个基于 Java + Spring Boot 的企业级后端框架，专注于解决企业应用中的权限管理问题。通过引入 RBAC（基于角色的访问控制）模型和注解驱动的权限控制机制，开发者可以快速构建安全、灵活的权限管理系统，避免在每个业务系统中重复设计和实现权限体系。
+| 能力 | 说明 | 状态 |
+| --- | --- | --- |
+| 菜单权限 | `@AuthMenu` / `@AuthMenuDoc`；启动时注册菜单行，请求路径精确匹配 | 可用 |
+| 数据范围 | `@AuthDataRange` 声明在 Mapper 查询方法上，按语句注入权限条件；启动期校验声明 | 可用 |
+| 数据操作 | `@AuthDataOperation` 收集 `DataIdCarrier` 交出的 ID，逐个判定，全部命中才放行 | 可用 |
+| 权限编辑 | `AuthDataAdaptor` 命令式编辑 / 读取 / 删除某条数据的权限 | 可用；旧 `@AuthDataAuthEdit` 已移除 |
+| 默认 RBAC | 用户-部门-角色-菜单，`RELATIONDEPT` 只覆盖严格子孙部门 | 可用 |
+| 账号密码登录 | JSON 登录、会话并发控制、统一 `SecurityUser` | 可用；`remember-me` 当前未接线 |
+| OAuth2 / OIDC | 授权码模式，OIDC 支持 discovery / JWKS / ID Token 校验 | 可用；OIDC 登出未接线 |
+| SAML2 | SP 发起、metadata 解析、SP Metadata 端点、SLO | 可用；只文档化 SP 发起 |
+| 基础 Web | 统一 `Result`、异常处理、traceId、请求日志、MyBatis-Plus 分页、方糖通知 | 可用 |
+| 文件存储 | 七牛云上传 / 下载 / 回调 / 文件记录 | 可用；当前固定七牛，`cu.storage.type` 未接线 |
+| 多租户 | `tenantId` 请求头上下文与 Feign 透传 | 可用；不做 SQL 级隔离 |
+| Magic API | magic-api 接入示例 | 示例 / 实验性，不建议直接用于生产 |
+| 代码生成 | MyBatis-Plus 样板代码生成 | 可用；配置硬编码在 `Properties` |
 
-### 为什么选择 Kewen Framework？
-
-- **开箱即用**：通过 Spring Boot Starter 机制，只需引入依赖即可使用完整的权限系统
-- **注解驱动**：使用简单的注解即可完成菜单权限和数据权限的控制
-- **高度可扩展**：预留丰富的扩展接口，支持自定义权限模型和业务逻辑
-- **完整生态**：提供多租户、文件存储、请求日志等企业级功能模块
-
-## ✨ 核心特性
-
-### 1. 权限管理系统
-
-- ✅ **RBAC 权限模型**：基于用户-角色-部门的完整权限体系
-- ✅ **菜单权限控制**：通过 `@AuthMenu` 注解实现接口访问权限控制
-- ✅ **数据权限控制**：支持数据范围查询、数据操作权限校验
-- ✅ **注解驱动**：仅通过注解即可完成复杂的权限验证逻辑
-- ✅ **自动菜单注册**：应用启动时自动将 API 路径注册到数据库
-
-### 2. 安全认证
-
-- 🔐 **Spring Security 集成**：基于 Spring Security 构建的安全框架
-- 🔐 **JSON 登录**：改造传统表单登录为适合前后端分离的 JSON 登录
-- 🔐 **Token 认证**：支持 Token 方式的无状态认证
-- 🔐 **会话管理**：支持最大会话数控制、防并发登录
-- 🔐 **记住我功能**：支持 Remember-Me 长效登录
-
-### 3. 企业级功能
-
-- 📦 **多租户支持**：内置多租户架构，支持数据隔离
-- 📦 **文件存储**：支持七牛云等多平台文件存储
-- 📦 **请求日志**：完整的请求日志记录和追踪
-- 📦 **消息通知**：集成方糖等消息推送服务
-- 📦 **代码生成**：一键生成 MyBatis-Plus 相关代码
-
-## 🛠 技术栈
+## 技术栈
 
 | 类别 | 技术 | 版本 |
-|------|------|------|
-| **核心框架** | Spring Boot | 2.7.18 |
-| | Spring | 5.x |
-| | Spring Cloud | 2021.0.9 |
-| | Spring Cloud Alibaba | 2021.0.5.0 |
-| **安全框架** | Spring Security | - |
-| **持久层** | MyBatis-Plus | 3.5.8 |
-| | MySQL | 8.0.33 |
-| **工具库** | Hutool | 5.8.18 |
-| | FastJSON | 2.0.25 |
-| | Lombok | 1.18.30 |
-| | Guava | 32.1.3-jre |
-| | Commons IO | 2.11.0 |
-| **API 文档** | Swagger | 2.9.2 |
-| **构建工具** | Maven | 3.6+ |
-| **JDK** | Java | 8+ |
+| --- | --- | --- |
+| 语言 / 构建 | Java / Maven | 8+ / 3.6+ |
+| 核心框架 | Spring Boot / Spring Security | 2.7.18 / 5.7.x |
+| 持久层 | MyBatis-Plus / MySQL | 3.5.8 / 8.0 |
+| SQL 解析 | JSQLParser | 由 MyBatis-Plus BOM 管理 |
+| JSON | FastJSON2 / Jackson | 随项目 BOM |
+| 工具 | Hutool / Lombok / Guava | 随项目 BOM |
+| 会话 | spring-session-jdbc | 随 Spring Boot BOM |
+| 单点登录 | spring-security-oauth2-client / spring-security-saml2-service-provider | 随 Spring Security BOM |
 
-## 📁 项目结构
+## 模块地图
 
-```
-cu-framework/
-├── .gitee/                             # Gitee 相关配置
-│   ├── ISSUE_TEMPLATE.zh-CN.md         # Issue 模板
-│   └── PULL_REQUEST_TEMPLATE.zh-CN.md  # PR 模板
-│
-├── basic/                              # 基础模块
-│   └── src/main/java/com/cu/framework/basic/
-│       ├── exception/                  # 异常处理（BizException, BackendException等）
-│       ├── filter/                     # 过滤器（EarlyRequestFilter, TraceRequestFilter等）
-│       ├── logger/                     # 日志管理（请求日志、追踪日志）
-│       ├── model/                      # 通用模型（PageReq, PageResult, Result等）
-│       └── utils/                      # 工具类（BeanUtil, TreeUtil, FileUtils等）
-│
-├── basic-support/                      # 基础支持模块
-│   └── src/main/java/com/cu/framework/basic/support/
-│       ├── log/                        # 日志持久化支持
-│       ├── message/                    # 消息推送支持（方糖等）
-│       ├── mp/                         # MyBatis-Plus 支持
-│       ├── utils/                      # 工具支持
-│       └── BasicSupportEndpoint.java   # 基础支持端点
-│
-├── boot/                               # Spring Boot Starter 模块
-│   ├── basic-spring-boot-starter/      # 基础功能 Starter
-│   │   └── src/main/java/com/cu/framework/boot/basic/
-│   │       ├── config/                 # 自动配置类（Async, MyBatis-Plus, Filter等）
-│   │       ├── context/                # 上下文管理
-│   │       ├── handler/                # 处理器
-│   │       ├── p6spy/                  # SQL 日志监控
-│   │       └── properties/             # 配置属性
-│   │
-│   ├── login-security-spring-boot-starter/  # 登录认证 Starter（Spring Security）
-│   │   └── src/main/java/com/cu/framework/authentication/
-│   │       ├── annotation/                 # @SecurityIgnore 免登录白名单
-│   │       ├── config/                     # Spring Security、Session、密码配置
-│   │       ├── extension/                  # RememberMe、Session 扩展
-│   │       ├── filter/                     # Token 会话与过滤器链异常处理
-│   │       ├── handler/                    # 认证异常与统一返回处理
-│   │       ├── loginpage/                  # 登录方式发现端点
-│   │       ├── model/                      # 登录用户模型
-│   │       ├── oauth2/                     # OAuth2/OIDC 登录
-│   │       ├── password/                   # 账密 JSON 登录
-│   │       ├── properties/                 # 配置属性
-│   │       ├── saml/                       # SAML 登录
-│   │       ├── service/                    # SecurityUserDetailsService
-│   │       └── sso/                        # 单点登录公共逻辑
-│   │
-│   ├── storage-spring-boot-starter/    # 文件存储 Starter
-│   ├── tenant-spring-boot-starter/     # 多租户 Starter
-│   └── magic-spring-boot-starter/      # Magic API Starter
-│
-├── auth/                               # 权限认证模块
-│   ├── auth-core/                      # 权限核心（注解、模型、实体）
-│   │   └── src/main/java/com/cu/framework/auth/core/
-│   │       ├── annotation/             # 权限注解（@AuthMenu, @AuthDataRange等）
-│   │       ├── data/                   # 数据权限相关
-│   │       ├── entity/                 # 基础实体（BaseAuth等）
-│   │       ├── exception/              # 权限异常
-│   │       ├── menu/                   # 菜单管理
-│   │       └── util/                   # 权限工具类
-│   │
-│   ├── auth-core-spring-boot-starter/  # 权限核心 Starter
-│   ├── auth-rbac/                      # RBAC 权限实现
-│   │   └── src/main/java/com/cu/framework/auth/rbac/
-│   │       ├── composite/              # 复合用户对象
-│   │       ├── controller/             # RBAC 控制器（用户、角色、部门等）
-│   │       ├── extension/              # 扩展服务
-│   │       ├── model/                  # RBAC 模型
-│   │       ├── mp/                     # MyBatis-Plus 实体和Mapper
-│   │       └── utils/                  # RBAC 工具类
-│   │
-│   ├── auth-rbac-spring-boot-starter/  # RBAC Starter
-│   ├── auth-rbac-security-spring-boot-starter/  # RBAC 接入 Spring Security 登录态
-│   │   └── src/main/java/com/cu/framework/auth/rbac/security/
-│   │       ├── RbacSecurityConfig.java                        # 自动装配
-│   │       ├── RbacSecurityUserDetailsService.java            # 登录用户装载
-│   │       └── RbacSecurityAuthCurrentUserContextHolder.java  # 当前登录人上下文
-│   │
-│   └── relation/                       # 权限相关资源
-│       └── properties/                 # 配置文件
-│
-├── sample/                             # 示例项目
-│   ├── auth-rbac-boot-sample/          # 权限认证示例（会议室管理）
-│   │   ├── sql/                        # 示例专用建表与种子数据
-│   │   ├── src/                        # 示例源码
-│   │   └── README.md                   # 示例说明
-│   ├── basic-boot-sample/              # 基础功能示例
-│   ├── storage-boot-sample/            # 文件存储示例
-│   └── tenant-boot-sample/             # 多租户示例
-│
-├── other/                              # 其他工具
-│   └── code-generator/                 # 代码生成器（MyBatis-Plus代码生成）
-│
-├── docs/                               # 文档和脚本
-│   ├── sql/                            # 数据库初始化脚本（MySQL 与 H2 通用，全仓库唯一一份）
-│   │   ├── auth-rbac.sql               # 权限系统建表 + 视图
-│   │   └── basic-support.sql           # 文件存储表 + 请求日志表
-│   ├── 说明文档/                        # 开发过程文档
-│   │   └── oidc接入踩坑记录.md
-│   └── application.yml                 # 全量配置参考（全部键与默认值）
-│
-├── scripts/                            # 维护脚本
-│   ├── check-sql-compat.sh             # 用 H2 实测 SQL：语法、可重复执行、表是否真建成
-│   ├── CheckCompat.java                # 上面那个脚本用的检查器
-│   ├── check-config-docs.sh            # 校验 docs/application.yml 覆盖全部配置键
-│   └── CheckConfigDocs.java            # 上面那个脚本用的检查器
-│
-├── logs/                               # 日志目录
-├── .gitignore                          # Git 忽略配置
-├── LICENSE                             # MIT 许可证
-├── README.md                           # 项目主文档
-├── README_Auth.md                      # 权限系统详细文档
-└── clean-sensitive-files.sh            # 清理敏感文件脚本
+| 模块 | 一句话 | 入口 |
+| --- | --- | --- |
+| `basic` | 统一响应、异常、trace、请求日志与工具类 | [basic/README.md](basic/README.md) |
+| `basic-support` | 请求日志落库、方糖通知、MyBatis-Plus 分页工具 | [basic-support/README.md](basic-support/README.md) |
+| `boot/basic-spring-boot-starter` | 基础 Web 能力的自动装配 | [README](boot/basic-spring-boot-starter/README.md) |
+| `boot/login-security-spring-boot-starter` | 账号密码、OAuth2 / OIDC / SAML2 登录 | [README](boot/login-security-spring-boot-starter/README.md) |
+| `boot/storage-spring-boot-starter` | 七牛文件存储 | [README](boot/storage-spring-boot-starter/README.md) |
+| `boot/tenant-spring-boot-starter` | 多租户上下文与 Feign 透传 | [README](boot/tenant-spring-boot-starter/README.md) |
+| `boot/magic-spring-boot-starter` | magic-api 示例 / 实验性模块 | [README](boot/magic-spring-boot-starter/README.md) |
+| `auth/auth-core` | 注解、权限模型接口、数据范围注入、菜单拦截器 | [README](auth/auth-core/README.md) |
+| `auth/auth-rbac` | 用户-部门-角色-菜单的默认 RBAC 实现 | [README](auth/auth-rbac/README.md) |
+| `auth/auth-core-spring-boot-starter` | core 自动装配 | [README](auth/auth-core-spring-boot-starter/README.md) |
+| `auth/auth-rbac-spring-boot-starter` | RBAC 自动装配 | [README](auth/auth-rbac-spring-boot-starter/README.md) |
+| `auth/auth-rbac-security-spring-boot-starter` | RBAC 接入 Spring Security 登录态 | [README](auth/auth-rbac-security-spring-boot-starter/README.md) |
+| `sample/auth-core-boot-sample` | core 接缝层的独立验证台 | [README](sample/auth-core-boot-sample/README.md) |
+| `sample/auth-rbac-boot-sample` | RBAC + 会议室权限案例 | [README](sample/auth-rbac-boot-sample/README.md) |
+| `sample/login-boot-sample` | 账密登录与三协议入口示例 | [README](sample/login-boot-sample/README.md) |
+| `sample/basic-boot-sample` | 基础 Web 能力示例 | [README](sample/basic-boot-sample/README.md) |
+| `sample/storage-boot-sample` | 七牛存储接入示例 | [README](sample/storage-boot-sample/README.md) |
+| `sample/tenant-boot-sample` | 多租户上下文示例 | [README](sample/tenant-boot-sample/README.md) |
+| `other/code-generator` | MyBatis-Plus 代码生成器 | [README](other/code-generator/README.md) |
+
+```text
+kewen-framework/
++-- basic/                 基础库
++-- basic-support/         持久化与通知扩展
++-- boot/                  5 个 Spring Boot Starter
++-- auth/                  core、rbac 与 3 个 starter
++-- sample/                6 个可运行示例
++-- other/code-generator/  代码生成器
++-- relation/              框架 DDL（示例 DDL 仍在 sample/*/sql/）
++-- docs/                  全量配置参考与决策记录
++-- scripts/               SQL / 配置文档校验脚本
++-- openspec/              运行时规格与变更记录（维护者）
 ```
 
-## 🚀 快速开始
+## 5 分钟跑起来
 
-### 环境要求
+### 路径一：H2 示例，零外部依赖
 
-- JDK 8 或更高版本
-- Maven 3.6 或更高版本
-- MySQL 5.7 或更高版本（推荐 8.0）
-
-### 1. 安装框架到本地仓库
+先看 RBAC 与会议室权限案例：
 
 ```bash
-git clone https://gitee.com/LiuKewenSc/cu-framework.git
-cd cu-framework
-mvn clean install
+git clone https://gitee.com/LiuKewenSc/kewen-framework.git
+cd kewen-framework
+mvn clean install -DskipTests
+
+cd sample/auth-rbac-boot-sample
+java -jar target/auth-rbac-boot-sample-0.0.1-SNAPSHOT-exec.jar
 ```
 
-### 2. 创建数据库
+> 该示例请用打包后的 exec jar 启动；`mvn spring-boot:run` 在当前工程下可能扫描不到权限实体，表现为 `权限标记错误: ROLE`。
 
-执行数据库初始化脚本：
+另开一个终端：
 
 ```bash
-# 权限系统表 + 视图
-mysql -u root -p your_database < docs/sql/auth-rbac.sql
-
-# 基础支撑表（文件存储 + 请求日志）
-mysql -u root -p your_database < docs/sql/basic-support.sql
-
-# auth-rbac-boot-sample 的示例业务表（meeting_room、testauth_annotation_business）
-mysql -u root -p your_database < sample/auth-rbac-boot-sample/sql/schema.sql
-
-# 上表建好后灌示例种子数据；种子 INSERT 带显式主键，只在空表上执行一次
-mysql -u root -p your_database < sample/auth-rbac-boot-sample/sql/seed-data.sql
+curl -H "X-Demo-User: admin" "http://localhost:8081/meetingRoom/page?page=1&size=10"
 ```
 
-`docs/sql/` 是框架初始化 SQL 的唯一存放位置，同一份脚本 MySQL 和 H2 都能执行，因此不写
-`ENGINE` / `CHARACTER SET` / `COLLATE` / `ROW_FORMAT`，由各自的库决定默认值。示例专用的建表和
-种子数据放在对应 sample 模块的 `sql/` 目录下；sample 需要自动建表时，由 pom 的 `<resources>`
-把 `docs/sql` 挂到 `classpath:sql/`，避免手抄一份 DDL 造成两边漂移。
+- 默认 H2 内存库，端口 8081；H2 控制台 <http://localhost:8081/h2-console>。
+- 身份由 `X-Demo-User` 声明，不带时回落到 `admin`；换 `admin2` / `subordinate` / `outsider` 可以观察部门继承的差异。
+- 示例没有登录页；账密与 SSO 看 `sample/login-boot-sample`。
 
-改完 SQL 跑一下检查（只需本地有 JDK 与 h2 jar，可用 `H2_JAR` 指定路径）：
+登录与单点登录示例：
 
 ```bash
-bash scripts/check-sql-compat.sh
+cd sample/login-boot-sample
+mvn spring-boot:run
 ```
 
-### 3. 在你的项目中引入依赖
+打开 <http://localhost:8080/login.html>，账密账号 `admin/admin123`、`demo/demo123`。默认配置含一个 OIDC 客户端，启动时会访问本地 IDP（端口 9010）；没有 IDP 时先注释掉 `demo-oidc` 条目。多数示例都用 8080，不要同时启动多个。
 
-在你的项目 `pom.xml` 中添加依赖：
+### 路径二：接入自己的 MySQL 项目
+
+完整 RBAC + Spring Security 登录态的组合：
 
 ```xml
 <parent>
@@ -253,19 +128,14 @@ bash scripts/check-sql-compat.sh
 </parent>
 
 <dependencies>
-    <!-- 登录认证模块 -->
     <dependency>
         <groupId>com.cu.framework.boot</groupId>
-        <artifactId>login-security-spring-boot-starter</artifactId>
+        <artifactId>basic-spring-boot-starter</artifactId>
     </dependency>
-    
-    <!-- RBAC 权限实现 -->
     <dependency>
         <groupId>com.cu.framework.auth</groupId>
-        <artifactId>auth-rbac-spring-boot-starter</artifactId>
+        <artifactId>auth-rbac-security-spring-boot-starter</artifactId>
     </dependency>
-    
-    <!-- MySQL 驱动 -->
     <dependency>
         <groupId>mysql</groupId>
         <artifactId>mysql-connector-java</artifactId>
@@ -273,580 +143,49 @@ bash scripts/check-sql-compat.sh
 </dependencies>
 ```
 
-### 4. 配置数据库连接
-
-在 `application.yml` 中配置数据库：
-
-```yaml
-server:
-  port: 8081
-
-spring:
-  datasource:
-    url: jdbc:mysql://localhost:3306/your_database?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
-    username: your_username
-    password: your_password
-    driver-class-name: com.mysql.cj.jdbc.Driver
-```
-
-### 5. 启动应用
-
-创建 Spring Boot 启动类：
-
-```java
-@SpringBootApplication
-public class Application {
-    public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
-    }
-}
-```
-
-启动后，使用默认账号密码登录：**admin/123456**
-
-## 🔐 权限系统详解
-
-### 核心概念
-
-#### 菜单权限
-访问某个菜单或 API 接口需要的权限。通过对菜单的控制完成粗粒度的鉴权，达到可见/不可见的效果。
-
-#### 数据权限
-某条数据对应的权限。对于每一条数据，都应该有对应的数据权限来控制，有权限的可以执行操作，没有权限的在查询列表中不可见。
-
-#### 数据权限-操作类型
-数据的权限需要进一步划分，一条数据对应不同的操作应该有不同的权限。例如：会议室可以编辑，也可以预约，这两个操作的基础数据都是会议室，但编辑应由管理员执行，而预约应该大部分人都可以执行。
-
-### 核心注解
-
-框架提供 4 个核心注解来实现权限控制：
-
-#### 1. `@AuthMenu` - 菜单权限注解
-
-判断登录人是否能访问注解对应的 API 接口。
-
-```java
-@RestController
-@RequestMapping("/api/meeting")
-public class MeetingRoomController {
-    
-    @AuthMenu
-    @AuthMenuDoc(name = "创建会议室")
-    @PostMapping("/add")
-    public Result add(@RequestBody MeetingRoom room) {
-        meetingRoomService.save(room);
-        return Result.success();
-    }
-}
-```
-
-**分工：**
-- `@AuthMenu`：管辖开关，无属性
-- `@AuthMenuDoc`：`name` 是 API 菜单名称，在数据库中作为描述使用，不参与鉴权判定
-
-**使用方式：**
-- 在 Controller 方法上使用：该方法需要菜单权限
-- 在 Controller 类上使用：该类所有带 `@RequestMapping` 的方法都需要菜单权限，边界就是本类的端点集合
-
-**已知限制：**
-- 菜单行由请求路径定位，`/menu/api/update` 不接受路径修改，请求里带了也不会生效
-- 带路径变量的端点（如 `/x/{id}`）标 `@AuthMenu` 会被恒拒绝；同一路径的不同 HTTP 方法共用一份授权
-
-#### 2. `@AuthDataRange` - 数据范围查询注解
-
-在查询数据列表时自动筛选登录人可见的数据，不可见的数据不展示。
-
-声明位置是 **MyBatis 的 Mapper 接口查询方法**：注解标在哪个方法，权限条件就只注入那一条语句，
-同一调用链上的其他语句不受影响。一条语句绑定一个 `businessFunction` + `operate`，
-同一张表按不同操作过滤就各写一个查询方法。
-
-```java
-@Mapper
-public interface MeetingRoomMpMapper extends BaseMapper<MeetingRoom> {
-
-    @AuthDataRange(businessFunction = "meeting_room")
-    @Select("select * from meeting_room order by id")
-    List<MeetingRoom> selectVisibleList();
-}
-```
-
-> MyBatis-Plus 从 `BaseMapper` 继承的 `selectList`、`page` 等方法没有挂载点，不受本注解管辖。
-> 声明写错（解析不到语句、语句不是查询、语句启用二级缓存、静态 SQL 中找不到目标表、
-> 注解标在 Mapper 接口以外）会在应用启动时直接失败，而不是运行期静默不过滤。
-
-**参数说明：**
-- `businessFunction`：业务功能标识（必填），用于区分权限所属
-- `table`：表名，多表联查时指定关联表
-- `tableAlias`：表别名，多表联查有相同表时指定
-- `dataIdColumn`：业务主键字段名，默认 "id"
-- `operate`：操作类型，默认 "unified"
-- `matchMethod`：条件匹配方式（IN/EXISTS），默认 IN
-
-**支持的 SQL 类型：**
-- IN 子查询
-- EXISTS 子查询
-- WITH AS 子查询
-- JOIN 查询
-
-#### 3. `@AuthDataOperation` - 数据操作权限注解
-
-校验是否对某一条或某一批数据有操作权限，避免通过接口进行越权攻击。请求体实现 `DataIdCarrier` 交出本次涉及的全部业务数据ID，切面逐个判定，全部命中才放行，任一条无权限即整体拒绝；一次调用去重后最多 100 个ID，业务主键类型不限。
-
-```java
-@RestController
-@RequestMapping("/api/meeting")
-public class MeetingRoomController {
-    
-    @AuthDataOperation(businessFunction = "meeting_room", operate = "edit_info")
-    @PostMapping("/update")
-    public Result update(@RequestBody MeetingRoom room) {
-        meetingRoomService.updateById(room);
-        return Result.success();
-    }
-}
-```
-
-**参数说明：**
-- `businessFunction`：业务功能标识（必填）
-- `operate`：操作类型，默认 "unified"
-
-#### 4. `@AuthDataAuthEdit` - 数据权限编辑注解
-
-直接将请求中的权限编辑到权限表中，依赖菜单权限校验。
-
-```java
-@RestController
-@RequestMapping("/api/meeting")
-public class MeetingRoomController {
-    
-    @AuthMenu
-    @AuthMenuDoc(name = "创建会议室")
-    @AuthDataAuthEdit(businessFunction = "meeting_room", operate = "edit_info", before = false)
-    @PostMapping("/add")
-    @Transactional(rollbackFor = Exception.class)
-    public Result add(@RequestBody MeetingRoomAddReq req) {
-        meetingRoomService.save(req);
-        return Result.success();
-    }
-}
-```
-
-**参数说明：**
-- `businessFunction`：业务功能标识（必填）
-- `operate`：操作类型，默认 "unified"
-- `before`：在业务逻辑之前执行还是之后执行，默认 true
-
-### 核心调用类
-
-#### AnnotationAuthHandler<ID>
-
-注解核心控制器，注解对应的所有实现由此 Handler 完成。泛型 ID 是指业务权限中的 data_id 类型（String/Integer/Long）。
-
-#### AuthDataAdaptor<ID>
-
-业务调用适配器，可以不使用注解 `@AuthDataAuthEdit` 来编辑权限，更加灵活。
-
-```java
-@Autowired
-private AuthDataAdaptor<Long> authDataAdaptor;
-
-public void editDataAuths(Long dataId) {
-    authDataAdaptor.editDataAuths(
-        "meeting_room", 
-        dataId, 
-        "edit_info", 
-        authObject
-    );
-}
-```
-
-## 📦 模块说明
-
-### 1. basic - 基础模块
-
-提供通用的工具类和基础功能：
-
-- **异常处理**：统一的异常处理机制
-- **日志管理**：请求日志、追踪日志
-- **通用模型**：PageReq、PageResult、Result 等
-- **工具类**：BeanUtil、TreeUtil、FileUtils 等
-
-### 2. boot - Spring Boot Starter 模块
-
-提供即插即用的功能模块：
-
-#### basic-spring-boot-starter
-基础功能自动配置，包括日志、请求跟踪等。
-
-#### storage-spring-boot-starter
-文件存储模块，当前实现固定为七牛云。完整配置见 [storage-spring-boot-starter/README.md](boot/storage-spring-boot-starter/README.md)。
-
-```yaml
-cu:
-  storage:
-    access-key: your-access-key
-    secret-key: your-secret-key
-    bucket: your-bucket
-    download-domain: your-download-domain
-```
-
-#### tenant-spring-boot-starter
-多租户支持模块，实现数据隔离。
-
-```yaml
-cu:
-  tenant:
-    open: true
-```
-
-#### magic-spring-boot-starter
-Magic API 集成模块。
-
-### 3. auth - 权限认证模块
-
-完整的 RBAC 权限管理系统：
-
-#### auth-core
-权限核心模块，包含注解定义、权限模型等。
-
-#### auth-rbac
-RBAC 权限实现，包含用户、角色、部门的管理逻辑。
-
-#### auth-core-spring-boot-starter
-权限核心自动装配：菜单 API 启动入库、权限异常处理、数据权限表配置。
-
-#### auth-rbac-spring-boot-starter
-RBAC 快速配置 Starter。
-
-#### auth-rbac-security-spring-boot-starter
-把 RBAC 接到 Spring Security 登录态，提供当前登录人上下文与 `UserDetailsService` 的默认实现。
-
-### 4. login-security-spring-boot-starter - 登录认证模块
-
-基于 Spring Security 的登录认证与单点登录：
-
-- 账密 JSON 登录、Token/Session 双模式会话、Session 并发控制、记住我
-- `@SecurityIgnore` 注解与 `cu.auth.permit-url` 配置免登录路径
-- SAML、OAuth2/OIDC、SSO 登录，统一使用 `cu.security.*` 配置
-
-完整配置见 `sample/login-boot-sample`。
-
-### 5. sample - 示例项目
-
-提供完整的使用示例：
-
-- **auth-rbac-boot-sample**：权限认证完整示例（会议室管理案例）
-- **basic-boot-sample**：基础功能示例
-- **login-boot-sample**：账密登录与 SAML/OAuth2 登录示例
-- **storage-boot-sample**：文件存储示例
-- **tenant-boot-sample**：多租户示例
-
-## ⚙️ 配置指南
-
-框架自身的配置键按 starter 分节维护：完整键表、默认值与“未接线 / 已废弃”标注见各 starter 的 README；可直接对照的全量示例见 [docs/application.yml](docs/application.yml)（参考手册，不是可直接启动的配置）。
-
-### 基础配置
-
-```yaml
-server:
-  port: 8081
-
-spring:
-  datasource:
-    url: jdbc:mysql://localhost:3306/cu_framework?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
-    username: root
-    password: 123456
-    driver-class-name: com.mysql.cj.jdbc.Driver
-```
-
-### 权限模块配置
-
-- 数据权限表映射：见 [auth-core-spring-boot-starter/README.md](auth/auth-core-spring-boot-starter/README.md)
-- RBAC 数据与菜单缓存：见 [auth-rbac-spring-boot-starter/README.md](auth/auth-rbac-spring-boot-starter/README.md)
-- 登录态接入与默认实现：见 [auth-rbac-security-spring-boot-starter/README.md](auth/auth-rbac-security-spring-boot-starter/README.md)
-
-```yaml
-cu:
-  auth:
-    permit-url: /public/**            # 免登录路径，分号或逗号分隔，与 @SecurityIgnore 合并
-    auth-data-table:
-      table-name: sys_auth_data
-    cache-auth: false
-```
-
-### 安全配置
-
-完整键表（含 OAuth2 / OIDC / SAML2）见 [login-security-spring-boot-starter/README.md](boot/login-security-spring-boot-starter/README.md)。
-Token 会话的请求头固定为 `Authorization`，没有配置项。
-
-```yaml
-cu:
-  security:
-    current-user-url: /currentUser      # [未接线] 当前无消费方，接口固定为 /currentUser
-    session:
-      maximum-sessions: 10              # 最大 session 数量
-      max-sessions-prevents-login: false # true = 超限时阻止新登录
-    remember-me:
-      enabled: true                     # [未接线] 只创建 Bean，未挂入过滤器链
-      remember-parameter: remember-me
-      validity-seconds: 2592000
-    login:
-      password:
-        login-url: /login               # 账密 JSON 登录地址
-        username-parameter: username
-        password-parameter: password
-      sso:
-        result-url:                     # 单点登录结果页，留空则返回 JSON
-```
-
-### 请求日志配置
-
-完整的开关组合见 [basic-spring-boot-starter/README.md](boot/basic-spring-boot-starter/README.md)。
-
-```yaml
-cu:
-  request:
-    persistent:
-      database: true   # 是否持久化到数据库；需要 sys_request_log 表
-    message:
-      fang-tang: true  # 是否发送方糖消息；还需 cu.notify.fang-tang.enabled=true
-```
-
-### 消息通知配置
-
-```yaml
-cu:
-  notify:
-    fang-tang:
-      enabled: true                      # 是否启用方糖客户端
-      key: your_fangtang_send_key        # enabled=true 时必填
-      domain: https://sctapi.ftqq.com
-```
-
-### 文件存储配置
-
-当前实现固定七牛，`cu.storage.type` 未接线；完整键表见 [storage-spring-boot-starter/README.md](boot/storage-spring-boot-starter/README.md)。
-
-```yaml
-cu:
-  storage:
-    access-key: your_qiniu_access_key
-    secret-key: your_qiniu_secret_key
-    bucket: your_bucket_name
-    region: region2                    # region0/huadong、region1/huabei、region2/huanan、region3/beimei、region4/xinjiapo、auto
-    download-domain: your_download_domain
-```
-
-### 多租户配置
-
-完整行为见 [tenant-spring-boot-starter/README.md](boot/tenant-spring-boot-starter/README.md)。
-
-```yaml
-cu:
-  tenant:
-    open: false  # 是否开启多租户
-```
-
-## 💡 使用示例
-
-### 示例：会议室管理系统
-
-以会议室管理为例，演示完整的权限使用流程。
-
-#### 1. 创建会议室
-
-```java
-@RestController
-@RequestMapping("/api/meeting")
-public class MeetingRoomController {
-    
-    @AuthMenu
-    @AuthMenuDoc(name = "创建会议室")
-    @AuthDataAuthEdit(businessFunction = "meeting_room", operate = "edit_info", before = false)
-    @PostMapping("/add")
-    @Transactional(rollbackFor = Exception.class)
-    public Result add(@RequestBody MeetingRoomAddReq req) {
-        meetingRoomService.save(req);
-        return Result.success();
-    }
-}
-```
-
-**请求示例：**
-
-```json
-{
-  "name": "1103大会议室",
-  "userCount": 32,
-  "place": "大门入口右转1103号大会议室",
-  "remark": "全景落地窗，尊享位置",
-  "isVideo": 1,
-  "isProjector": 1,
-  "isPhone": 1,
-  "authObject": {
-    "roles": [
-      {
-        "id": 1,
-        "name": "超级管理员"
-      },
-      {
-        "id": 4,
-        "name": "会议室管理员"
-      }
-    ]
-  }
-}
-```
-
-#### 2. 查询可编辑的会议室列表
-
-```java
-@Mapper
-public interface MeetingRoomMpMapper extends BaseMapper<MeetingRoom> {
-
-    @AuthDataRange(businessFunction = "meeting_room", operate = "edit_info")
-    @Select("select * from meeting_room order by id limit #{size} offset #{offset}")
-    List<MeetingRoom> selectEditAblePage(@Param("size") Integer size, @Param("offset") Integer offset);
-
-    @AuthDataRange(businessFunction = "meeting_room", operate = "edit_info")
-    @Select("select count(*) from meeting_room")
-    long selectEditAbleCount();
-}
-```
-
-分页的列表与计数是两条语句，因此各声明一次，总数与行集才是同一套权限口径。
-
-#### 3. 编辑会议室
-
-```java
-@RestController
-@RequestMapping("/api/meeting")
-public class MeetingRoomController {
-    
-    @AuthDataOperation(businessFunction = "meeting_room", operate = "edit_info")
-    @AuthDataAuthEdit(businessFunction = "meeting_room", operate = "appointment")
-    @PostMapping("/update")
-    @Transactional(rollbackFor = Exception.class)
-    public Result update(@RequestBody MeetingRoomUpdateReq req) {
-        meetingRoomService.updateById(req);
-        return Result.success();
-    }
-}
-```
-
-#### 4. 预约会议室
-
-```java
-@RestController
-@RequestMapping("/api/meeting")
-public class MeetingRoomController {
-    
-    @AuthDataOperation(businessFunction = "meeting_room", operate = "appointment")
-    @PostMapping("/appointment")
-    public Result appointment(@RequestBody MeetingRoomAppointmentReq req) {
-        meetingRoomService.appointment(req);
-        return Result.success();
-    }
-}
-```
-
-### 权限粒度说明
-
-- **数据创建、删除**：由菜单权限控制
-- **数据编辑**：由数据权限的操作类型控制（如 edit_info）
-- **数据使用**：由数据权限的另一操作类型控制（如 appointment）
-- **主权限管理**：创建后交于其他人管理的最大权限
-
-## ❓ 常见问题
-
-### 1. 如何自定义异常返回格式？
-
-实现 `AuthenticationSuccessResultResolver` 接口：
-
-```java
-@Component
-public class CustomAuthenticationSuccessResultResolver implements AuthenticationSuccessResultResolver {
-    @Override
-    public Object resolver(HttpServletRequest request, 
-                          HttpServletResponse response, 
-                          Object data) {
-        // 转换成你项目的统一返回格式
-        return Result.success(data);
-    }
-}
-```
-
-### 2. 如何处理认证和授权异常？
-
-使用 Spring MVC 的异常处理：
-
-```java
-@RestControllerAdvice
-public class ExceptionAdviceHandler {
-    
-    @ExceptionHandler(AccessDeniedException.class)
-    public Result accessDeniedException(AccessDeniedException e) {
-        return Result.failed(403, "没有访问权限");
-    }
-    
-    @ExceptionHandler(AuthenticationException.class)
-    public Result authenticationException(AuthenticationException e) {
-        return Result.failed(401, "认证失败");
-    }
-}
-```
-
-### 3. 如何扩展权限维度？
-
-如果需要添加岗位等新维度：
-
-1. 创建岗位类继承 `AbstractIdNameFlagAuthEntity`
-2. 创建权限集合类继承 `SimpleAuthObject`
-3. 实现 `SysUserComposite` 加载用户权限
-4. 在编辑权限入参实体中加入新的权限对象
-
-### 4. 白名单接口如何配置？
-
-使用 `@SecurityIgnore` 注解或 `cu.auth.permit-url` 配置（多个用分号或逗号分隔）：
-
-```java
-@SecurityIgnore
-@GetMapping("/public/info")
-public Result publicInfo() {
-    return Result.success("公开信息");
-}
-```
-
-### 5. 启动后如何配置菜单权限？
-
-应用启动时会自动将带 `@AuthMenu` 注解的 API 注册到数据库。你可以在 `sys_menu_api` 表中查看，然后在 `sys_auth_menu` 表中配置角色与菜单的映射关系。
-
-## 🤝 参与贡献
-
-我们非常欢迎各种形式的贡献：
-
-1. Fork 本仓库
-2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
-3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
-4. 推送到分支 (`git push origin feature/AmazingFeature`)
-5. 提交 Pull Request
-
-## 📝 许可证
-
-本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情。
-
-## 📚 相关资源
-
-- [详细权限文档](README_Auth.md)
-- [示例项目](sample/)
-- [数据库脚本](docs/sql/)
-- [前端模板](https://gitee.com/LiuKewenSc/kewen-web-admin)
-
-## 📧 联系方式
-
+1. 执行 [relation/auth-rbac/auth-rbac.sql](relation/auth-rbac/auth-rbac.sql) 建权限表。
+2. 使用 MySQL 持久化会话时，执行 [relation/login-security/spring-session-mysql.sql](relation/login-security/spring-session-mysql.sql)，并设置 `spring.session.jdbc.initialize-schema: never`。
+3. 配数据源与 `cu.security.current-user-url`（默认 `/currentUser`），准备 `sys_user` / `sys_user_credential` 等用户数据。
+4. 启动后 `POST /login`（JSON）登录，`GET /currentUser` 取当前用户。
+
+更细的依赖组合、必需 Bean 与验证方式见 [auth/README.md](auth/README.md) 的“5 分钟接入”。
+
+## 文档导航
+
+| 我想… | 读… |
+| --- | --- |
+| 先跑一个示例 | [auth-rbac 示例](sample/auth-rbac-boot-sample/README.md) / [login 示例](sample/login-boot-sample/README.md) |
+| 看权限注解怎么用 | [权限注解与权限编辑](auth/docs/annotations.md) |
+| 看 RBAC 表、权限串、部门继承与扩展 | [RBAC 模型与扩展](auth/docs/rbac-and-extension.md) |
+| 接登录 / 单点登录 | [login starter](boot/login-security-spring-boot-starter/README.md) 与 [SSO 总览](boot/login-security-spring-boot-starter/docs/sso-overview.md) |
+| 对 OAuth2 / OIDC / SAML2 细节 | [OAuth2](boot/login-security-spring-boot-starter/docs/oauth2.md) / [OIDC](boot/login-security-spring-boot-starter/docs/oidc.md) / [SAML2](boot/login-security-spring-boot-starter/docs/saml2.md) |
+| 查全量配置键 | [docs/application.yml](docs/application.yml) 与各 starter README |
+| 找 SQL 脚本 | [relation/README.md](relation/README.md) |
+| 看代码生成器 | [other/code-generator](other/code-generator/README.md) |
+| 跑维护脚本 | [scripts/README.md](scripts/README.md) |
+| 看历史决策与废弃原因 | [docs/decisions](docs/decisions/已废弃实现与决策记录.md) |
+| 看运行时规格（维护者） | [openspec/specs](openspec/specs) |
+
+## 参与贡献
+
+1. Fork 本仓库，创建特性分支。
+2. 修改后至少跑一遍：
+   ```bash
+   mvn clean install -DskipTests
+   bash scripts/check-sql-compat.sh
+   bash scripts/check-config-docs.sh   # 先 mvn -q -DskipTests compile
+   ```
+3. 提交信息沿用 `feat(scope): ...`、`fix(scope): ...`、`docs(scope): ...` 风格。
+4. 提交 Pull Request，说明改动目的、影响面与验证方式。
+
+Issue / PR 模板在 `.gitee/` 下。安全问题不要公开提交 Issue，先私下联系维护者。
+
+## 许可证
+
+本项目采用 MIT 许可证，见 [LICENSE](LICENSE)。
+
+## 相关资源
+
+- Gitee 仓库：<https://gitee.com/LiuKewenSc/kewen-framework>
+- 前端模板：<https://gitee.com/LiuKewenSc/kewen-web-admin>
 - 作者：kewen
-- Gitee：https://gitee.com/LiuKewenSc/cu-framework
-
----
-
-如果这个项目对你有帮助，请给一个 ⭐ Star 支持一下！
