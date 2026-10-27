@@ -2,14 +2,14 @@
 
 ## 1. 承载契约改造（接口与全部实现同批，保持编译通过）
 
-- [x] 1.1 把 `qy-auth/auth-core/.../data/edit/IdDataEdit.java` 改名为 `DataIdCarrier.java`，方法由 `ID getDataId()` 改为 `Collection<ID> getDataIds()`，并同步 `AuthDataOperation.java` javadoc 中的 `{@link}` 引用；验证 `mvn -pl qy-auth/auth-core -am -DskipTests install` 通过，且 `grep -rn "IdDataEdit" --include=*.java .` 无残留
+- [x] 1.1 把 `../../../../auth` 改名为 `DataIdCarrier.java`，方法由 `ID getDataId()` 改为 `Collection<ID> getDataIds()`，并同步 `AuthDataOperation.java` javadoc 中的 `{@link}` 引用；验证 `mvn -pl qy-auth/auth-core -am -DskipTests install` 通过，且 `grep -rn "IdDataEdit" --include=*.java .` 无残留
 - [x] 1.2 扫改示例侧三个实现类（`MeetingRoomApproveReq`、`MeetingRoomUpdateReq`、`TestAuthAnnotationController.EditIdDataEdit`）为 `getDataIds()` 返回单元素集合，并处理孤儿类 `MeetingRoomAddReq`（它有 `getDataId()` 却没实现契约且全仓零引用）：接上契约或删除；验证 `mvn -pl sample/auth-rbac-boot-sample -am -DskipTests install` 通过
 - [x] 1.3 更新 `README_Auth.md`、`README.md`、`sample/auth-rbac-boot-sample/README.md` 中 `@AuthDataOperation` 与承载契约的说明，含"单值也要返回集合""多个 ID 全部命中才放行""上限 100"三条对照示例；验证文档中的示例代码与 1.1/1.2 的实际签名逐字一致
 - [x] 1.4 用注解声明位置、批量语义、ID 类型无关与失败分类重写 `AuthDataOperation.java` 的类注释（保留 `@author kewen`、`@since` 原值）；验证只写能从代码确证的内容，注释里没有不存在的旧注解名
 
 ## 2. 切面多 ID 判定
 
-- [x] 2.1 在 `qy-auth/auth-core/src/test/java/.../data/edit/` 新建切面回归测试（直接构造切面 + 桩 `AuthDataHandler` 与用户上下文，不启 Spring），覆盖：单 ID 放行、单 ID 拒绝、多 ID 全命中、多 ID 部分命中、ID 分散在多个实参、ID 在 `List`/数组元素中、实参无承载对象、ID 集合为空、含 null 元素、去重后 100 个、去重后 101 个、当前登录人无权限；验证测试可运行，并记录"多 ID 部分命中"与"一层集合元素"两条在改造前为红
+- [x] 2.1 在 `../../../../auth` 新建切面回归测试（直接构造切面 + 桩 `AuthDataHandler` 与用户上下文，不启 Spring），覆盖：单 ID 放行、单 ID 拒绝、多 ID 全命中、多 ID 部分命中、ID 分散在多个实参、ID 在 `List`/数组元素中、实参无承载对象、ID 集合为空、含 null 元素、去重后 100 个、去重后 101 个、当前登录人无权限；验证测试可运行，并记录"多 ID 部分命中"与"一层集合元素"两条在改造前为红
 - [x] 2.2 把 `DataCheckAspect.before` 从 `filter(...).findFirst()` 改为收集全部承载对象（直接实参 + 一层数组/集合元素）的 `getDataIds()`，汇总去重后一次性判定，任一未命中即整体拒绝；验证 2.1 中上述两条转绿且其余用例保持绿
 - [x] 2.3 把"实参无承载对象/ID 集合为空/含 null/去重后超过 100"四类改为抛已有的 `AuthServiceException` 且在去重后超过 100 时不发起任何权限查询；权限未命中继续抛 `AuthException("权限校验不通过")`；验证对应四条用例断言异常类型，并有"未调用 handler"的桩断言
 - [x] 2.4 把 `log.info("...拦截方法:{}", joinPoint)` 降为 `debug`，去掉未命中 ID 明细与内部类型名进入对外消息的路径（明细只进日志）；验证断言拒绝响应文案不含 `DataIdCarrier`、`AuthServiceException` 等内部名

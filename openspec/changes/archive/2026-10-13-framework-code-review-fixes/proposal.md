@@ -36,7 +36,7 @@
 
 ## Impact
 
-**代码**：`qy-idaas/idaas-authentications`（`Oauth2Config`、`Oauth2OidcProperties`）、`boot/storage-spring-boot-starter`（`QiNiuStorageTemplate`、`StorageProperties`、`StorageAutoConfiguration`）、`boot/basic-spring-boot-starter`（`FangTangProperties` 已由 `27d6c6d` 处理，本次仅确认调用侧无 NPE）、`basic`（`TraceContext`、`TraceRequestFilter`、`RegUtil`）、`qy-auth/auth-rbac`（三个 Controller）。`qy-auth/auth-spring-boot-starter` 的 remember-me 两个类经作者决定**未改动**。
+**代码**：`qy-idaas/idaas-authentications`（`Oauth2Config`、`Oauth2OidcProperties`）、`boot/storage-spring-boot-starter`（`QiNiuStorageTemplate`、`StorageProperties`、`StorageAutoConfiguration`）、`boot/basic-spring-boot-starter`（`FangTangProperties` 已由 `27d6c6d` 处理，本次仅确认调用侧无 NPE）、`basic`（`TraceContext`、`TraceRequestFilter`、`RegUtil`）、`../../../../auth`（三个 Controller）。`../../../../auth` 的 remember-me 两个类经作者决定**未改动**。
 
 **对外契约**：两项 BREAKING —— OAuth2 TLS 默认值翻转、`SPECIAL_CHAR*` 常量删除。本框架无外部消费者仓内可见，按用户既定偏好接受破坏并在后续自行处理。
 

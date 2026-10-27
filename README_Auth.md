@@ -63,19 +63,19 @@
 
 1.下载本框架工程然后`mvn install`到本地maven仓库。
 
-2.工程引入,通过继承`auth-parent`，引入`login-spring-boot-starter`模块即可
+2.工程引入，通过继承`cu-parent`，引入`login-spring-boot-starter`模块即可
 
 ```xml
 <parent>
-   <groupId>com.cu.framework.auth</groupId>
-   <artifactId>auth-parent</artifactId>
-   <version>1.0.1-SNAPSHOT</version>
+   <groupId>com.cu.framework</groupId>
+   <artifactId>cu-parent</artifactId>
+   <version>0.0.1-SNAPSHOT</version>
 </parent>
 
 <dependencies>
    <dependency>
-      <groupId>com.cu.framework.auth</groupId>
-      <artifactId>auth-spring-boot-starter</artifactId>
+      <groupId>com.cu.framework</groupId>
+      <artifactId>login-spring-boot-starter</artifactId>
    </dependency>
 </dependencies>
 ```
@@ -97,19 +97,19 @@
 - 启动
 
 **引入依赖**：引入相关的依赖
-需要把`auth-starter-security-web`和`auth-starter-rbac`都引进，前者有安全和登录相关的，后台有基于RBAC的权限实现
+需要把`login-spring-boot-starter`和`auth-rbac-spring-boot-starter`都引进，前者负责安全与登录，后者是基于RBAC的权限实现
 
 ```xml
 <dependencies>
    <dependency>
-      <groupId>com.cu.framework.auth</groupId>
-      <artifactId>auth-spring-boot-starter</artifactId>
-      <version>1.0.1-SNAPSHOT</version>
+      <groupId>com.cu.framework</groupId>
+      <artifactId>login-spring-boot-starter</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
    </dependency>
    <dependency>
       <groupId>com.cu.framework.auth</groupId>
       <artifactId>auth-rbac-spring-boot-starter</artifactId>
-      <version>1.0.1-SNAPSHOT</version>
+      <version>0.0.1-SNAPSHOT</version>
    </dependency>
    <dependency>
       <groupId>mysql</groupId>
@@ -134,7 +134,7 @@ spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 
 然后应用中有部分可选配置，可以参考`cu-framework-auth-sample`启动示例工程选择使用
 `AuthenticationExceptionAdviceHandler`主要用于返回异常，方便在报错时可以准确处理异常
-`SampleResponseBodyResultResolver`，认证成功返回的结构处理，可以匹配成和自己项目中一致的统一返回，不配置则使用默认的
+`AuthenticationSuccessResultResolver`，认证成功返回的结构处理，可以实现它匹配成和自己项目中一致的统一返回，不配置则使用默认的`SecurityResponseBodyResultResolver`
 
 另外，示例工程还包含了代码生成相关的类，可以忽略不管，新的表需要一键生成MybatisPlus代码时也可以是使用，后续来完善这部分功能
 
@@ -185,24 +185,29 @@ cu-framework-auth
 │         ├─AuthRbacConfig          默认的对象配置，配置auth-rbac模块的相关的Bean
 │         └─AuthRbacScanConfig      RBAC配置扫描，配置相关Bean
 |
-├─auth-spring-boot-starter         框架安全相关的配置，同时包括登录
+├─auth-rbac-security-spring-boot-starter   RBAC接入SpringSecurity登录态
+│    ├─RbacSecurityConfig           自动装配
+│    ├─RbacSecurityUserDetailsService 用户登录相关需要实现的类（RBAC默认实现）
+│    └─RbacSecurityAuthCurrentUserContextHolder  当前登录人上下文
+|
+├─login-spring-boot-starter         框架安全与登录相关的配置（与 auth 同级的独立模块）
 │    ├─annotation
 │    │    └─SecurityIgnore          忽略登录校验路径
-│    ├─before  
-│    │    └─BeforeSecurityFilter    封装的在进入SpringSecurity过滤器链之前的逻辑
-│    ├─config                       安全配置
-│    ├─configurer                   以SpringSecurity风格的配置类
-│    │    └─JsonLoginAuthenticationFilterConfigurer
-│    ├─filter                       过滤器
-│    │    ├─JsonLoginFilter         登录过滤器
-│    │    └─TokenSessionRequestFilter  token相关过滤器
-│    ├─model          
+│    ├─config                       安全、Session、密码配置
+│    ├─filter
+│    │    ├─TokenSessionRequestFilter  token相关过滤器
+│    │    └─WebSecurityGlobalExceptionHandlerFilter  过滤器链异常统一返回
+│    ├─handler                      认证异常与统一返回处理
+│    ├─loginpage                    登录方式发现端点
+│    ├─model
 │    │    └─SecurityUser            登录用户
-│    ├─response
-│    │    └─ResponseBodyResultResolver 成功登录之后的转换结构，方便统一返回
+│    ├─oauth2                       OAuth2/OIDC登录
+│    ├─password                     账密JSON登录
+│    ├─properties                   配置属性
+│    ├─saml                         SAML登录
+│    ├─sso                          单点登录公共逻辑
 │    └─service
-│         ├─SecurityUserDetailsService 用户登录相关需要实现的类
-│         └─RbacSecurityUserDetailsService RBAC方式默认实现的类
+│         └─SecurityUserDetailsService 用户登录相关需要实现的类
 |
 └─docs(文件夹)
      ├─properties                   示例配置文件
@@ -647,31 +652,37 @@ public class AuthDataAdaptor<ID> {
 ### 9.1.1. 登录相关的参数配置
 
 登录重写了SpringSecurity的表单登录逻辑，因为前后端分离项目本身就是使用json交互的，所以改成了json交互，
-可以自定义登录的API请求地址、username参数、password参数、token头参数、当前登录人接口、最大session数量、是否可以挤下线
+可以自定义账密登录的API请求地址、username参数、password参数、当前登录人接口、最大session数量、是否可以挤下线；
+Token 会话的请求头固定为 `Authorization`，没有配置项。
 
 ```yml
-cu-framework:
+cu:
    security:
+      current-user-url: /currentUser    #当前用户接口地址
+      session:
+         maximum-sessions: 10           #最大session数量
+         max-sessions-prevents-login: false # 是否不允许挤下线
+      remember-me:
+         enabled: true                  #是否开启记住我
+         remember-parameter: remember-me #记住我参数
+         validity-seconds: 2592000      #记住时长（秒）
       login:
-         login-url: /login                 #登录地址
-         current-user-url: /currentUser    #当前用户接口地址
-         maximum-sessions: 1               #最大session数量
-         max-sessions-prevents-login: true # 是否不允许挤下线
-         username-parameter: username      # username参数
-         password-parameter: password      # password参数
-         token-parameter: Authorization    # token请求头参数
+         password:
+            login-url: /login           #账密登录地址
+            username-parameter: username #username参数
+            password-parameter: password #password参数
 ```
 
 以上是基于yml配置的默认的值，不修改默认为以上的地址。
 
 ### 9.1.2. 认证成功处理器
 
-在认证成功后，默认会提供一个成功返回的处理器`DefaultSecurityAuthenticationSuccessHandler`，将成功认证的数据经过转换写入输出流中。
+在认证成功后，默认使用`JsonAuthenticationSuccessHandler`，将成功认证的数据经过转换写入输出流中。
 我们这里可以自定义一个成功返回解析器，也可以自定义成功处理器。一般只需要定义解析器就可以了。
 
 1. 自定义成功返回解析器
-   需要实现`ResponseBodyResultResolver`，覆写`resolver`方法，要求返回最终写流的数据格式，一般这里用来匹配后端统一定义的返回格式，否则默认返回用户信息和默认退出信息不太符合统一返回格式的要求。
-   可以参照`SampleResponseBodyResultResolver`来进行配置
+   需要实现`AuthenticationSuccessResultResolver`，覆写`resolver`方法，要求返回最终写流的数据格式，一般这里用来匹配后端统一定义的返回格式，否则默认返回用户信息和默认退出信息不太符合统一返回格式的要求。
+   默认实现是`SecurityResponseBodyResultResolver`（返回 `Result.success` 并附带链路信息），可以参照它来配置
 
    ```java
    /**
@@ -679,7 +690,7 @@ cu-framework:
     * @author kewen
     * @since 2024-07-04
     */
-   public interface ResponseBodyResultResolver {
+   public interface AuthenticationSuccessResultResolver {
       /**
        * 处理返回格式
        * @param request  请求
@@ -741,7 +752,7 @@ public class ExceptionAdviceHandler {
 }
 ```
 
-也可以参考 **cu-framework-auth-sample**下的`AuthenticationExceptionAdviceHandler`
+也可以参考框架内置的`AuthenticationExceptionAdviceHandler`
 
 ## 9.2. 注解权限相关
 

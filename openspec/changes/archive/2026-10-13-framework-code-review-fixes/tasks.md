@@ -26,7 +26,7 @@
 
 - [x] 3.1 `RbacDeptController` update 的异常消息改为"部门ID为空"；`RbacRoleController` update 的异常消息改为"角色ID为空"，并将其形参名 `sysUser` 改为 `sysRole`（含方法体内引用）。验证方式：两文件 `grep -n "用户ID为空"` 无结果，`grep -n "sysUser" RbacRoleController.java` 在该方法内无结果
 
-- [x] 3.2 `RbacMenuApiController.updateMenu` 的 `req.getAuthType()== AUTH_TYPE.OWNER` 改为 `Objects.equals(...)`，并确认 `authType` 为 `null` 时不抛 NPE、行为与改动前一致（`null` 不等于 OWNER 即跳过该校验）。验证方式：新增或补充 `qy-auth/auth-rbac/src/test` 下的用例，覆盖 `authType` 为 `null`、`1`、`2` 三种输入的分支结果
+- [x] 3.2 `RbacMenuApiController.updateMenu` 的 `req.getAuthType()== AUTH_TYPE.OWNER` 改为 `Objects.equals(...)`，并确认 `authType` 为 `null` 时不抛 NPE、行为与改动前一致（`null` 不等于 OWNER 即跳过该校验）。验证方式：新增或补充 `../../../../auth` 下的用例，覆盖 `authType` 为 `null`、`1`、`2` 三种输入的分支结果
 
 ## 4. 存储模块：键生成统一与端点参数配置化
 

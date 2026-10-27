@@ -29,9 +29,9 @@
 
 ## Impact
 
-- `qy-auth/auth-core`：`AuthMenu`（去 `name()`）、新增 `AuthMenuDoc`、`MenuApiGeneratorProcessor`（`name()` 的两个消费点 `:132`/`:157` 改读 `@AuthMenuDoc`）、`MenuAccessInterceptor`（管辖判定不变，仅注释与规格对齐）。
-- `qy-auth/auth-rbac`：`DefaultSysAuthMenuComposite.updateMenu` 改为 SET 白名单；`RbacDeptController` 等 5 个框架控制器的标注改写。
-- `qy-auth/auth-rbac-spring-boot-starter` / `auth-core-spring-boot-starter`：无 bean 变更。
+- `../../../../auth`：`AuthMenu`（去 `name()`）、新增 `AuthMenuDoc`、`MenuApiGeneratorProcessor`（`name()` 的两个消费点 `:132`/`:157` 改读 `@AuthMenuDoc`）、`MenuAccessInterceptor`（管辖判定不变，仅注释与规格对齐）。
+- `../../../../auth`：`DefaultSysAuthMenuComposite.updateMenu` 改为 SET 白名单；`RbacDeptController` 等 5 个框架控制器的标注改写。
+- `../../../../auth` / `auth-core-spring-boot-starter`：无 bean 变更。
 - `sample/auth-rbac-boot-sample`：3 个主控制器 + 4 个测试控制器标注改写；`sql/seed-data.sql` 两处菜单名。
 - `other/code-generator/src/main/resources/templates/controller.java.vm:50`：生成模板拆成两个注解。
 - 文档：`README.md`、`README_Auth.md`、`sample/auth-rbac-boot-sample/README.md`。`.qoder/repowiki` 为生成索引，重生成而非手改。

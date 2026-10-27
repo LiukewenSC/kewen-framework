@@ -116,7 +116,7 @@ cu-framework/
 │   ├── tenant-spring-boot-starter/     # 多租户 Starter
 │   └── magic-spring-boot-starter/      # Magic API Starter
 │
-├── qy-auth/                            # 权限认证模块
+├── auth/                               # 权限认证模块
 │   ├── auth-core/                      # 权限核心（注解、模型、实体）
 │   │   └── src/main/java/com/cu/framework/auth/core/
 │   │       ├── annotation/             # 权限注解（@AuthMenu, @AuthDataRange等）
@@ -137,29 +137,30 @@ cu-framework/
 │   │       └── utils/                  # RBAC 工具类
 │   │
 │   ├── auth-rbac-spring-boot-starter/  # RBAC Starter
-│   ├── auth-spring-boot-starter/       # 安全认证 Starter
-│   │   └── src/main/java/com/cu/framework/auth/security/
-│   │       ├── annotation/             # 安全注解
-│   │       ├── config/                 # 安全配置（SecurityConfig, SessionConfig等）
-│   │       ├── exception/              # 安全异常处理
-│   │       ├── extension/              # Spring Security 扩展
-│   │       ├── filter/                 # 认证过滤器
-│   │       ├── handler/                # 认证处理器
-│   │       ├── model/                  # 安全模型
-│   │       ├── password/               # 密码处理
-│   │       ├── properties/             # 安全配置属性
-│   │       ├── response/               # 响应处理
-│   │       └── service/                # 用户DetailsService等
+│   ├── auth-rbac-security-spring-boot-starter/  # RBAC 接入 Spring Security 登录态
+│   │   └── src/main/java/com/cu/framework/auth/rbac/security/
+│   │       ├── RbacSecurityConfig.java                        # 自动装配
+│   │       ├── RbacSecurityUserDetailsService.java            # 登录用户装载
+│   │       └── RbacSecurityAuthCurrentUserContextHolder.java  # 当前登录人上下文
 │   │
 │   └── relation/                       # 权限相关资源
 │       └── properties/                 # 配置文件
 │
-├── qy-idaas/                           # IDaaS 统一认证模块
-│   ├── idaas-authentications/          # SAML/OIDC 等认证集成
-│   │   └── src/main/java/com/cu/framework/idaas/
-│   │       ├── oauth2/                 # OAuth2/OIDC 集成
-│   │       └── saml/                   # SAML 协议集成
-│   └── README.md                       # IDaaS 使用说明
+├── login-spring-boot-starter/          # 登录认证模块（Spring Security）
+│   └── src/main/java/com/cu/framework/authentication/
+│       ├── annotation/                 # @SecurityIgnore 免登录白名单
+│       ├── config/                     # Spring Security、Session、密码配置
+│       ├── extension/                  # RememberMe、Session 扩展
+│       ├── filter/                     # Token 会话与过滤器链异常处理
+│       ├── handler/                    # 认证异常与统一返回处理
+│       ├── loginpage/                  # 登录方式发现端点
+│       ├── model/                      # 登录用户模型
+│       ├── oauth2/                     # OAuth2/OIDC 登录
+│       ├── password/                   # 账密 JSON 登录
+│       ├── properties/                 # 配置属性
+│       ├── saml/                       # SAML 登录
+│       ├── service/                    # SecurityUserDetailsService
+│       └── sso/                        # 单点登录公共逻辑
 │
 ├── sample/                             # 示例项目
 │   ├── auth-rbac-boot-sample/          # 权限认证示例（会议室管理）
@@ -246,15 +247,15 @@ bash scripts/check-sql-compat.sh
 ```xml
 <parent>
     <groupId>com.cu.framework</groupId>
-    <artifactId>cu-framework</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <artifactId>cu-parent</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
 </parent>
 
 <dependencies>
-    <!-- 权限认证模块 -->
+    <!-- 登录认证模块 -->
     <dependency>
-        <groupId>com.cu.framework.auth</groupId>
-        <artifactId>auth-spring-boot-starter</artifactId>
+        <groupId>com.cu.framework</groupId>
+        <artifactId>login-spring-boot-starter</artifactId>
     </dependency>
     
     <!-- RBAC 权限实现 -->
@@ -500,7 +501,7 @@ cu:
 #### magic-spring-boot-starter
 Magic API 集成模块。
 
-### 3. qy-auth - 权限认证模块
+### 3. auth - 权限认证模块
 
 完整的 RBAC 权限管理系统：
 
@@ -510,15 +511,24 @@ Magic API 集成模块。
 #### auth-rbac
 RBAC 权限实现，包含用户、角色、部门的管理逻辑。
 
-#### auth-spring-boot-starter
-安全认证 Starter，包含 Spring Security 配置、登录过滤器等。
+#### auth-core-spring-boot-starter
+权限核心自动装配：菜单 API 启动入库、权限异常处理、数据权限表配置。
 
 #### auth-rbac-spring-boot-starter
 RBAC 快速配置 Starter。
 
-### 4. qy-idaas - IDaaS 统一认证模块
+#### auth-rbac-security-spring-boot-starter
+把 RBAC 接到 Spring Security 登录态，提供当前登录人上下文与 `UserDetailsService` 的默认实现。
 
-支持 SAML、OIDC 等标准认证协议的企业统一认证。
+### 4. login-spring-boot-starter - 登录认证模块
+
+基于 Spring Security 的登录认证与单点登录：
+
+- 账密 JSON 登录、Token/Session 双模式会话、Session 并发控制、记住我
+- `@SecurityIgnore` 注解与 `cu.auth.permit-url` 配置免登录路径
+- SAML、OAuth2/OIDC、SSO 登录，统一使用 `cu.security.*` 配置
+
+完整配置见 `sample/login-boot-sample`。
 
 ### 5. sample - 示例项目
 
@@ -551,6 +561,7 @@ spring:
 ```yaml
 cu:
   auth:
+    permit-url: /public/**            # 免登录路径，分号或逗号分隔，与 @SecurityIgnore 合并
     auth-data-table:
       table-name: sys_auth_data
     cache-auth: false
@@ -558,22 +569,27 @@ cu:
 
 ### 安全配置
 
+以下为默认值，按需覆盖。
+Token 会话的请求头固定为 `Authorization`，没有配置项。
+
 ```yaml
 cu:
   security:
-    login:
-      login-url: /login                 # 登录地址
-      current-user-url: /currentUser    # 当前用户接口
-      username-parameter: username      # 用户名参数
-      password-parameter: password      # 密码参数
-      token-parameter: Authorization    # Token 请求头
+    current-user-url: /currentUser      # 当前用户接口
     session:
-      maximum-sessions: 1               # 最大 session 数量
-      max-sessions-prevents-login: true # 是否阻止新登录
+      maximum-sessions: 10              # 最大 session 数量
+      max-sessions-prevents-login: false # true = 超限时阻止新登录
     remember-me:
       enabled: true                     # 是否开启记住我
       remember-parameter: remember-me   # 记住我参数
       validity-seconds: 2592000         # 记住时间（秒），默认30天
+    login:
+      password:
+        login-url: /login               # 账密 JSON 登录地址
+        username-parameter: username    # 用户名参数
+        password-parameter: password    # 密码参数
+      sso:
+        result-url: /login.html         # 单点登录结果页，留空则返回 JSON
 ```
 
 ### 请求日志配置
@@ -719,11 +735,11 @@ public class MeetingRoomController {
 
 ### 1. 如何自定义异常返回格式？
 
-实现 `ResponseBodyResultResolver` 接口：
+实现 `AuthenticationSuccessResultResolver` 接口：
 
 ```java
 @Component
-public class CustomResponseBodyResultResolver implements ResponseBodyResultResolver {
+public class CustomAuthenticationSuccessResultResolver implements AuthenticationSuccessResultResolver {
     @Override
     public Object resolver(HttpServletRequest request, 
                           HttpServletResponse response, 
@@ -765,7 +781,7 @@ public class ExceptionAdviceHandler {
 
 ### 4. 白名单接口如何配置？
 
-使用 `@SecurityIgnore` 注解或配置文件：
+使用 `@SecurityIgnore` 注解或 `cu.auth.permit-url` 配置（多个用分号或逗号分隔）：
 
 ```java
 @SecurityIgnore

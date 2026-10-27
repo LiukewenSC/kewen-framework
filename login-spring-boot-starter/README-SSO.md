@@ -1,6 +1,6 @@
-# IDaaS 认证接入文档
+# 单点登录（SSO）认证接入文档
 
-本文档详细介绍 qy-idaas 模块提供的 OAuth2 和 SAML 2.0 两种认证协议的配置方法。
+本文档详细介绍 login-spring-boot-starter 提供的 OAuth2 和 SAML 2.0 两种认证协议的配置方法。
 
 ## 目录
 - [概述](#概述)
@@ -12,7 +12,7 @@
 
 ## 概述
 
-qy-idaas 模块基于 Spring Security 框架，提供企业级单点登录（SSO）解决方案，支持以下认证协议：
+login-spring-boot-starter 基于 Spring Security 框架，提供企业级单点登录（SSO）解决方案，支持以下认证协议：
 
 - **OAuth2**：基于授权码模式（Authorization Code）的标准 OAuth2 认证
 - **SAML 2.0**：基于 SAML 协议的企业级单点登录
@@ -30,7 +30,7 @@ qy-idaas 模块基于 Spring Security 框架，提供企业级单点登录（SSO
 
 | 协议 | 端点类型 | 默认路径 | 说明 |
 |------|---------|---------|------|
-| OAuth2 | 授权端点 | `/oauth2/authorize` | 发起 OAuth2 认证请求 |
+| OAuth2 | 授权端点 | `/oauth2/authorization` | 发起 OAuth2 认证请求 |
 | OAuth2 | 回调端点 | `/login/oauth2/code/{registrationId}` | OAuth2 认证成功回调 |
 | SAML | 登录端点 | `/login/saml2/sso/{registrationId}` | SAML SP 发起认证请求 |
 | SAML | 登出端点 | `/logout/saml2/slo` | SAML 单点登出 |
@@ -51,8 +51,8 @@ cu:
     login:
       oauth2:
         # OAuth2 全局配置
-        authorization-uri: /oauth2/authorize          # 发起认证的端点（默认值）
-        login-processing-url: /login/oauth2/code/{registrationId}  # 回调处理端点（默认值）
+        sso-authorization-uri: /oauth2/authorization    # 发起认证的端点（默认值）
+        login-processing-url: /login/oauth2/code/*      # 回调处理端点，Ant 通配（默认值）
         
         # 客户端配置列表（支持多个 OAuth2 提供商）
         clients:
@@ -183,12 +183,12 @@ cu:
 用户访问以下 URL 即可发起 OAuth2 认证：
 
 ```
-https://your-app.com/oauth2/authorize/{registration-id}
+https://your-app.com/oauth2/authorization/{registrationId}
 ```
 
 例如：
 ```
-https://your-app.com/oauth2/authorize/idp4-test
+https://your-app.com/oauth2/authorization/idp4-test
 ```
 
 ---

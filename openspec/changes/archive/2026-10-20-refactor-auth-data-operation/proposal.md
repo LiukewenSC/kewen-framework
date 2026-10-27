@@ -30,8 +30,8 @@
 ## Impact
 
 代码：
-- `qy-auth/auth-core`：`AuthDataOperation`、`data/edit/IdDataEdit`、`data/edit/DataCheckAspect`、`data/AuthDataHandler`、`data/JdbcAuthDataHandler`、`data/JdbcAuthDataPersistent`、`data/AuthDataDO`
-- `qy-auth/auth-core-spring-boot-starter`：`AuthCoreConfig`（切面与处理器装配签名若变动）
+- `../../../../auth`：`AuthDataOperation`、`data/edit/IdDataEdit`、`data/edit/DataCheckAspect`、`data/AuthDataHandler`、`data/JdbcAuthDataHandler`、`data/JdbcAuthDataPersistent`、`data/AuthDataDO`
+- `../../../../auth`：`AuthCoreConfig`（切面与处理器装配签名若变动）
 - `sample/auth-rbac-boot-sample`：`MeetingRoomApproveReq`、`MeetingRoomUpdateReq`、`MeetingRoomAddReq`、`TestAuthAnnotationController` 内部承载类
 
 外部契约：所有实现旧承载接口的下游应用需同步改方法名与返回类型；`auth-core` 的公开接口 `hasDataOperateAuths` 参数形态改变。

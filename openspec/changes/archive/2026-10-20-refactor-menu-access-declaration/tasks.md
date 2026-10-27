@@ -2,8 +2,8 @@
 
 ## 1. 声明层：两个注解各管一件事
 
-- [x] 1.1 在 `qy-auth/auth-core` 新增 `@AuthMenuDoc`（`String name()` 必填、`@Target({METHOD, TYPE, ANNOTATION_TYPE})`、`@Documented`、`RetentionPolicy.RUNTIME`），验证：`mvn -q -pl qy-auth/auth-core -am -DskipTests compile` 通过，且此步没有任何消费者（零行为变更）
-- [x] 1.2 `AuthMenu` 移除 `name()` 变成无属性标记，并在同一步内改写全部标注点：`qy-auth/auth-rbac` 的 5 个控制器、`sample/auth-rbac-boot-sample` 的 3 个主控制器与 `src/test/java/controller/authmenu` 的 4 个测试控制器、模板 `other/code-generator/src/main/resources/templates/controller.java.vm:50`；验证：全仓 `mvn -q -DskipTests compile` 通过，且 `grep -rn "@AuthMenu(" --include=*.java --include=*.vm .`（排除 `target/`）不再出现带参数的调用
+- [x] 1.1 在 `../../../../auth` 新增 `@AuthMenuDoc`（`String name()` 必填、`@Target({METHOD, TYPE, ANNOTATION_TYPE})`、`@Documented`、`RetentionPolicy.RUNTIME`），验证：`mvn -q -pl qy-auth/auth-core -am -DskipTests compile` 通过，且此步没有任何消费者（零行为变更）
+- [x] 1.2 `AuthMenu` 移除 `name()` 变成无属性标记，并在同一步内改写全部标注点：`../../../../auth` 的 5 个控制器、`sample/auth-rbac-boot-sample` 的 3 个主控制器与 `src/test/java/controller/authmenu` 的 4 个测试控制器、模板 `other/code-generator/src/main/resources/templates/controller.java.vm:50`；验证：全仓 `mvn -q -DskipTests compile` 通过，且 `grep -rn "@AuthMenu(" --include=*.java --include=*.vm .`（排除 `target/`）不再出现带参数的调用
 - [x] 1.3 `MenuApiGeneratorProcessor` 的两个标签消费点（`:132` 类、`:157` 方法）改读 `@AuthMenuDoc`，缺失时保留现有回落（`:137` 类简单名、`:161` 方法名）；验证：在 `auth-core` 新增测试覆盖三种组合——只有类上有文案、类与方法都有文案、两处都没有文案；断言标签分别等于类文案、`类文案>方法文案`、`类简单名>方法名`
 
 ## 2. 管辖边界可验证
@@ -12,7 +12,7 @@
 
 ## 3. 鉴权身份不可由请求改写
 
-- [x] 3.1 把 `DefaultSysAuthMenuComposite.updateMenu` 从 `updateById(req)` 改为显式 SET 白名单（只写 `name`、`remark`、`auth_type`、`parent_id`），字段清单收在一处；验证：在 `qy-auth/auth-rbac` 新增测试断言白名单集合恰含这四个字段且不含 `path`，并与 `RbacMenuApiControllerTest` 现有 4 个用例一起 `mvn -q -pl qy-auth/auth-rbac test` 全绿
+- [x] 3.1 把 `DefaultSysAuthMenuComposite.updateMenu` 从 `updateById(req)` 改为显式 SET 白名单（只写 `name`、`remark`、`auth_type`、`parent_id`），字段清单收在一处；验证：在 `../../../../auth` 新增测试断言白名单集合恰含这四个字段且不含 `path`，并与 `RbacMenuApiControllerTest` 现有 4 个用例一起 `mvn -q -pl qy-auth/auth-rbac test` 全绿
 
 ## 4. 数据与文案
 

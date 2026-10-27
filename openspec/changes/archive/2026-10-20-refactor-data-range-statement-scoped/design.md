@@ -2,7 +2,7 @@
 
 ## Context
 
-`qy-auth/auth-core` 里的数据权限由三部分组成：注解 `@AuthDataRange`（方法级声明）、`DataRangeAspect` + `DataRangeContext`（线程级上下文）、`MybatisDataRangeInterceptor` + `SqlAuthInject`（语句级注入）。动机与危害见 proposal.md - Why；行为契约见 specs/auth/data-range/spec.md。
+`../../../../auth` 里的数据权限由三部分组成：注解 `@AuthDataRange`（方法级声明）、`DataRangeAspect` + `DataRangeContext`（线程级上下文）、`MybatisDataRangeInterceptor` + `SqlAuthInject`（语句级注入）。动机与危害见 proposal.md - Why；行为契约见 specs/auth/data-range/spec.md。
 
 设计与实现要遵守的现状约束：
 

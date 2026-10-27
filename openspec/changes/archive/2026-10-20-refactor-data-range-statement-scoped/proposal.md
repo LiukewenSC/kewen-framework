@@ -29,9 +29,9 @@
 
 **框架代码**
 
-- `qy-auth/auth-core`：`AuthDataRange`（注解 `@Target` 语义与文档）、`data/range/` 下的 `MybatisDataRangeInterceptor`、`SqlAuthInject`、`AuthRange` 保持职责但改造入口；`DataRangeContext`、`DataRangeAspect` 删除。
-- `qy-auth/auth-core-spring-boot-starter`：`AuthCoreConfig` 中切面 bean 移除，新增启动期校验的挂载。
-- `qy-auth/auth-rbac-spring-boot-starter`：`AuthRbacConfig.annotationAuthHandler` 补一行 setter 调用。
+- `../../../../auth`：`AuthDataRange`（注解 `@Target` 语义与文档）、`data/range/` 下的 `MybatisDataRangeInterceptor`、`SqlAuthInject`、`AuthRange` 保持职责但改造入口；`DataRangeContext`、`DataRangeAspect` 删除。
+- `../../../../auth`：`AuthCoreConfig` 中切面 bean 移除，新增启动期校验的挂载。
+- `../../../../auth`：`AuthRbacConfig.annotationAuthHandler` 补一行 setter 调用。
 - 依赖关系不变：`auth-core` 本就只依赖 `org.mybatis:mybatis` 与 `jsqlparser`，不引入 MyBatis-Plus。
 
 **示例代码**

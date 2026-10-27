@@ -310,7 +310,7 @@ BASE=http://localhost:8082/coredemo bash verify.sh   # 换地址
   今天不可达的前提是权限串只由各位置的 **ID** 拼成，而 ID 是整型；
   一旦有外部项目用含引号的字符串权限ID接入，这里就是可打通的注入面。
   已就地留 TODO 注明触发条件与修法（做字面量转义，而不是改成 `?`——加占位符会打乱 MyBatis 的 parameterMappings）。
-  代码位置：[SqlAuthInject.java](file:///C:/Users/kewen/Projects/kewen-framework/qy-auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/SqlAuthInject.java) 的 `authTableWhereExpression`。
+  代码位置：[SqlAuthInject.java](file:///C:/Users/kewen/Projects/kewen-framework/auth/auth-core/src/main/java/com/cu/framework/auth/core/data/range/SqlAuthInject.java) 的 `authTableWhereExpression`。
   本示例刻意让含引号的权限串只走 `demo_auth_data` 的读写路径（已参数绑定）与 `quote_probe` 这个**没有任何数据范围声明**的业务功能，避免撞上这条债务。
   验证台也遵守这条边界：当前身份的权限串含单引号（erin）时，数据范围行显示"不适用"并跳过 GET，而不是把这条债务表现成一次查询失败或权限拒绝。
 - `menu-access` 规格里"两个洞与启动校验仍搁置"那部分（端点覆盖、并发注册）不在本轮范围。

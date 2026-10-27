@@ -24,7 +24,7 @@
         <module>login-spring-boot-starter</module>
         <module>sample</module>
         <module>other</module>
-        <module>qy-auth</module>
+        <module>auth</module>
     </modules>
 
     <dependencies>
@@ -50,11 +50,6 @@
             <dependency>
                 <groupId>com.cu.framework.boot</groupId>
                 <artifactId>basic-spring-boot-starter</artifactId>
-                <version>${framework-version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.cu.framework.auth</groupId>
-                <artifactId>auth-spring-boot-starter</artifactId>
                 <version>${framework-version}</version>
             </dependency>
             <dependency>

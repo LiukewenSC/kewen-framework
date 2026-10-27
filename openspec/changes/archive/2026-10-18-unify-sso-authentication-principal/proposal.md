@@ -37,7 +37,7 @@
 
 - `login-spring-boot-starter`：`oauth2`（用户服务、配置、新增子类型）、`saml`（认证转换器、新增子类型）、`response`（成功处理器与结果投影）、`SecurityUserContext`、`model/SecurityUser`、`config/SecurityBeanConfig`。
 - 删除 4 个类：转换接口 + 账密/OAuth2/SAML 三个实现。新增 2 个协议子类型、1 个装配器、1 个 OIDC 用户服务、1 个 SAML 组装转换器、1 个错误码常量类。
-- 跨模块影响：`qy-auth/auth-rbac-security-spring-boot-starter` 的 `RbacSecurityUserDetailsService` 需要把库里 `Integer` 的 gender 转成 String。
+- 跨模块影响：`../../../../auth` 的 `RbacSecurityUserDetailsService` 需要把库里 `Integer` 的 gender 转成 String。
 - 对外契约：`LoginSuccessResult` 的字段名与含义不变，前端不需改动；`cu.security.login.oauth2.clients[*].user-name-attribute-name` 的含义变为"用于查本地账号的字段"。
 - 配置与示例：`sample/login-boot-sample` 的 OAuth2/OIDC 客户端条目，以及 SAML 侧对身份源 NameID 取值的要求。
 - 测试：`LoginDeliveryPostureTest`（构造入参含转换器提供者）、`Oauth2UserServiceWiringTest`。

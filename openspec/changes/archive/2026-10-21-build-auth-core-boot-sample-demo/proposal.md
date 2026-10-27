@@ -8,7 +8,7 @@
 
 ## What Changes
 
-**框架侧（`qy-auth/`，4 条，全部经用户 2026-10-20 逐条裁决）**
+**框架侧（`../../../../auth`，4 条，全部经用户 2026-10-20 逐条裁决）**
 
 - `auth-core-spring-boot-starter`：把 `AuthExceptionHandler` 注册成自动装配的 bean，使 `AuthException` 对外稳定输出 `code=403` 的统一拒绝结果。
 - `auth-core-spring-boot-starter`：`AuthExceptionHandler` 增加 `AuthServiceException` 出口，输出 `code=400`，消息只带业务功能/操作类型/上限数，不含框架类名与接口名。
