@@ -23,7 +23,7 @@ import java.util.Map;
  * 等于向每个 IDP 各发一次 userinfo 请求。
  * <p>{@code RestOperationBuilder} 的作用不止 SSL：它还替换了消息转换器与错误处理器，
  * 用于容忍部分 IDP 返回的非标准 userinfo 响应（如 HTML 错误页）。
- * 其来历见 docs/说明文档/已废弃实现与决策记录.md 第二节。
+ * 其来历见 docs/decisions/已废弃实现与决策记录.md 第二节。
  *
  * @author kewen
  * @since 2026-10-19

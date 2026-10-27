@@ -166,8 +166,8 @@ public class CodeGenerator {
     private static List<String> getTableNames(DataSourceConfig.Builder dataSourceConfigBuilder) throws SQLException {
         DataSourceConfig dataSourceConfig = dataSourceConfigBuilder.build();
         String url = dataSourceConfig.getUrl();
-        //jdbc:p6spy:mysql://liukewensc.mysql.rds.aliyuncs.com:3306/uucs
-        //jdbc:mysql://119.6.253.231:16102/emergency?useUnicode=true&useSSL=false&serverTimezone=Hongkong&characterEncoding=UTF-8
+        //jdbc:p6spy:mysql://localhost:3306/your_database
+        //jdbc:mysql://localhost:3306/your_database?useUnicode=true&useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=UTF-8
         url = url.substring(url.indexOf("://")+3);
         String tableSchema;
         if (url.contains("?")){
