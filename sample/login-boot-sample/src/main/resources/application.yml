@@ -32,7 +32,7 @@ cu:
     permit-url: /
 
   security:
-    # 当前用户接口地址。消费方是 auth-rbac-security-spring-boot-starter 的 AuthUserContextFilter，
+    # 当前用户接口地址。消费方是 auth-rbac-security-spring-boot-starter 的 RbacCurrentUserEndpoint；
     # 本 sample 没引那个依赖，所以 /currentUser 在这个 demo 里不会生效
     current-user-url: /currentUser
 
@@ -72,9 +72,8 @@ cu:
         sso-authorization-uri: /oauth2/authorization
         # IDP 回调处理端点（Ant 通配，与 starter 里的默认值一致）
         login-processing-url: /login/oauth2/code/*
-        # clients 无默认值，但必须至少配一个：Oauth2Config 是无条件加载的自动配置，
-        # 代码里直接遍历 clients 且 InMemoryClientRegistrationRepository 不接受空列表，留空会启动失败。
-        # 下面是 protocol-type=oauth2 的手动端点模式（启动时不发网络请求，端点是占位，走真实 IDP 时再改）。
+        # clients 无默认值；留空时不装配 OAuth2/OIDC，纯密码登录可直接删掉本节。
+        # 配置后至少一条；下面是 protocol-type=oauth2 的手动端点模式（启动时不发网络请求，端点是占位，走真实 IDP 时再改）。
         # protocol-type=oidc 会改成启动时就去拉 {issuer-uri}/.well-known/openid-configuration，那个 IDP 不在线就起不来。
         clients:
           - registration-id: demo-oauth2
@@ -150,7 +149,7 @@ cu:
         login-processing-url: /login/saml2/sso/{registrationId}
         logout-request-url: /logout/saml2/slo
         logout-response-url: /logout/saml2/slo
-        # 同样无默认值且必须至少配一个：SamlConfig 里直接 registrations.stream()，留空会启动失败
+        # 留空时不装配 SAML2，纯密码登录可直接删掉本节；配置后至少一条
         registrations:
           - registration-id: demo-saml            # 留空时 getter 回退返回 sp-entity-id
             sp-entity-id: cu-framework-local      # 需与 IDP 侧配置的 SP Audience 一致

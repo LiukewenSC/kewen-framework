@@ -4,6 +4,8 @@ import com.cu.framework.authentication.exception.NoLoginException;
 import com.cu.framework.basic.model.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
@@ -15,11 +17,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
  * 全局异常处理增强（@RestControllerAdvice），将访问拒绝、未登录、认证失败等安全异常
- * 及兜底的未知异常统一转换为 Result JSON 响应
+ * 统一转换为 Result JSON 响应；不处理通用 Throwable，避免抢占权限与业务异常的具体处理器
  * @author kewen
  * @since 2026-02-12
  */
 @RestControllerAdvice
+@Order(Ordered.HIGHEST_PRECEDENCE + 200)
 public class AuthenticationExceptionAdviceHandler {
     private static final Logger logger = LoggerFactory.getLogger(AuthenticationExceptionAdviceHandler.class);
 
@@ -55,15 +58,6 @@ public class AuthenticationExceptionAdviceHandler {
     }
 
 
-
-    /**
-     * 兜底处理所有未匹配的异常，返回 code 500 的失败结果
-     */
-    @ExceptionHandler(Throwable.class)
-    public Result<Void> throwException(Throwable t){
-        logger.error("全局异常：{}", t.getMessage(), t);
-        return Result.failed(500, t.getMessage());
-    }
 
     /**
      * 处理认证服务内部异常，返回 code 500 的失败结果

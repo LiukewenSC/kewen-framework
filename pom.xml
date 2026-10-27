@@ -207,22 +207,27 @@
             <dependency>
                 <groupId>com.cu.framework.auth</groupId>
                 <artifactId>auth-core</artifactId>
-                <version>${project.version}</version>
+                <version>${framework-version}</version>
             </dependency>
             <dependency>
                 <groupId>com.cu.framework.auth</groupId>
                 <artifactId>auth-core-spring-boot-starter</artifactId>
-                <version>${project.version}</version>
+                <version>${framework-version}</version>
             </dependency>
             <dependency>
                 <groupId>com.cu.framework.auth</groupId>
                 <artifactId>auth-rbac</artifactId>
-                <version>${project.version}</version>
+                <version>${framework-version}</version>
             </dependency>
             <dependency>
                 <groupId>com.cu.framework.auth</groupId>
                 <artifactId>auth-rbac-spring-boot-starter</artifactId>
-                <version>${project.version}</version>
+                <version>${framework-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.cu.framework.auth</groupId>
+                <artifactId>auth-rbac-security-spring-boot-starter</artifactId>
+                <version>${framework-version}</version>
             </dependency>
 
             <!-- MyBatis -->

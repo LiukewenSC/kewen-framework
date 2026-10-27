@@ -1,6 +1,7 @@
 package com.cu.framework.authentication.saml;
 
 import com.cu.framework.authentication.config.HttpSecurityCustomizer;
+import com.cu.framework.authentication.config.SamlConfiguredCondition;
 import com.cu.framework.authentication.response.SecurityAuthenticationExceptionResolverHandler;
 import com.cu.framework.authentication.response.SecurityAuthenticationSuccessHandler;
 import com.cu.framework.authentication.saml.properties.SamlProperties;
@@ -10,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -45,6 +47,7 @@ import java.util.stream.Collectors;
  * @since 1.0
  */
 @Configuration
+@Conditional(SamlConfiguredCondition.class)
 @EnableConfigurationProperties({SamlProperties.class})
 public class SamlConfig implements HttpSecurityCustomizer{
 

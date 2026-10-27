@@ -6,11 +6,11 @@
 
 | 配置类 | 生效条件 | 产出 |
 | --- | --- | --- |
-| `RbacSecurityConfig` | 无 | `RbacSecurityUserDetailsService`（容器中已有 `SecurityUserDetailsService` 时让位）；`RbacSecurityAuthCurrentUserContextHolder`（无条件注册） |
+| `RbacSecurityConfig` | 无 | `RbacSecurityUserDetailsService`（容器中已有 `SecurityUserDetailsService` 时让位）；`RbacSecurityAuthCurrentUserContextHolder`（无条件注册）；`RbacCurrentUserEndpoint`（容器中已有同类型端点时让位） |
 
 ## 配置项
 
-无自有配置键。本 starter 读取 `login-spring-boot-starter` 的 `cu.security.*`，其中 `cu.security.current-user-url` 当前未接线。
+无自有配置键。本 starter 读取 `login-spring-boot-starter` 的 `cu.security.*`，其中 `cu.security.current-user-url` 由 `RbacCurrentUserEndpoint` 读取（默认 `/currentUser`），返回当前用户身份信息且不包含密码。
 
 ## 启动前置条件与已知空转项
 

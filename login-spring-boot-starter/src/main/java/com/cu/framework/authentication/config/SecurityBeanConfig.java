@@ -34,7 +34,7 @@ import java.util.List;
  * @since 2026-02-12
  */
 @Configuration
-@EnableConfigurationProperties(SsoLoginProperties.class)
+@EnableConfigurationProperties({SsoLoginProperties.class, Oauth2OidcProperties.class, SamlProperties.class})
 public class SecurityBeanConfig {
 
     /**

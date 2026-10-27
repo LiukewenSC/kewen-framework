@@ -3,6 +3,8 @@ package com.cu.framework.basic.exception;
 
 import com.cu.framework.basic.model.Result;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -18,6 +20,7 @@ import java.util.List;
  * @since 2022-12-05 14:19
  */
 @RestControllerAdvice
+@Order(Ordered.LOWEST_PRECEDENCE)
 @Slf4j
 public class GlobalExceptionHandlerAdvice {
 

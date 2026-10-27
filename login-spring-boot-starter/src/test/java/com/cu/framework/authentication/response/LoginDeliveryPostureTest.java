@@ -207,6 +207,22 @@ public class LoginDeliveryPostureTest {
     }
 
     /**
+     * 登录成功时 principal 会被写入 session，必须在交付前清空密码哈希
+     */
+    @Test
+    public void successClearsPasswordFromPrincipal() throws Exception {
+        UsernamePasswordAuthenticationToken token = authenticatedToken();
+        SecurityUser principal = (SecurityUser) token.getPrincipal();
+        principal.setPassword("{bcrypt}secret");
+
+        JsonAuthenticationSuccessHandler handler = new JsonAuthenticationSuccessHandler(
+                new CountingResultResolver(), new ObjectMapper(), resolverOf(null));
+        handler.onAuthenticationSuccess(requestOf("POST", "/login"), new MockHttpServletResponse(), token);
+
+        Assert.assertEquals("密码哈希不得随 session 持久化", "", principal.getPassword());
+    }
+
+    /**
      * 交出的结果对象，用于断言解析器是否被触发
      */
     private static class CountingResultResolver implements AuthenticationSuccessResultResolver {

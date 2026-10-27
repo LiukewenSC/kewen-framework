@@ -14,7 +14,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Data
 public class SecurityProperties {
     /**
-     * 当前用户接口地址；当前代码未读取，配置后不生效，接口路径固定为 /currentUser
+     * 当前用户接口地址；由 auth-rbac-security-spring-boot-starter 的 /currentUser 端点读取。
+     * 仅引入 login-spring-boot-starter 时不会提供该端点，本项不生效
      */
     private String currentUserUrl = "/currentUser";
 

@@ -11,15 +11,15 @@
 | `KewenAuthConfig` | 无 | `SecurityResponseBodyResultResolver`、`AuthenticationExceptionAdviceHandler` |
 | `SessionConfig` | 无 | 优先 Header（`Authorization`）再回退 Cookie 的会话解析器；按开关注册 `RememberMeServices`；`JdbcIndexedSessionRepository` 包装器；最大会话数定制器 |
 | `PasswordSecurityConfig` | 无 | JSON 账号密码登录过滤器 |
-| `SamlConfig` | 无（`registrations` 必填） | SAML2 登录、登出、SP Metadata 暴露 |
-| `Oauth2Config` | 无（`clients` 必填） | OAuth2 / OIDC 登录与客户端注册仓库 |
+| `SamlConfig` | `registrations` 非空 | SAML2 登录、登出、SP Metadata 暴露 |
+| `Oauth2Config` | `clients` 非空 | OAuth2 / OIDC 登录与客户端注册仓库 |
 
 ## 通用配置（不区分协议）
 
 | key | 默认值 | 必填 | 说明 |
 | --- | --- | --- | --- |
 | `cu.auth.permit-url` | —（空） | 否 | 免登录放行的 URL，多个用分号或逗号分隔；与 `@SecurityIgnore` 收集的 URL 合并 |
-| `cu.security.current-user-url` | `/currentUser` | 否 | **未接线**：当前代码未读取，接口路径固定为 `/currentUser` |
+| `cu.security.current-user-url` | `/currentUser` | 否 | 当前用户接口路径；由引入 `auth-rbac-security-spring-boot-starter` 时的 `/currentUser` 端点读取，仅引入本 starter 时不生效 |
 | `cu.security.session.maximum-sessions` | `10` | 否 | 同一用户最大并发会话数 |
 | `cu.security.session.max-sessions-prevents-login` | `false` | 否 | 达到上限时是否阻止新登录；false = 挤掉最早的会话 |
 | `cu.security.remember-me.enabled` | `true` | 否 | **未接线**：只创建 `RememberMeServices` Bean，未挂入过滤器链 |
@@ -199,7 +199,7 @@ cu:
 |---|---|---|---|
 | `sso-authorization-uri` | `/oauth2/authorization` | 否 | 本地授权入口基址；**不要带 `{registrationId}`**，解析器会自动拼成 `{baseUri}/{registrationId}`（与 Spring Security 官方默认一致） |
 | `login-processing-url` | `/login/oauth2/code/*` | 否 | IDP 回调匹配。注意是 Ant 通配 `*`，不是 `{registrationId}`（取自 `OAuth2LoginAuthenticationFilter.DEFAULT_FILTER_PROCESSES_URI`） |
-| `clients` | — | ✅ | 至少一条；空列表启动 NPE |
+| `clients` | — | 否 | 留空时不装配 OAuth2/OIDC 登录；纯密码登录无需配置。配置后至少一条 |
 
 **每个 `clients[i]`**
 
@@ -267,7 +267,7 @@ cu:
 
 ## 常见坑
 
-1. **`Oauth2Config` 是无条件加载的**：只要引入了 `login-spring-boot-starter`，`cu.security.login.oauth2.clients` 必须至少一条，否则 `InMemoryClientRegistrationRepository` 空列表启动 NPE。
+1. **`clients` 为空时不装配 OAuth2/OIDC**：纯账号密码登录可以完全不配置；一旦配置，每条 client 都必须能构成有效注册（`registration-id` 等必填），否则该入口不可用。
 2. **`protocol-type: oidc` 在启动阶段就会访问网络**：`ClientRegistrations.fromIssuerLocation(issuerUri)` 同步拉取 `{issuer}/.well-known/openid-configuration`，IDP 不在线则应用起不来。本地 demo 想跳过网络请求就切回 `protocol-type: oauth2`。
 3. **`ignore-ssl=true` 只影响 userinfo**：OIDC Discovery 与 JWK Set 拉取走 Spring 自带 HTTP 客户端，始终执行标准证书校验。自签 IDP 在 Discovery 阶段报 SSL 错时，把证书导入 JDK cacerts，配 `ignore-ssl` 没用。
 4. **OAuth2 与 OIDC 共用同一路径**：同一条 `clients` 记录要么 OAuth2 要么 OIDC，由 `protocol-type` 决定。想同一份 IDP 暴露两种模式，需要声明两条 clients（配法见上文「已移除示例」一节）。
@@ -303,7 +303,7 @@ cu:
 | `login-processing-url` | `/login/saml2/sso/{registrationId}` | 否 | ACS 路径模板，IdP 用它 POST SAMLResponse。**必须包含 `{registrationId}`**；不要写 `{baseUrl}`，构建 ACS 地址时框架会前置 |
 | `logout-request-url` | `/logout/saml2/slo` | 否 | SP 侧 LogoutRequest 接收地址 |
 | `logout-response-url` | `/logout/saml2/slo` | 否 | SP 侧 LogoutResponse 接收地址 |
-| `registrations` | — | ✅ | 至少一条；空列表 `SamlConfig` 启动 NPE |
+| `registrations` | — | 否 | 留空时不装配 SAML2 登录；纯密码登录无需配置。配置后至少一条 |
 | `sp-signing-keystore` | — | 否 | 不配则 AuthnRequest / LogoutRequest 不签名 |
 | `login-page-url` | — | — | 已 `@Deprecated`，当前未实现 |
 
@@ -401,7 +401,7 @@ cu:
 
 ## 常见坑
 
-1. **`registrations` 必须至少一条**：`SamlConfig.buildRegistrationFromMetadata` 直接 `registrations.stream()`，留空 NPE。
+1. **`registrations` 为空时不装配 SAML2**：纯账号密码登录可以完全不配置；配置后至少一条，`SamlConfig.buildRegistrationFromMetadata` 会直接遍历注册项，缺项会启动失败。
 2. **`metadata.xml` 中 `WantAuthnRequestsSigned` 必须显式写值**：`IdpMetadataParser` 拆箱 boolean 缺省会 NPE。
 3. **`sp-entity-id` 需与 IdP 侧 Audience 严格一致**：不一致会在校验 `AudienceRestriction` 时报错，日志表现是 "does not match AudienceRestriction"。
 4. **`WantAuthnRequestsSigned=true` 但没配 keystore**：SP 发出的 `AuthnRequest` 无签名，IdP 会拒。要么关 IdP 侧强制签名，要么补齐 keystore。

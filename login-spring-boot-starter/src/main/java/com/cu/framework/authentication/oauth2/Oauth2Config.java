@@ -1,6 +1,7 @@
 package com.cu.framework.authentication.oauth2;
 
 import com.cu.framework.authentication.config.HttpSecurityCustomizer;
+import com.cu.framework.authentication.config.Oauth2ConfiguredCondition;
 import com.cu.framework.authentication.response.SecurityAuthenticationExceptionResolverHandler;
 import com.cu.framework.authentication.response.SecurityAuthenticationSuccessHandler;
 import com.cu.framework.authentication.oauth2.Oauth2OidcProperties.Oauth2OidcRegistrationClientProperties;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.client.endpoint.DefaultAuthorizationCodeTokenResponseClient;
@@ -40,6 +42,7 @@ import java.util.stream.Collectors;
  * @since 4.24.0-SP01
  */
 @Configuration
+@Conditional(Oauth2ConfiguredCondition.class)
 @EnableConfigurationProperties(Oauth2OidcProperties.class)
 public class Oauth2Config implements HttpSecurityCustomizer {
 

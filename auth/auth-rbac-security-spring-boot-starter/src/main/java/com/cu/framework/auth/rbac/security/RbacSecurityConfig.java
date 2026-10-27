@@ -32,4 +32,13 @@ public class RbacSecurityConfig {
         return holder;
     }
 
+    /**
+     * 当前登录用户接口，使用方自己提供同类型端点时不注册
+     */
+    @Bean
+    @ConditionalOnMissingBean(RbacCurrentUserEndpoint.class)
+    RbacCurrentUserEndpoint rbacCurrentUserEndpoint() {
+        return new RbacCurrentUserEndpoint();
+    }
+
 }

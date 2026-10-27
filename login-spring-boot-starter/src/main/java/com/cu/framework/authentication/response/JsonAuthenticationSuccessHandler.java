@@ -61,7 +61,10 @@ public class JsonAuthenticationSuccessHandler implements SecurityAuthenticationS
             throw new NoLoginException("认证主体不是统一认证实体："
                     + (principal == null ? "null" : principal.getClass().getName()));
         }
-        LoginSuccessResult loginSuccessResult = LoginSuccessResult.of((SecurityUser) principal);
+        // 同一 principal 会被写入 session，清空密码，避免哈希随会话持久化
+        SecurityUser securityUser = (SecurityUser) principal;
+        securityUser.setPassword("");
+        LoginSuccessResult loginSuccessResult = LoginSuccessResult.of(securityUser);
 
         loginSuccessResult.setToken(request.getSession().getId());
         loginSuccessResult.setLoginTime(LocalDateTime.now());
