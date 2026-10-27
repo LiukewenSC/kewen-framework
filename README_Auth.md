@@ -63,7 +63,7 @@
 
 1.下载本框架工程然后`mvn install`到本地maven仓库。
 
-2.工程引入，通过继承`cu-parent`，引入`login-spring-boot-starter`模块即可
+2.工程引入，通过继承`cu-parent`，引入`login-security-spring-boot-starter`模块即可
 
 ```xml
 <parent>
@@ -74,8 +74,8 @@
 
 <dependencies>
    <dependency>
-      <groupId>com.cu.framework</groupId>
-      <artifactId>login-spring-boot-starter</artifactId>
+      <groupId>com.cu.framework.boot</groupId>
+      <artifactId>login-security-spring-boot-starter</artifactId>
    </dependency>
 </dependencies>
 ```
@@ -97,13 +97,13 @@
 - 启动
 
 **引入依赖**：引入相关的依赖
-需要把`login-spring-boot-starter`和`auth-rbac-spring-boot-starter`都引进，前者负责安全与登录，后者是基于RBAC的权限实现
+需要把`login-security-spring-boot-starter`和`auth-rbac-spring-boot-starter`都引进，前者负责安全与登录，后者是基于RBAC的权限实现
 
 ```xml
 <dependencies>
    <dependency>
-      <groupId>com.cu.framework</groupId>
-      <artifactId>login-spring-boot-starter</artifactId>
+      <groupId>com.cu.framework.boot</groupId>
+      <artifactId>login-security-spring-boot-starter</artifactId>
       <version>0.0.1-SNAPSHOT</version>
    </dependency>
    <dependency>
@@ -190,7 +190,7 @@ cu-framework-auth
 │    ├─RbacSecurityUserDetailsService 用户登录相关需要实现的类（RBAC默认实现）
 │    └─RbacSecurityAuthCurrentUserContextHolder  当前登录人上下文
 |
-├─login-spring-boot-starter         框架安全与登录相关的配置（与 auth 同级的独立模块）
+├─login-security-spring-boot-starter         框架安全与登录相关的配置（boot 下的 Starter）
 │    ├─annotation
 │    │    └─SecurityIgnore          忽略登录校验路径
 │    ├─config                       安全、Session、密码配置

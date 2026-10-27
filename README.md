@@ -112,6 +112,22 @@ cu-framework/
 │   │       ├── p6spy/                  # SQL 日志监控
 │   │       └── properties/             # 配置属性
 │   │
+│   ├── login-security-spring-boot-starter/  # 登录认证 Starter（Spring Security）
+│   │   └── src/main/java/com/cu/framework/authentication/
+│   │       ├── annotation/                 # @SecurityIgnore 免登录白名单
+│   │       ├── config/                     # Spring Security、Session、密码配置
+│   │       ├── extension/                  # RememberMe、Session 扩展
+│   │       ├── filter/                     # Token 会话与过滤器链异常处理
+│   │       ├── handler/                    # 认证异常与统一返回处理
+│   │       ├── loginpage/                  # 登录方式发现端点
+│   │       ├── model/                      # 登录用户模型
+│   │       ├── oauth2/                     # OAuth2/OIDC 登录
+│   │       ├── password/                   # 账密 JSON 登录
+│   │       ├── properties/                 # 配置属性
+│   │       ├── saml/                       # SAML 登录
+│   │       ├── service/                    # SecurityUserDetailsService
+│   │       └── sso/                        # 单点登录公共逻辑
+│   │
 │   ├── storage-spring-boot-starter/    # 文件存储 Starter
 │   ├── tenant-spring-boot-starter/     # 多租户 Starter
 │   └── magic-spring-boot-starter/      # Magic API Starter
@@ -145,22 +161,6 @@ cu-framework/
 │   │
 │   └── relation/                       # 权限相关资源
 │       └── properties/                 # 配置文件
-│
-├── login-spring-boot-starter/          # 登录认证模块（Spring Security）
-│   └── src/main/java/com/cu/framework/authentication/
-│       ├── annotation/                 # @SecurityIgnore 免登录白名单
-│       ├── config/                     # Spring Security、Session、密码配置
-│       ├── extension/                  # RememberMe、Session 扩展
-│       ├── filter/                     # Token 会话与过滤器链异常处理
-│       ├── handler/                    # 认证异常与统一返回处理
-│       ├── loginpage/                  # 登录方式发现端点
-│       ├── model/                      # 登录用户模型
-│       ├── oauth2/                     # OAuth2/OIDC 登录
-│       ├── password/                   # 账密 JSON 登录
-│       ├── properties/                 # 配置属性
-│       ├── saml/                       # SAML 登录
-│       ├── service/                    # SecurityUserDetailsService
-│       └── sso/                        # 单点登录公共逻辑
 │
 ├── sample/                             # 示例项目
 │   ├── auth-rbac-boot-sample/          # 权限认证示例（会议室管理）
@@ -255,8 +255,8 @@ bash scripts/check-sql-compat.sh
 <dependencies>
     <!-- 登录认证模块 -->
     <dependency>
-        <groupId>com.cu.framework</groupId>
-        <artifactId>login-spring-boot-starter</artifactId>
+        <groupId>com.cu.framework.boot</groupId>
+        <artifactId>login-security-spring-boot-starter</artifactId>
     </dependency>
     
     <!-- RBAC 权限实现 -->
@@ -521,7 +521,7 @@ RBAC 快速配置 Starter。
 #### auth-rbac-security-spring-boot-starter
 把 RBAC 接到 Spring Security 登录态，提供当前登录人上下文与 `UserDetailsService` 的默认实现。
 
-### 4. login-spring-boot-starter - 登录认证模块
+### 4. login-security-spring-boot-starter - 登录认证模块
 
 基于 Spring Security 的登录认证与单点登录：
 
@@ -576,7 +576,7 @@ cu:
 
 ### 安全配置
 
-完整键表（含 OAuth2 / OIDC / SAML2）见 [login-spring-boot-starter/README.md](login-spring-boot-starter/README.md)。
+完整键表（含 OAuth2 / OIDC / SAML2）见 [login-security-spring-boot-starter/README.md](boot/login-security-spring-boot-starter/README.md)。
 Token 会话的请求头固定为 `Authorization`，没有配置项。
 
 ```yaml

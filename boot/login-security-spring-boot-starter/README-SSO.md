@@ -1,6 +1,6 @@
 # 单点登录（SSO）认证接入文档
 
-本文档详细介绍 login-spring-boot-starter 提供的 OAuth2 和 SAML 2.0 两种认证协议的配置方法。
+本文档详细介绍 login-security-spring-boot-starter 提供的 OAuth2 和 SAML 2.0 两种认证协议的配置方法。
 
 ## 目录
 - [概述](#概述)
@@ -12,7 +12,7 @@
 
 ## 概述
 
-login-spring-boot-starter 基于 Spring Security 框架，提供企业级单点登录（SSO）解决方案，支持以下认证协议：
+login-security-spring-boot-starter 基于 Spring Security 框架，提供企业级单点登录（SSO）解决方案，支持以下认证协议：
 
 - **OAuth2**：基于授权码模式（Authorization Code）的标准 OAuth2 认证
 - **SAML 2.0**：基于 SAML 协议的企业级单点登录

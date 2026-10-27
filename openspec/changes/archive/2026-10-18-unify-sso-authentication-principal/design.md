@@ -26,7 +26,7 @@
 
 - "难以区分"这一条由 D5 的可区分错误码正面解决——这正是当年放弃时缺的那块。
 - "认证链路被数据库拖住"这一条不换位置解决，而是算总账：现状是登录时零次查询、之后每次取当前用户一次查询；改后是登录时一次、之后零次。会话内取用户两次以上即回本，而 `getCurrentUser()` 是权限判定的入口，正常一次请求就会调用。
-- 该记录本身标注"据提交记录推断，非作者确认"，且它写的落地路径 `qy-idaas/idaas-authentications/...` 在仓库里已不存在（同一个类现在在 `login-spring-boot-starter/.../oauth2/result/`），指向已失效。
+- 该记录本身标注"据提交记录推断，非作者确认"，且它写的落地路径 `qy-idaas/idaas-authentications/...` 在仓库里已不存在（同一个类现在在 `login-security-spring-boot-starter/.../oauth2/result/`），指向已失效。
 - 决定推翻之后，第一节与新增的转换层删除记录都要改写，理由不能跟着代码消失。见 tasks 第 5 组。
 
 ## Goals / Non-Goals
@@ -114,4 +114,4 @@ OAuth2/OIDC 抛 `OAuth2AuthenticationException`（带可区分错误码），SAM
 1. 先落两个子类型与新的用户服务 / 转换器组装，再把 `SecurityUserContext` 与 `JsonAuthenticationSuccessHandler` 切到强转，最后删转换器接口、三个实现和三处 Bean 注册。三步在同一 change 内连续完成，不留过渡开关与兼容分支。
 2. 改 sample 的 `user-name-attribute-name` 与 IDP 侧配置：userinfo 返回的对应字段值等于本地用户名，SAML 应用的 NameID 属性选 username，回调地址仍在 IDP 的 `application` 表白名单内。
 3. 验证：本机起 kw-idp-simple(:9010) 与 login-boot-sample，三条链路各登录一次；断言点为 `/api/me` 的 authorities 是本系统权限码而非 `SCOPE_read`、`getCurrentUser()` 返回本系统主键、OIDC 登出请求带 id_token_hint、SAML 服务侧登出请求能定位注册项并带 SessionIndex。
-4. 回滚：改动集中在 `login-spring-boot-starter` 单模块，回滚即恢复转换器实现；回滚后既有会话同样需要重新登录。
+4. 回滚：改动集中在 `login-security-spring-boot-starter` 单模块，回滚即恢复转换器实现；回滚后既有会话同样需要重新登录。

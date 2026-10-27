@@ -8,7 +8,7 @@ import java.util.Collection;
 
 /**
  * 具有权限的用户上下文，用户登录了之后每次请求都应该有上下文信息
- * 实现类通过 SecurityUserContext（login-spring-boot-starter）获取当前登录用户
+ * 实现类通过 SecurityUserContext（login-security-spring-boot-starter）获取当前登录用户
  * @author kewen
  * @since 2026-10-15
  */

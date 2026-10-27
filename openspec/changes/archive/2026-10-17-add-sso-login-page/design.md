@@ -14,7 +14,7 @@
 
 **配置类现状。** `cu.security.login` 前缀本身没有任何属性类绑定，现有三个子前缀各自独立：`password`（`SecurityLoginProperties`）、`oauth2`（`Oauth2OidcProperties`，含 `clientName`）、`saml`（`SamlProperties`，`RegistrationSamlProperties` 只有 `metadataResource` / `registrationId` / `spEntityId` 三个字段）。
 
-**其他约束。** sample 只依赖 `login-spring-boot-starter` 与 web/jdbc/h2，未引入 auth-rbac，故 `cu.security.current-user-url` 无消费方。记住我三层未接入（无 `http.rememberMe()` 调用、`SpringSessionRememberMeServices` 只读请求参数、其 `autoLogin()` 恒返回 null）。`JsonLoginFilter.java:35` 用 `equals` 比较 Content-Type，带 charset 参数会降级为表单解析。OIDC 模式在 `build()` 时即拉取 issuer metadata，身份源不在线则应用启动失败。
+**其他约束。** sample 只依赖 `login-security-spring-boot-starter` 与 web/jdbc/h2，未引入 auth-rbac，故 `cu.security.current-user-url` 无消费方。记住我三层未接入（无 `http.rememberMe()` 调用、`SpringSessionRememberMeServices` 只读请求参数、其 `autoLogin()` 恒返回 null）。`JsonLoginFilter.java:35` 用 `equals` 比较 Content-Type，带 charset 参数会降级为表单解析。OIDC 模式在 `build()` 时即拉取 issuer metadata，身份源不在线则应用启动失败。
 
 ## Goals / Non-Goals
 
@@ -132,7 +132,7 @@
 ## Migration Plan
 
 1. 框架侧改动全部以"回跳目标未配置即不生效"为前提合入，下游无需变更配置即可保持现有行为。
-2. 新增配置项后同步 `login-spring-boot-starter/README.md` 的参数表与 `sample/login-boot-sample/src/main/resources/application.yml` 顶部的参数总表注释——该文件已是项目约定的配置文档，遗漏它等同于文档与实现不一致。
+2. 新增配置项后同步 `login-security-spring-boot-starter/README.md` 的参数表与 `sample/login-boot-sample/src/main/resources/application.yml` 顶部的参数总表注释——该文件已是项目约定的配置文档，遗漏它等同于文档与实现不一致。
 3. sample 侧启用：配置 `result-url`、加入静态三件套与 `/api/me`。
 4. 回滚：删除 `result-url` 配置即恢复变更前的全部对外行为（D2 保证，已实测）；`display-name` 与新增属性类是纯增量，可保留。
 
@@ -157,7 +157,7 @@
 | 回退（`result-url` 置空重启） | 上述两条 SSO 失败分别回到 **403 JSON**（`authorization_request_not_found`）与 **HTTP 200 + 业务码 401 JSON**；账号密码仍 403 JSON；`/api/login/options` 不受影响 → D2 承诺的"未配置即与变更前一致"成立 |
 | 登录方式清单 | 未带 Cookie 返回 4 条入口（3 个 oauth2 + 1 个 saml），展示名为 yml 中配置的中文值；响应体中搜不到 client-secret、client-id、密钥库口令、metadata 路径、`9010`、`remember` |
 | 静态资源免登录 | `/login.html` 200 `text/html`、`/js/login.js` 200、`/css/login.css` 200，`SecurityConfig.java:79` 白名单未改动 |
-| 框架侧单测 | `mvn -pl login-spring-boot-starter test` → 25 例通过（既有 4 例 + 新增 21 例） |
+| 框架侧单测 | `mvn -pl login-security-spring-boot-starter test` → 25 例通过（既有 4 例 + 新增 21 例） |
 
 未能覆盖的项：**"记住我"仍不生效**，本 change 只做到"不对外声明它"（接口不返回相关字段、页面不渲染控件），后端接入是独立的一块。另外**外部真实 IDP 的跨站 Cookie** 按 Non-Goal 未处理，本地 IDP 与页面同 site 所以不受影响。
 

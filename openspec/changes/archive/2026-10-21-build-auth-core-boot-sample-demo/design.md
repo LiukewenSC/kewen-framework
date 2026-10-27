@@ -25,7 +25,7 @@
 **Non-Goals:**
 
 - 不做权限模型层该做的事：角色/部门/用户树、菜单层级继承、菜单管理端点、缓存。
-- 不做登录：示例不引入 `login-spring-boot-starter`、不用 spring-session、不写模板页。
+- 不做登录：示例不引入 `login-security-spring-boot-starter`、不用 spring-session、不写模板页。
 - 不做多配置档矩阵：只有一个 `h2`（文件库）profile 为默认，`mysql` profile 仅连接不建表。
 - 不改 `SqlAuthInject` 的字面量拼接（留 TODO），不改 `docs/sql/`，不改 `auth-rbac*`。
 

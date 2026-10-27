@@ -8,16 +8,16 @@
 
 ## 2. 框架：新增配置项与属性字段
 
-- [x] 2.1 新建 `SsoLoginProperties`，绑定 `cu.security.login.sso`，字段 `resultUrl`（原命名 `redirectUrl`，后因易与 `redirect-uri-template` 混淆而改名），并在 `SecurityBeanConfig` 的 `@EnableConfigurationProperties` 中注册；验证：`mvn -q -pl login-spring-boot-starter -am -DskipTests install` 编译通过，sample 加上该配置项后启动无绑定告警
+- [x] 2.1 新建 `SsoLoginProperties`，绑定 `cu.security.login.sso`，字段 `resultUrl`（原命名 `redirectUrl`，后因易与 `redirect-uri-template` 混淆而改名），并在 `SecurityBeanConfig` 的 `@EnableConfigurationProperties` 中注册；验证：`mvn -q -pl login-security-spring-boot-starter -am -DskipTests install` 编译通过，sample 加上该配置项后启动无绑定告警
 - [x] 2.2 为 `SamlProperties.RegistrationSamlProperties` 增加 `displayName` 字段；验证：在 sample 的 `cu.security.login.saml.registrations[0]` 下写 `display-name` 后能取到值（以单测断言绑定结果，不留"看起来配了其实没生效"的字段）—— `LoginSsoPropertiesBindingTest` 4 例全绿，starter 合计 8 例通过
-- [x] 2.3 在 `login-spring-boot-starter/README.md` 的配置参数表与 `sample/login-boot-sample/src/main/resources/application.yml` 顶部的参数总表注释中登记这两个新项，并注明"未配置 `result-url` 时交付姿态与变更前一致"；验证：逐项对照两处文档均出现且取值说明与代码默认值一致 —— 另在 README 新增"跨协议共享配置"与"未认证请求会看到什么"两节，把实测的 200+业务码 401 记进文档
+- [x] 2.3 在 `login-security-spring-boot-starter/README.md` 的配置参数表与 `sample/login-boot-sample/src/main/resources/application.yml` 顶部的参数总表注释中登记这两个新项，并注明"未配置 `result-url` 时交付姿态与变更前一致"；验证：逐项对照两处文档均出现且取值说明与代码默认值一致 —— 另在 README 新增"跨协议共享配置"与"未认证请求会看到什么"两节，把实测的 200+业务码 401 记进文档
 
 ## 3. 框架：认证结果交付姿态分流
 
 - [x] 3.1 在 `JsonAuthenticationSuccessHandler.onAuthenticationSuccess` 内按认证端点分流（原写"按 `UsernamePasswordAuthenticationToken` 判定"，实现期因失败侧拿不到认证对象而改为端点判定，见 D1）：命中 SSO 回调端点且 `resultUrl` 非空时 `sendRedirect`，分支位于 `resultResolver.resolver(...)` 之前；验证：`LoginDeliveryPostureTest` 断言 `/login` 产出 JSON 体、两个回调端点产出 302 且响应体为空且解析器未被调用
 - [x] 3.2 在 `SecurityAuthenticationExceptionResolverHandler` 的失败入口应用与 3.1 完全相同的判据（判据落在共用的 `LoginDeliveryResolver.shouldRedirect`，`commence`/`handle`/`onAuthenticationFailure` 三个入口统一受益）：SSO 失败产出带失败标记的重定向，账号密码失败保持既有 JSON 解析链；验证：单测断言 `/login` 上的 `BadCredentialsException` 仍进入 `HandlerExceptionResolver` 链且无重定向，`/` 上的未登录请求同样不重定向；SSO 回调上的失败产出 302 且不进解析链
 - [x] 3.3 实现重定向 URL 的状态标记拼接：参数名固定为 `loginState`，值为 `success` / `failure`，配置值自带 query 时以 `&` 追加；URL 中 MUST NOT 出现会话标识或令牌；验证：单测断言两种标记下的 Location 精确值，并断言同一 `resultUrl` 分别带与不带 query 时拼接结果都正确（含绝对地址一例）
-- [x] 3.4 在 `login-spring-boot-starter/README.md` 的登录章节说明四种入口各自的交付姿态与"账号密码永远 JSON"这一约束，并把"配置 `redirect-url` 后 SSO 失败不再返回 JSON"列为行为变更；验证：文档描述与 3.1-3.3 的断言一致，无遗漏协议 —— 已在 README"跨协议共享配置"节内加"各入口的交付姿态"表与四条要点
+- [x] 3.4 在 `login-security-spring-boot-starter/README.md` 的登录章节说明四种入口各自的交付姿态与"账号密码永远 JSON"这一约束，并把"配置 `redirect-url` 后 SSO 失败不再返回 JSON"列为行为变更；验证：文档描述与 3.1-3.3 的断言一致，无遗漏协议 —— 已在 README"跨协议共享配置"节内加"各入口的交付姿态"表与四条要点
 
 ## 4. 框架：登录方式发现接口
 
@@ -27,7 +27,7 @@
 - [x] 4.4 按 D8 修正后的形式实现剔除：注册标识解析不出非空值的条目不返回并输出含该配置位置的告警（原"HTTP 探测发起地址可达"已被实测否掉——两种协议的发起地址未认证下均可用，且表现形式不一致）；spec 该条需求已按 D8 改写为"无法构成有效发起地址的条目不得对外声明"，`clientWithoutRegistrationIdIsExcluded` 单测覆盖
 - [x] 4.5 收敛响应字段集合为协议类别、注册标识、展示名、发起地址，以及账号密码段的地址与两个字段名；验证：单测以真实含密钥配置断言响应序列化结果不含 `clientSecret`、`keystorePassword`、`keyPassword`、证书与 metadata 资源路径；并断言不出现记住我参数名
 - [x] 4.6 ~~依 1.1 结论放行 `/oauth2/authorization/**`~~ —— 1.1 实测为 **302**，放行并非必需且会白增一处免登录面，按 D9 决定**不做代码改动**；已用 `curl -i` 复验 `/oauth2/authorization/demo-oauth2` 与 `/saml2/authenticate/demo-saml` 在未认证下分别得到 302 与自动提交表单
-- [x] 4.7 在 `login-spring-boot-starter/README.md` 登记该接口的完整契约：路径、未经认证可访问、逐字段含义、明确不含机密、以及"条目数随身份源配置变化"；验证：按文档给的 `curl` 命令可直接得到与文档一致的响应结构
+- [x] 4.7 在 `login-security-spring-boot-starter/README.md` 登记该接口的完整契约：路径、未经认证可访问、逐字段含义、明确不含机密、以及"条目数随身份源配置变化"；验证：按文档给的 `curl` 命令可直接得到与文档一致的响应结构
 
 ## 5. Sample：配置启用与动态数量演示
 

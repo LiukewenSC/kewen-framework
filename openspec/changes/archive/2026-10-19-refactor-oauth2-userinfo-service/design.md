@@ -4,7 +4,7 @@
 
 动机见 proposal.md - Why。本节只记录塑造方案的现状与约束。
 
-当前 userinfo 链路的实际形态（`login-spring-boot-starter/.../oauth2/Oauth2Config.java`）：
+当前 userinfo 链路的实际形态（`login-security-spring-boot-starter/.../oauth2/Oauth2Config.java`）：
 
 ```
 oauth2Login 的 userInfoEndpoint.userService(...)

@@ -1,5 +1,5 @@
 # login-boot-sample 配置参数总表
-# 自定义参数全部来自 login-spring-boot-starter：
+# 自定义参数全部来自 login-security-spring-boot-starter：
 #   - @ConfigurationProperties：cu.security / cu.security.session / cu.security.remember-me
 #                               cu.security.login.password / cu.security.login.oauth2
 #                               cu.security.login.sso / cu.security.login.saml

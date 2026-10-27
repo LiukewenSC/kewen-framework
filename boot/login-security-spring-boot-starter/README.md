@@ -28,7 +28,7 @@
 
 - 会话持久化依赖 `spring-session-jdbc` 与 DataSource；存在 `JdbcIndexedSessionRepository` 时会注册会话仓库包装器。
 - OAuth2 客户端子项 `authorization-grant-type`、`user-info-authentication-method` 当前未读取，配置不生效（标记 `[未接线]`）。
-- 账号密码、OAuth2/OIDC、SAML2 各自的配置项见下方章节；完整示例见 [docs/application.yml](../docs/application.yml) 的 `login-spring-boot-starter` 分节。
+- 账号密码、OAuth2/OIDC、SAML2 各自的配置项见下方章节；完整示例见 [docs/application.yml](../../docs/application.yml) 的 `login-security-spring-boot-starter` 分节。
 
 ## 必要实现
 

@@ -21,7 +21,6 @@
         <module>basic</module>
         <module>basic-support</module>
         <module>boot</module>
-        <module>login-spring-boot-starter</module>
         <module>sample</module>
         <module>other</module>
         <module>auth</module>
@@ -63,8 +62,8 @@
                 <version>${framework-version}</version>
             </dependency>
             <dependency>
-                <groupId>com.cu.framework</groupId>
-                <artifactId>login-spring-boot-starter</artifactId>
+                <groupId>com.cu.framework.boot</groupId>
+                <artifactId>login-security-spring-boot-starter</artifactId>
                 <version>${framework-version}</version>
             </dependency>
 

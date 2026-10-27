@@ -7,7 +7,7 @@
 - [x] 1.2b **未触发**（1.1 实测通过：两个模块的 `target/classes/sql/` 均由继承的挂载产出，`sample/docs/` 未被创建，插值方向与 D6 预期一致，无需退回各模块自持声明；design D6 的该前提已转为已验证事实）
 - [x] 1.3 给 `sample/login-boot-sample/pom.xml`、`sample/tenant-boot-sample/pom.xml`、`sample/auth-rbac-boot-sample/pom.xml` 补 `com.h2database:h2` 依赖，scope 为 `runtime`，不写版本号；验证：`mvn -q -pl sample/<module> dependency:tree -Dincludes=com.h2database:h2` 显示 h2 且版本为 2.1.214
   - 注：`login-boot-sample` 早已声明 h2（`f98ee5c` 引入），本条实际只给 tenant 与 auth-rbac 新增了依赖
-- [x] 1.4 确认框架模块未被带入 H2；验证：`grep -rn "h2database" --include=pom.xml basic basic-support boot qy-auth login-spring-boot-starter other` 无输出
+- [x] 1.4 确认框架模块未被带入 H2；验证：`grep -rn "h2database" --include=pom.xml basic basic-support boot qy-auth login-security-spring-boot-starter other` 无输出
 
 ## 2. auth 示例 SQL 拆分与双向兼容
 
@@ -61,6 +61,6 @@
 
 - [x] 8.1 逐个示例（8080 端口互斥，一次只起一个）以默认 profile 启动并调用其代表接口：`basic-boot-sample` `/validated/hello`、`storage-boot-sample` `/h2-console`、`login-boot-sample` `/login`、`tenant-boot-sample` `/hello`、`auth-rbac-boot-sample` `/meetingRoom/page`；验证：5 个模块均启动成功且接口返回符合预期，全程不需要本机存在 MySQL
   - 实测 5/5 启动成功，全程未使用 MySQL：basic 以 h2 profile 通过 15 个既有契约测试（含 `/validated/hello` 等真实请求）；storage 启动干净、`/h2-console` 返回 302（控制台已注册）；login `POST /login` 返回 200 且下发 `SESSION`；tenant `GET /hello` 返回 `hello - null`；auth 启动后 `GET /test/dataRange` 返回真实种子行
-  - 代表接口路径按实测修正：auth 示例未引 `login-spring-boot-starter`，其 `/login` 不存在（404），改用 `/test/dataRange` 与 `/test/checkMenu`；`/meetingRoom/page` 仍受框架侧 NPE 阻塞，见 7.5
+  - 代表接口路径按实测修正：auth 示例未引 `login-security-spring-boot-starter`，其 `/login` 不存在（404），改用 `/test/dataRange` 与 `/test/checkMenu`；`/meetingRoom/page` 仍受框架侧 NPE 阻塞，见 7.5
 - [x] 8.2 跑 `mvn -q -pl sample/basic-boot-sample test`；验证：`fb8dd51` 引入的既有 web 层契约测试在本次配置改动后仍全部通过
 - [x] 8.3 静态确认 H2 未泄漏到 profile 之外；验证：`grep -rn "jdbc:h2\|org.h2.Driver" sample/ --include="*.yml"` 的每一处命中，人工核对都位于其所属 `on-profile: h2` 文档段内，且 `docs/sql/` 与 `scripts/` 两个目录在本次改动中无任何文件变更（`git diff --name-only` 中不出现）

@@ -2,7 +2,7 @@
 
 ## Why
 
-`login-spring-boot-starter` 目前只对外暴露 JSON 端点，仓库内没有任何前端页面，`sample/login-boot-sample` 因此无法演示它自己支持的四种登录方式（账号密码 / OAuth2 / OIDC / SAML2）；更关键的是 SSO 两条协议在浏览器整页跳转完成后，后端把登录结果 JSON 直接吐在用户屏幕上，没有任何调用方在消费它。SSO 与账号密码在"结果该给谁"上有本质区别，框架需要显式区分这两种响应姿态。
+`login-security-spring-boot-starter` 目前只对外暴露 JSON 端点，仓库内没有任何前端页面，`sample/login-boot-sample` 因此无法演示它自己支持的四种登录方式（账号密码 / OAuth2 / OIDC / SAML2）；更关键的是 SSO 两条协议在浏览器整页跳转完成后，后端把登录结果 JSON 直接吐在用户屏幕上，没有任何调用方在消费它。SSO 与账号密码在"结果该给谁"上有本质区别，框架需要显式区分这两种响应姿态。
 
 ## What Changes
 
@@ -12,7 +12,7 @@
 - 新增一个只读的登录方式发现接口：按已配置的 registration 数量返回 SSO 入口列表，供前端逐条渲染，不在前端硬编码任何身份源。
 - `cu.security.login.saml.registrations[]` 新增 `display-name`，与 OAuth2 侧已有的 `client-name` 对称，用于按钮文案。
 - `sample/login-boot-sample` 新增纯静态前端登录页（原生 HTML/CSS/JS，不引入模板引擎、不引入构建工具），账号密码表单 + 动态渲染的 SSO 入口 + 登录态展示与登出。
-- 更新 `login-spring-boot-starter/README.md` 与 sample 的 `application.yml` 参数总表注释，使其覆盖上述新增配置项。
+- 更新 `login-security-spring-boot-starter/README.md` 与 sample 的 `application.yml` 参数总表注释，使其覆盖上述新增配置项。
 
 ## Capabilities
 
@@ -28,7 +28,7 @@
 
 ## Impact
 
-**框架侧（`login-spring-boot-starter`）**
+**框架侧（`login-security-spring-boot-starter`）**
 
 - `authentication/response/JsonAuthenticationSuccessHandler.java`：`onAuthenticationSuccess` 增加分支；`onLogoutSuccess` 不动（登出由前端 fetch 发起，保持 JSON）。
 - `authentication/response/SecurityAuthenticationExceptionResolverHandler.java`：认证失败入口应用同一判别依据。

@@ -4,7 +4,7 @@
 
 - [x] 1.1 新增 `oauth2/Oauth2SecurityUser`（`extends SecurityUser implements OidcUser`，承载 `attributes` / `idToken` / `userInfo`，纯 OAuth2 客户端 idToken 为 null）；`Oauth2SecurityUserTest` 5 条断言固定语义边界：`getUsername()` 是本地用户名而 `getName()` 是姓名、权限只来自本地账号、`getClaims()==getAttributes()`、`getIdToken()` 原样保留（对应 design R1/R8）
 - [x] 1.2 新增 `saml/SamlSecurityUser`（`extends SecurityUser implements Saml2AuthenticatedPrincipal`，承载多值 `attributes` / `sessionIndexes` / `relyingPartyRegistrationId`）；`SamlSecurityUserTest` 2 条断言三者返回组装时给定值且账号字段逐项复制
-- [x] 1.3 两个子类补齐 `@EqualsAndHashCode(callSuper = true)` + `@Getter/@Setter`，`mvn -pl login-spring-boot-starter compile` 通过且无 lombok 继承告警
+- [x] 1.3 两个子类补齐 `@EqualsAndHashCode(callSuper = true)` + `@Getter/@Setter`，`mvn -pl login-security-spring-boot-starter compile` 通过且无 lombok 继承告警
 - [x] 1.4 （实施中新增，见 design D1b）`SecurityUser.gender` 与 `LoginSuccessResult.gender` 由 `Integer` 改 `String`，否则子类型无法实现 `OidcUser`；连带 `RbacSecurityUserDetailsService` 的 Integer→String 转换。验证：全仓 `mvn -o -DskipTests install` 通过，auth-rbac sample 以 H2 启动成功
 
 ## 2. OAuth2 / OIDC 主体装配
@@ -26,7 +26,7 @@
 - [x] 4.1 `SecurityUserContext` 退化为纯静态：取 `SecurityContextHolder` 的 principal，不是 `SecurityUser` 就抛 `NoLoginException`；删掉 `ApplicationContextAware`、`ObjectProvider`、`UserDetailsService` 注入与 `SecurityBeanConfig` 里那个已无意义的 Bean。`SecurityUserContextTest` 覆盖无认证/匿名/账密/OAuth2/SAML 五种输入，并断言连续两次取到的是同一实例（即不再回查账号存储）
 - [x] 4.2 `LoginSuccessResult.of(SecurityUser)` 静态工厂；`LoginSuccessResultTest` 断言字段逐项对应且不带 password、token 由处理器写入
 - [x] 4.3 `JsonAuthenticationSuccessHandler` 改用 4.2 投影、去掉转换器循环与构造参数；同步清理 `SecurityBeanConfig` 与 `SecurityConfig` 的注入项。`LoginDeliveryPostureTest` 移除 `emptyConverters` 后 9 条姿态断言全过（顺带把测试里 `String` 类型的 principal 换成 `SecurityUser`，因为处理器现在认的是主体类型）
-- [x] 4.4 删除 `SecurityUserAuthenticationSuccessResultConverter` 与 `AuthenticationSuccessResultConverter`；`mvn -pl login-spring-boot-starter clean test` 39 条全绿，全仓无代码引用
+- [x] 4.4 删除 `SecurityUserAuthenticationSuccessResultConverter` 与 `AuthenticationSuccessResultConverter`；`mvn -pl login-security-spring-boot-starter clean test` 39 条全绿，全仓无代码引用
 
 ## 5. 配置语义与文档
 

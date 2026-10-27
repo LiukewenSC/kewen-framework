@@ -9,7 +9,7 @@
 
 ## 2. 元数据与 javadoc
 
-- [x] 2.1 `login-spring-boot-starter` 新增 `META-INF/additional-spring-configuration-metadata.json`，登记 `cu.auth.permit-url`（`String`，默认 `""`，描述说明与 `@SecurityIgnore` 合并、多个用分号或逗号分隔）
+- [x] 2.1 `login-security-spring-boot-starter` 新增 `META-INF/additional-spring-configuration-metadata.json`，登记 `cu.auth.permit-url`（`String`，默认 `""`，描述说明与 `@SecurityIgnore` 合并、多个用分号或逗号分隔）
   验证：编译后 login 的 generated metadata 的 `properties` 含该 name
 - [x] 2.2 把 `cu.auth.cache-auth` 条目从 `auth-core-spring-boot-starter` 的 additional metadata 迁到 `auth-rbac-spring-boot-starter` 的新 additional metadata
   验证：编译后 auth-core generated metadata 不再含该 name，auth-rbac generated metadata 含该 name；auth-rbac starter 对 auth-core starter 的依赖不变
@@ -41,7 +41,7 @@
   验证：四段齐全；键表与 YAML auth-rbac 分节一致
 - [x] 4.6 扩写 `auth/auth-rbac-security-spring-boot-starter/README.md`：装配清单、无自有键、依赖 login starter、两个默认实现的让位规则、`PasswordEncoder` 仍需自备
   验证：四段齐全；明确写出“无自有配置键”
-- [x] 4.7 补 `login-spring-boot-starter/README.md` 缺口：7 个装配类清单、顶层 `cu.security.*` 表（`current-user-url` / `session` / `remember-me`）、`cu.auth.permit-url`；三个协议已有章节不动
+- [x] 4.7 补 `login-security-spring-boot-starter/README.md` 缺口：7 个装配类清单、顶层 `cu.security.*` 表（`current-user-url` / `session` / `remember-me`）、`cu.auth.permit-url`；三个协议已有章节不动
   验证：新增键表与 YAML login 分节一致；已有章节 `git diff` 为空
 
 ## 5. 根文档收敛

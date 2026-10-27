@@ -89,11 +89,11 @@ cu:
     # 是否缓存菜单与权限数据；false 时每次直接查库。默认 false
     cache-auth: false
 
-    # ---- login-spring-boot-starter：免登录放行 URL ----
+    # ---- login-security-spring-boot-starter：免登录放行 URL ----
     # 免登录放行的 URL，多个用分号或逗号分隔；与 @SecurityIgnore 收集的 URL 合并。无默认值，留空表示不额外放行
     permit-url:
 
-  # ==================== login-spring-boot-starter ====================
+  # ==================== login-security-spring-boot-starter ====================
   security:
     # 当前用户接口地址；由 auth-rbac-security-spring-boot-starter 的 /currentUser 端点读取。
     # 未引入该 starter 时不生效。默认 /currentUser

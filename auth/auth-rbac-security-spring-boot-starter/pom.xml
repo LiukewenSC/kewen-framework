@@ -24,8 +24,8 @@
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>com.cu.framework</groupId>
-            <artifactId>login-spring-boot-starter</artifactId>
+            <groupId>com.cu.framework.boot</groupId>
+            <artifactId>login-security-spring-boot-starter</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <!-- 仅测试用：断言凭证缺失时认证主体仍能装载出来 -->

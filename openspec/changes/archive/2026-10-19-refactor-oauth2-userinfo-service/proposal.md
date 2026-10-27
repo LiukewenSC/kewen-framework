@@ -26,7 +26,7 @@
 
 ## Impact
 
-- 代码：`login-spring-boot-starter` 的 `com.cu.framework.authentication.oauth2` 包 —— `Oauth2Config`、`SsoSecurityUserConverter`、`SecurityUserOidcUserService`，以及新迁入的路由/装配具名类。
+- 代码：`login-security-spring-boot-starter` 的 `com.cu.framework.authentication.oauth2` 包 —— `Oauth2Config`、`SsoSecurityUserConverter`、`SecurityUserOidcUserService`，以及新迁入的路由/装配具名类。
 - 测试：`Oauth2UserServiceWiringTest`、`SsoSecurityUserConverterTest` 删除重写；`Oauth2SecurityUserTest` 预期不受影响。
 - 不受影响：`ClientRegistration` 构造与 `Oauth2OidcProperties` 配置契约；SAML2 侧的 `SecurityUserSamlAuthenticationConverter`（它已是一个具名类，且 `Saml2AuthenticatedPrincipal.getAttributes()` 返回类型与 `OAuth2User` 不兼容，无法与本次的装配共用）；OIDC 端点发现与令牌交换的证书校验行为（豁免范围仍只限用户信息端点）。
 - 依赖：Spring Security 5.7.11 的类结构是本次方案的前提约束 —— `OidcUserService` 与 `DefaultOAuth2UserService` 无继承关系，仅实现同一接口的不同泛型参数，且内部以组合方式使用后者。

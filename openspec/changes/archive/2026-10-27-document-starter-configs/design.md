@@ -50,8 +50,8 @@
 | `cu.tenant.open` | `tenant-spring-boot-starter` | `@ConditionalOnProperty` |
 | `cu.auth.auth-data-table.*` | `auth-core-spring-boot-starter` | `AuthDataTableProperties` |
 | `cu.auth.cache-auth` | `auth-rbac-spring-boot-starter` | `@Value` in `DefaultSysAuthMenuComposite` |
-| `cu.auth.permit-url` | `login-spring-boot-starter` | `@Value` in `PropertiesUrlSecurityCustomizer` |
-| `cu.security.*` | `login-spring-boot-starter` | `SecurityProperties` 等 7 个类 |
+| `cu.auth.permit-url` | `login-security-spring-boot-starter` | `@Value` in `PropertiesUrlSecurityCustomizer` |
+| `cu.security.*` | `login-security-spring-boot-starter` | `SecurityProperties` 等 7 个类 |
 | （无自有键） | `auth-rbac-security-spring-boot-starter` | — |
 
 `cu.auth` 在 YAML 中由三个 starter 共用，用分节注释隔开，不重复定义。
@@ -103,7 +103,7 @@ README 表格与 YAML 注释使用同一套词汇：
 
 ### D8 元数据补缺与迁移
 
-- `login-spring-boot-starter` 新增 `META-INF/additional-spring-configuration-metadata.json`，登记 `cu.auth.permit-url`（`String`，默认 `""`）。
+- `login-security-spring-boot-starter` 新增 `META-INF/additional-spring-configuration-metadata.json`，登记 `cu.auth.permit-url`（`String`，默认 `""`）。
 - `cu.auth.cache-auth` 条目从 `auth-core-spring-boot-starter` 移到 `auth-rbac-spring-boot-starter`；`auth-rbac-spring-boot-starter` 依赖 auth-core，迁移不影响现有使用方。
 - javadoc 只改注释：`FangTangProperties.enabled` 补描述；`StorageProperties.type`、`SecurityProperties.currentUserUrl`、`Oauth2OidcProperties.authorizationGrantType` / `userInfoAuthenticationMethod` 标注“当前未读取”。字段与默认值不动。
 
