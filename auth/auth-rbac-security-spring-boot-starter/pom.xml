@@ -21,12 +21,10 @@
         <dependency>
             <groupId>com.cu.framework.auth</groupId>
             <artifactId>auth-rbac-spring-boot-starter</artifactId>
-            <version>0.0.1</version>
         </dependency>
         <dependency>
             <groupId>com.cu.framework.boot</groupId>
             <artifactId>login-security-spring-boot-starter</artifactId>
-            <version>0.0.1</version>
         </dependency>
         <!-- 仅测试用：断言凭证缺失时认证主体仍能装载出来 -->
         <dependency>

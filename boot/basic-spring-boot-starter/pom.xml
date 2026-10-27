@@ -21,12 +21,10 @@
         <dependency>
             <groupId>com.cu.framework</groupId>
             <artifactId>basic</artifactId>
-            <version>0.0.1</version>
         </dependency>
         <dependency>
             <groupId>com.cu.framework</groupId>
             <artifactId>basic-support</artifactId>
-            <version>0.0.1</version>
         </dependency>
 
 
