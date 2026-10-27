@@ -1,0 +1,10 @@
+{
+  "properties": [
+    {
+      "name": "cu.auth.cache-auth",
+      "type": "java.lang.Boolean",
+      "defaultValue": false,
+      "description": "是否缓存菜单与权限数据；由 rbac 的 DefaultSysAuthMenuComposite 读取，false 时每次直接查库。"
+    }
+  ]
+}

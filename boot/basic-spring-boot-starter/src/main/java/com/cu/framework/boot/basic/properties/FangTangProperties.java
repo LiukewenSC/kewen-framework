@@ -12,6 +12,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties("cu.notify.fang-tang")
 public class FangTangProperties {
 
+    /**
+     * 是否启用方糖消息客户端；为 true 时 key 必填
+     */
     private boolean enabled;
     /**
      * 秘钥

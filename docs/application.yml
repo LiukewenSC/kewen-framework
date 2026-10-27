@@ -1,20 +1,211 @@
+# ============================================================================
+# kewen-framework starter 配置参考
+#
+# 本文件是参考手册，不是可直接启动的配置：
+#   - 可启动的完整示例见 sample/*/src/main/resources/application.yml
+#   - 有默认值的键写的是 @ConfigurationProperties 字段初始值
+#   - 没有初始值的键留空
+#
+# 标记约定：
+#   [必填]   无默认值，缺失会导致启动失败或功能不可用
+#   [未接线] 属性存在但当前无消费方，配置后不生效
+#   [已废弃] @Deprecated 且未实现
+#
+# 按 starter 分节；cu.auth 由 auth-core / auth-rbac / login 三个 starter 共用。
+# ============================================================================
+
 cu:
-  message:
-    fang-tang:
-      key: ''
-      domain: ''
+
+  # ==================== basic-spring-boot-starter ====================
   request:
     persistent:
-      database: true
+      # 是否把请求日志持久化到数据库；需要 sys_request_log 等表（docs/sql/basic-support.sql）。默认 false
+      database: false
     message:
-      fang-tang: true
+      # 是否把请求来源 IP 推送到方糖；还需 cu.notify.fang-tang.enabled=true 才生效。默认 false
+      fang-tang: false
+
+  # ---- 方糖消息通知 ----
+  notify:
+    fang-tang:
+      # 是否启用方糖消息客户端；false 时不创建 FangTangMessageClient。默认 false
+      enabled: false
+      # 方糖 SendKey；enabled=true 时必填，为空会启动失败。[必填]
+      key:
+      # 方糖推送接口域名；与 key 拼成 {domain}/{key}.send。默认 https://sctapi.ftqq.com
+      domain: https://sctapi.ftqq.com
+
+  # ==================== storage-spring-boot-starter ====================
+  storage:
+    # 预留字段，当前实现固定使用七牛；配置本项不会切换存储类型。[未接线]
+    type:
+    # 七牛 AccessKey；上传功能必需。[必填]
+    access-key:
+    # 七牛 SecretKey；上传功能必需。[必填]
+    secret-key:
+    # 七牛存储桶名称；上传功能必需。[必填]
+    bucket:
+    # 存储根目录，生成对象 key 时作为前缀。默认 ""（空串，不添加前缀）
+    root-path: ""
+    # 存储桶是否为公开空间；false 时生成的下载链接带有效期签名。默认 true
+    is-public: true
+    # 下载域名，生成下载链接时使用；需要下载功能时必填。[必填]
+    download-domain:
+    # 上传成功后的回调地址；为空时不设置 callbackUrl 策略。无默认值
+    upload-callback-url:
+    # 七牛区域：region0/huadong、region1/huabei、region2/huanan、region3/beimei、region4/xinjiapo、auto。默认 region2
+    region: region2
+    # 数据处理（转码等）的异步通知地址；为空时不写入 persistentNotifyUrl 策略。无默认值
+    persistent-notify-url:
+    # 生成的下载链接是否使用 https；依赖 download-domain 已配好证书。默认 false
+    use-https-download: false
+
+  # ==================== tenant-spring-boot-starter ====================
   tenant:
+    # 是否开启租户：同时启用请求过滤器与 Feign 租户头拦截器。默认 false
     open: false
+
+  # ==================== cu.auth：三个 starter 共用 ====================
+  auth:
+
+    # ---- auth-core-spring-boot-starter：权限数据表映射 ----
+    auth-data-table:
+      # 权限数据表表名。默认 sys_auth_data
+      table-name: sys_auth_data
+      # 主键列名。默认 id
+      id-column: id
+      # 业务功能列名。默认 business_function
+      business-function-column: business_function
+      # 业务 ID 列名。默认 data_id
+      data-id-column: data_id
+      # 操作类型列名。默认 operate
+      operate-column: operate
+      # 权限字符串列名。默认 authority
+      authority-column: authority
+      # 权限描述列名。默认 description
+      description-column: description
+
+    # ---- auth-rbac-spring-boot-starter：菜单缓存开关 ----
+    # 是否缓存菜单与权限数据；false 时每次直接查库。默认 false
+    cache-auth: false
+
+    # ---- login-spring-boot-starter：免登录放行 URL ----
+    # 免登录放行的 URL，多个用分号或逗号分隔；与 @SecurityIgnore 收集的 URL 合并。无默认值，留空表示不额外放行
+    permit-url:
+
+  # ==================== login-spring-boot-starter ====================
   security:
+    # 当前用户接口地址。[未接线] 当前代码未读取，接口路径固定为 /currentUser。默认 /currentUser
+    current-user-url: /currentUser
+
+    # ---- 会话并发控制 ----
     session:
-      maximum-sessions: 10 #最大session数量
-      maxSessions-prevents-login: false # 到了最大session是阻止还是过期最久的
+      # 同一用户最大并发会话数。默认 10
+      maximum-sessions: 10
+      # 达到上限时是否阻止新登录；false = 挤掉最早的会话。默认 false
+      max-sessions-prevents-login: false
+
+    # [未接线] remember-me 当前只创建 RememberMeServices Bean，未挂入过滤器链，以下三项均不生效
     remember-me:
-      enabled: true #是否开启记住我
-      remember-parameter: remember-me #记住我的key
-      validity-seconds: 2592000  #记住时间，单位秒，默认30天
+      # 是否注册 RememberMeServices。默认 true
+      enabled: true
+      # 记住我请求参数名。默认 remember-me
+      remember-parameter: remember-me
+      # 记住时长，单位秒。默认 2592000（30 天）
+      validity-seconds: 2592000
+
+    login:
+
+      # ---- 账号密码 JSON 登录 ----
+      password:
+        # 登录接口路径（POST）。默认 /login
+        login-url: /login
+        # 用户名参数名。默认 username
+        username-parameter: username
+        # 密码参数名。默认 password
+        password-parameter: password
+
+      # ---- 三类单点登录共用的结果页 ----
+      sso:
+        # 单点登录结果页地址；留空时 OAuth2/OIDC/SAML2 的成功与失败都返回 JSON，
+        # 配置后三类协议都 302 到该地址并追加 loginState=success|failure。无默认值
+        result-url:
+
+      # ---- OAuth2 / OIDC ----
+      oauth2:
+        # 本地授权入口的基址；不要写 {registrationId}，解析器会自动补 /{registrationId}。
+        # 实际入口 /oauth2/authorization/{registrationId}。默认 /oauth2/authorization
+        sso-authorization-uri: /oauth2/authorization
+        # IDP 回调处理端点。注意这里用 Ant 通配 *，不是 {registrationId}（Spring Security 的设计）。默认 /login/oauth2/code/*
+        login-processing-url: "/login/oauth2/code/*"
+        # [必填] 至少一条；clients 留空会让 Oauth2Config 启动时 NPE。
+        # 下面是字段骨架，不是默认值，也不是可直接使用的客户端配置。
+        clients:
+          - # 协议类型：oauth2 | oidc。默认 oauth2
+            protocol-type: oauth2
+            # 客户端唯一标识，用于 /oauth2/authorization/{registrationId}。[必填]
+            registration-id:
+            # IDP 分配的客户端 ID。[必填]
+            client-id:
+            # IDP 分配的客户端密钥。[必填]
+            client-secret:
+            # 客户端认证方式：client_secret_basic | client_secret_post | none。默认 client_secret_basic
+            client-authentication-method: client_secret_basic
+            # [未接线] 授权类型固定为 authorization_code，本项配置不生效
+            authorization-grant-type:
+            # 回调地址模板；{baseUrl} 与 {registrationId} 由 Spring Security 在发起授权时展开，
+            # IDP 侧登记的回调地址必须是展开后的完整 URL。默认 "{baseUrl}/login/oauth2/code/{registrationId}"
+            redirect-uri-template: "{baseUrl}/login/oauth2/code/{registrationId}"
+            # 申请的权限范围；OIDC 模式会自动补 openid。无默认值
+            scopes:
+            # OIDC 模式必填：用于 {issuer-uri}/.well-known/openid-configuration 自动发现
+            issuer-uri:
+            # OAuth2 手动模式必填：授权端点
+            authorization-uri:
+            # OAuth2 手动模式必填：令牌端点
+            token-uri:
+            # OAuth2 手动模式必填：用户信息端点
+            user-info-uri:
+            # [未接线] userinfo 请求的认证方式不由本项控制；代码默认 header
+            user-info-authentication-method: header
+            # 用户信息中指向本系统用户名的字段；OIDC 未配置时回退 sub，OAuth2 手动模式必填
+            user-name-attribute-name:
+            # JWK Set 端点，可手动覆盖 OIDC 自动发现结果。无默认值
+            jwk-set-uri:
+            # 登录页按钮文案；不配时回退 registration-id。无默认值
+            client-name:
+            # 是否跳过 userinfo 请求的 SSL 证书校验；只用于测试环境。默认 false
+            ignore-ssl: false
+
+      # ---- SAML2 ----
+      saml:
+        # SP 的 ACS 回调地址模板。必须包含 {registrationId}；本项不要写 {baseUrl}，构建 ACS 地址时框架会前置 {baseUrl}。
+        # 默认 /login/saml2/sso/{registrationId}
+        login-processing-url: "/login/saml2/sso/{registrationId}"
+        # SP 单点登出请求接收地址。默认 /logout/saml2/slo
+        logout-request-url: /logout/saml2/slo
+        # SP 单点登出响应接收地址。默认 /logout/saml2/slo
+        logout-response-url: /logout/saml2/slo
+        # [必填] 至少一条；registrations 留空会让 SamlConfig 启动时 NPE。
+        # 下面是字段骨架，不是默认值，也不是可直接使用的注册配置。
+        registrations:
+          - # IdP metadata.xml 路径，解析 entityId / SSO URL / 验签证书；文件需在应用 classpath 中。默认 classpath:saml/idp-metadata.xml
+            metadata-resource: "classpath:saml/idp-metadata.xml"
+            # SP 注册 ID；留空时回退 sp-entity-id。无默认值
+            registration-id:
+            # SP Entity ID，需与 IdP 侧配置的 Audience 一致。默认 cu-saml
+            sp-entity-id: cu-saml
+            # 登录页按钮文案；留空时回退 registration-id。无默认值
+            display-name:
+        # SP 签名密钥库；不配则 AuthnRequest / LogoutRequest 不签名
+        sp-signing-keystore:
+          # JKS 路径，如 classpath:saml/sp-keystore.jks。无默认值，留空即不签名
+          keystore-resource:
+          # JKS 密码。默认 changeit
+          keystore-password: changeit
+          # 密钥别名。默认 sp-signing
+          key-alias: sp-signing
+          # 密钥密码。默认 changeit
+          key-password: changeit
+        # [已废弃] 未实现；登录入口固定为 /saml2/authenticate/{registrationId}
+        login-page-url:

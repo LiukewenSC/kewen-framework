@@ -32,6 +32,8 @@ public class Oauth2OidcProperties {
      * <p>默认值：{@code /oauth2/authorization}，与 Spring Security 官方
      * {@code OAuth2AuthorizationRequestRedirectFilter.DEFAULT_AUTHORIZATION_REQUEST_BASE_URI} 保持一致。</p>
      * <p>访问示例：{@code /oauth2/authorization/{registrationId}}</p>
+     * <p>注意：本项只写基址，<b>不要包含 {@code {registrationId}}</b>；默认解析器会自动拼上
+     * {@code /{registrationId}}，重复填写会变成两级 registrationId 而匹配不到入口。</p>
      */
     private String ssoAuthorizationUri = "/oauth2/authorization";
 
@@ -104,8 +106,8 @@ public class Oauth2OidcProperties {
         /**
          * 授权类型
          * <p><b>协议归属：</b> OAuth2通用 + OIDC通用</p>
-         * <p>目前仅支持授权码模式（{@code authorization_code}）。
-         * 其他授权类型（如 implicit、client_credentials）不支持。</p>
+         * <p>实现固定使用授权码模式（{@code authorization_code}）。
+         * <p><b>当前未读取：</b>本字段不会改变授权类型，配置后不生效。</p>
          */
         private AuthorizationGrantType authorizationGrantType;
 
@@ -119,6 +121,7 @@ public class Oauth2OidcProperties {
          *   <li>{@code {baseUrl}} - 当前应用的根 URL（自动适配）</li>
          *   <li>{@code {registrationId}} - 当前客户端的 registrationId</li>
          * </ul>
+         * <p>两个占位符由 Spring Security 在发起授权时展开；IDP 侧登记的回调地址必须是展开后的完整 URL。</p>
          */
         private String redirectUriTemplate = "{baseUrl}/login/oauth2/code/{registrationId}";
 
@@ -184,6 +187,7 @@ public class Oauth2OidcProperties {
          *   <li>{@code form} - 通过表单参数提交 access_token</li>
          *   <li>{@code query} - 通过查询参数提交 access_token</li>
          * </ul>
+         * <p><b>当前未读取：</b>userinfo 请求的认证方式不由本字段控制，配置后不生效。</p>
          */
         private AuthenticationMethod userInfoAuthenticationMethod = AuthenticationMethod.HEADER;
 

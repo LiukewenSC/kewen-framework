@@ -13,7 +13,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties("cu.storage")
 public class StorageProperties {
     /**
-     * 类型 qiniu
+     * 预留字段，当前实现固定使用七牛；配置本项不会切换存储类型
      */
     private String type;
     /**

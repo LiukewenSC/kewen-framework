@@ -1,0 +1,10 @@
+{
+  "properties": [
+    {
+      "name": "cu.auth.permit-url",
+      "type": "java.lang.String",
+      "defaultValue": "",
+      "description": "免登录放行的 URL，多个用分号或逗号分隔；与 @SecurityIgnore 收集的 URL 合并后一起 permitAll。"
+    }
+  ]
+}

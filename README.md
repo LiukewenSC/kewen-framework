@@ -180,18 +180,19 @@ cu-framework/
 │   │   └── basic-support.sql           # 文件存储表 + 请求日志表
 │   ├── 说明文档/                        # 开发过程文档
 │   │   └── oidc接入踩坑记录.md
-│   └── application.yml                 # 配置示例
+│   └── application.yml                 # 全量配置参考（全部键与默认值）
 │
 ├── scripts/                            # 维护脚本
 │   ├── check-sql-compat.sh             # 用 H2 实测 SQL：语法、可重复执行、表是否真建成
-│   └── CheckCompat.java                # 上面那个脚本用的检查器
+│   ├── CheckCompat.java                # 上面那个脚本用的检查器
+│   ├── check-config-docs.sh            # 校验 docs/application.yml 覆盖全部配置键
+│   └── CheckConfigDocs.java            # 上面那个脚本用的检查器
 │
 ├── logs/                               # 日志目录
 ├── .gitignore                          # Git 忽略配置
 ├── LICENSE                             # MIT 许可证
 ├── README.md                           # 项目主文档
 ├── README_Auth.md                      # 权限系统详细文档
-├── application.yml                     # 根配置示例
 └── clean-sensitive-files.sh            # 清理敏感文件脚本
 ```
 
@@ -478,15 +479,15 @@ public void editDataAuths(Long dataId) {
 基础功能自动配置，包括日志、请求跟踪等。
 
 #### storage-spring-boot-starter
-文件存储模块，支持七牛云等平台。
+文件存储模块，当前实现固定为七牛云。完整配置见 [storage-spring-boot-starter/README.md](boot/storage-spring-boot-starter/README.md)。
 
 ```yaml
 cu:
   storage:
-    qiniu:
-      access-key: your-access-key
-      secret-key: your-secret-key
-      bucket: your-bucket
+    access-key: your-access-key
+    secret-key: your-secret-key
+    bucket: your-bucket
+    download-domain: your-download-domain
 ```
 
 #### tenant-spring-boot-starter
@@ -542,6 +543,8 @@ RBAC 快速配置 Starter。
 
 ## ⚙️ 配置指南
 
+框架自身的配置键按 starter 分节维护：完整键表、默认值与“未接线 / 已废弃”标注见各 starter 的 README；可直接对照的全量示例见 [docs/application.yml](docs/application.yml)（参考手册，不是可直接启动的配置）。
+
 ### 基础配置
 
 ```yaml
@@ -558,6 +561,10 @@ spring:
 
 ### 权限模块配置
 
+- 数据权限表映射：见 [auth-core-spring-boot-starter/README.md](auth/auth-core-spring-boot-starter/README.md)
+- RBAC 数据与菜单缓存：见 [auth-rbac-spring-boot-starter/README.md](auth/auth-rbac-spring-boot-starter/README.md)
+- 登录态接入与默认实现：见 [auth-rbac-security-spring-boot-starter/README.md](auth/auth-rbac-security-spring-boot-starter/README.md)
+
 ```yaml
 cu:
   auth:
@@ -569,51 +576,70 @@ cu:
 
 ### 安全配置
 
-以下为默认值，按需覆盖。
+完整键表（含 OAuth2 / OIDC / SAML2）见 [login-spring-boot-starter/README.md](login-spring-boot-starter/README.md)。
 Token 会话的请求头固定为 `Authorization`，没有配置项。
 
 ```yaml
 cu:
   security:
-    current-user-url: /currentUser      # 当前用户接口
+    current-user-url: /currentUser      # [未接线] 当前无消费方，接口固定为 /currentUser
     session:
       maximum-sessions: 10              # 最大 session 数量
       max-sessions-prevents-login: false # true = 超限时阻止新登录
     remember-me:
-      enabled: true                     # 是否开启记住我
-      remember-parameter: remember-me   # 记住我参数
-      validity-seconds: 2592000         # 记住时间（秒），默认30天
+      enabled: true                     # [未接线] 只创建 Bean，未挂入过滤器链
+      remember-parameter: remember-me
+      validity-seconds: 2592000
     login:
       password:
         login-url: /login               # 账密 JSON 登录地址
-        username-parameter: username    # 用户名参数
-        password-parameter: password    # 密码参数
+        username-parameter: username
+        password-parameter: password
       sso:
-        result-url: /login.html         # 单点登录结果页，留空则返回 JSON
+        result-url:                     # 单点登录结果页，留空则返回 JSON
 ```
 
 ### 请求日志配置
+
+完整的开关组合见 [basic-spring-boot-starter/README.md](boot/basic-spring-boot-starter/README.md)。
 
 ```yaml
 cu:
   request:
     persistent:
-      database: true   # 是否持久化到数据库
+      database: true   # 是否持久化到数据库；需要 sys_request_log 表
     message:
-      fang-tang: true  # 是否发送方糖消息
+      fang-tang: true  # 是否发送方糖消息；还需 cu.notify.fang-tang.enabled=true
 ```
 
 ### 消息通知配置
 
 ```yaml
 cu:
-  message:
+  notify:
     fang-tang:
-      key: ''           # 方糖推送 Key
+      enabled: true                      # 是否启用方糖客户端
+      key: your_fangtang_send_key        # enabled=true 时必填
       domain: https://sctapi.ftqq.com
 ```
 
+### 文件存储配置
+
+当前实现固定七牛，`cu.storage.type` 未接线；完整键表见 [storage-spring-boot-starter/README.md](boot/storage-spring-boot-starter/README.md)。
+
+```yaml
+cu:
+  storage:
+    access-key: your_qiniu_access_key
+    secret-key: your_qiniu_secret_key
+    bucket: your_bucket_name
+    region: region2                    # region0/huadong、region1/huabei、region2/huanan、region3/beimei、region4/xinjiapo、auto
+    download-domain: your_download_domain
+```
+
 ### 多租户配置
+
+完整行为见 [tenant-spring-boot-starter/README.md](boot/tenant-spring-boot-starter/README.md)。
 
 ```yaml
 cu:

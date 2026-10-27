@@ -24,9 +24,12 @@ import java.util.List;
 public class SamlProperties {
 
     /**
-     * SP 发起 SAML 认证请求的 URL，默认为 {baseUrl}/login/saml2/sso/{registrationId}
-     * template (i.e. "{baseUrl}/login/saml2/sso/{registrationId
-     * @see RelyingPartyRegistration.Builder#assertionConsumerServiceUrlTemplate(String)
+     * SP 接收 SAMLResponse 的 ACS（登录回调）路径模板。字段值只写应用内路径，不要包含 {baseUrl}：
+     * 构建 RelyingPartyRegistration 时框架会前置 {baseUrl}，再由 Spring Security 展开 {registrationId}。
+     * 默认 /login/saml2/sso/{registrationId}。
+     * <p>本项必须包含 {registrationId}：Saml2WebSsoAuthenticationFilter 的构造器会断言该占位符，
+     * 缺少时启动失败。</p>
+     * @see RelyingPartyRegistration.Builder#assertionConsumerServiceLocation(String)
      */
     private String loginProcessingUrl = "/login/saml2/sso/{registrationId}";
 

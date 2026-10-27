@@ -2,6 +2,34 @@
 
 本 starter 在同一套 Spring Security 过滤器链上并列挂载三种登录方式：**账号密码登录**、**OAuth2 / OIDC 单点登录**、**SAML2 单点登录**。三者共享登出、成功/失败处理器、放行 URL 汇总等基础设施，但配置前缀、路径、认证源彼此独立。
 
+## 自动装配
+
+| 配置类 | 生效条件 | 产出 |
+| --- | --- | --- |
+| `SecurityBeanConfig` | 无 | 全局异常过滤器（容器有 `HandlerExceptionResolver` 时）、`PasswordEncoder`（未定义时）、`LoginOptionsFactory` / `LoginOptionsEndpoint`、`LoginDeliveryResolver`、默认 JSON 成功处理器（未定义时）、安全异常解析处理器、放行 URL 收集器、结果解析器（未定义时） |
+| `SecurityConfig` | 无 | 安全过滤链：静态资源放行、放行清单、登出、认证入口/拒绝处理器、禁用 CSRF，并应用全部 `HttpSecurityCustomizer` |
+| `KewenAuthConfig` | 无 | `SecurityResponseBodyResultResolver`、`AuthenticationExceptionAdviceHandler` |
+| `SessionConfig` | 无 | 优先 Header（`Authorization`）再回退 Cookie 的会话解析器；按开关注册 `RememberMeServices`；`JdbcIndexedSessionRepository` 包装器；最大会话数定制器 |
+| `PasswordSecurityConfig` | 无 | JSON 账号密码登录过滤器 |
+| `SamlConfig` | 无（`registrations` 必填） | SAML2 登录、登出、SP Metadata 暴露 |
+| `Oauth2Config` | 无（`clients` 必填） | OAuth2 / OIDC 登录与客户端注册仓库 |
+
+## 通用配置（不区分协议）
+
+| key | 默认值 | 必填 | 说明 |
+| --- | --- | --- | --- |
+| `cu.auth.permit-url` | —（空） | 否 | 免登录放行的 URL，多个用分号或逗号分隔；与 `@SecurityIgnore` 收集的 URL 合并 |
+| `cu.security.current-user-url` | `/currentUser` | 否 | **未接线**：当前代码未读取，接口路径固定为 `/currentUser` |
+| `cu.security.session.maximum-sessions` | `10` | 否 | 同一用户最大并发会话数 |
+| `cu.security.session.max-sessions-prevents-login` | `false` | 否 | 达到上限时是否阻止新登录；false = 挤掉最早的会话 |
+| `cu.security.remember-me.enabled` | `true` | 否 | **未接线**：只创建 `RememberMeServices` Bean，未挂入过滤器链 |
+| `cu.security.remember-me.remember-parameter` | `remember-me` | 否 | 同上，当前不生效 |
+| `cu.security.remember-me.validity-seconds` | `2592000` | 否 | 同上，当前不生效 |
+
+- 会话持久化依赖 `spring-session-jdbc` 与 DataSource；存在 `JdbcIndexedSessionRepository` 时会注册会话仓库包装器。
+- OAuth2 客户端子项 `authorization-grant-type`、`user-info-authentication-method` 当前未读取，配置不生效（标记 `[未接线]`）。
+- 账号密码、OAuth2/OIDC、SAML2 各自的配置项见下方章节；完整示例见 [docs/application.yml](../docs/application.yml) 的 `login-spring-boot-starter` 分节。
+
 ## 必要实现
 
 - **必须实现 `SecurityUserDetailsService`**，否则启动即报错了找不到实现类；这是加载用户的核心逻辑。
@@ -169,8 +197,8 @@ cu:
 
 | 字段 | 默认值 | 必填 | 说明 |
 |---|---|---|---|
-| `sso-authorization-uri` | `/oauth2/authorization` | 否 | 本地授权入口基址（与 Spring Security 官方默认一致） |
-| `login-processing-url` | `/login/oauth2/code/*` | 否 | IDP 回调匹配（Ant 通配，取自 `OAuth2LoginAuthenticationFilter.DEFAULT_FILTER_PROCESSES_URI`） |
+| `sso-authorization-uri` | `/oauth2/authorization` | 否 | 本地授权入口基址；**不要带 `{registrationId}`**，解析器会自动拼成 `{baseUri}/{registrationId}`（与 Spring Security 官方默认一致） |
+| `login-processing-url` | `/login/oauth2/code/*` | 否 | IDP 回调匹配。注意是 Ant 通配 `*`，不是 `{registrationId}`（取自 `OAuth2LoginAuthenticationFilter.DEFAULT_FILTER_PROCESSES_URI`） |
 | `clients` | — | ✅ | 至少一条；空列表启动 NPE |
 
 **每个 `clients[i]`**
@@ -182,7 +210,7 @@ cu:
 | `client-id` | — | ✅ | IDP 分配 |
 | `client-secret` | — | ✅ | IDP 分配 |
 | `client-authentication-method` | `client_secret_basic` | 否 | 也支持 `client_secret_post` / `none` |
-| `redirect-uri-template` | `{baseUrl}/login/oauth2/code/{registrationId}` | 否 | 需与 `login-processing-url` 匹配 |
+| `redirect-uri-template` | `{baseUrl}/login/oauth2/code/{registrationId}` | 否 | 两个占位符由 Spring Security 在发起授权时展开；需与 `login-processing-url` 匹配，IDP 侧登记展开后的完整 URL |
 | `scopes` | — | 建议 | OIDC 场景自动补 `openid` |
 | `issuer-uri` | — | `oidc` 必填 | 用于 `.well-known/openid-configuration` 自动发现 |
 | `authorization-uri` | — | `oauth2` 必填 | IdP 授权端点 |
@@ -272,7 +300,7 @@ cu:
 
 | 字段 | 默认值 | 必填 | 说明 |
 |---|---|---|---|
-| `login-processing-url` | `/login/saml2/sso/{registrationId}` | 否 | ACS 路径模板，IdP 用它 POST SAMLResponse |
+| `login-processing-url` | `/login/saml2/sso/{registrationId}` | 否 | ACS 路径模板，IdP 用它 POST SAMLResponse。**必须包含 `{registrationId}`**；不要写 `{baseUrl}`，构建 ACS 地址时框架会前置 |
 | `logout-request-url` | `/logout/saml2/slo` | 否 | SP 侧 LogoutRequest 接收地址 |
 | `logout-response-url` | `/logout/saml2/slo` | 否 | SP 侧 LogoutResponse 接收地址 |
 | `registrations` | — | ✅ | 至少一条；空列表 `SamlConfig` 启动 NPE |
