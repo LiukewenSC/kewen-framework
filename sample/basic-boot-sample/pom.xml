@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.cu.framework.sample</groupId>
         <artifactId>sample</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.0.1</version>
     </parent>
 
     <artifactId>basic-boot-sample</artifactId>
@@ -21,7 +21,7 @@
         <dependency>
             <groupId>com.cu.framework.boot</groupId>
             <artifactId>basic-spring-boot-starter</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>0.0.1</version>
         </dependency>
 
         <!-- demo 默认使用 H2 内存库，无需本地 MySQL 即可启动；版本由 spring-boot-dependencies 管理 -->

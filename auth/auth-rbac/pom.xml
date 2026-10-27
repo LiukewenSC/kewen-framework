@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.cu.framework.auth</groupId>
         <artifactId>auth</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.0.1</version>
     </parent>
 
     <artifactId>auth-rbac</artifactId>
@@ -25,7 +25,7 @@
         <dependency>
             <groupId>com.cu.framework</groupId>
             <artifactId>basic-support</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>0.0.1</version>
         </dependency>
         <dependency>
             <groupId>com.baomidou</groupId>

@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.cu.framework.sample</groupId>
         <artifactId>sample</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.0.1</version>
     </parent>
 
     <artifactId>tenant-boot-sample</artifactId>
@@ -21,12 +21,12 @@
         <dependency>
             <groupId>com.cu.framework.boot</groupId>
             <artifactId>tenant-spring-boot-starter</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>0.0.1</version>
         </dependency>
         <dependency>
             <groupId>com.cu.framework.boot</groupId>
             <artifactId>basic-spring-boot-starter</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>0.0.1</version>
         </dependency>
 
         <!-- 本示例的业务代码不访问任何表，但 basic-spring-boot-starter 传递带入了

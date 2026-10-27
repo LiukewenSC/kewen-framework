@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.cu.framework.boot</groupId>
         <artifactId>boot</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.0.1</version>
     </parent>
 
     <artifactId>tenant-spring-boot-starter</artifactId>
@@ -22,7 +22,7 @@
         <dependency>
             <groupId>com.cu.framework</groupId>
             <artifactId>basic</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>0.0.1</version>
         </dependency>
 
 

@@ -39,7 +39,7 @@
 <parent>
     <groupId>com.cu.framework</groupId>
     <artifactId>cu-parent</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
 </parent>
 
 <dependencies>

@@ -96,7 +96,7 @@ cu.auth.auth-data-table:
 ```bash
 cd sample/auth-core-boot-sample      # 必须从模块目录启动，数据与日志路径都是相对的
 mvn -q package -DskipTests
-java -jar target/auth-core-boot-sample-0.0.1-SNAPSHOT-exec.jar
+java -jar target/auth-core-boot-sample-0.0.1-exec.jar
 ```
 
 > **启动目录必须是本模块目录。** Spring Boot 会同时读取工作目录下的 `application.yml`，且文件配置优先于 classpath。

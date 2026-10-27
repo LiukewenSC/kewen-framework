@@ -92,7 +92,7 @@ cd kewen-framework
 mvn clean install -DskipTests
 
 cd sample/auth-rbac-boot-sample
-java -jar target/auth-rbac-boot-sample-0.0.1-SNAPSHOT-exec.jar
+java -jar target/auth-rbac-boot-sample-0.0.1-exec.jar
 ```
 
 > 该示例请用打包后的 exec jar 启动；`mvn spring-boot:run` 在当前工程下可能扫描不到权限实体，表现为 `权限标记错误: ROLE`。
@@ -124,7 +124,7 @@ mvn spring-boot:run
 <parent>
     <groupId>com.cu.framework</groupId>
     <artifactId>cu-parent</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
 </parent>
 
 <dependencies>
