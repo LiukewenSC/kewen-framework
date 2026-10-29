@@ -1,0 +1,54 @@
+schema_version: 1
+module_path: root
+title: 项目根聚合与构建配置
+scope:
+    - README_Auth.md
+    - .gitignore
+    - pom.xml
+    - application.yml
+    - clean-sensitive-files.sh
+source_files: []
+depends_on: []
+related_to: []
+kk_module_id: d109af33-bd2d-478d-9495-6d2cb1d0054c
+kk_cards:
+    architecture_design:
+        id: 8386d668-6f36-45b7-8794-876039a5f9b7
+        title: 项目根聚合与构建配置
+    coding_conventions:
+        id: 488ed38d-f36d-4e0d-9e5b-98f1d3d85902
+        title: 项目根聚合与构建配置
+    overview:
+        id: 94632634-102a-44c7-bc86-b6136814755a
+        title: 项目根聚合与构建配置
+    tech_stack:
+        id: 6bd26df7-651d-4cb3-ab45-6cdd9e50cbe2
+        title: 项目根聚合与构建配置
+    unique_setup_and_commands:
+        id: 87ffc642-3e14-4ee3-9e88-10be4454f8d9
+        title: 项目根聚合与构建配置
+    build_system:
+        id: ac157f56-5b2b-4b86-bb30-967756ca4ee9
+        title: Maven 多模块聚合工程构建与版本管理
+    configuration_system:
+        id: 91af21a0-baea-45c0-ac0c-eebb7b40da91
+        title: Spring Boot @ConfigurationProperties 配置体系与文档校验
+    dependency_management:
+        id: 0bf3194e-46e4-456e-9f43-b07a6a8970d7
+        title: Maven 多模块依赖版本集中管理
+    error_handling:
+        id: 82f8b769-f809-4dd5-aae4-194fde5bb9b7
+        title: 基于 Spring @RestControllerAdvice 的分层异常处理体系
+    frontend_style:
+        id: fe8d9da3-6e2f-471a-92e9-53e0a1a0050a
+        title: 前端样式体系：纯 CSS + CSS 变量的极简登录页
+    logging_system:
+        id: de444c7c-9f54-4d6b-9ec2-e2270f06bf19
+        title: 基于 SLF4J + MDC 的请求日志与链路追踪系统
+kk_repo_cards:
+    - build_system
+    - configuration_system
+    - dependency_management
+    - error_handling
+    - frontend_style
+    - logging_system

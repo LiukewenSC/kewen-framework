@@ -1,0 +1,20 @@
+# 知识卡导出索引文件
+schema_version: 1
+locale: zh-CN
+commit: be5962c4d6508f5be4f0f1b4dcd6f522cf1f3ca2
+branch: master
+exported_at: "2026-10-27T16:20:37Z"
+modules:
+    root:
+        dir_name: 项目根聚合与构建配置
+        title: 项目根聚合与构建配置
+        scope:
+            - README_Auth.md
+            - .gitignore
+            - pom.xml
+            - application.yml
+            - clean-sensitive-files.sh
+        source_files: []
+        children: []
+        depends_on: []
+        related_to: []
