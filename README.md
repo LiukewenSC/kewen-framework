@@ -7,6 +7,19 @@
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.7.18-brightgreen.svg)]()
 [![Maven](https://img.shields.io/badge/Maven-3.6+-red.svg)]()
 
+## Overview (English)
+
+Kewen Framework is a Java 8+ / Spring Boot 2.7 multi-module framework for authorization and login in enterprise applications. It is built around four composable capabilities:
+
+- **Menu permission** — `@AuthMenu` / `@AuthMenuDoc` register menu entries at startup and match request paths.
+- **Row-level data scope** — `@AuthDataRange` sits on MyBatis mapper methods and injects permission conditions at statement level; declarations are validated at startup.
+- **Data operation** — `@AuthDataOperation` collects the IDs a request intends to modify and checks them one by one.
+- **Login** — JSON username/password login, plus OAuth2 / OIDC / SAML2 single sign-on built on Spring Security.
+
+A default user–department–role–menu RBAC implementation is included, along with Spring Boot starters for basic web utilities, file storage, multi-tenancy and an experimental magic-api integration. Every starter ships with a runnable sample application. You can adopt the whole stack, or use only the annotations and SPI seams and bring your own permission model.
+
+Licensed under the MIT License.
+
 ## 这是什么
 
 Kewen Framework 是一个 Java + Spring Boot 多模块框架，专注解决企业应用里的权限与登录问题。它把“菜单能不能进、列表能看哪些行、这条数据能不能改、权限怎么配”拆成四个可组合的能力，并提供一套默认的用户-部门-角色-菜单实现。你可以整套引入，也可以只用注解与接缝层，自建权限模型。
