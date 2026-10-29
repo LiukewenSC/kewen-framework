@@ -1,5 +1,7 @@
 # Kewen Framework
 
+[English](README.en.md) | 简体中文
+
 > 基于 Spring Boot 的企业级权限与登录安全框架：注解驱动的菜单 / 数据权限、默认 RBAC 实现、账号密码与 OAuth2 / OIDC / SAML2 单点登录，以及基础 Web、文件存储与多租户能力。
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
