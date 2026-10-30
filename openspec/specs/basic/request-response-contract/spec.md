@@ -7,18 +7,19 @@
 
 ### Requirement: 统一响应信封
 
-接口返回 SHALL 为包含 `code`、`success`、`message`、`data`、`traceId` 五个字段的 JSON 对象。业务数据为空时 `data` MUST 以 `null` 出现，而不是被省略。
+接口成功返回 SHALL 为包含 `code`、`success`、`message`、`data`、`traceId` 五个字段的 JSON 对象；失败返回 SHALL 在此基础上额外包含 `errorType` 字段，成功返回 MUST NOT 包含该字段。业务数据为空时 `data` MUST 以 `null` 出现，而不是被省略。
 
 #### Scenario: 无业务数据的请求处理成功
 
 - **WHEN** 请求不返回业务数据的探针接口且处理成功
 - **THEN** `code` 为 200，`success` 为 true，`message` 为"成功"
 - **AND** `data` 字段存在且值为 `null`
+- **AND** 响应体不出现 `errorType` 字段
 
 #### Scenario: 请求处理失败仍返回同一信封
 
 - **WHEN** 请求因参数校验、类型转换或请求体解析失败
-- **THEN** `success` 为 false，`code` 为 500
+- **THEN** HTTP 状态码为 400，`success` 为 false，`code` 为 400，`errorType` 为 `VALIDATION`
 - **AND** 响应体仍可解析为同一信封结构，不返回未包装的异常信息
 
 ### Requirement: 响应回显请求流水号
@@ -61,14 +62,14 @@
 #### Scenario: 查询参数格式不符
 
 - **WHEN** 以不符合 `yyyy-MM-dd` 的文本提交 `LocalDate` 查询参数
-- **THEN** 请求不被接受，响应为 `success` 为 false、`code` 为 500 的失败信封
-- **AND** HTTP 状态码为 500
+- **THEN** 请求不被接受，响应为 `success` 为 false、`code` 为 400、`errorType` 为 `VALIDATION` 的失败信封
+- **AND** HTTP 状态码为 400
 
 #### Scenario: 请求体字段格式不符
 
 - **WHEN** 以不符合 `yyyy-MM-dd` 的文本提交 JSON 请求体中的 `localDate` 字段
-- **THEN** 请求不被接受，响应为 `success` 为 false、`code` 为 500 的失败信封
-- **AND** HTTP 状态码为 500，而不是框架对不可读请求体默认的 400
+- **THEN** 请求不被接受，响应为 `success` 为 false、`code` 为 400、`errorType` 为 `VALIDATION` 的失败信封
+- **AND** HTTP 状态码为 400
 
 ### Requirement: 日期字段按固定格式序列化
 
@@ -80,22 +81,22 @@
 - **THEN** `data` 中三个字段均为字符串
 - **AND** `date` 与 `localDateTime` 匹配 `yyyy-MM-dd HH:mm:ss`，`localDate` 匹配 `yyyy-MM-dd`
 
-### Requirement: 参数校验失败以 HTTP 200 返回失败信封
+### Requirement: 参数校验失败以 HTTP 400 返回失败信封
 
-当请求体未通过声明式校验，系统 SHALL 返回 HTTP 200，响应体为 `code` 500、`success` false 的失败信封，`message` SHALL 由各字段错误按 `[字段名]校验提示` 的形式以分号连接构成。校验失败 MUST NOT 以未包装的框架异常信息返回。
+当请求体未通过声明式校验，系统 SHALL 返回 HTTP 400，响应体为 `code` 400、`errorType` 为 `VALIDATION`、`success` false 的失败信封。`message` SHALL 由各字段错误按 `[字段名]校验提示` 的形式以分号连接构成，并 MUST 完整保留每个字段的校验提示，不得截断末尾字符。校验失败 MUST NOT 以未包装的框架异常信息返回。
 
 #### Scenario: 多个必填字段缺失
 
 - **WHEN** 提交的请求体中 `id` 为 null 且 `name` 为空串
-- **THEN** HTTP 状态码为 200
-- **AND** `code` 为 500，`success` 为 false
+- **THEN** HTTP 状态码为 400
+- **AND** `code` 为 400，`success` 为 false，`errorType` 为 `VALIDATION`
 - **AND** `message` 同时包含 `[id]` 与 `[name]` 两个字段标记
 
-#### Scenario: 单个字段失败时消息被截断
+#### Scenario: 单个字段失败时消息完整
 
 - **WHEN** 提交的请求体仅有 `age` 一个字段校验不通过
-- **THEN** `message` 为 `[age]年龄不能为`
-- **AND** 拼接结果末尾的分号与其前一个字符一并被删除，属已知缺陷，修复时本场景需同步更新
+- **THEN** `message` 为 `[age]年龄不能为空`
+- **AND** 校验提示的末尾字符不被删除
 
 #### Scenario: 全部字段合法
 
