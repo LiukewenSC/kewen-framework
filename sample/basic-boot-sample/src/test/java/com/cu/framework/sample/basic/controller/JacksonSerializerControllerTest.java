@@ -1,6 +1,6 @@
 package com.cu.framework.sample.basic.controller;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import tools.jackson.databind.JsonNode;
 import org.junit.jupiter.api.Test;
 
 import java.util.regex.Pattern;

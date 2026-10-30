@@ -3,7 +3,8 @@ package com.cu.framework.authentication.password.config;
 import com.cu.framework.authentication.password.filter.JsonLoginFilter;
 import org.springframework.security.config.annotation.web.HttpSecurityBuilder;
 import org.springframework.security.config.annotation.web.configurers.AbstractAuthenticationFilterConfigurer;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
 /**
@@ -27,7 +28,7 @@ public class JsonLoginAuthenticationFilterConfigurer<B extends HttpSecurityBuild
      */
     @Override
     protected RequestMatcher createLoginProcessingUrlMatcher(String loginProcessingUrl) {
-        return new AntPathRequestMatcher(loginProcessingUrl, "POST");
+        return PathPatternRequestMatcher.pathPattern(HttpMethod.POST, loginProcessingUrl);
     }
 
     /**

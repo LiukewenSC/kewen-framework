@@ -1,8 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.cu.framework.authentication.config.SecurityBeanConfig,\
-  com.cu.framework.authentication.config.SecurityConfig,\
-  com.cu.framework.authentication.config.KewenAuthConfig,\
-  com.cu.framework.authentication.config.SessionConfig,\
-  com.cu.framework.authentication.password.config.PasswordSecurityConfig,\
-  com.cu.framework.authentication.saml.SamlConfig,\
-  com.cu.framework.authentication.oauth2.Oauth2Config

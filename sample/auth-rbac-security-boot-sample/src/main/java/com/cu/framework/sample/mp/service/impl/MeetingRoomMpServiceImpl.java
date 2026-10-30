@@ -1,6 +1,6 @@
 package com.cu.framework.sample.mp.service.impl;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.spring.service.impl.ServiceImpl;
 import com.cu.framework.sample.mp.entity.MeetingRoom;
 import com.cu.framework.sample.mp.mapper.MeetingRoomMpMapper;
 import com.cu.framework.sample.mp.service.MeetingRoomMpService;

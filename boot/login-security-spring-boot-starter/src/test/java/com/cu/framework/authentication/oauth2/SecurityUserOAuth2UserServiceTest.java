@@ -90,7 +90,7 @@ public class SecurityUserOAuth2UserServiceTest {
                 .clientId("client-id")
                 .clientSecret("client-secret")
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                .redirectUriTemplate("{baseUrl}/login/oauth2/code/{registrationId}")
+                .redirectUri("{baseUrl}/login/oauth2/code/{registrationId}")
                 .authorizationUri("https://idp.example.com/authorize")
                 .tokenUri("https://idp.example.com/token")
                 .build();

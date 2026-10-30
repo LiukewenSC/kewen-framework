@@ -15,7 +15,7 @@ import com.cu.framework.boot.auth.core.config.AuthCoreConfig;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
@@ -24,7 +24,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * @author kewen
  * @since 2023-12-28
  */
-@Configuration
+@AutoConfiguration
 @AutoConfigureAfter({AuthCoreConfig.class, AuthRbacScanConfig.class})
 public class AuthRbacConfig {
 

@@ -2,7 +2,7 @@ package com.cu.framework.basic.support.utils;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.IService;
+import com.baomidou.mybatisplus.spring.service.IService;
 import com.cu.framework.basic.model.PageReq;
 import com.cu.framework.basic.model.PageResult;
 import lombok.Data;

@@ -51,7 +51,7 @@ public class GlobalExceptionHandlerAdviceTest {
     @Test
     public void requestFormatFailuresMapToValidation() {
         Result<Void> notReadable = advice.httpMessageNotReadableException(
-                new HttpMessageNotReadableException("bad json"), null);
+                new HttpMessageNotReadableException("bad json", (org.springframework.http.HttpInputMessage) null), null);
         Result<Void> typeMismatch = advice.methodArgumentTypeMismatchException(
                 new MethodArgumentTypeMismatchException("abc", LocalDate.class, "localDate", null, null), null);
         Result<Void> missingParameter = advice.missingServletRequestParameterException(
@@ -96,18 +96,18 @@ public class GlobalExceptionHandlerAdviceTest {
 
     @Test
     public void handlersDeclareMatchingHttpStatus() throws Exception {
-        assertStatus("bizException", HttpStatus.BAD_REQUEST, BizException.class, javax.servlet.http.HttpServletRequest.class);
-        assertStatus("bindException", HttpStatus.BAD_REQUEST, BindException.class, javax.servlet.http.HttpServletRequest.class);
+        assertStatus("bizException", HttpStatus.BAD_REQUEST, BizException.class, jakarta.servlet.http.HttpServletRequest.class);
+        assertStatus("bindException", HttpStatus.BAD_REQUEST, BindException.class, jakarta.servlet.http.HttpServletRequest.class);
         assertStatus("httpMessageNotReadableException", HttpStatus.BAD_REQUEST,
-                HttpMessageNotReadableException.class, javax.servlet.http.HttpServletRequest.class);
+                HttpMessageNotReadableException.class, jakarta.servlet.http.HttpServletRequest.class);
         assertStatus("methodArgumentTypeMismatchException", HttpStatus.BAD_REQUEST,
-                MethodArgumentTypeMismatchException.class, javax.servlet.http.HttpServletRequest.class);
+                MethodArgumentTypeMismatchException.class, jakarta.servlet.http.HttpServletRequest.class);
         assertStatus("missingServletRequestParameterException", HttpStatus.BAD_REQUEST,
-                MissingServletRequestParameterException.class, javax.servlet.http.HttpServletRequest.class);
+                MissingServletRequestParameterException.class, jakarta.servlet.http.HttpServletRequest.class);
         assertStatus("dataAccessException", HttpStatus.INTERNAL_SERVER_ERROR,
-                org.springframework.dao.DataAccessException.class, javax.servlet.http.HttpServletRequest.class);
+                org.springframework.dao.DataAccessException.class, jakarta.servlet.http.HttpServletRequest.class);
         assertStatus("throwable", HttpStatus.INTERNAL_SERVER_ERROR,
-                Throwable.class, javax.servlet.http.HttpServletRequest.class);
+                Throwable.class, jakarta.servlet.http.HttpServletRequest.class);
     }
 
     private void assertStatus(String methodName, HttpStatus expected, Class<?>... parameterTypes) throws Exception {

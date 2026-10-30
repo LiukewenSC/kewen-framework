@@ -9,13 +9,13 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 
 /**
  * @author kewen
  * @since 2024-08-29
  */
-@Configuration
+@AutoConfiguration
 @ComponentScan("com.cu.framework.basic.support")
 @MapperScan("com.cu.framework.basic.support.**.mapper")
 public class BasicSupportConfig {

@@ -2,8 +2,7 @@ package com.cu.framework.basic.model;
 
 import com.cu.framework.basic.exception.ErrorType;
 import com.cu.framework.basic.logger.trace.TraceResult;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -18,7 +17,6 @@ public class ResultErrorTypeTest {
     @Test
     public void successResultOmitsErrorType() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
-        mapper.setSerializationInclusion(JsonInclude.Include.ALWAYS);
 
         String json = mapper.writeValueAsString(Result.success());
 
@@ -28,7 +26,6 @@ public class ResultErrorTypeTest {
     @Test
     public void failedResultCarriesErrorType() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
-        mapper.setSerializationInclusion(JsonInclude.Include.ALWAYS);
 
         Result<Void> result = Result.failed(ErrorType.AUTHENTICATION, "用户名或密码错误");
         String json = mapper.writeValueAsString(result);

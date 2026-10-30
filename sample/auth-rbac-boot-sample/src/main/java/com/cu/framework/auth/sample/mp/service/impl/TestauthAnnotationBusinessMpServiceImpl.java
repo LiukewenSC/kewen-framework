@@ -1,6 +1,6 @@
 package com.cu.framework.auth.sample.mp.service.impl;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.spring.service.impl.ServiceImpl;
 import com.cu.framework.auth.sample.mp.entity.TestauthAnnotationBusiness;
 import com.cu.framework.auth.sample.mp.mapper.TestauthAnnotationBusinessMpMapper;
 import com.cu.framework.auth.sample.mp.service.TestauthAnnotationBusinessMpService;

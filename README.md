@@ -5,13 +5,13 @@
 > 基于 Spring Boot 的企业级权限与登录安全框架：注解驱动的菜单 / 数据权限、默认 RBAC 实现、账号密码与 OAuth2 / OIDC / SAML2 单点登录，以及基础 Web、文件存储与多租户能力。
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![JDK](https://img.shields.io/badge/JDK-8+-green.svg)]()
-[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.7.18-brightgreen.svg)]()
+[![JDK](https://img.shields.io/badge/JDK-21+-green.svg)]()
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.1.2-brightgreen.svg)]()
 [![Maven](https://img.shields.io/badge/Maven-3.6+-red.svg)]()
 
 ## Overview (English)
 
-Kewen Framework is a Java 8+ / Spring Boot 2.7 multi-module framework for authorization and login in enterprise applications. It is built around four composable capabilities:
+Kewen Framework is a Java 21+ / Spring Boot 4.1 multi-module framework for authorization and login in enterprise applications. It is built around four composable capabilities:
 
 - **Menu permission** — `@AuthMenu` / `@AuthMenuDoc` register menu entries at startup and match request paths.
 - **Row-level data scope** — `@AuthDataRange` sits on MyBatis mapper methods and injects permission conditions at statement level; declarations are validated at startup.
@@ -41,18 +41,17 @@ Kewen Framework 是一个 Java + Spring Boot 多模块框架，专注解决企�
 | 基础 Web | 统一 `Result`、异常处理、traceId、请求日志、MyBatis-Plus 分页、方糖通知 | 可用 |
 | 文件存储 | 七牛云上传 / 下载 / 回调 / 文件记录 | 可用；当前固定七牛，`cu.storage.type` 未接线 |
 | 多租户 | `tenantId` 请求头上下文与 Feign 透传 | 可用；不做 SQL 级隔离 |
-| Magic API | magic-api 接入示例 | 示例 / 实验性，不建议直接用于生产 |
 | 代码生成 | MyBatis-Plus 样板代码生成 | 可用；配置硬编码在 `Properties` |
 
 ## 技术栈
 
 | 类别 | 技术 | 版本 |
 | --- | --- | --- |
-| 语言 / 构建 | Java / Maven | 8+ / 3.6+ |
-| 核心框架 | Spring Boot / Spring Security | 2.7.18 / 5.7.x |
-| 持久层 | MyBatis-Plus / MySQL | 3.5.8 / 8.0 |
-| SQL 解析 | JSQLParser | 由 MyBatis-Plus BOM 管理 |
-| JSON | FastJSON2 / Jackson | 随项目 BOM |
+| 语言 / 构建 | Java / Maven | 21+ / 3.6+ |
+| 核心框架 | Spring Boot / Spring Security | 4.1.2 / 7.1.x |
+| 持久层 | MyBatis-Plus / MySQL | 3.5.18 / 8.0+ |
+| SQL 解析 | JSQLParser | 4.9（由 MyBatis-Plus 管理） |
+| JSON | FastJSON2 / Jackson | 2.0.66 / 3.x |
 | 工具 | Hutool / Lombok / Guava | 随项目 BOM |
 | 会话 | spring-session-jdbc | 随 Spring Boot BOM |
 | 单点登录 | spring-security-oauth2-client / spring-security-saml2-service-provider | 随 Spring Security BOM |
@@ -67,7 +66,6 @@ Kewen Framework 是一个 Java + Spring Boot 多模块框架，专注解决企�
 | `boot/login-security-spring-boot-starter` | 账号密码、OAuth2 / OIDC / SAML2 登录 | [README](boot/login-security-spring-boot-starter/README.md) |
 | `boot/storage-spring-boot-starter` | 七牛文件存储 | [README](boot/storage-spring-boot-starter/README.md) |
 | `boot/tenant-spring-boot-starter` | 多租户上下文与 Feign 透传 | [README](boot/tenant-spring-boot-starter/README.md) |
-| `boot/magic-spring-boot-starter` | magic-api 示例 / 实验性模块 | [README](boot/magic-spring-boot-starter/README.md) |
 | `auth/auth-core` | 注解、权限模型接口、数据范围注入、菜单拦截器 | [README](auth/auth-core/README.md) |
 | `auth/auth-rbac` | 用户-部门-角色-菜单的默认 RBAC 实现 | [README](auth/auth-rbac/README.md) |
 | `auth/auth-core-spring-boot-starter` | core 自动装配 | [README](auth/auth-core-spring-boot-starter/README.md) |
@@ -86,7 +84,7 @@ Kewen Framework 是一个 Java + Spring Boot 多模块框架，专注解决企�
 kewen-framework/
 +-- basic/                 基础库
 +-- basic-support/         持久化与通知扩展
-+-- boot/                  5 个 Spring Boot Starter
++-- boot/                  4 个 Spring Boot Starter
 +-- auth/                  core、rbac 与 3 个 starter
 +-- sample/                7 个可运行示例
 +-- other/code-generator/  代码生成器

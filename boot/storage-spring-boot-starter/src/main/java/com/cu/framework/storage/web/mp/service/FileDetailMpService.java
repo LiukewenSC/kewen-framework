@@ -1,7 +1,7 @@
 package com.cu.framework.storage.web.mp.service;
 
 import com.cu.framework.storage.web.mp.entity.FileDetail;
-import com.baomidou.mybatisplus.extension.service.IService;
+import com.baomidou.mybatisplus.spring.service.IService;
 
 
 /**

@@ -1,7 +1,7 @@
 package com.cu.framework.basic.support.mp.service;
 
 import com.cu.framework.basic.support.mp.entity.SysRequestLog;
-import com.baomidou.mybatisplus.extension.service.IService;
+import com.baomidou.mybatisplus.spring.service.IService;
 
 
 /**

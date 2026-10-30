@@ -1,7 +1,7 @@
 package com.cu.framework.sample.basic.controller;
 
 import com.cu.framework.basic.support.notify.fangtang.FangTangMessageClient;
-import com.fasterxml.jackson.databind.JsonNode;
+import tools.jackson.databind.JsonNode;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;

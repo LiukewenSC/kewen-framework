@@ -3,7 +3,7 @@ package com.cu.framework.auth.rbac.mp.service.impl;
 import com.cu.framework.auth.rbac.mp.entity.SysUser;
 import com.cu.framework.auth.rbac.mp.mapper.SysUserMpMapper;
 import com.cu.framework.auth.rbac.mp.service.SysUserMpService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.spring.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 /**

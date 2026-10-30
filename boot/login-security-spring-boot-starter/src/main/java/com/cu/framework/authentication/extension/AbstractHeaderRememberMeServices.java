@@ -25,8 +25,8 @@ import org.springframework.security.web.authentication.rememberme.PersistentReme
 import org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationException;
 import org.springframework.util.Assert;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  *  没考虑明白，rememberMe如果用header传参的话岂不是每个请求都会带上，那就没有意义了，直接把token的时间延长就好了呀

@@ -3,7 +3,7 @@ package com.cu.framework.basic.exception;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * 错误分类日志：固定输出分类标记、请求方法与路径，预期失败不留堆栈，服务端故障保留堆栈

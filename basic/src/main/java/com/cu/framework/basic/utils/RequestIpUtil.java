@@ -1,7 +1,7 @@
 package com.cu.framework.basic.utils;
 
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * 请求IP工具

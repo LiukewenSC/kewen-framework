@@ -1,12 +1,14 @@
 package com.cu.framework.sample.basic.listener;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.ConfigurableBootstrapContext;
+import org.springframework.boot.bootstrap.ConfigurableBootstrapContext;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringApplicationRunListener;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.Ordered;
 import org.springframework.core.env.ConfigurableEnvironment;
+
+import java.time.Duration;
 
 /**
  * SpringApplicationRunListener 扩展点示例，通过 spring.factories 注册，
@@ -58,12 +60,12 @@ public class SpringBootLifeCycleListener implements SpringApplicationRunListener
     }
 
     @Override
-    public void started(ConfigurableApplicationContext context) {
+    public void started(ConfigurableApplicationContext context, Duration timeTaken) {
 
     }
 
     @Override
-    public void running(ConfigurableApplicationContext context) {
+    public void ready(ConfigurableApplicationContext context, Duration timeTaken) {
 
     }
 

@@ -1,6 +1,6 @@
 package com.cu.framework.authentication.saml;
 
-import net.shibboleth.utilities.java.support.xml.BasicParserPool;
+import net.shibboleth.shared.xml.impl.BasicParserPool;
 import org.apache.commons.lang3.tuple.Pair;
 import org.opensaml.core.config.InitializationService;
 import org.opensaml.core.xml.XMLObject;

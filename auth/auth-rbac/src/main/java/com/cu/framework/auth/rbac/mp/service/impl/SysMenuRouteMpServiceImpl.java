@@ -3,7 +3,7 @@ package com.cu.framework.auth.rbac.mp.service.impl;
 import com.cu.framework.auth.rbac.mp.entity.SysMenuRoute;
 import com.cu.framework.auth.rbac.mp.mapper.SysMenuRouteMpMapper;
 import com.cu.framework.auth.rbac.mp.service.SysMenuRouteMpService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.spring.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 /**

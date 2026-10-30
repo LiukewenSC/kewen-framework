@@ -3,7 +3,7 @@ package com.cu.framework.basic.support.mp.service.impl;
 import com.cu.framework.basic.support.mp.entity.SysRequestLog;
 import com.cu.framework.basic.support.mp.mapper.SysRequestLogMpMapper;
 import com.cu.framework.basic.support.mp.service.SysRequestLogMpService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.spring.service.impl.ServiceImpl;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 

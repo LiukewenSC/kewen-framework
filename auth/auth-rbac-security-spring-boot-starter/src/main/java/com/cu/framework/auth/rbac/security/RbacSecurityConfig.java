@@ -6,9 +6,9 @@ import com.cu.framework.auth.rbac.composite.SysUserComposite;
 import com.cu.framework.authentication.service.SecurityUserDetailsService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 
-@Configuration
+@AutoConfiguration
 public class RbacSecurityConfig {
 
     /**

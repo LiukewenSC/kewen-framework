@@ -2,7 +2,7 @@ package com.cu.framework.boot.auth.rbac.config;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 
 /**
  *  impl 实现相关
@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
  * @author kewen
  * @since 2023-12-28
  */
-@Configuration
+@AutoConfiguration
 @MapperScan({
         "com.cu.framework.auth.rbac.**.mapper"
 })

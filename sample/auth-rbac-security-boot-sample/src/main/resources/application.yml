@@ -13,7 +13,6 @@ spring:
 
   # ---- 会话：登录态与权限快照都存放在会话里 ----
   session:
-    store-type: jdbc
     timeout: 2D
 
 cu:

@@ -1,7 +1,7 @@
 package com.cu.framework.auth.rbac.mp.service;
 
 import com.cu.framework.auth.rbac.mp.entity.SysUserCredential;
-import com.baomidou.mybatisplus.extension.service.IService;
+import com.baomidou.mybatisplus.spring.service.IService;
 
 
 /**

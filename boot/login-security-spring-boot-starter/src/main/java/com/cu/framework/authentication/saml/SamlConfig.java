@@ -12,16 +12,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.saml2.core.Saml2X509Credential;
-import org.springframework.security.saml2.provider.service.authentication.OpenSamlAuthenticationProvider;
-import org.springframework.security.saml2.provider.service.metadata.OpenSamlMetadataResolver;
+import org.springframework.security.saml2.provider.service.authentication.OpenSaml5AuthenticationProvider;
+import org.springframework.security.saml2.provider.service.metadata.OpenSaml5MetadataResolver;
 import org.springframework.security.saml2.provider.service.registration.InMemoryRelyingPartyRegistrationRepository;
 import org.springframework.security.saml2.provider.service.registration.RelyingPartyRegistration;
 import org.springframework.security.saml2.provider.service.registration.RelyingPartyRegistrationRepository;
-import org.springframework.security.saml2.provider.service.servlet.filter.Saml2WebSsoAuthenticationFilter;
+import org.springframework.security.saml2.provider.service.web.authentication.Saml2WebSsoAuthenticationFilter;
 import org.springframework.security.saml2.provider.service.web.DefaultRelyingPartyRegistrationResolver;
 import org.springframework.security.saml2.provider.service.web.RelyingPartyRegistrationResolver;
 import org.springframework.security.saml2.provider.service.web.Saml2MetadataFilter;
@@ -46,7 +46,7 @@ import java.util.stream.Collectors;
  * @author kewen
  * @since 1.0
  */
-@Configuration
+@AutoConfiguration
 @Conditional(SamlConfiguredCondition.class)
 @EnableConfigurationProperties({SamlProperties.class})
 public class SamlConfig implements HttpSecurityCustomizer{
@@ -76,8 +76,8 @@ public class SamlConfig implements HttpSecurityCustomizer{
      */
     @Override
     public void customizer(HttpSecurity http) throws Exception {
-        //这里不能用OpenSaml4AuthenticationProvider，OpenSaml4AuthenticationProvider只支持jdk11以上
-        OpenSamlAuthenticationProvider samlAuthenticationProvider = new OpenSamlAuthenticationProvider();
+        // Spring Security 7 只保留 OpenSAML 5 支持
+        OpenSaml5AuthenticationProvider samlAuthenticationProvider = new OpenSaml5AuthenticationProvider();
         // 断言校验照旧，只接管校验之后的组装环节：让进入安全上下文的主体是本框架的统一认证主体
         samlAuthenticationProvider.setResponseAuthenticationConverter(
                 new SecurityUserSamlAuthenticationConverter(securityUserDetailsService));
@@ -85,28 +85,24 @@ public class SamlConfig implements HttpSecurityCustomizer{
         // 1. 将 SAML2 认证提供者添加到 HttpSecurity，则不需要添加2对应的authenticationManager，保持使用统一的
         // 2. .authenticationManager(new ProviderManager(samlAuthenticationProvider))，那么不需要http.authenticationProvider(samlAuthenticationProvider);
         // 换掉组装主体之后只能选 2：Saml2LoginConfigurer 自己也会向 HttpSecurity 注册一个默认的
-        // OpenSamlAuthenticationProvider，两者共用 AuthenticationManager 时不保证我们这一个先被选中
+        // OpenSaml5AuthenticationProvider，两者共用 AuthenticationManager 时不保证我们这一个先被选中
         // （实测默认那个胜出，进入安全上下文的仍是 DefaultSaml2AuthenticatedPrincipal）。
         http
-                .saml2Login()
-                .authenticationManager(new ProviderManager(samlAuthenticationProvider))
-                .relyingPartyRegistrationRepository(relyingPartyRegistrationRepository())
-                .successHandler(successHandler)
-                .failureHandler(exceptionResolverHandler)
-                .loginProcessingUrl(samlProperties.getLoginProcessingUrl())
-                .and()
-                .saml2Logout(saml2Logout ->
-                        saml2Logout
-                                .logoutUrl("/logout")
-                                .logoutRequest().logoutUrl("/logout/saml2/slo")
-                                .and()
-                                .logoutResponse().logoutUrl("/logout/saml2/slo")
-                );
+                .saml2Login(saml2Login -> saml2Login
+                        .authenticationManager(new ProviderManager(samlAuthenticationProvider))
+                        .relyingPartyRegistrationRepository(relyingPartyRegistrationRepository())
+                        .successHandler(successHandler)
+                        .failureHandler(exceptionResolverHandler)
+                        .loginProcessingUrl(samlProperties.getLoginProcessingUrl()))
+                .saml2Logout(saml2Logout -> saml2Logout
+                        .logoutUrl("/logout")
+                        .logoutRequest(logoutRequest -> logoutRequest.logoutUrl("/logout/saml2/slo"))
+                        .logoutResponse(logoutResponse -> logoutResponse.logoutUrl("/logout/saml2/slo")));
         // 添加SAML sp Metadata过滤器，spring-security 默认是不添加sp的metadata的
         // 默认的路径为 /saml2/service-provider-metadata/{registrationId}
         Saml2MetadataFilter saml2MetadataFilter = new Saml2MetadataFilter(
                 (RelyingPartyRegistrationResolver)new DefaultRelyingPartyRegistrationResolver(relyingPartyRegistrationRepository()),
-                new OpenSamlMetadataResolver()
+                new OpenSaml5MetadataResolver()
         );
         http.addFilterBefore(saml2MetadataFilter, Saml2WebSsoAuthenticationFilter.class);
     }
@@ -165,7 +161,7 @@ public class SamlConfig implements HttpSecurityCustomizer{
                 // 也会使用全匹配校验destination是否匹配
                 .singleLogoutServiceLocation("{baseUrl}"+samlProperties.getLogoutRequestUrl())
                 .singleLogoutServiceResponseLocation("{baseUrl}"+samlProperties.getLogoutResponseUrl())
-                .assertingPartyDetails(assertingParty -> assertingParty
+                .assertingPartyMetadata(assertingParty -> assertingParty
                         .entityId(metadata.getEntityId())
                         .wantAuthnRequestsSigned(metadata.isWantAuthnRequestsSigned())
                         .singleSignOnServiceLocation(metadata.getSsoUrl())
@@ -177,7 +173,7 @@ public class SamlConfig implements HttpSecurityCustomizer{
         // 只在 metadata 中有 SingleLogoutService 时才设置退出相关属性
         if (metadata.getLogoutUrl() != null && metadata.getLogoutBinding() != null) {
             builder.singleLogoutServiceBinding(metadata.getLogoutBinding())
-                    .assertingPartyDetails(assertingParty -> assertingParty
+                    .assertingPartyMetadata(assertingParty -> assertingParty
                             .singleLogoutServiceLocation(metadata.getLogoutUrl())
                             .singleLogoutServiceBinding(metadata.getLogoutBinding())
                     );

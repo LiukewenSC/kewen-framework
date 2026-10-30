@@ -1,17 +1,16 @@
 package com.cu.framework.boot.basic.config;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.cu.framework.basic.exception.GlobalExceptionHandlerAdvice;
 import com.cu.framework.basic.logger.trace.TraceResponseBodyAdvice;
-import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
+import org.springframework.boot.jackson.autoconfigure.JsonMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import tools.jackson.databind.ext.javatime.deser.LocalDateDeserializer;
+import tools.jackson.databind.ext.javatime.deser.LocalDateTimeDeserializer;
+import tools.jackson.databind.ext.javatime.ser.LocalDateSerializer;
+import tools.jackson.databind.ext.javatime.ser.LocalDateTimeSerializer;
+import tools.jackson.databind.module.SimpleModule;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -25,7 +24,7 @@ import java.util.Date;
  * @author kewen
  * @since 2023-04-27
  */
-@Configuration
+@AutoConfiguration
 public class RequestResponseFormatConfig {
 
 
@@ -52,28 +51,19 @@ public class RequestResponseFormatConfig {
      * @return
      */
     @Bean
-    public Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilderCustomizer() {
-
-        return new Jackson2ObjectMapperBuilderCustomizer() {
-            @Override
-            public void customize(Jackson2ObjectMapperBuilder builder) {
-                builder.simpleDateFormat("yyyy-MM-dd HH:mm:ss")
-                        // long类型转string， 前端处理Long类型，数值过大会丢失精度
-                        //.serializerByType(Long.class, ToStringSerializer.instance)
-                        //.serializerByType(Long.TYPE, ToStringSerializer.instance)
-                        .serializationInclusion(JsonInclude.Include.ALWAYS)
-                        // 日期序列化，反序列化类型，也可以使用@JsonFormat(pattern = "yyyy-MM-dd")替代。主要是mvc接收日期时使用
-                        .serializerByType(LocalDate.class, new LocalDateSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
-                        .deserializerByType(LocalDate.class, new LocalDateDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
-                        // LocalDateTime 年月日时分秒序列化
-                        .serializerByType(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
-                        .deserializerByType(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
-                //.serializerByType(Date.class,new DateSerializer(false, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")))
-                //.deserializerByType(Date.class,new DateDeserializers.DateDeserializer(DateDeserializers.DateDeserializer.instance,
-                //        new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"),"yyyy-MM-dd HH:mm:ss"))
-                ;
-            }
-        };
+    public JsonMapperBuilderCustomizer jacksonJsonMapperBuilderCustomizer() {
+        SimpleModule module = new SimpleModule();
+        module.addSerializer(LocalDate.class,
+                new LocalDateSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        module.addDeserializer(LocalDate.class,
+                new LocalDateDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        module.addSerializer(LocalDateTime.class,
+                new LocalDateTimeSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        module.addDeserializer(LocalDateTime.class,
+                new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        return builder -> builder
+                .defaultDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"))
+                .addModule(module);
     }
 
     /**

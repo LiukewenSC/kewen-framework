@@ -1,7 +1,7 @@
 package com.cu.framework.boot.auth.core.config;
 
 import com.cu.framework.auth.core.menu.MenuAccessInterceptor;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @author kewen
  * @since 2023-12-28
  */
-@Configuration
+@AutoConfiguration
 public class AuthWebConfig implements WebMvcConfigurer {
 
     private final MenuAccessInterceptor menuAccessInterceptor;

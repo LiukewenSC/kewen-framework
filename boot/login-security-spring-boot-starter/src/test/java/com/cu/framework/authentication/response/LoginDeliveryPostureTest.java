@@ -5,7 +5,7 @@ import com.cu.framework.authentication.model.SecurityUserAuthority;
 import com.cu.framework.authentication.oauth2.Oauth2OidcProperties;
 import com.cu.framework.authentication.properties.SsoLoginProperties;
 import com.cu.framework.authentication.saml.properties.SamlProperties;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -251,8 +251,8 @@ public class LoginDeliveryPostureTest {
         int invocations;
 
         @Override
-        public Object resolver(javax.servlet.http.HttpServletRequest request,
-                               javax.servlet.http.HttpServletResponse response,
+        public Object resolver(jakarta.servlet.http.HttpServletRequest request,
+                               jakarta.servlet.http.HttpServletResponse response,
                                Object data) {
             invocations++;
             return Collections.singletonMap("loginResult", "ok");
@@ -266,8 +266,8 @@ public class LoginDeliveryPostureTest {
         int invocations;
 
         @Override
-        public ModelAndView resolveException(javax.servlet.http.HttpServletRequest request,
-                                             javax.servlet.http.HttpServletResponse response,
+        public ModelAndView resolveException(jakarta.servlet.http.HttpServletRequest request,
+                                             jakarta.servlet.http.HttpServletResponse response,
                                              Object handler, Exception ex) {
             invocations++;
             return new ModelAndView();

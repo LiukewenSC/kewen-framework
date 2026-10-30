@@ -13,14 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 
 /**
  * 
  * @author kewen
  * @since 2023-04-24
  */
-@Configuration
+@AutoConfiguration
 @EnableConfigurationProperties({StorageProperties.class})
 @MapperScan("com.cu.framework.storage.web.mp.mapper")
 @ComponentScan("com.cu.framework.storage.web.mp")

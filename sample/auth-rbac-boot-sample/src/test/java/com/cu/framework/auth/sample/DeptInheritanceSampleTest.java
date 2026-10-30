@@ -4,7 +4,7 @@ import com.cu.framework.auth.core.entity.FlatteningAuthority;
 import com.cu.framework.auth.rbac.composite.SysUserComposite;
 import com.cu.framework.auth.rbac.composite.model.UserAuthInfo;
 import com.cu.framework.auth.rbac.model.UserAuthObject;
-import com.fasterxml.jackson.databind.JsonNode;
+import tools.jackson.databind.JsonNode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -10,14 +10,14 @@ import com.cu.framework.basic.logger.trace.TraceIdProcessor;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 
 /**
  * 
  * @author kewen
  * @since 2024-08-27
  */
-@Configuration
+@AutoConfiguration
 public class EarlyFilterConfig {
 
     /**

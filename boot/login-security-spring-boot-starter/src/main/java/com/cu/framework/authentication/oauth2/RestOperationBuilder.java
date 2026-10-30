@@ -1,17 +1,19 @@
 package com.cu.framework.authentication.oauth2;
 
-import org.apache.http.client.HttpClient;
-import org.apache.http.conn.ssl.NoopHostnameVerifier;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.impl.client.LaxRedirectStrategy;
-import org.apache.http.ssl.SSLContextBuilder;
+import org.apache.hc.client5.http.classic.HttpClient;
+import org.apache.hc.client5.http.impl.LaxRedirectStrategy;
+import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
+import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
+import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder;
+import org.apache.hc.client5.http.ssl.NoopHostnameVerifier;
+import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactory;
+import org.apache.hc.core5.ssl.SSLContextBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.http.converter.json.JacksonJsonHttpMessageConverter;
 import org.springframework.security.oauth2.client.http.OAuth2ErrorResponseErrorHandler;
 import org.springframework.web.client.RestOperations;
 import org.springframework.web.client.RestTemplate;
@@ -64,15 +66,17 @@ public class RestOperationBuilder {
         // 配置消息转换器
         List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
         messageConverters.add(new StringHttpMessageConverter());
-        messageConverters.add(new MappingJackson2HttpMessageConverter());
+        messageConverters.add(new JacksonJsonHttpMessageConverter());
         restTemplate.setMessageConverters(messageConverters);
 
         // 启用重定向跟随（默认已启用，但这里明确配置）
-
         HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
         httpClientBuilder.setRedirectStrategy(new LaxRedirectStrategy());
         if (!enableSsl) {
-            addSsl(httpClientBuilder);
+            PoolingHttpClientConnectionManager connectionManager = createTrustAllConnectionManager();
+            if (connectionManager != null) {
+                httpClientBuilder.setConnectionManager(connectionManager);
+            }
         }
         HttpClient httpClient = httpClientBuilder.build();
 
@@ -83,12 +87,10 @@ public class RestOperationBuilder {
     }
 
     /**
-     * 为 HttpClient 配置信任所有证书、忽略主机名校验的 SSLContext（仅用于开发环境）；
-     * 配置失败时记录告警并沿用默认 SSL 配置
-     * @param httpClientBuilder 待配置的 HttpClient 构建器
+     * 创建信任所有证书、忽略主机名校验的连接管理器（仅用于开发环境）；
+     * 配置失败时记录告警并返回 null，调用方沿用默认 SSL 配置
      */
-    private void addSsl(HttpClientBuilder httpClientBuilder) {
-        // 创建信任所有证书的 SSLContext（仅用于开发环境）
+    private PoolingHttpClientConnectionManager createTrustAllConnectionManager() {
         try {
             SSLContext sslContext = SSLContextBuilder.create()
                     .loadTrustMaterial((chain, authType) -> true) // 信任所有证书
@@ -98,10 +100,12 @@ public class RestOperationBuilder {
                     sslContext,
                     NoopHostnameVerifier.INSTANCE // 忽略主机名验证
             );
-            httpClientBuilder.setSSLSocketFactory(sslSocketFactory);
+            return PoolingHttpClientConnectionManagerBuilder.create()
+                    .setSSLSocketFactory(sslSocketFactory)
+                    .build();
         } catch (Exception e) {
             log.warn("Failed to configure SSL context, using default configuration. Error: {}", e.getMessage());
-            // 如果配置失败，使用默认的 RestTemplate 配置
+            return null;
         }
     }
 }

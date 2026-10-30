@@ -5,7 +5,7 @@ import com.cu.framework.authentication.oauth2.Oauth2OidcProperties.Oauth2OidcReg
 import com.cu.framework.authentication.oauth2.OauthProtocolType;
 import com.cu.framework.authentication.password.properties.SecurityLoginProperties;
 import com.cu.framework.authentication.saml.properties.SamlProperties;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import org.junit.Assert;
 import org.junit.Test;
 

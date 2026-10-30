@@ -6,8 +6,8 @@ import com.cu.framework.authentication.service.SecurityUserDetailsService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.saml2.provider.service.authentication.OpenSamlAuthenticationProvider;
-import org.springframework.security.saml2.provider.service.authentication.OpenSamlAuthenticationProvider.ResponseToken;
+import org.springframework.security.saml2.provider.service.authentication.OpenSaml5AuthenticationProvider;
+import org.springframework.security.saml2.provider.service.authentication.OpenSaml5AuthenticationProvider.ResponseToken;
 import org.springframework.security.saml2.provider.service.authentication.Saml2Authentication;
 import org.springframework.security.saml2.provider.service.authentication.Saml2AuthenticationException;
 import org.springframework.security.saml2.provider.service.authentication.Saml2AuthenticationToken;
@@ -60,7 +60,7 @@ public class SecurityUserSamlAuthenticationConverterTest {
         return RelyingPartyRegistration.withRegistrationId("demo-saml")
                 .entityId("urn:demo:sp")
                 .assertionConsumerServiceLocation("http://localhost/login/saml2/sso/demo-saml")
-                .assertingPartyDetails(details -> details
+                .assertingPartyMetadata(details -> details
                         .entityId("urn:demo:idp")
                         .singleSignOnServiceLocation("http://localhost/sso")
                         .wantAuthnRequestsSigned(false))
@@ -72,7 +72,7 @@ public class SecurityUserSamlAuthenticationConverterTest {
      */
     @Test
     public void invalidResponseIsRejectedBeforeAssembly() {
-        OpenSamlAuthenticationProvider provider = new OpenSamlAuthenticationProvider();
+        OpenSaml5AuthenticationProvider provider = new OpenSaml5AuthenticationProvider();
         CountingConverter converter = new CountingConverter(unusedUserDetailsService());
         provider.setResponseAuthenticationConverter(converter);
 

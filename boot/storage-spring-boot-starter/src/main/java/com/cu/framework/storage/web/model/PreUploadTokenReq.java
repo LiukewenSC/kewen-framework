@@ -2,7 +2,7 @@ package com.cu.framework.storage.web.model;
 
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 
 /**
  * 预上传文件名

@@ -7,7 +7,7 @@ import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 
 /**
  * 租户加载
@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
  * @author liukewen
  * @since 2022/9/2
  */
-@Configuration
+@AutoConfiguration
 @ConditionalOnProperty(name = "cu.tenant.open",havingValue = "true")
 @ConditionalOnClass(Feign.class)
 public class TenantHeaderInterceptor implements RequestInterceptor {

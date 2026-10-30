@@ -1,0 +1,6 @@
+com.cu.framework.boot.basic.config.AsyncConfig
+com.cu.framework.boot.basic.config.BasicSupportConfig
+com.cu.framework.boot.basic.config.EarlyFilterConfig
+com.cu.framework.boot.basic.config.FangTangMessageConfig
+com.cu.framework.boot.basic.config.MybatisPlusConfig
+com.cu.framework.boot.basic.config.RequestResponseFormatConfig

@@ -10,7 +10,6 @@ spring:
 
   # ---- 与数据库无关，留在公共段 ----
   session:
-    store-type: jdbc
     timeout: 2D #超时2天
 
 logging:

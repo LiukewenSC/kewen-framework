@@ -1,7 +1,11 @@
 package com.cu.framework.boot.basic.config;
 
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.task.TaskExecutionAutoConfiguration;
+import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -16,37 +20,43 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @author kewen
  * @since 2023-07-11
  */
-@Configuration
+@AutoConfiguration(before = TaskExecutionAutoConfiguration.class)
 @EnableAsync
 public class AsyncConfig implements AsyncConfigurer {
 
     /**
-     * 配置了此线程池后spring就不会每次异步创建线程，
-     * 若此处没有配置，spring则会先在容器中找线程池，
-     *  若找到只有一个，则使用，
-     *  若有多个，则必须在@Async中指定线程池的名字，否则报错
-     *  若没有找到，则创建一个线程
-     * @return
+     * 延迟取用 applicationTaskExecutor，避免与 @EnableAsync 的早期初始化顺序耦合
      */
-    @Override
-    public Executor getAsyncExecutor() {
+    @Autowired
+    private ObjectProvider<ThreadPoolTaskExecutor> applicationTaskExecutor;
+
+    /**
+     * Spring Boot 4 在容器中已有 Executor 时会跳过自己的 TaskExecutor 与 AsyncConfigurer 包装层；
+     * 这里显式提供 applicationTaskExecutor，既固定线程池参数，也避免出现两个 AsyncConfigurer
+     * @return 异步线程池
+     */
+    @Bean(name = "applicationTaskExecutor")
+    public ThreadPoolTaskExecutor applicationTaskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setBeanName("asyncExecutor");
         //核心线程池数量，方法: 返回可用处理器的数量*2 + 1,，默认为io密集型。
-        executor.setCorePoolSize(2 * Runtime.getRuntime().availableProcessors()+1);
+        executor.setCorePoolSize(2 * Runtime.getRuntime().availableProcessors() + 1);
         //最大线程数量
-        executor.setMaxPoolSize(Runtime.getRuntime().availableProcessors()*5);
+        executor.setMaxPoolSize(Runtime.getRuntime().availableProcessors() * 5);
         //线程池的队列容量
-        executor.setQueueCapacity(Runtime.getRuntime().availableProcessors()*2);
+        executor.setQueueCapacity(Runtime.getRuntime().availableProcessors() * 2);
         //线程名称的前缀
         executor.setThreadNamePrefix("this-excutor-");
         // setRejectedExecutionHandler：当pool已经达到max size的时候，如何处理新任务
         // CallerRunsPolicy：不在新线程中执行任务，而是由调用者所在的线程来执行
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
-        //初始化，好像也可以不要
-        executor.initialize();
         return executor;
     }
+
+    @Override
+    public Executor getAsyncExecutor() {
+        return applicationTaskExecutor.getObject();
+    }
+
     /*异步任务中异常处理*/
     @Override
     public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {

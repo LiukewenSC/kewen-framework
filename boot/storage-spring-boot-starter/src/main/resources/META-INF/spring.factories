@@ -1,2 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.cu.framework.storage.boot.StorageAutoConfiguration

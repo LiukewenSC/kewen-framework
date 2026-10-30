@@ -13,9 +13,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.oauth2.client.endpoint.DefaultAuthorizationCodeTokenResponseClient;
+import org.springframework.security.oauth2.client.endpoint.RestClientAuthorizationCodeTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
@@ -41,7 +41,7 @@ import java.util.stream.Collectors;
  * @author kewen
  * @since 4.24.0-SP01
  */
-@Configuration
+@AutoConfiguration
 @Conditional(Oauth2ConfiguredCondition.class)
 @EnableConfigurationProperties(Oauth2OidcProperties.class)
 public class Oauth2Config implements HttpSecurityCustomizer {
@@ -79,7 +79,7 @@ public class Oauth2Config implements HttpSecurityCustomizer {
      */
     @Bean
     public OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient() {
-        return new DefaultAuthorizationCodeTokenResponseClient();
+        return new RestClientAuthorizationCodeTokenResponseClient();
     }
 
     /**

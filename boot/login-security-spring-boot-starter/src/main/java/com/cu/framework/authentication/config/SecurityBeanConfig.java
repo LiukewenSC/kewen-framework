@@ -1,6 +1,6 @@
 package com.cu.framework.authentication.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.cu.framework.authentication.filter.WebSecurityGlobalExceptionHandlerFilter;
 import com.cu.framework.authentication.loginpage.LoginOptionsEndpoint;
 import com.cu.framework.authentication.loginpage.LoginOptionsFactory;
@@ -19,7 +19,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.HandlerExceptionResolver;
@@ -33,7 +33,7 @@ import java.util.List;
  * @author kewen
  * @since 2026-02-12
  */
-@Configuration
+@AutoConfiguration
 @EnableConfigurationProperties({SsoLoginProperties.class, Oauth2OidcProperties.class, SamlProperties.class})
 public class SecurityBeanConfig {
 

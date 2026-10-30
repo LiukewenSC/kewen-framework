@@ -1,3 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.cu.framework.boot.auth.core.config.AuthCoreConfig,\
-  com.cu.framework.boot.auth.core.config.AuthWebConfig

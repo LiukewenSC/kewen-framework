@@ -1,6 +1,6 @@
 package com.cu.framework.storage.web.mp.service.impl;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.spring.service.impl.ServiceImpl;
 import com.cu.framework.storage.web.mp.entity.SysStorageFile;
 import com.cu.framework.storage.web.mp.mapper.SysStorageFileMpMapper;
 import com.cu.framework.storage.web.mp.service.SysStorageFileMpService;

@@ -3,7 +3,7 @@ package com.cu.framework.storage.web.mp.service.impl;
 import com.cu.framework.storage.web.mp.entity.FileDetail;
 import com.cu.framework.storage.web.mp.mapper.FileDetailMpMapper;
 import com.cu.framework.storage.web.mp.service.FileDetailMpService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.spring.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 /**

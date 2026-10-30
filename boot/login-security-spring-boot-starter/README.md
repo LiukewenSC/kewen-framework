@@ -43,7 +43,6 @@ spring:
     username: sa
     password:
   session:
-    store-type: jdbc
     jdbc:
       initialize-schema: embedded   # H2；MySQL 用 never 并先执行会话表脚本
 ```

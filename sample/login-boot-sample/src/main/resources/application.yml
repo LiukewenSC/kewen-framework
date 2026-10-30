@@ -19,7 +19,6 @@ spring:
   # ---- 以下为框架自带参数，不是本项目自定义的，因 starter 依赖而必须配 ----
   # spring-session-jdbc 会把会话持久化到数据库，因此必须有 DataSource（在各 profile 段内）
   session:
-    store-type: jdbc
     # 会话超时，starter 的 maximum-sessions 并发控制依赖它
     timeout: 2D
 

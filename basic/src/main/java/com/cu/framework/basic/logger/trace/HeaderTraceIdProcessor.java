@@ -4,7 +4,7 @@ package com.cu.framework.basic.logger.trace;
 
 import com.cu.framework.basic.logger.LoggerConstant;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.UUID;
 
 /**

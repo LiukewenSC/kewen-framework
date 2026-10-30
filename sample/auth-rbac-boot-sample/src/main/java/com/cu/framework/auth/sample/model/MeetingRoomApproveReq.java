@@ -3,7 +3,7 @@ package com.cu.framework.auth.sample.model;
 import com.cu.framework.auth.core.data.edit.DataIdCarrier;
 import lombok.Data;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.Collections;
 

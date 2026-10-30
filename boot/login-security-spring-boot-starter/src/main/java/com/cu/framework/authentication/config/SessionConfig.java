@@ -13,7 +13,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.session.FindByIndexNameSessionRepository;
 import org.springframework.session.jdbc.JdbcIndexedSessionRepository;
@@ -21,7 +21,7 @@ import org.springframework.session.security.web.authentication.SpringSessionReme
 import com.cu.framework.authentication.extension.HeaderCookieHttpSessionIdResolver;
 import org.springframework.session.web.http.HttpSessionIdResolver;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
@@ -29,7 +29,7 @@ import java.io.IOException;
  * @author kewen
  * @since 2024-08-26
  */
-@Configuration
+@AutoConfiguration
 @EnableConfigurationProperties(value = {SessionProperties.class, RememberMeProperties.class})
 public class SessionConfig {
     private static final Logger log = LoggerFactory.getLogger(SessionConfig.class);
@@ -98,25 +98,18 @@ public class SessionConfig {
 /*
     public HttpSecurityCustomizer HttpSecurityCustomizer(SessionRegistry sessionRegistry, SessionProperties session) {
 */
-    public HttpSecurityCustomizer HttpSecurityCustomizer( SessionProperties session) {
+    public HttpSecurityCustomizer httpSecurityCustomizer( SessionProperties session) {
 
-        return http -> {
-            try {
-                http.sessionManagement()
-                        .maximumSessions(session.getMaximumSessions())
-                        //.sessionRegistry(sessionRegistry)
-                        .expiredSessionStrategy(event -> {
-                            try {
-                                writeExpiredSessionResponse(event.getResponse());
-                            } catch (Exception ex) {
-                                throw new IllegalStateException(ex);
-                            }
-                        })
-                        .maxSessionsPreventsLogin(session.isMaxSessionsPreventsLogin());
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        };
+        return http -> http.sessionManagement(sessionManagement -> sessionManagement
+                .maximumSessions(session.getMaximumSessions())
+                .expiredSessionStrategy(event -> {
+                    try {
+                        writeExpiredSessionResponse(event.getResponse());
+                    } catch (Exception ex) {
+                        throw new IllegalStateException(ex);
+                    }
+                })
+                .maxSessionsPreventsLogin(session.isMaxSessionsPreventsLogin()));
     }
 
     /**

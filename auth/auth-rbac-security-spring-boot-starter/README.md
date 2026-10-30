@@ -57,7 +57,6 @@ spring:
     username: your_username
     password: your_password
   session:
-    store-type: jdbc
     jdbc:
       initialize-schema: never   # 已手工执行会话表脚本；H2 用 embedded
 

@@ -6,7 +6,7 @@ import com.cu.framework.boot.basic.properties.FangTangProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.util.StringUtils;
 
 /**
@@ -14,7 +14,7 @@ import org.springframework.util.StringUtils;
  * @author kewen
  * @since 2024-08-30
  */
-@Configuration
+@AutoConfiguration
 @EnableConfigurationProperties(FangTangProperties.class)
 public class FangTangMessageConfig {
 

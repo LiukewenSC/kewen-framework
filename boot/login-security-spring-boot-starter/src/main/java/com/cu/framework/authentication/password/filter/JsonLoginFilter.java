@@ -9,9 +9,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import javax.servlet.ServletInputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletInputStream;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 /**
@@ -32,7 +32,8 @@ public class JsonLoginFilter extends UsernamePasswordAuthenticationFilter {
             throw new AuthenticationServiceException(
                     "Authentication method not supported: " + request.getMethod());
         }
-        if (request.getContentType().equals(MediaType.APPLICATION_JSON_VALUE) || request.getContentType().equals(MediaType.APPLICATION_JSON_UTF8_VALUE)) {
+        String contentType = request.getContentType();
+        if (contentType != null && contentType.toLowerCase().startsWith(MediaType.APPLICATION_JSON_VALUE)) {
             Map<String,String> map = null;
             try (ServletInputStream inputStream = request.getInputStream()){
                 map = JSONObject.parseObject(inputStream, Map.class);

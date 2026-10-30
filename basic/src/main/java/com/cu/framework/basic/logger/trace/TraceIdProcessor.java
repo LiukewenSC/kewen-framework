@@ -1,7 +1,7 @@
 package com.cu.framework.basic.logger.trace;
 
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * 流水号生成器

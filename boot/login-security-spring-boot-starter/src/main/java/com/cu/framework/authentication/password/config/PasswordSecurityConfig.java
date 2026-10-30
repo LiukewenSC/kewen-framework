@@ -6,7 +6,7 @@ import com.cu.framework.authentication.response.SecurityAuthenticationExceptionR
 import com.cu.framework.authentication.response.SecurityAuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 
 /**
@@ -14,7 +14,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
  * @descrpition
  * @since 2023-02-23
  */
-@Configuration
+@AutoConfiguration
 @EnableConfigurationProperties({SecurityLoginProperties.class})
 public class PasswordSecurityConfig implements HttpSecurityCustomizer {
 
@@ -40,15 +40,13 @@ public class PasswordSecurityConfig implements HttpSecurityCustomizer {
      * 登录成功由 successHandler 输出 JSON，失败由 exceptionResolverHandler 解析异常
      */
     protected void configure(HttpSecurity http) throws Exception {
-        http.apply(new JsonLoginAuthenticationFilterConfigurer<>())
+        http.with(new JsonLoginAuthenticationFilterConfigurer<>(), configurer -> configurer
                 .loginProcessingUrl(loginProperties.getLoginUrl())
                 .usernameParameter(loginProperties.getUsernameParameter())
                 .passwordParameter(loginProperties.getPasswordParameter())
                 //.authenticationDetailsSource()  在认证前封装的Authentication中添加详细信息，如从request中拿到的ip,等信息
                 .successHandler(successHandler)
-                .failureHandler(exceptionResolverHandler)
-                .and()
-        ;
+                .failureHandler(exceptionResolverHandler));
     }
 
 }

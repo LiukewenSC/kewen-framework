@@ -1,3 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.cu.framework.tenant.config.TenantConfig,\
-  com.cu.framework.tenant.feign.TenantHeaderInterceptor

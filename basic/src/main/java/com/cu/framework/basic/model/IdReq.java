@@ -2,7 +2,7 @@ package com.cu.framework.basic.model;
 
 import lombok.Data;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * @author kewen

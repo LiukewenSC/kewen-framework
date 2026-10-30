@@ -1,6 +1,6 @@
 package com.cu.framework.sample.mp.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
+import com.baomidou.mybatisplus.spring.service.IService;
 import com.cu.framework.sample.mp.entity.MeetingRoom;
 import com.cu.framework.basic.model.PageReq;
 import com.cu.framework.basic.model.PageResult;

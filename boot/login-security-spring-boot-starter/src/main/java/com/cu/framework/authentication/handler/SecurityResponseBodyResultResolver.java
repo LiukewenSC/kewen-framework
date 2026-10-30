@@ -7,8 +7,8 @@ import com.cu.framework.basic.logger.trace.TraceResult;
 import com.cu.framework.basic.model.Result;
 import org.springframework.lang.Nullable;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * 认证成功用户转化类，封装返回结构

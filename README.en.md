@@ -5,13 +5,13 @@ English | [简体中文](README.md)
 > A Spring Boot-based framework for enterprise authorization and login security: annotation-driven menu and data permissions, a default RBAC implementation, username/password plus OAuth2 / OIDC / SAML2 single sign-on, and reusable web, file storage and multi-tenancy capabilities.
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![JDK](https://img.shields.io/badge/JDK-8+-green.svg)]()
-[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.7.18-brightgreen.svg)]()
+[![JDK](https://img.shields.io/badge/JDK-21+-green.svg)]()
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.1.2-brightgreen.svg)]()
 [![Maven](https://img.shields.io/badge/Maven-3.6+-red.svg)]()
 
 ## What is this
 
-Kewen Framework is a Java + Spring Boot multi-module framework focused on authorization and login in enterprise applications. It decomposes "can I enter this menu, which rows of a list can I see, can I modify this record, and how are permissions configured" into four composable capabilities, and ships a default user–department–role–menu implementation. You can adopt it as a whole, or use only the annotations and the seam layer to build your own permission model.
+Kewen Framework is a Java 21 + Spring Boot 4.1 multi-module framework focused on authorization and login in enterprise applications. It decomposes "can I enter this menu, which rows of a list can I see, can I modify this record, and how are permissions configured" into four composable capabilities, and ships a default user–department–role–menu implementation. You can adopt it as a whole, or use only the annotations and the seam layer to build your own permission model.
 
 ## Capabilities and status
 
@@ -28,18 +28,17 @@ Kewen Framework is a Java + Spring Boot multi-module framework focused on author
 | Basic web | Unified `Result`, exception handling, traceId, request logging, MyBatis-Plus pagination, ServerChan notifications | Available |
 | File storage | Qiniu Cloud upload / download / callback / file records | Available; Qiniu is hard-wired, `cu.storage.type` is not wired up |
 | Multi-tenancy | `tenantId` request header context and Feign propagation | Available; no SQL-level isolation |
-| Magic API | magic-api integration sample | Sample / experimental, not recommended for production |
 | Code generation | MyBatis-Plus boilerplate generation | Available; configuration is hard-coded in `Properties` |
 
 ## Tech stack
 
 | Category | Technology | Version |
 | --- | --- | --- |
-| Language / build | Java / Maven | 8+ / 3.6+ |
-| Core framework | Spring Boot / Spring Security | 2.7.18 / 5.7.x |
-| Persistence | MyBatis-Plus / MySQL | 3.5.8 / 8.0 |
-| SQL parsing | JSQLParser | Managed by the MyBatis-Plus BOM |
-| JSON | FastJSON2 / Jackson | From the project BOM |
+| Language / build | Java / Maven | 21+ / 3.6+ |
+| Core framework | Spring Boot / Spring Security | 4.1.2 / 7.1.x |
+| Persistence | MyBatis-Plus / MySQL | 3.5.18 / 8.0+ |
+| SQL parsing | JSQLParser | 4.9 (managed by MyBatis-Plus) |
+| JSON | FastJSON2 / Jackson | 2.0.66 / 3.x |
 | Utilities | Hutool / Lombok / Guava | From the project BOM |
 | Session | spring-session-jdbc | From the Spring Boot BOM |
 | Single sign-on | spring-security-oauth2-client / spring-security-saml2-service-provider | From the Spring Security BOM |
@@ -56,7 +55,6 @@ Module-level READMEs are written in Chinese.
 | `boot/login-security-spring-boot-starter` | Username/password, OAuth2 / OIDC / SAML2 login | [README](boot/login-security-spring-boot-starter/README.md) |
 | `boot/storage-spring-boot-starter` | Qiniu Cloud file storage | [README](boot/storage-spring-boot-starter/README.md) |
 | `boot/tenant-spring-boot-starter` | Multi-tenant context and Feign propagation | [README](boot/tenant-spring-boot-starter/README.md) |
-| `boot/magic-spring-boot-starter` | magic-api sample / experimental module | [README](boot/magic-spring-boot-starter/README.md) |
 | `auth/auth-core` | Annotations, permission model interfaces, data scope injection, menu interceptor | [README](auth/auth-core/README.md) |
 | `auth/auth-rbac` | Default user–department–role–menu RBAC implementation | [README](auth/auth-rbac/README.md) |
 | `auth/auth-core-spring-boot-starter` | Core auto-configuration | [README](auth/auth-core-spring-boot-starter/README.md) |
@@ -75,7 +73,7 @@ Module-level READMEs are written in Chinese.
 kewen-framework/
 +-- basic/                 Core library
 +-- basic-support/         Persistence and notification extensions
-+-- boot/                  5 Spring Boot starters
++-- boot/                  4 Spring Boot starters
 +-- auth/                  core, rbac and 3 starters
 +-- sample/                7 runnable samples
 +-- other/code-generator/  Code generator

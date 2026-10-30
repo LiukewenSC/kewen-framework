@@ -14,9 +14,9 @@ import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
-import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -155,11 +155,12 @@ public class FileResponseBodyAdvance implements ResponseBodyAdvice<Result> {
 
                 }
                 // ParameterizedTypeImpl 带泛型型（泛型可以是对象泛型，也可以是集合泛型，这里主要处理集合泛型），需要将集合拿出
-                else if (genericType instanceof ParameterizedTypeImpl) {
-                    ParameterizedTypeImpl parameterizedType = (ParameterizedTypeImpl) genericType;
+                else if (genericType instanceof ParameterizedType) {
+                    ParameterizedType parameterizedType = (ParameterizedType) genericType;
 
                     //判定是不是集合，是集合则继续执行
-                    if (Collection.class.isAssignableFrom(parameterizedType.getRawType())) {
+                    if (parameterizedType.getRawType() instanceof Class
+                            && Collection.class.isAssignableFrom((Class<?>) parameterizedType.getRawType())) {
                         //获取实际的泛型，集合因只有一个泛型，则直接取[0]位置判断泛型是否符合文件类型
                         Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
                         Type actualTypeArgument = actualTypeArguments[0];

@@ -1,28 +1,26 @@
 package com.cu.framework.authentication.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.cu.framework.authentication.properties.SecurityProperties;
-import com.cu.framework.authentication.response.AuthenticationSuccessResultResolver;
 import com.cu.framework.authentication.response.SecurityAuthenticationExceptionResolverHandler;
 import com.cu.framework.authentication.response.SecurityAuthenticationSuccessHandler;
 import com.cu.framework.authentication.service.SecurityUserDetailsService;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
-import org.springframework.security.web.session.SessionManagementFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -30,15 +28,9 @@ import java.util.List;
  * @descrpition
  * @since 2023-02-23
  */
-@Configuration
+@AutoConfiguration
 @EnableConfigurationProperties({SecurityProperties.class})
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
-    @Autowired
-    SecurityProperties securityProperties;
-
-    @Autowired
-    SecurityUserDetailsService securityUserDetailsService;
+public class SecurityConfig {
 
     @Autowired
     SecurityAuthenticationSuccessHandler successHandler;
@@ -47,16 +39,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     SecurityAuthenticationExceptionResolverHandler exceptionResolverHandler;
 
     @Autowired
-    AuthenticationSuccessResultResolver resultResolverProvider ;
-
-    @Autowired
-    ObjectMapper objectMapper;
-    @Autowired
     ObjectProvider<HttpSecurityCustomizer> httpSecurityCustomizers;
-
 
     @Autowired
     ObjectProvider<UrlSecurityCustomizer> urlSecurityCustomizers;
+
     /**
      * 加入监听器，session销毁时才会触发 spring容器的感知，否则 security监听不到销毁
      * @return
@@ -67,21 +54,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     /**
-     * 放行静态资源路径（/static、/js、/css、/image 及 html 页面），使其不经过安全过滤器链
+     * 以容器中的 SecurityUserDetailsService 与 PasswordEncoder 组装认证提供者，
+     * AuthenticationManager 由 Spring Security 基于该 Provider 统一装配
      */
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        //不拦截静态文件
-        web.ignoring().antMatchers("/static/**", "/js/**", "/css/**", "/image/**", "/**/**.html");
+    @Bean
+    DaoAuthenticationProvider daoAuthenticationProvider(SecurityUserDetailsService securityUserDetailsService,
+                                                        PasswordEncoder passwordEncoder) {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider(securityUserDetailsService);
+        provider.setPasswordEncoder(passwordEncoder);
+        return provider;
     }
 
     /**
-     * 向认证管理器注册 SecurityUserDetailsService，作为用户名密码认证的用户来源
+     * 放行静态资源路径（/static、/js、/css、/image 及 html 页面），使其不经过安全过滤器链
      */
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(securityUserDetailsService);
-        super.configure(auth);
+    @Bean
+    WebSecurityCustomizer webSecurityCustomizer() {
+        return web -> web.ignoring()
+                .requestMatchers("/static/**", "/js/**", "/css/**", "/image/**", "/**/*.html");
     }
 
     /**
@@ -89,41 +79,38 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * 登出成功走 successHandler，认证入口与访问拒绝走 exceptionResolverHandler；禁用 csrf；
      * 最后依次应用容器中所有 HttpSecurityCustomizer（可覆盖以上配置）
      */
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    @Bean
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         List<String> permitList = new ArrayList<>();
         for (UrlSecurityCustomizer urlSecurityCustomizer : urlSecurityCustomizers) {
             permitList.addAll(urlSecurityCustomizer.permitAll());
         }
         http
-                .authorizeRequests()
-                    .antMatchers(permitList.toArray(new String[0])).permitAll()
-                    .anyRequest().authenticated()
-                    .and()
-                //.formLogin()  不再用表单登录了，采用Json登录方式，因此不需要再formLogin引入FormLoginConfigurer配置UsernamePasswordAuthenticationFilter
-                .logout()
-                    .logoutSuccessHandler(successHandler)
-                    .and()
-                .exceptionHandling()
-                    .accessDeniedHandler(exceptionResolverHandler)
-                    .authenticationEntryPoint(exceptionResolverHandler)
-                    .and()
-                /*.sessionManagement()
-                //.sessionFixation().changeSessionId()  //这里改为none则不会出现postman连续登录会报session过多 ， 要么就是允许挤下线
-                    .sessionFixation().none()  //这里改为none则不会出现postman连续登录会报session过多
-                        .maximumSessions(loginProperties.getMaximumSessions())
-                        .maxSessionsPreventsLogin(loginProperties.getMaxSessionsPreventsLogin()).and()
-                        .and()*/
-                .csrf().disable()
-                //.cors().configurationSource(corsConfigurationSource()).and()
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(permitList.toArray(new String[0])).permitAll()
+                        .anyRequest().authenticated())
+                .logout(logout -> logout.logoutSuccessHandler(successHandler))
+                .exceptionHandling(exceptionHandling -> exceptionHandling
+                        .accessDeniedHandler(exceptionResolverHandler)
+                        .authenticationEntryPoint(exceptionResolverHandler))
+                //见 {@link SessionConfig#httpSecurityCustomizer}
+                /*.sessionManagement(session -> session
+                        .sessionFixation().changeSessionId()  //这里改为none则不会出现postman连续登录会报session过多 ， 要么就是允许挤下线
+                        .sessionFixation().none()  //这里改为none则不会出现postman连续登录会报session过多
+                        .maximumSessions(securityProperties.getMaximumSessions())
+                        .maxSessionsPreventsLogin(securityProperties.getMaxSessionsPreventsLogin())
+
+                )*/
+                .csrf(AbstractHttpConfigurer::disable)
+                //.cors(cors -> cors.configurationSource(corsConfigurationSource()))
         ;
         //如果有自定义配置就继续执行自定义的，会覆盖当前的配置
-        Iterator<HttpSecurityCustomizer> iterator = httpSecurityCustomizers.stream().iterator();
-        while (iterator.hasNext()) {
-            HttpSecurityCustomizer httpSecurityCustomizer = iterator.next();
+        for (HttpSecurityCustomizer httpSecurityCustomizer : httpSecurityCustomizers) {
             httpSecurityCustomizer.customizer(http);
         }
+        return http.build();
     }
+
 
     /**
      * 跨域相关

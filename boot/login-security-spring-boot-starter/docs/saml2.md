@@ -115,7 +115,7 @@ metadata 在启动时加载；更新 metadata 后需要重启应用。
 
 ## SP Metadata 端点
 
-Spring Security 5.7 默认不暴露 SP metadata；本 starter 在 `SamlConfig` 里手动挂载 `Saml2MetadataFilter`：
+Spring Security 7 默认不暴露 SP metadata；本 starter 在 `SamlConfig` 里手动挂载 `Saml2MetadataFilter`：
 
 ```
 GET /saml2/service-provider-metadata/{registrationId}
@@ -140,7 +140,7 @@ keytool -exportcert -alias sp-signing -keystore sp-keystore.jks \
 
 - IdP metadata 的 `WantAuthnRequestsSigned=true` 时，SP 必须配置 `sp-signing-keystore`，否则 IdP 会拒绝未签名的 AuthnRequest。
 - `sp-entity-id` 必须与 IdP 侧给本 SP 配置的 entityId / Audience 完全一致；不一致会在 `AudienceRestriction` 校验失败。
-- 认证 Provider 使用 `OpenSamlAuthenticationProvider`，不是 `OpenSaml4AuthenticationProvider`：后者要求 JDK 11+，本框架保持 JDK 8 兼容。
+- 认证 Provider 使用 `OpenSaml5AuthenticationProvider`：Spring Security 7 只保留 OpenSAML 5 支持，本框架基线为 JDK 21。
 
 ## SLO
 
