@@ -19,7 +19,7 @@ auth-rbac-security-spring-boot-starter
 ```bash
 cd sample/auth-rbac-security-boot-sample
 mvn -q -DskipTests package
-java -jar target/auth-rbac-security-boot-sample-0.0.1-exec.jar
+java -jar target/auth-rbac-security-boot-sample-0.2.1-exec.jar
 ```
 
 打开 <http://localhost:8083/login.html>。
@@ -123,7 +123,7 @@ curl -s -b target/admin.cookie 'http://localhost:8083/test/pageDataRange?page=1&
 需要联调时使用独立配置档：
 
 ```bash
-java -jar target/auth-rbac-security-boot-sample-0.0.1-exec.jar --spring.profiles.active=h2,sso
+java -jar target/auth-rbac-security-boot-sample-0.2.1-exec.jar --spring.profiles.active=h2,sso
 ```
 
 - 配置在 [application-sso.yml](src/main/resources/application-sso.yml)，需要本地 IDP（默认 `http://localhost:9010`）在线。

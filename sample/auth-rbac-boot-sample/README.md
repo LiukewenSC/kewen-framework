@@ -11,7 +11,7 @@
 ```bash
 cd sample/auth-rbac-boot-sample
 mvn -q -DskipTests package
-java -jar target/auth-rbac-boot-sample-0.0.1-exec.jar
+java -jar target/auth-rbac-boot-sample-0.2.1-exec.jar
 ```
 
 > 请用打包后的 exec jar 启动。当前工程用 `mvn spring-boot:run` 时，权限实体的类路径扫描可能不完整，表现为 `权限标记错误: ROLE`；`java -jar` 是验证过的方式。
@@ -29,7 +29,7 @@ MySQL 会话表执行 [relation/login-security/spring-session-mysql.sql](../../r
 脚本执行完后，用 `mysql` profile 启动同一个 exec jar；数据源用命令行覆盖：
 
 ```bash
-java -jar target/auth-rbac-boot-sample-0.0.1-exec.jar \
+java -jar target/auth-rbac-boot-sample-0.2.1-exec.jar \
   --spring.profiles.active=mysql \
   --spring.datasource.url='jdbc:mysql://localhost:3306/your_database?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai' \
   --spring.datasource.username=your_username \

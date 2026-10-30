@@ -95,7 +95,7 @@ cd kewen-framework
 mvn clean install -DskipTests
 
 cd sample/auth-rbac-boot-sample
-java -jar target/auth-rbac-boot-sample-0.0.1-exec.jar
+java -jar target/auth-rbac-boot-sample-0.2.1-exec.jar
 ```
 
 > Start this sample from the packaged exec jar. `mvn spring-boot:run` may fail to scan the permission entities in this project layout and report `权限标记错误: ROLE` (invalid permission marker).
@@ -127,7 +127,7 @@ The full RBAC + Spring Security login combination:
 <parent>
     <groupId>com.cu.framework</groupId>
     <artifactId>cu-parent</artifactId>
-    <version>0.0.1</version>
+    <version>0.2.1</version>
 </parent>
 
 <dependencies>
