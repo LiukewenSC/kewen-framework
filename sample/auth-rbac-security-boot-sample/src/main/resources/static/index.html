@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>RBAC 判权验证台 - cu-framework</title>
+    <link rel="stylesheet" href="/css/login.css">
+    <style>
+        body {
+            padding: 24px 16px;
+        }
+
+        .console {
+            max-width: 1180px;
+            margin: 0 auto;
+        }
+
+        .console-head {
+            display: flex;
+            justify-content: space-between;
+            gap: 24px;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .identity {
+            min-width: 260px;
+            padding: 12px 14px;
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            text-align: right;
+        }
+
+        .identity .label {
+            display: block;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .identity strong {
+            display: block;
+            margin: 2px 0;
+            font-size: 16px;
+        }
+
+        .identity .hint {
+            margin: 0;
+            word-break: break-all;
+        }
+
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+            margin: 16px 0;
+        }
+
+        .toolbar label {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .toolbar select {
+            padding: 9px 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: #fff;
+            font: inherit;
+        }
+
+        .toolbar .primary,
+        .toolbar .ghost {
+            width: auto;
+            padding: 9px 14px;
+        }
+
+        .summary {
+            margin-left: auto;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .summary.pass {
+            color: #1a7f37;
+        }
+
+        .summary.fail {
+            color: var(--danger);
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+
+        .matrix {
+            width: 100%;
+            min-width: 980px;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .matrix th,
+        .matrix td {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border);
+            text-align: left;
+            vertical-align: top;
+        }
+
+        .matrix th {
+            background: #fafbfc;
+            color: var(--muted);
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .matrix tr:last-child td {
+            border-bottom: none;
+        }
+
+        .matrix .mono {
+            font-family: Consolas, Monaco, monospace;
+            font-size: 12px;
+            word-break: break-all;
+        }
+
+        .matrix .result {
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .matrix .result.pass {
+            color: #1a7f37;
+        }
+
+        .matrix .result.fail {
+            color: var(--danger);
+        }
+
+        .matrix .basis {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        @media (max-width: 760px) {
+            .console-head {
+                flex-direction: column;
+            }
+
+            .identity {
+                width: 100%;
+                text-align: left;
+            }
+
+            .summary {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+<main class="console" id="console" hidden>
+    <header class="console-head">
+        <div>
+            <h1 class="title">登录身份 × RBAC 判权验证台</h1>
+            <p class="subtitle">
+                期望值来自种子数据，实际值来自当前会话的真实请求；用例只读，不改业务数据。
+                身份切换走真实的登出与登录接口。
+            </p>
+        </div>
+        <div class="identity">
+            <span class="label">当前身份</span>
+            <strong id="current-user">-</strong>
+            <p class="hint" id="current-authorities">-</p>
+        </div>
+    </header>
+
+    <section class="toolbar">
+        <label for="account">切换身份</label>
+        <select id="account">
+            <option value="admin">admin（超级管理员）</option>
+            <option value="admin2">admin2（总部 · 无角色）</option>
+            <option value="subordinate">subordinate（研发部 · 无角色）</option>
+            <option value="outsider">outsider（外部合作部 · 无角色）</option>
+        </select>
+        <button id="switch-button" class="ghost" type="button">切换</button>
+        <button id="run-button" class="primary" type="button">测试当前身份</button>
+        <button id="logout-button" class="ghost" type="button">退出登录</button>
+        <span id="summary" class="summary" hidden></span>
+    </section>
+
+    <div id="notice" class="notice" hidden></div>
+
+    <div class="table-wrap">
+        <table class="matrix">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>用例</th>
+                <th>判定层</th>
+                <th>期望（当前身份）</th>
+                <th>实际</th>
+                <th>结果</th>
+                <th>依据</th>
+            </tr>
+            </thead>
+            <tbody id="matrix-body"></tbody>
+        </table>
+    </div>
+
+    <p class="hint">
+        真值表与 <code>sql/seed-data.sql</code> 对应：<code>admin</code> 持有 <code>ROLE__1</code>；
+        <code>subordinate</code> 在总部的子部门；<code>admin2</code> 与 <code>outsider</code> 没有角色。
+        页面只以响应体的 <code>success</code> / <code>code</code> 判断结果，不看 HTTP 状态码。
+    </p>
+</main>
+
+<script src="/js/index.js"></script>
+</body>
+</html>

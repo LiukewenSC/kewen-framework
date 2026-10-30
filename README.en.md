@@ -64,6 +64,7 @@ Module-level READMEs are written in Chinese.
 | `auth/auth-rbac-security-spring-boot-starter` | Connects RBAC to the Spring Security login context | [README](auth/auth-rbac-security-spring-boot-starter/README.md) |
 | `sample/auth-core-boot-sample` | Standalone test bench for the core seam layer | [README](sample/auth-core-boot-sample/README.md) |
 | `sample/auth-rbac-boot-sample` | RBAC + meeting-room permission case | [README](sample/auth-rbac-boot-sample/README.md) |
+| `sample/auth-rbac-security-boot-sample` | Login identity + RBAC integration test bench | [README](sample/auth-rbac-security-boot-sample/README.md) |
 | `sample/login-boot-sample` | Username/password login and the three SSO entry points | [README](sample/login-boot-sample/README.md) |
 | `sample/basic-boot-sample` | Basic web capabilities sample | [README](sample/basic-boot-sample/README.md) |
 | `sample/storage-boot-sample` | Qiniu storage integration sample | [README](sample/storage-boot-sample/README.md) |
@@ -76,7 +77,7 @@ kewen-framework/
 +-- basic-support/         Persistence and notification extensions
 +-- boot/                  5 Spring Boot starters
 +-- auth/                  core, rbac and 3 starters
-+-- sample/                6 runnable samples
++-- sample/                7 runnable samples
 +-- other/code-generator/  Code generator
 +-- relation/              Framework DDL (sample DDL stays in sample/*/sql/)
 +-- docs/                  Full configuration reference and decision records
@@ -109,7 +110,7 @@ curl -H "X-Demo-User: admin" "http://localhost:8081/meetingRoom/page?page=1&size
 
 - In-memory H2 by default, port 8081; H2 console at <http://localhost:8081/h2-console>.
 - The identity is declared by `X-Demo-User` and falls back to `admin` when absent; switch to `admin2` / `subordinate` / `outsider` to observe the differences in department inheritance.
-- This sample has no login page; see `sample/login-boot-sample` for username/password and SSO.
+- The RBAC sample has no login page; see `sample/login-boot-sample` for username/password and SSO, and `sample/auth-rbac-security-boot-sample` for login identity + RBAC integration.
 
 Login and single sign-on sample:
 

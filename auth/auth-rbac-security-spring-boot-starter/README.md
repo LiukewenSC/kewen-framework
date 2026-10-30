@@ -106,7 +106,7 @@ curl http://localhost:8080/currentUser --cookie cookie.txt
 - 当前用户与权限在登录时装载为会话快照；改权限或资料后需要重新登录才生效。
 - 密码编码器由登录 starter 提供；库中密码不是带前缀的编码格式时自行声明 `PasswordEncoder`。
 - 使用 MySQL 会话时，启动前执行 `relation/login-security/spring-session-mysql.sql`，并把 `spring.session.jdbc.initialize-schema` 设为 `never`。
-- 当前没有单独使用本 starter 的示例；RBAC 部分可参考 [auth-rbac 示例](../../sample/auth-rbac-boot-sample/README.md)，登录与单点登录可参考 [login 示例](../../sample/login-boot-sample/README.md)。
+- 融合示例见 [sample/auth-rbac-security-boot-sample](../../sample/auth-rbac-security-boot-sample/README.md)：登录身份由 RBAC 装载、`/currentUser` 由本 starter 提供，并带一张四身份 × 六端点的判权矩阵与 `verify.sh`。
 
 ## 相关文档
 

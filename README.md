@@ -75,6 +75,7 @@ Kewen Framework 是一个 Java + Spring Boot 多模块框架，专注解决企�
 | `auth/auth-rbac-security-spring-boot-starter` | RBAC 接入 Spring Security 登录态 | [README](auth/auth-rbac-security-spring-boot-starter/README.md) |
 | `sample/auth-core-boot-sample` | core 接缝层的独立验证台 | [README](sample/auth-core-boot-sample/README.md) |
 | `sample/auth-rbac-boot-sample` | RBAC + 会议室权限案例 | [README](sample/auth-rbac-boot-sample/README.md) |
+| `sample/auth-rbac-security-boot-sample` | 登录态 + RBAC 融合验证台 | [README](sample/auth-rbac-security-boot-sample/README.md) |
 | `sample/login-boot-sample` | 账密登录与三协议入口示例 | [README](sample/login-boot-sample/README.md) |
 | `sample/basic-boot-sample` | 基础 Web 能力示例 | [README](sample/basic-boot-sample/README.md) |
 | `sample/storage-boot-sample` | 七牛存储接入示例 | [README](sample/storage-boot-sample/README.md) |
@@ -87,7 +88,7 @@ kewen-framework/
 +-- basic-support/         持久化与通知扩展
 +-- boot/                  5 个 Spring Boot Starter
 +-- auth/                  core、rbac 与 3 个 starter
-+-- sample/                6 个可运行示例
++-- sample/                7 个可运行示例
 +-- other/code-generator/  代码生成器
 +-- relation/              框架 DDL（示例 DDL 仍在 sample/*/sql/）
 +-- docs/                  全量配置参考与决策记录
@@ -120,7 +121,7 @@ curl -H "X-Demo-User: admin" "http://localhost:8081/meetingRoom/page?page=1&size
 
 - 默认 H2 内存库，端口 8081；H2 控制台 <http://localhost:8081/h2-console>。
 - 身份由 `X-Demo-User` 声明，不带时回落到 `admin`；换 `admin2` / `subordinate` / `outsider` 可以观察部门继承的差异。
-- 示例没有登录页；账密与 SSO 看 `sample/login-boot-sample`。
+- RBAC 示例没有登录页；账密与 SSO 看 `sample/login-boot-sample`，登录态 + RBAC 融合看 `sample/auth-rbac-security-boot-sample`。
 
 登录与单点登录示例：
 

@@ -1,0 +1,66 @@
+# 可选：单点登录配置。只有显式激活 sso profile 时才生效：
+#   java -jar ... --spring.profiles.active=h2,sso
+#
+# 依赖本地 IDP（默认 http://localhost:9010）。IDP 不在线时：
+#   - OIDC 客户端会在启动期拉取 {issuer-uri}/.well-known/openid-configuration，整个应用起不来；
+#     只联调 OAuth2 / SAML 时，把下面的 demo-oidc 条目注释掉。
+#   - OAuth2 / SAML 入口可在没有 IDP 启动期访问的情况下渲染，但点击后会因身份源不可用而失败。
+#
+# client-id / client-secret 是占位值。需要联调时填入与 login-boot-sample 相同的本地 IDP 客户端，
+# 或在 IDP 后台登记下面的回调地址：
+#   OAuth2: {baseUrl}/login/oauth2/code/demo-oauth2
+#   OIDC:   {baseUrl}/login/oauth2/code/demo-oidc
+#   SAML:   {baseUrl}/login/saml2/sso/demo-saml
+# 不要把真实凭据写进这里——仓库是公开的。
+cu:
+  security:
+    login:
+      sso:
+        # 单点登录结束后把浏览器送回登录页，并追加 loginState=success|failure
+        result-url: /login.html
+
+      oauth2:
+        sso-authorization-uri: /oauth2/authorization
+        login-processing-url: /login/oauth2/code/*
+        clients:
+          - registration-id: demo-oauth2
+            protocol-type: oauth2
+            client-id: ${IDP_CLIENT_ID:client_placeholder}
+            client-secret: ${IDP_CLIENT_SECRET:secret_placeholder}
+            client-authentication-method: client_secret_basic
+            redirect-uri-template: "{baseUrl}/login/oauth2/code/{registrationId}"
+            scopes:
+              - read
+            authorization-uri: ${IDP_BASE_URL:http://localhost:9010}/oauth2/authorize
+            token-uri: ${IDP_BASE_URL:http://localhost:9010}/oauth2/token
+            user-info-uri: ${IDP_BASE_URL:http://localhost:9010}/oauth2/userinfo
+            user-name-attribute-name: preferred_username
+            client-name: 本地 IDP（OAuth2）
+          - registration-id: demo-oidc
+            protocol-type: oidc
+            issuer-uri: ${IDP_BASE_URL:http://localhost:9010}
+            client-id: ${IDP_CLIENT_ID:client_placeholder}
+            client-secret: ${IDP_CLIENT_SECRET:secret_placeholder}
+            scopes:
+              - openid
+              - profile
+              - email
+            user-name-attribute-name: preferred_username
+            client-name: 本地 IDP（OIDC）
+
+      saml:
+        login-processing-url: /login/saml2/sso/{registrationId}
+        logout-request-url: /logout/saml2/slo
+        logout-response-url: /logout/saml2/slo
+        registrations:
+          - registration-id: demo-saml
+            # 需与 IDP 侧配置的 SP Audience 一致
+            sp-entity-id: cu-framework-local
+            display-name: 本地 IDP（SAML 单点登录）
+            metadata-resource: "classpath:saml/metadata/idp-metadata.xml"
+        # demo 的 idp-metadata.xml 里 WantAuthnRequestsSigned=false，不需要 SP 签名密钥
+        sp-signing-keystore:
+          keystore-resource:
+          keystore-password: changeit
+          key-alias: sp-signing
+          key-password: changeit

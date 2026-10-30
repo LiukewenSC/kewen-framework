@@ -20,6 +20,7 @@
         <module>auth-rbac-boot-sample</module>
         <module>login-boot-sample</module>
         <module>auth-core-boot-sample</module>
+        <module>auth-rbac-security-boot-sample</module>
     </modules>
 
     <properties>

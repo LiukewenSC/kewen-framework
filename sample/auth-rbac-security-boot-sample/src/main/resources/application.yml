@@ -1,0 +1,86 @@
+# auth-rbac-security-boot-sample 配置总表
+# 默认 profile 为 h2：内存库 + 自动建表/种子，不依赖本地 MySQL 与任何身份源。
+# 单点登录配置在 application-sso.yml，只有显式激活 sso profile 时才生效。
+
+server:
+  port: 8083
+
+spring:
+  application:
+    name: auth-rbac-security-sample
+  profiles:
+    active: h2
+
+  # ---- 会话：登录态与权限快照都存放在会话里 ----
+  session:
+    store-type: jdbc
+    timeout: 2D
+
+cu:
+  auth:
+    # 放行根路径，让 Spring Boot 的欢迎页把 static/index.html 当首页吐出来；
+    # 未登录时由首页脚本查 /currentUser 后跳去登录页，后端仍然只出静态文件与 JSON
+    permit-url: /
+    # 菜单权限是否走内存缓存；示例关闭，改库后重新登录即可看到变化
+    cache-auth: false
+
+  security:
+    # starter 的 RbacCurrentUserEndpoint 读取该地址；页面判定登录态只认这个端点
+    current-user-url: /currentUser
+
+    session:
+      maximum-sessions: 10
+      # false = 超限时挤掉最早的会话
+      max-sessions-prevents-login: false
+
+    login:
+      password:
+        login-url: /login
+        username-parameter: username
+        password-parameter: password
+
+---
+# H2 内存数据源（MySQL 兼容模式）。H2 相关的一切只写在本段内。
+spring:
+  config:
+    activate:
+      on-profile: h2
+  datasource:
+    url: jdbc:h2:mem:auth_rbac_security_sample;MODE=MySQL;DATABASE_TO_LOWER=TRUE;CASE_INSENSITIVE_IDENTIFIERS=TRUE;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  session:
+    jdbc:
+      # embedded = 嵌入式库（H2）启动时自动执行 spring-session jar 内的 schema-h2.sql 建会话表
+      initialize-schema: embedded
+  # 建表脚本由子模块 pom 挂到 classpath:sql/ 下。
+  # 顺序：先框架 10 表与视图（auth-rbac.sql）、再示例业务表（schema.sql），最后灌种子数据。
+  # mode 只写在本段：内存库每次启动都是空库，脚本可以放心 always 重建；
+  # mysql 段不自动执行任何脚本，避免改动使用者已有数据（种子本身是幂等的）。
+  # encoding 必须显式指定，脚本里有中文注释，否则跟随平台默认编码。
+  sql:
+    init:
+      mode: always
+      encoding: UTF-8
+      schema-locations: classpath:sql/auth-rbac.sql, classpath:sql/schema.sql
+      data-locations: classpath:sql/seed-data.sql
+
+---
+# 本地 MySQL 数据源。本 profile 不执行任何建表/种子脚本，避免覆盖使用者已有数据。
+# 首次使用请按 README 的顺序手工执行：
+#   relation/auth-rbac/auth-rbac.sql -> 本模块 sql/schema.sql -> 本模块 sql/seed-data.sql
+# 会话表执行 relation/login-security/spring-session-mysql.sql，并把 initialize-schema 设为 never。
+# 本示例的 pom 不含 MySQL 驱动，需要在本地自行补 mysql:mysql-connector-java。
+spring:
+  config:
+    activate:
+      on-profile: mysql
+  datasource:
+    url: jdbc:mysql://localhost:3306/your_database?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: your_username
+    password: your_password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  session:
+    jdbc:
+      initialize-schema: never

@@ -79,7 +79,7 @@ cu:
 
 **验证**：启动后 `POST /login`（JSON）登录，再 `GET /currentUser` 应返回当前用户。密码编码器由登录 starter 提供，库里的密码需要带 `{bcrypt}` 等编码前缀；没有前缀时自行声明匹配的 `PasswordEncoder`。
 
-想先跑起来看效果，直接用 [sample/auth-rbac-boot-sample](../sample/auth-rbac-boot-sample/README.md)：默认 H2、端口 8081，自带一套用户与会议室权限数据。
+想先跑起来看效果，登录态 + RBAC 直接用 [sample/auth-rbac-security-boot-sample](../sample/auth-rbac-security-boot-sample/README.md)：默认 H2、端口 8083，四个演示账号能直接对照判权矩阵；只看会议室权限案例用 [sample/auth-rbac-boot-sample](../sample/auth-rbac-boot-sample/README.md)（端口 8081）。
 
 ### 路径 B：只用 core，自建权限模型
 
