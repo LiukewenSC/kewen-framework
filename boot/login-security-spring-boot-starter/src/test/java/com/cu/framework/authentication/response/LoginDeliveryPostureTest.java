@@ -91,7 +91,7 @@ public class LoginDeliveryPostureTest {
         Assert.assertFalse("GET 方式的同名端点也不重定向",
                 resolver.shouldRedirect(requestOf("GET", "/login")));
         Assert.assertFalse("登录方式发现接口不受影响",
-                resolver.shouldRedirect(requestOf("GET", "/api/login/options")));
+                resolver.shouldRedirect(requestOf("GET", "/login/options")));
         Assert.assertFalse("登出端点不重定向",
                 resolver.shouldRedirect(requestOf("POST", "/logout")));
         Assert.assertFalse(resolver.shouldRedirect(requestOf("GET", "/")));

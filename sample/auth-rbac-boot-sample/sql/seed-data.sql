@@ -188,7 +188,7 @@ VALUES (9100000000000000002, '/deptInherit/rooms', '部门继承演示>总部下
 -- Records of sys_menu_route
 -- ----------------------------
 INSERT INTO `sys_menu_route`
-VALUES (2, '首页', 0, '/home', NULL, 'home', '{\"affix\": true, \"externalLinkUrl\": null, \"isExternalLinks\": false}',
+VALUES (2, '首页', 0, '/home', NULL, 'home', '{"affix": true, "externalLinkUrl": null, "isExternalLinks": false}',
         'el-icon-s-home', 0, NULL, 1, NULL, '2024-08-01 00:00:00', NULL, 0);
 INSERT INTO `sys_menu_route`
 VALUES (3, '文档', 0, '/docs', NULL, 'docs', NULL, 'el-icon-s-order', 0, NULL, 1, NULL, '2024-08-01 00:00:00', NULL, 0);
@@ -205,7 +205,7 @@ INSERT INTO `sys_menu_route`
 VALUES (7, '角色管理', 4, '/organization/role', NULL, 'organization/Role', NULL, 'el-icon-s-custom', 0,
         1818496367898750985, 1, NULL, '2024-08-01 00:00:00', NULL, 0);
 INSERT INTO `sys_menu_route`
-VALUES (8, '个人中心', 0, '/profile', NULL, 'profile', '{\"hidden\": true}', 'el-icon-star-on', 1, NULL, 1, NULL,
+VALUES (8, '个人中心', 0, '/profile', NULL, 'profile', '{"hidden": true}', 'el-icon-star-on', 1, NULL, 1, NULL,
         '2024-08-01 00:00:00', NULL, 0);
 INSERT INTO `sys_menu_route`
 VALUES (9, '菜单路由', 0, '/menu-route', '/route', 'layout/publics', NULL, 'el-icon-s-data', 0, NULL, 1, NULL,
@@ -251,13 +251,13 @@ VALUES (118, '筛选组件', 117, '/demo/filtering', NULL, 'demo/filtering/index
         NULL, '2024-08-01 00:00:00', NULL, 0);
 INSERT INTO `sys_menu_route`
 VALUES (119, '筛选组件详情', 117, '/demo/filtering-details', NULL, 'demo/filtering/component/details',
-        '{\"hidden\": true}', 'el-icon-s-marketing', 0, NULL, 1, NULL, '2024-08-01 00:00:00', NULL, 0);
+        '{"hidden": true}', 'el-icon-s-marketing', 0, NULL, 1, NULL, '2024-08-01 00:00:00', NULL, 0);
 INSERT INTO `sys_menu_route`
 VALUES (120, 'v-charts 图表', 117, '/demo/v-charts', NULL, 'demo/vCharts/index', NULL, 'el-icon-data-analysis', 0, NULL,
         1, NULL, '2024-08-01 00:00:00', NULL, 0);
 INSERT INTO `sys_menu_route`
 VALUES (121, '大数据可视化', 117, 'externalLinkUrl', NULL, 'demo/bigData',
-        '{\"externalLinkUrl\": \"/big-data\", \"isExternalLinks\": true}', 'el-icon-s-data', 0, NULL, 1, NULL,
+        '{"externalLinkUrl": "/big-data", "isExternalLinks": true}', 'el-icon-s-data', 0, NULL, 1, NULL,
         '2024-08-01 00:00:00', NULL, 0);
 INSERT INTO `sys_menu_route`
 VALUES (122, '仿电视开关机', 117, '/demo/tVSwitch', NULL, 'demo/tVSwitch/index', NULL, 'el-icon-s-platform', 0, NULL, 1,
@@ -297,7 +297,7 @@ VALUES (133, '工具类集合', 0, '/tools', NULL, 'tools', NULL, 'el-icon-setti
         NULL, 0);
 INSERT INTO `sys_menu_route`
 VALUES (134, '外链', 101, 'externalLinkUrl', NULL, NULL,
-        '{\"externalLinkUrl\": \"https://www.baidu.com\", \"isExternalLinks\": true, \"externalLinkType\": \"open\"}',
+        '{"externalLinkUrl": "https://www.baidu.com", "isExternalLinks": true, "externalLinkType": "open"}',
         'el-icon-link', 0, NULL, 1, NULL, '2024-08-01 00:00:00', NULL, 0);
 
 -- ----------------------------

@@ -55,11 +55,11 @@ curl -X POST http://localhost:8080/login \
   -H "Content-Type: application/json" \
   -d '{"username":"admin","password":"admin123"}' --cookie-jar cookie.txt
 
-curl http://localhost:8080/api/login/options
+curl http://localhost:8080/login/options
 ```
 
 - `/login` 是本 starter 的 JSON 登录端点（默认值），成功返回 JSON 并带回会话 Cookie。
-- `/api/login/options` 未认证可访问，返回账密提交信息与单点登录入口清单。
+- `/login/options` 未认证可访问，返回账密提交信息与单点登录入口清单。
 - 本 starter 没有默认的“当前用户”接口；业务侧用 `SecurityUserContext.getCurrentUser()`，或引入 `auth-rbac-security-spring-boot-starter` 获得 `/currentUser`。
 
 完整示例见 [sample/login-boot-sample](../../sample/login-boot-sample/README.md)：默认 H2、端口 8080，带登录页、账密登录与三协议入口。
@@ -85,7 +85,7 @@ curl http://localhost:8080/api/login/options
 | 账号密码错误的 `POST /login` | HTTP 401 + `{"code":401,"success":false,"message":"用户名或密码错误","errorType":"AUTHENTICATION"}` |
 | `GET /oauth2/authorization/{id}` | HTTP 302，Location 指向 IDP 授权端点并带 `state` 与 `redirect_uri` |
 | `GET /saml2/authenticate/{id}` | HTTP 200 + HTTP-POST Binding 的自动提交表单（含 `SAMLRequest`） |
-| `GET /api/login/options` | HTTP 200；`@SecurityIgnore` 自动放行 |
+| `GET /login/options` | HTTP 200；`@SecurityIgnore` 自动放行 |
 | `*.html`、`/js/**`、`/css/**` | 经 `web.ignoring` 绕过安全过滤器链，资源不存在时由 MVC 返回 404 |
 
 未登录与凭据错误都返回 **HTTP 401 + `code` 401**，用 `errorType=AUTHENTICATION` 与提示文案区分；无权限返回 403 + `errorType=AUTHORIZATION`。账号密码登录永远返回 JSON；单点登录的交付姿态由 `cu.security.login.sso.result-url` 决定。

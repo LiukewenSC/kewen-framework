@@ -54,6 +54,11 @@ CREATE TABLE `sys_menu_api` (
     UNIQUE KEY `uk_sys_menu_api_path` (`path`)
 ) COMMENT = '菜单表';
 
+-- meta 原本建成 json：MySQL 会把写入的文本解析成 JSON 文档，而 H2(MODE=MySQL) 经普通字符串字面量写入的
+-- 是 JSON 字符串标量，同一句种子脚本在两个库里落成两种形状；实体侧 SysMenuRoute 用 FastjsonTypeHandler
+-- 把它反序列化成 Map，标量解出来是 String 塞不进 Map，读菜单直接 500。改成 varchar 后存的就是原文，
+-- 两个引擎一致，Java 侧的 typeHandler 与字段类型都不用动。
+-- 已有数据的 MySQL 库跟一句：ALTER TABLE `sys_menu_route` MODIFY COLUMN `meta` varchar(512) NULL COMMENT '元信息';
 DROP TABLE IF EXISTS `sys_menu_route`;
 CREATE TABLE `sys_menu_route` (
     `id`          bigint       NOT NULL AUTO_INCREMENT COMMENT '主键id',
@@ -62,7 +67,7 @@ CREATE TABLE `sys_menu_route` (
     `path`        varchar(512) NULL DEFAULT NULL COMMENT '链接或路径',
     `redirect`    varchar(64)  NULL DEFAULT NULL COMMENT '重定向路由',
     `component`   varchar(64)  NULL DEFAULT NULL COMMENT '组件名',
-    `meta`        json         NULL COMMENT '元信息',
+    `meta`        varchar(512) NULL COMMENT '元信息',
     `icon`        varchar(512) NULL DEFAULT NULL COMMENT '图片地址',
     `hidden`      tinyint(1)   NULL DEFAULT 0 COMMENT '是否隐藏菜单，隐藏了则只有路由加载，不在菜单列表加载',
     `api_id`      bigint       NULL DEFAULT NULL COMMENT '请求地址id',

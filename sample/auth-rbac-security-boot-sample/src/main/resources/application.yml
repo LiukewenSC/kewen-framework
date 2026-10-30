@@ -3,7 +3,7 @@
 # 单点登录配置在 application-sso.yml，只有显式激活 sso profile 时才生效。
 
 server:
-  port: 8083
+  port: 8080
 
 spring:
   application:

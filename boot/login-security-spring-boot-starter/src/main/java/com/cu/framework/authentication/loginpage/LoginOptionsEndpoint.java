@@ -28,7 +28,7 @@ public class LoginOptionsEndpoint {
      *
      * @return 账号密码提交信息与单点登录入口列表
      */
-    @GetMapping("/api/login/options")
+    @GetMapping("/login/options")
     public Result<LoginOptions> options() {
         return Result.success(loginOptionsFactory.create());
     }

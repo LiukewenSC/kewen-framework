@@ -74,7 +74,7 @@ Browser              SP (this app)                 IdP
 | --- | --- | --- | --- |
 | 账号密码 | 登录 | POST | `/login` |
 | 账号密码 | 登出 | POST | `/logout` |
-| 通用 | 登录方式清单 | GET | `/api/login/options` |
+| 通用 | 登录方式清单 | GET | `/login/options` |
 | OAuth2/OIDC | 发起授权 | GET | `/oauth2/authorization/{registrationId}` |
 | OAuth2/OIDC | 回调 | GET | `/login/oauth2/code/{registrationId}`（Ant 通配 `*`） |
 | SAML2 | 发起登录 | GET | `/saml2/authenticate/{registrationId}` |
@@ -111,7 +111,7 @@ OAuth2/OIDC 的本地授权基址与回调模板可配置；SAML 的 ACS 与 SLO
 
 ## 登录方式发现接口
 
-`GET /api/login/options`，未认证可访问（`@SecurityIgnore` 自动放行）：
+`GET /login/options`，未认证可访问（`@SecurityIgnore` 自动放行）：
 
 ```json
 {
@@ -152,7 +152,7 @@ OAuth2/OIDC 的本地授权基址与回调模板可配置；SAML 的 ACS 与 SLO
 ## 快速自测
 
 1. 启动 [sample/login-boot-sample](../../../sample/login-boot-sample/README.md)（H2，端口 8080）。
-2. `curl http://localhost:8080/api/login/options`，核对账密字段与 SSO 入口条数。
+2. `curl http://localhost:8080/login/options`，核对账密字段与 SSO 入口条数。
 3. 用 `admin/admin123` 走一次账密登录，确认返回 JSON 且带回 Cookie。
 4. 配 `result-url: /login.html` 后点一个 SSO 入口，确认成功/失败都 302 回登录页并带 `loginState`。
 5. 观察 `/api/me`（示例自带）确认会话用户与权限；框架侧可用 `SecurityUserContext` 或 `auth-rbac-security` 的 `/currentUser`。

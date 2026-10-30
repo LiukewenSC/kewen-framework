@@ -6,12 +6,12 @@
 #     只联调 OAuth2 / SAML 时，把下面的 demo-oidc 条目注释掉。
 #   - OAuth2 / SAML 入口可在没有 IDP 启动期访问的情况下渲染，但点击后会因身份源不可用而失败。
 #
-# client-id / client-secret 是占位值。需要联调时填入与 login-boot-sample 相同的本地 IDP 客户端，
-# 或在 IDP 后台登记下面的回调地址：
+# client-id / client-secret 直接取 login-boot-sample 里那套已验证可用的本地 IDP 客户端，
+# 作为默认值写在这里；仍可用 IDP_CLIENT_ID / IDP_CLIENT_SECRET 覆盖。仅限本地 IDP 的 dev 凭据。
+# 在 IDP 后台需要登记的回调地址（应用跑在 8080 时与 login-boot-sample 已登记的那套一致）：
 #   OAuth2: {baseUrl}/login/oauth2/code/demo-oauth2
 #   OIDC:   {baseUrl}/login/oauth2/code/demo-oidc
 #   SAML:   {baseUrl}/login/saml2/sso/demo-saml
-# 不要把真实凭据写进这里——仓库是公开的。
 cu:
   security:
     login:
@@ -25,8 +25,8 @@ cu:
         clients:
           - registration-id: demo-oauth2
             protocol-type: oauth2
-            client-id: ${IDP_CLIENT_ID:client_placeholder}
-            client-secret: ${IDP_CLIENT_SECRET:secret_placeholder}
+            client-id: ${IDP_CLIENT_ID:client_50d901b5844247df}
+            client-secret: ${IDP_CLIENT_SECRET:35fcd41f49ed477992cc9ff6dbbd4e19d193b4e627ee4030aca195d2dec8a053}
             client-authentication-method: client_secret_basic
             redirect-uri-template: "{baseUrl}/login/oauth2/code/{registrationId}"
             scopes:
@@ -39,8 +39,8 @@ cu:
           - registration-id: demo-oidc
             protocol-type: oidc
             issuer-uri: ${IDP_BASE_URL:http://localhost:9010}
-            client-id: ${IDP_CLIENT_ID:client_placeholder}
-            client-secret: ${IDP_CLIENT_SECRET:secret_placeholder}
+            client-id: ${IDP_CLIENT_ID:client_50d901b5844247df}
+            client-secret: ${IDP_CLIENT_SECRET:35fcd41f49ed477992cc9ff6dbbd4e19d193b4e627ee4030aca195d2dec8a053}
             scopes:
               - openid
               - profile
