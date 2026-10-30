@@ -114,7 +114,7 @@ curl -X POST http://localhost:8081/meetingRoomApprove/approve \
   -d '{"id":1,"time":"2024-11-10"}'
 ```
 
-没有预约权限时返回 `code=403`；请求体不实现 `DataIdCarrier` 或 ID 为空时返回 `code=400`。
+没有预约权限时返回 HTTP 403 + `code=403` + `errorType=AUTHORIZATION`；请求体不实现 `DataIdCarrier` 或 ID 为空时返回 HTTP 400 + `code=400` + `errorType=USAGE`。
 
 ### 部门继承权限
 

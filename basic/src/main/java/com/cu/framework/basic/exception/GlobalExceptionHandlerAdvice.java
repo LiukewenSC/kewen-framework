@@ -2,16 +2,21 @@ package com.cu.framework.basic.exception;
 
 
 import com.cu.framework.basic.model.Result;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
-import org.springframework.validation.BindingResult;
+import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,66 +26,118 @@ import java.util.List;
  */
 @RestControllerAdvice
 @Order(Ordered.LOWEST_PRECEDENCE)
-@Slf4j
 public class GlobalExceptionHandlerAdvice {
+
+    private static final String DATABASE_FAILED_MESSAGE = "数据库操作失败，请稍后重试";
+    private static final String SYSTEM_FAILED_MESSAGE = "系统内部错误，请稍后重试";
+    private static final String VALIDATION_FAILED_MESSAGE = "参数校验失败";
 
     /**
      * 业务异常
-     * @param e
-     * @return
+     * @param e 业务异常
+     * @param request 当前请求
+     * @return code 400 的业务失败响应
      */
     @ExceptionHandler(BizException.class)
-    public Result<Void> bizException(BizException e){
-        log.error("bizException >> ",e);
-        return Result.failed(ExceptionConstant.BIZ_FAILED,e.getMessage());
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Result<Void> bizException(BizException e, HttpServletRequest request){
+        ErrorLog.warn(ErrorType.BUSINESS, request, e.getMessage());
+        return Result.failed(ErrorType.BUSINESS, e.getMessage());
     }
+
     /**
-     * 空指针异常，按业务异常处理，记录日志并返回 BIZ_FAILED 错误码
-     * @param e 空指针异常
-     * @return 携带异常信息的失败响应
+     * 参数校验与表单绑定失败
+     * @param e 绑定异常
+     * @param request 当前请求
+     * @return code 400 的校验失败响应
      */
-    @ExceptionHandler(NullPointerException.class)
-    public Result<Void> bizException(NullPointerException e){
-        log.error("nullPointerException >> ",e);
-        return Result.failed(ExceptionConstant.BIZ_FAILED,e.getMessage());
+    @ExceptionHandler(BindException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Result<Void> bindException(BindException e, HttpServletRequest request){
+        String message = validationMessage(e);
+        ErrorLog.warn(ErrorType.VALIDATION, request, message);
+        return Result.failed(ErrorType.VALIDATION, message);
     }
 
-
     /**
-     * 参数校验
-     * @param e
-     * @return
+     * 请求体无法解析
+     * @param e 请求体解析异常
+     * @param request 当前请求
+     * @return code 400 的校验失败响应
      */
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Result<Void> methodArgumentNotValidException(MethodArgumentNotValidException e){
-
-        BindingResult bindingResult = e.getBindingResult();
-
-        StringBuilder builder = new StringBuilder();
-
-        List<FieldError> fieldErrors = bindingResult.getFieldErrors();
-        for (FieldError fieldError : fieldErrors) {
-            String fieldName = fieldError.getField();
-            String message = fieldError.getDefaultMessage();
-            builder.append("[").append(fieldName).append("]").append(message).append(";");
-        }
-        //去掉最后一个;
-        String message = builder.substring(0, builder.length() - 2);
-
-
-        return Result.failed(ExceptionConstant.PARAM_VALID_FAILED,message);
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Result<Void> httpMessageNotReadableException(HttpMessageNotReadableException e, HttpServletRequest request){
+        String message = "请求体格式不正确";
+        ErrorLog.warn(ErrorType.VALIDATION, request, message + "：" + e.getMessage());
+        return Result.failed(ErrorType.VALIDATION, message);
     }
 
     /**
-     * 全局异常
-     * @param e
-     * @return
+     * 参数类型转换失败
+     * @param e 类型不匹配异常
+     * @param request 当前请求
+     * @return code 400 的校验失败响应
+     */
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Result<Void> methodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e, HttpServletRequest request){
+        String message = "参数[" + e.getName() + "]格式不正确";
+        ErrorLog.warn(ErrorType.VALIDATION, request, message);
+        return Result.failed(ErrorType.VALIDATION, message);
+    }
+
+    /**
+     * 缺少必需请求参数
+     * @param e 缺少参数异常
+     * @param request 当前请求
+     * @return code 400 的校验失败响应
+     */
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Result<Void> missingServletRequestParameterException(MissingServletRequestParameterException e, HttpServletRequest request){
+        String message = "缺少必需参数[" + e.getParameterName() + "]";
+        ErrorLog.warn(ErrorType.VALIDATION, request, message);
+        return Result.failed(ErrorType.VALIDATION, message);
+    }
+
+    /**
+     * 数据库访问失败，只向调用方返回通用提示
+     * @param e 数据库访问异常
+     * @param request 当前请求
+     * @return code 500 的数据库失败响应
+     */
+    @ExceptionHandler(DataAccessException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Result<Void> dataAccessException(DataAccessException e, HttpServletRequest request){
+        ErrorLog.error(ErrorType.DATABASE, request, "数据库操作失败", e);
+        return Result.failed(ErrorType.DATABASE, DATABASE_FAILED_MESSAGE);
+    }
+
+    /**
+     * 全局异常，已包装的数据库异常仍归入数据库分类
+     * @param e 未预期异常
+     * @param request 当前请求
+     * @return code 500 的系统失败响应
      */
     @ExceptionHandler(Throwable.class)
-    @ResponseStatus
-    public Result<Void> throwable(Throwable e){
-        log.error("throwable >> ",e);
-        return Result.failed(e.getMessage());
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Result<Void> throwable(Throwable e, HttpServletRequest request){
+        ErrorType errorType = ErrorType.causedByDatabase(e) ? ErrorType.DATABASE : ErrorType.SYSTEM;
+        String message = errorType == ErrorType.DATABASE ? DATABASE_FAILED_MESSAGE : SYSTEM_FAILED_MESSAGE;
+        ErrorLog.error(errorType, request, "未预期异常：" + e.getClass().getSimpleName() + ": " + e.getMessage(), e);
+        return Result.failed(errorType, message);
+    }
+
+    /**
+     * 将字段校验错误拼接为 [字段名]提示;... 的形式，保留完整提示文本
+     */
+    private String validationMessage(BindException e){
+        List<String> messages = new ArrayList<>();
+        for (FieldError fieldError : e.getBindingResult().getFieldErrors()) {
+            messages.add("[" + fieldError.getField() + "]" + fieldError.getDefaultMessage());
+        }
+        return messages.isEmpty() ? VALIDATION_FAILED_MESSAGE : String.join(";", messages);
     }
 
 }

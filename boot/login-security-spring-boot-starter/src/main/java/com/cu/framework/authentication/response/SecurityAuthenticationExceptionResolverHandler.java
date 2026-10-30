@@ -1,7 +1,9 @@
 package com.cu.framework.authentication.response;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.alibaba.fastjson.JSONObject;
+import com.cu.framework.basic.exception.ErrorLog;
+import com.cu.framework.basic.exception.ErrorType;
+import com.cu.framework.basic.model.Result;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
@@ -25,8 +27,6 @@ import java.util.List;
  * @since 2024-07-02
  */
 public class SecurityAuthenticationExceptionResolverHandler implements AuthenticationEntryPoint, AuthenticationFailureHandler, AccessDeniedHandler {
-
-    private static final Logger logger = LoggerFactory.getLogger(SecurityAuthenticationExceptionResolverHandler.class);
 
     List<HandlerExceptionResolver> handlerExceptionResolvers;
 
@@ -68,11 +68,12 @@ public class SecurityAuthenticationExceptionResolverHandler implements Authentic
      */
     private void resolver(HttpServletRequest request, HttpServletResponse response, Exception exception) throws IOException {
         // 单点登录的失败同样由浏览器整页承载，与成功路径共用一条判定规则，避免把裸 JSON 甩在用户屏幕上。
-        // 账号密码端点与非认证端点不在判定名单内，因此它们的 JSON 错误契约完全不变。
+        // 账号密码端点与非认证端点不在判定名单内，它们的失败仍由 JSON 错误出口按统一分类交付。
         if (loginDeliveryResolver.shouldRedirect(request)) {
             // 重定向不带响应体，浏览器侧也看不到原因，服务端日志是唯一的取证处；
             // 走 JSON 分支时由 HandlerExceptionResolver 负责记录，不在此重复
-            logger.warn("单点登录认证失败，按失败姿态回跳：{}", exception.getMessage());
+            ErrorLog.warn(ErrorType.AUTHENTICATION, request,
+                    "单点登录认证失败，按失败姿态回跳：" + exception.getMessage());
             loginDeliveryResolver.redirect(response, LoginDeliveryResolver.STATE_FAILURE);
             return;
         }
@@ -84,11 +85,12 @@ public class SecurityAuthenticationExceptionResolverHandler implements Authentic
             }
         }
         //没有解析到，没有解析到那就默认返回
-        logger.warn("安全异常返回无处理解析器，按照默认返回");
+        ErrorLog.error(ErrorType.SYSTEM, request, "安全异常没有可用的解析器", exception);
+        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         response.setContentType("application/json;charset=utf-8");
         try {
             PrintWriter out = response.getWriter();
-            out.write("Security 安全框架返回异常，且没有配置返回解析，异常信息：" + exception.getMessage());
+            out.write(JSONObject.toJSONString(Result.failed(ErrorType.SYSTEM, "系统内部错误，请稍后重试")));
             out.flush();
             out.close();
         } catch (IOException e) {

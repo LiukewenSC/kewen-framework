@@ -1,6 +1,8 @@
 package com.cu.framework.basic.model;
 
 
+import com.cu.framework.basic.exception.ErrorType;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 /**
@@ -11,7 +13,7 @@ import lombok.Data;
 @Data
 public class Result<T> {
 
-    /** 响应码，成功固定为 200，失败由调用方指定或默认 500 */
+    /** 响应码，成功固定为 200，失败由错误分类或调用方指定 */
     protected Integer code;
     /** 是否成功，success 工厂方法为 true，failed 工厂方法为 false */
     protected Boolean success ;
@@ -19,6 +21,9 @@ public class Result<T> {
     protected String message;
     /** 业务数据 */
     protected T data;
+    /** 错误分类名称，失败响应携带；成功响应不输出 */
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    protected String errorType;
 
     /**
      * 构建不带数据的成功返回，code=200，message="成功"
@@ -43,6 +48,20 @@ public class Result<T> {
         result.message="成功";
         result.success=true;
         result.data=data;
+        return result;
+    }
+    /**
+     * 构建指定错误分类的失败返回，HTTP 状态与 code 取自分类，success=false
+     * @param errorType 错误分类
+     * @param message 错误信息
+     * @return 失败的 Result
+     */
+    public static Result<Void> failed(ErrorType errorType,String message){
+        Result<Void> result = new Result<>();
+        result.code=errorType.status();
+        result.success=false;
+        result.message=message;
+        result.errorType=errorType.name();
         return result;
     }
     /**

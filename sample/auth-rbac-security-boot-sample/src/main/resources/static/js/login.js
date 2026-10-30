@@ -41,8 +41,8 @@
     }
 
     /**
-     * 取回 JSON 响应体。后端的状态码语义不统一（403、401、以及 HTTP 200 携带业务码 401 都有），
-     * 所以这里不看 response.ok，一律解析响应体，由调用方按 success 字段判断。
+     * 取回 JSON 响应体。账号密码登录的失败同样返回统一信封（errorType 标明分类），
+     * 这里不看 response.ok，一律解析响应体，由调用方按 success 字段判断。
      */
     function fetchJson(url, init) {
         return fetch(url, init).then(function (response) {

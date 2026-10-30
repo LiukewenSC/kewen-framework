@@ -59,12 +59,13 @@ public class JacksonSerializerControllerTest extends AbstractBasicSampleWebTest 
 
     @Test
     public void malformedDateParamIsRejectedWithFailedEnvelope() throws Exception {
-        JsonNode body = performJson(get("/jackson/paramSerializer").param("localDate", MALFORMED_DATE), 500);
+        JsonNode body = performJson(get("/jackson/paramSerializer").param("localDate", MALFORMED_DATE), 400);
 
         assertFalse(body.get("success").asBoolean());
-        assertEquals(500, body.get("code").asInt());
+        assertEquals(400, body.get("code").asInt());
+        assertEquals("VALIDATION", body.get("errorType").asText());
         assertTrue(body.has("data") && body.has("traceId"),
-                "失败响应也应保持五字段信封，而不是返回未包装的异常信息，实际为 " + body);
+                "失败响应也应保持统一信封，而不是返回未包装的异常信息，实际为 " + body);
     }
 
     @Test
@@ -113,18 +114,19 @@ public class JacksonSerializerControllerTest extends AbstractBasicSampleWebTest 
     }
 
     /**
-     * 请求体解析失败同样被全局异常处理的 Throwable 分支兜住，不返回 Spring 默认的 400 错误页
+     * 请求体解析失败按参数校验失败返回 400，不落进系统异常兜底
      */
     @Test
     public void malformedJsonBodyDateFieldIsRejected() throws Exception {
         JsonNode body = performJson(get("/jackson/paramSerializer3")
                 .contentType("application/json")
-                .content("{\"localDate\":\"" + MALFORMED_DATE + "\"}"), 500);
+                .content("{\"localDate\":\"" + MALFORMED_DATE + "\"}"), 400);
 
         assertFalse(body.get("success").asBoolean());
-        assertEquals(500, body.get("code").asInt());
+        assertEquals(400, body.get("code").asInt());
+        assertEquals("VALIDATION", body.get("errorType").asText());
         assertTrue(body.has("message") && body.has("data") && body.has("traceId"),
-                "失败响应也应保持五字段信封，而不是返回未包装的异常信息，实际为 " + body);
+                "失败响应也应保持统一信封，而不是返回未包装的异常信息，实际为 " + body);
     }
 
     @Test

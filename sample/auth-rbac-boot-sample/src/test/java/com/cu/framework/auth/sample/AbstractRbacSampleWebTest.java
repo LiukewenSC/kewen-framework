@@ -2,16 +2,14 @@ package com.cu.framework.auth.sample;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Assertions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * auth-rbac-boot-sample 的 web 层测试基类，集中承载上下文配置使各子类共用同一个缓存的 Spring 上下文。
@@ -34,16 +32,17 @@ public abstract class AbstractRbacSampleWebTest {
     protected MockMvc mockMvc;
 
     /**
-     * 发出请求并断言 HTTP 状态码为 200，返回解析后的响应体。
-     * 权限拒绝是通过响应体的 code 交付的，HTTP 状态码不是 200 说明请求根本没走到权限判定
+     * 发出请求并断言 HTTP 状态与响应体 code 一致，返回解析后的响应体。
+     * 权限拒绝现在同时体现在 HTTP 403 与 code 403，判定仍以响应体为准
      *
      * @param builder 请求构造器
      * @return 响应体 JSON
      */
     protected JsonNode performJson(MockHttpServletRequestBuilder builder) throws Exception {
-        MvcResult result = this.mockMvc.perform(builder)
-                .andExpect(status().is(HttpStatus.OK.value()))
-                .andReturn();
-        return RESPONSE_MAPPER.readTree(result.getResponse().getContentAsByteArray());
+        MvcResult result = this.mockMvc.perform(builder).andReturn();
+        JsonNode body = RESPONSE_MAPPER.readTree(result.getResponse().getContentAsByteArray());
+        Assertions.assertEquals(body.path("code").asInt(-1), result.getResponse().getStatus(),
+                "HTTP 状态应与响应体 code 一致");
+        return body;
     }
 }

@@ -6,6 +6,7 @@ import com.cu.framework.authentication.exception.NoLoginException;
 import com.cu.framework.authentication.handler.AuthenticationExceptionAdviceHandler;
 import com.cu.framework.basic.exception.BizException;
 import com.cu.framework.basic.exception.GlobalExceptionHandlerAdvice;
+import com.cu.framework.basic.model.Result;
 import com.cu.framework.boot.auth.core.AuthExceptionHandler;
 import org.junit.Test;
 import org.springframework.core.Ordered;
@@ -56,18 +57,28 @@ public class AdviceOrderTest {
 
     @Test
     public void adviceKeepsSpecificBusinessCodes() {
-        assertEquals(Integer.valueOf(403),
-                new AuthExceptionHandler().authException(new AuthException("no menu auth")).getCode());
-        assertEquals(Integer.valueOf(400),
-                new AuthExceptionHandler().authServiceException(new AuthServiceException("bad call")).getCode());
-        assertEquals(Integer.valueOf(401),
-                new AuthenticationExceptionAdviceHandler()
-                        .authenticationException(new NoLoginException("not login")).getCode());
-        assertEquals(Integer.valueOf(401),
-                new AuthenticationExceptionAdviceHandler()
-                        .accessDeniedException(new AccessDeniedException("denied")).getCode());
-        assertEquals(Integer.valueOf(500),
-                new GlobalExceptionHandlerAdvice().bizException(new BizException("biz failed")).getCode());
+        Result<Void> authorization = new AuthExceptionHandler().authException(new AuthException("no menu auth"), null);
+        assertEquals(Integer.valueOf(403), authorization.getCode());
+        assertEquals("AUTHORIZATION", authorization.getErrorType());
+
+        Result<Void> usage = new AuthExceptionHandler().authServiceException(new AuthServiceException("bad call"), null);
+        assertEquals(Integer.valueOf(400), usage.getCode());
+        assertEquals("USAGE", usage.getErrorType());
+        assertFalse("授权拒绝与用法错误必须使用不同分类", usage.getErrorType().equals(authorization.getErrorType()));
+
+        Result<Void> noLogin = new AuthenticationExceptionAdviceHandler()
+                .noLoginException(new NoLoginException("not login"), null);
+        assertEquals(Integer.valueOf(401), noLogin.getCode());
+        assertEquals("AUTHENTICATION", noLogin.getErrorType());
+
+        Result<Void> accessDenied = new AuthenticationExceptionAdviceHandler()
+                .accessDeniedException(new AccessDeniedException("denied"), null);
+        assertEquals(Integer.valueOf(403), accessDenied.getCode());
+        assertEquals("AUTHORIZATION", accessDenied.getErrorType());
+
+        Result<Void> biz = new GlobalExceptionHandlerAdvice().bizException(new BizException("biz failed"), null);
+        assertEquals(Integer.valueOf(400), biz.getCode());
+        assertEquals("BUSINESS", biz.getErrorType());
     }
 
     private int orderOf(Class<?> adviceType) {

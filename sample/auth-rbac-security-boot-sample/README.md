@@ -57,7 +57,8 @@ java -jar target/auth-rbac-security-boot-sample-0.0.1-exec.jar
 
 两点容易误读：
 
-- 权限拒绝以**响应体里的 `code=403`** 交付，HTTP 状态码仍是 200；页面与脚本都只看响应体。
+- 权限拒绝以 **HTTP 403 + 响应体 `code=403` + `errorType=AUTHORIZATION`** 交付；页面与脚本只看响应体，因此 HTTP 状态变化不影响验证台。
+- 未登录访问 `/currentUser` 为 **HTTP 401 + `errorType=AUTHENTICATION`**，账号密码错误同样是 401，提示为“用户名或密码错误”。
 - 第 4 行的 `200 / 0 行` 是「允许访问但看不到数据」，与第 2/3/5/6 行的拒绝不是一回事。
 
 ## 权限从哪来

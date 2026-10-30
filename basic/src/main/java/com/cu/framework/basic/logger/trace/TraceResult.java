@@ -33,6 +33,7 @@ public class TraceResult<T> extends Result<T> {
         traceResult.setMessage(result.getMessage());
         traceResult.setSuccess(result.getSuccess());
         traceResult.setData(result.getData());
+        traceResult.setErrorType(result.getErrorType());
         traceResult.setTraceId(traceId);
         return traceResult;
     }

@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.cu.framework.authentication.handler.SessionRepositoryEventAspect;
 import com.cu.framework.authentication.properties.RememberMeProperties;
 import com.cu.framework.authentication.properties.SessionProperties;
+import com.cu.framework.basic.exception.ErrorType;
 import com.cu.framework.basic.model.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,7 @@ import com.cu.framework.authentication.extension.HeaderCookieHttpSessionIdResolv
 import org.springframework.session.web.http.HttpSessionIdResolver;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * 
@@ -90,7 +92,7 @@ public class SessionConfig {
 
     /**
      * 会话并发控制定制器：按 SessionProperties 配置最大会话数与超限是否阻止登录，
-     * 会话过期时返回 401 及“登录状态失效，请重新登录”的 JSON 响应
+     * 会话过期时返回 401 及“登录状态已失效，请重新登录”的 JSON 响应
      */
     @Bean
 /*
@@ -105,11 +107,7 @@ public class SessionConfig {
                         //.sessionRegistry(sessionRegistry)
                         .expiredSessionStrategy(event -> {
                             try {
-                                HttpServletResponse response = event.getResponse();
-                                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                                response.setContentType("application/json;charset=utf-8");
-                                response.getWriter().write(
-                                        JSONObject.toJSONString(Result.failed(HttpServletResponse.SC_UNAUTHORIZED, "登录状态失效，请重新登录")));
+                                writeExpiredSessionResponse(event.getResponse());
                             } catch (Exception ex) {
                                 throw new IllegalStateException(ex);
                             }
@@ -119,6 +117,16 @@ public class SessionConfig {
                 throw new RuntimeException(e);
             }
         };
+    }
+
+    /**
+     * 写出会话过期响应：HTTP 401 + AUTHENTICATION 分类，调用方据此跳转登录
+     */
+    void writeExpiredSessionResponse(HttpServletResponse response) throws IOException {
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setContentType("application/json;charset=utf-8");
+        response.getWriter().write(
+                JSONObject.toJSONString(Result.failed(ErrorType.AUTHENTICATION, "登录状态已失效，请重新登录")));
     }
 
 }

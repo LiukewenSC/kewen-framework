@@ -27,12 +27,13 @@ public class ValidatedTestControllerTest extends AbstractBasicSampleWebTest {
     }
 
     @Test
-    public void invalidBodyReturnsHttp200WithFailedEnvelope() throws Exception {
+    public void invalidBodyReturnsHttp400WithFailedEnvelope() throws Exception {
         JsonNode body = performJson(post("/validated/hello")
                 .contentType("application/json")
-                .content("{\"age\":18,\"enable\":true,\"roles\":[\"admin\"]}"), 200);
+                .content("{\"age\":18,\"enable\":true,\"roles\":[\"admin\"]}"), 400);
 
-        assertEquals(500, body.get("code").asInt());
+        assertEquals(400, body.get("code").asInt());
+        assertEquals("VALIDATION", body.get("errorType").asText());
         assertFalse(body.get("success").asBoolean());
         String message = body.get("message").asText();
         assertTrue(message.contains("[id]") && message.contains("[name]"),
@@ -40,16 +41,14 @@ public class ValidatedTestControllerTest extends AbstractBasicSampleWebTest {
     }
 
     /**
-     * 只让 age 单字段失败，使 message 不依赖校验默认提示的语言环境，从而能断出完整字符串。
-     * 期望值刻意保留了 GlobalExceptionHandlerAdvice 中 substring(0, length() - 2) 的缺陷：
-     * 拼接结果 "[age]年龄不能为空;" 被删掉了分号和其前面的"空"字。修复该缺陷时本断言应变红
+     * 只让 age 单字段失败，使 message 不依赖校验默认提示的语言环境，从而能断出完整字符串
      */
     @Test
-    public void singleFieldFailureMessageIsTruncatedByTwoCharacters() throws Exception {
+    public void singleFieldFailureMessageIsComplete() throws Exception {
         JsonNode body = performJson(post("/validated/hello")
                 .contentType("application/json")
-                .content("{\"id\":1,\"name\":\"张三\",\"enable\":true,\"roles\":[\"admin\"]}"), 200);
+                .content("{\"id\":1,\"name\":\"张三\",\"enable\":true,\"roles\":[\"admin\"]}"), 400);
 
-        assertEquals("[age]年龄不能为", body.get("message").asText());
+        assertEquals("[age]年龄不能为空", body.get("message").asText());
     }
 }

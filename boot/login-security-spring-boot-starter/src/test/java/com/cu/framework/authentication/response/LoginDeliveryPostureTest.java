@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
@@ -220,6 +221,27 @@ public class LoginDeliveryPostureTest {
         handler.onAuthenticationSuccess(requestOf("POST", "/login"), new MockHttpServletResponse(), token);
 
         Assert.assertEquals("密码哈希不得随 session 持久化", "", principal.getPassword());
+    }
+
+    /**
+     * 没有异常解析器时也必须输出统一信封，且不把异常原文交给调用方
+     */
+    @Test
+    public void missingResolverWritesSystemEnvelope() throws Exception {
+        HandlerExceptionResolver noResolver = (request, response, handler, ex) -> null;
+        SecurityAuthenticationExceptionResolverHandler handler =
+                new SecurityAuthenticationExceptionResolverHandler()
+                        .setHandlerExceptionResolvers(Collections.singletonList(noResolver))
+                        .setLoginDeliveryResolver(resolverOf(null));
+
+        MockHttpServletResponse response = new MockHttpServletResponse();
+        handler.commence(requestOf("GET", "/currentUser"), response,
+                new InsufficientAuthenticationException("no auth"));
+
+        Assert.assertEquals(500, response.getStatus());
+        String body = response.getContentAsString();
+        Assert.assertTrue("兜底也必须输出统一信封，实际为 " + body, body.contains("\"errorType\":\"SYSTEM\""));
+        Assert.assertFalse("异常原文不得进入响应体", body.contains("no auth"));
     }
 
     /**

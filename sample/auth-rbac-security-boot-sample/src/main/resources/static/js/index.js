@@ -122,8 +122,8 @@
     };
 
     /**
-     * 一律解析响应体，不看 HTTP 状态码：权限拒绝可能是 HTTP 200 携带业务码 403，
-     * 也可能是 401；页面只按 success / code 判断。
+     * 统一解析响应体：失败分类以 errorType 与 code 为准，页面只按 success / code 判断，
+     * 不依赖 HTTP 状态码分支。
      */
     function fetchJson(url, init) {
         return fetch(url, init).then(function (response) {

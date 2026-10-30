@@ -81,13 +81,14 @@ curl http://localhost:8080/api/login/options
 
 | 请求 | 响应 |
 | --- | --- |
-| `GET /`、`GET /login` | HTTP 200 + `{"code":401,"success":false,"message":"请求的权限不足，需要提升，请重新登录"}` |
+| `GET /`、`GET /login` | HTTP 401 + `{"code":401,"success":false,"message":"未登录或登录状态已失效，请重新登录","errorType":"AUTHENTICATION"}` |
+| 账号密码错误的 `POST /login` | HTTP 401 + `{"code":401,"success":false,"message":"用户名或密码错误","errorType":"AUTHENTICATION"}` |
 | `GET /oauth2/authorization/{id}` | HTTP 302，Location 指向 IDP 授权端点并带 `state` 与 `redirect_uri` |
 | `GET /saml2/authenticate/{id}` | HTTP 200 + HTTP-POST Binding 的自动提交表单（含 `SAMLRequest`） |
 | `GET /api/login/options` | HTTP 200；`@SecurityIgnore` 自动放行 |
 | `*.html`、`/js/**`、`/css/**` | 经 `web.ignoring` 绕过安全过滤器链，资源不存在时由 MVC 返回 404 |
 
-入口点产出的是 **HTTP 200 + 业务码 401**，不是 401 状态码；调用方判断登录态失效要读 `code` / `success`，不能只看 HTTP 状态码。账号密码登录永远返回 JSON；单点登录的交付姿态由 `cu.security.login.sso.result-url` 决定。
+未登录与凭据错误都返回 **HTTP 401 + `code` 401**，用 `errorType=AUTHENTICATION` 与提示文案区分；无权限返回 403 + `errorType=AUTHORIZATION`。账号密码登录永远返回 JSON；单点登录的交付姿态由 `cu.security.login.sso.result-url` 决定。
 
 ## 自动装配
 

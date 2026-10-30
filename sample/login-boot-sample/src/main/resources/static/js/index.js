@@ -8,7 +8,7 @@
     var home = document.getElementById('home');
 
     /**
-     * 一律解析响应体，不看 HTTP 状态码：后端失败时可能给 401、403，也可能给 HTTP 200 携带业务码 401
+     * 统一解析响应体：失败分类以 errorType 与 code 为准，不依赖 HTTP 状态码分支
      */
     function fetchJson(url, init) {
         return fetch(url, init).then(function (response) {

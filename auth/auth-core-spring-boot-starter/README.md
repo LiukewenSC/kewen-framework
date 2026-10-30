@@ -84,7 +84,7 @@ cu:
       table-name: sys_auth_data
 ```
 
-**验证**：给一个方法标 `@AuthDataOperation(businessFunction = "demo", operate = "edit")`，请求体实现 `DataIdCarrier`；权限表里给当前用户配置一条 `demo/edit/<dataId>` 的 authority 后请求返回 200，没有配置时返回 `code=403`。用法错误（没有承载对象、ID 为空、超过 100 条）返回 `code=400`。
+**验证**：给一个方法标 `@AuthDataOperation(businessFunction = "demo", operate = "edit")`，请求体实现 `DataIdCarrier`；权限表里给当前用户配置一条 `demo/edit/<dataId>` 的 authority 后请求返回 200，没有配置时返回 HTTP 403 + `code=403` + `errorType=AUTHORIZATION`。用法错误（没有承载对象、ID 为空、超过 100 条）返回 HTTP 400 + `code=400` + `errorType=USAGE`。
 
 完整可运行示例见 [sample/auth-core-boot-sample](../../sample/auth-core-boot-sample/README.md)，它用自定义 `demo_*` 表和自实现的上下文/菜单处理器验证 core 的全部接缝。
 
