@@ -46,6 +46,7 @@ MyBatis-Plus `FastAutoGenerator` 的封装：读取数据库表，按本仓库�
 - 只生成 `mp` 子包；`auth-rbac` 样例的 `mp` 结构就是它的产物。
 - `serviceImpl.java.vm` 当前未启用，修改它不会影响生成结果。
 - 生成器会覆盖同名文件（`enableFileOverride`），运行前先确认目标文件没有手工改动。
+- `enableSwagger=true` 时模板仍输出 `io.swagger.annotations.*` 注解。本框架已不再管理 springfox / swagger 依赖，生成后的工程需要自行引入 `io.swagger:swagger-annotations`，或把模板改为 springdoc 的 `io.swagger.v3.oas.annotations`。
 
 ## 相关文档
 

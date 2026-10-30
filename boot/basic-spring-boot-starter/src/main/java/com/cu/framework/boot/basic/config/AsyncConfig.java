@@ -16,7 +16,10 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * 异步线程池配置
- *
+ *Boot 4 会额外注册一个包装用的 AsyncConfigurer，与项目自己的实现冲突。
+ * 改为提供 applicationTaskExecutor Bean，
+ * 并用 @AutoConfiguration(before = TaskExecutionAutoConfiguration.class)
+ * 让 Boot 跳过自己的执行器与包装层。
  * @author kewen
  * @since 2023-07-11
  */
