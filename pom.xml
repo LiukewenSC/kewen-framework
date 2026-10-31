@@ -10,13 +10,6 @@
     <version>0.2.1</version>
     <packaging>pom</packaging>
     <properties>
-        <framework-version>0.2.1</framework-version>
-        <mybatis-plus-version>3.5.18.1</mybatis-plus-version>
-        <mybatis-version>3.5.19</mybatis-version>
-        <jsqlparser-version>4.9</jsqlparser-version>
-        <spring-boot-version>4.1.2</spring-boot-version>
-        <spring-cloud-version>2025.1.4</spring-cloud-version>
-        <spring-cloud-alibaba-version>2025.1.0.0</spring-cloud-alibaba-version>
         <maven.compiler.release>21</maven.compiler.release>
         <!-- Spring 6.1+ 移除了 LocalVariableTable 参数名发现，@RequestParam 等不写名字时依赖编译期参数名 -->
         <maven.compiler.parameters>true</maven.compiler.parameters>
@@ -24,6 +17,7 @@
     </properties>
 
     <modules>
+        <module>dependencies</module>
         <module>basic</module>
         <module>basic-support</module>
         <module>boot</module>
@@ -45,197 +39,15 @@
 
     <dependencyManagement>
         <dependencies>
-
-            <!--************子工程模块************-->
-            <dependency>
-                <groupId>com.cu.framework.boot</groupId>
-                <artifactId>storage-spring-boot-starter</artifactId>
-                <version>${framework-version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.cu.framework.boot</groupId>
-                <artifactId>basic-spring-boot-starter</artifactId>
-                <version>${framework-version}</version>
-            </dependency>
+            <!-- 版本表的唯一来源是 cu-dependencies，本框架仓库与外部项目都从这里取版本；
+                 需要在子模块覆盖某个版本时，把自定义条目写在该依赖之前 -->
             <dependency>
                 <groupId>com.cu.framework</groupId>
-                <artifactId>basic</artifactId>
-                <version>${framework-version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.cu.framework</groupId>
-                <artifactId>basic-support</artifactId>
-                <version>${framework-version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.cu.framework.boot</groupId>
-                <artifactId>login-security-spring-boot-starter</artifactId>
-                <version>${framework-version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.cu.framework.boot</groupId>
-                <artifactId>tenant-spring-boot-starter</artifactId>
-                <version>${framework-version}</version>
-            </dependency>
-
-            <!--************spring-cloud相关************-->
-
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud-version}</version>
+                <artifactId>cu-dependencies</artifactId>
+                <version>0.2.1</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
-            <!--************spring-cloud相关************-->
-            <!--整合spring cloud alibaba-->
-            <dependency>
-                <groupId>com.alibaba.cloud</groupId>
-                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
-                <version>${spring-cloud-alibaba-version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
-
-            <!--************spring-boot相关************-->
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-dependencies</artifactId>
-                <version>${spring-boot-version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
-            <!--************spring相关************-->
-
-
-
-
-
-            <!--************spring-apache工具************-->
-            <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-collections4</artifactId>
-                <version>4.5.0</version>
-            </dependency>
-            <dependency>
-                <groupId>commons-io</groupId>
-                <artifactId>commons-io</artifactId>
-                <version>2.22.0</version>
-            </dependency>
-
-
-            <!--************其他依赖************-->
-
-            <!--************mybatis-plus************-->
-            <dependency>
-                <groupId>com.baomidou</groupId>
-                <artifactId>mybatis-plus-spring-boot4-starter</artifactId>
-                <version>${mybatis-plus-version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.baomidou</groupId>
-                <artifactId>mybatis-plus</artifactId>
-                <version>${mybatis-plus-version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.baomidou</groupId>
-                <artifactId>mybatis-plus-extension</artifactId>
-                <version>${mybatis-plus-version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.baomidou</groupId>
-                <artifactId>mybatis-plus-jsqlparser-4.9</artifactId>
-                <version>${mybatis-plus-version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.baomidou</groupId>
-                <artifactId>mybatis-plus-generator</artifactId>
-                <version>${mybatis-plus-version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>p6spy</groupId>
-                <artifactId>p6spy</artifactId>
-                <version>3.9.1</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>fastjson</artifactId>
-                <version>2.0.66</version>
-            </dependency>
-            <dependency>
-                <groupId>com.alibaba.fastjson2</groupId>
-                <artifactId>fastjson2</artifactId>
-                <version>2.0.66</version>
-            </dependency>
-
-            <dependency>
-                <groupId>cn.hutool</groupId>
-                <artifactId>hutool-all</artifactId>
-                <version>5.8.48</version>
-            </dependency>
-            <dependency>
-                <groupId>com.qiniu</groupId>
-                <artifactId>qiniu-java-sdk</artifactId>
-                <version>7.19.0</version>
-            </dependency>
-
-
-
-
-
-            <!-- 子工程模块 -->
-            <dependency>
-                <groupId>com.cu.framework.auth</groupId>
-                <artifactId>auth-core</artifactId>
-                <version>${framework-version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.cu.framework.auth</groupId>
-                <artifactId>auth-core-spring-boot-starter</artifactId>
-                <version>${framework-version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.cu.framework.auth</groupId>
-                <artifactId>auth-rbac</artifactId>
-                <version>${framework-version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.cu.framework.auth</groupId>
-                <artifactId>auth-rbac-spring-boot-starter</artifactId>
-                <version>${framework-version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.cu.framework.auth</groupId>
-                <artifactId>auth-rbac-security-spring-boot-starter</artifactId>
-                <version>${framework-version}</version>
-            </dependency>
-
-            <!-- MyBatis -->
-            <dependency>
-                <groupId>org.mybatis</groupId>
-                <artifactId>mybatis</artifactId>
-                <version>${mybatis-version}</version>
-            </dependency>
-
-            <!-- JSqlParser -->
-            <dependency>
-                <groupId>com.github.jsqlparser</groupId>
-                <artifactId>jsqlparser</artifactId>
-                <version>${jsqlparser-version}</version>
-            </dependency>
-
-            <!-- Guava -->
-            <dependency>
-                <groupId>com.google.guava</groupId>
-                <artifactId>guava</artifactId>
-                <version>33.7.2-jre</version>
-            </dependency>
-
         </dependencies>
     </dependencyManagement>
 

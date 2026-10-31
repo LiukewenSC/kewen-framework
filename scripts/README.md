@@ -55,6 +55,29 @@ SNAKEYAML_JAR=/path/to/snakeyaml.jar JAVA_BIN=/path/to/java bash scripts/check-c
 - List 元素字段（`clients[]`、`registrations[]`）不在 metadata 中，脚本不覆盖，需要人工核对。
 - 脚本只校验“覆盖”，不校验默认值文案与 README 表格是否一致。
 
+## check-pom-version-sync.sh
+
+版本号从 `cu-dependencies` BOM 之后散落在 5 类位置，升版本时漏改任何一处都会构建失败或静默取到旧版本。脚本把它们全部对齐到根 POM 的 `project/version`：
+
+1. `pom.xml` 的 `<project><version>` —— 基准本身；
+2. `pom.xml` 里 `cu-dependencies` 的 import 版本 —— 框架内部取版本表的入口；
+3. `dependencies/pom.xml` 的 `<project><version>` —— 外部 import 时写的就是它；
+4. `dependencies/pom.xml` 的 `<framework-version>` 属性 —— BOM 内全部 `com.cu.framework` 坐标的版本；
+5. 每个子 POM 的 `<parent><version>` —— Maven 要求字面量。
+
+```bash
+bash scripts/check-pom-version-sync.sh
+# 检查另一棵目录树（夹具）：
+VERSION_SYNC_ROOT=/path/to/repo bash scripts/check-pom-version-sync.sh
+```
+
+`dependencies/pom.xml` 按设计没有 `<parent>`，不纳入第 5 项；`target/` 与 `logs/` 下的 pom 一律排除（夹具残留曾被当成子模块报“读不到 parent”）。
+
+**已知盲区**：
+
+- 只比对文本一致，不校验 Maven 能否解析；解析由 `mvn validate` 负责。
+- 第 2 项是字面量，因此纳入检查。根治办法是版本单源（`${revision}` + flatten-maven-plugin），那是另一个 change；在它落地前靠本脚本兜。
+
 ## 相关文档
 
 - [SQL 脚本](../relation/README.md)

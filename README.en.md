@@ -121,14 +121,46 @@ Open <http://localhost:8080/login.html>; the accounts are `admin/admin123` and `
 
 ### Path 2: Integrate into your own MySQL project
 
-The full RBAC + Spring Security login combination:
+The full RBAC + Spring Security login combination. Versions come from the `cu-dependencies` BOM, so the `<parent>` element stays available for your own project (no need to inherit the framework's `cu-parent`):
 
 ```xml
+<!-- 1) keep your own parent; the usual choice for a Spring Boot project -->
 <parent>
-    <groupId>com.cu.framework</groupId>
-    <artifactId>cu-parent</artifactId>
-    <version>0.2.1</version>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>4.1.2</version>
+    <relativePath/>
 </parent>
+
+<!-- 2) import the framework version table; afterwards framework modules and
+       managed third-party libraries need no <version> -->
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>com.cu.framework</groupId>
+            <artifactId>cu-dependencies</artifactId>
+            <version>0.2.1</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+
+<!-- 3) login-security starter pulls in OpenSAML transitively, which is published
+       only in the Shibboleth repository. An import carries the version table, not
+       repository declarations, so this block has to be declared here -->
+<repositories>
+    <repository>
+        <id>shibboleth</id>
+        <url>https://build.shibboleth.net/maven/releases</url>
+        <releases>
+            <enabled>true</enabled>
+        </releases>
+        <snapshots>
+            <enabled>false</enabled>
+        </snapshots>
+    </repository>
+</repositories>
 
 <dependencies>
     <dependency>
@@ -140,11 +172,17 @@ The full RBAC + Spring Security login combination:
         <artifactId>auth-rbac-security-spring-boot-starter</artifactId>
     </dependency>
     <dependency>
-        <groupId>mysql</groupId>
-        <artifactId>mysql-connector-java</artifactId>
+        <groupId>com.mysql</groupId>
+        <artifactId>mysql-connector-j</artifactId>
     </dependency>
 </dependencies>
 ```
+
+Before using it, run `mvn clean install -DskipTests` in this repository: the framework artifacts and `cu-dependencies` land in your local repository only, there is no private server. Three things consumers must know:
+
+- **To pin a different version, declare your own entry *before* the `cu-dependencies` import.** Within one `<dependencyManagement>` the first declaration wins, so an entry placed after the import has no effect.
+- **If your parent is not `spring-boot-starter-parent`, enable `-parameters` yourself** (`<parameters>true</parameters>` on `maven-compiler-plugin`). Annotations such as `@RequestParam` without an explicit name fail at runtime with a parameter-name resolution error, not at compile time.
+- **`cu-parent` is the framework's own aggregator and build parent; external projects do not need to inherit it.** The version table is already provided by the BOM.
 
 1. Run [relation/auth-rbac/auth-rbac.sql](relation/auth-rbac/auth-rbac.sql) to create the permission tables.
 2. If you persist sessions in MySQL, run [relation/login-security/spring-session-mysql.sql](relation/login-security/spring-session-mysql.sql) and set `spring.session.jdbc.initialize-schema: never`.

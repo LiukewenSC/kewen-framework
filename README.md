@@ -132,14 +132,44 @@ mvn spring-boot:run
 
 ### 路径二：接入自己的 MySQL 项目
 
-完整 RBAC + Spring Security 登录态的组合：
+完整 RBAC + Spring Security 登录态的组合。版本由 `cu-dependencies` 这张 BOM 供给，`<parent>` 留给项目自己（不再需要继承框架的 `cu-parent`）：
 
 ```xml
+<!-- 1) parent 用项目自己的；Spring Boot 项目的常规选择 -->
 <parent>
-    <groupId>com.cu.framework</groupId>
-    <artifactId>cu-parent</artifactId>
-    <version>0.2.1</version>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>4.1.2</version>
+    <relativePath/>
 </parent>
+
+<!-- 2) import 框架版本表，之后引用框架模块与受管三方库都不用写版本 -->
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>com.cu.framework</groupId>
+            <artifactId>cu-dependencies</artifactId>
+            <version>0.2.1</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+
+<!-- 3) login-security starter 传递 OpenSAML，它只发布在 Shibboleth 仓库；
+       import 只带版本表，不带仓库声明，这段必须自己写 -->
+<repositories>
+    <repository>
+        <id>shibboleth</id>
+        <url>https://build.shibboleth.net/maven/releases</url>
+        <releases>
+            <enabled>true</enabled>
+        </releases>
+        <snapshots>
+            <enabled>false</enabled>
+        </snapshots>
+    </repository>
+</repositories>
 
 <dependencies>
     <dependency>
@@ -151,11 +181,17 @@ mvn spring-boot:run
         <artifactId>auth-rbac-security-spring-boot-starter</artifactId>
     </dependency>
     <dependency>
-        <groupId>mysql</groupId>
-        <artifactId>mysql-connector-java</artifactId>
+        <groupId>com.mysql</groupId>
+        <artifactId>mysql-connector-j</artifactId>
     </dependency>
 </dependencies>
 ```
+
+用之前先在本仓库执行 `mvn clean install -DskipTests`：框架构件与 `cu-dependencies` 都只装进你的本地仓库，没有私服。三条使用方必读：
+
+- **要改某个版本，把自定义条目排在 `cu-dependencies` 的 import 之前。** 同一个 `<dependencyManagement>` 里先声明者胜，排在 import 后面不生效。
+- **parent 不是 `spring-boot-starter-parent` 时，自己开启 `-parameters` 编译参数**（`maven-compiler-plugin` 的 `<parameters>true</parameters>`）。不写名称的 `@RequestParam` 等注解在运行期才报参数名解析失败，编译期没有任何提示。
+- **`cu-parent` 是框架自身构建用的聚合与约定父 POM，外部项目不需要继承它**；缺它不影响接入，版本表已由 BOM 提供。
 
 1. 执行 [relation/auth-rbac/auth-rbac.sql](relation/auth-rbac/auth-rbac.sql) 建权限表。
 2. 使用 MySQL 持久化会话时，执行 [relation/login-security/spring-session-mysql.sql](relation/login-security/spring-session-mysql.sql)，并设置 `spring.session.jdbc.initialize-schema: never`。
@@ -183,12 +219,14 @@ mvn spring-boot:run
 ## 参与贡献
 
 1. Fork 本仓库，创建特性分支。
-2. 修改后至少跑一遍：
+2. 修改后至少跑一遍（构建需 JDK 21，与根 POM 的 `maven.compiler.release=21` 一致）：
    ```bash
    mvn clean install -DskipTests
    bash scripts/check-sql-compat.sh
    bash scripts/check-config-docs.sh   # 先 mvn -q -DskipTests compile
+   bash scripts/check-pom-version-sync.sh
    ```
+   命令行 Maven 不是 JDK 21 时加前缀：`JAVA_HOME=/path/to/jdk-21 mvn clean install -DskipTests`。
 3. 提交信息沿用 `feat(scope): ...`、`fix(scope): ...`、`docs(scope): ...` 风格。
 4. 提交 Pull Request，说明改动目的、影响面与验证方式。
 

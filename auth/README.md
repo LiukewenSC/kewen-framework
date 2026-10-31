@@ -36,11 +36,40 @@
 **依赖**：`auth-rbac-security-spring-boot-starter` 会传递 `auth-rbac-spring-boot-starter` 与 `login-security-spring-boot-starter`；`basic-spring-boot-starter` 提供 Web、统一响应、异常处理与 MyBatis-Plus。
 
 ```xml
+<!-- 版本由 cu-dependencies 提供，parent 留给项目自己 -->
 <parent>
-    <groupId>com.cu.framework</groupId>
-    <artifactId>cu-parent</artifactId>
-    <version>0.2.1</version>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>4.1.2</version>
+    <relativePath/>
 </parent>
+
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>com.cu.framework</groupId>
+            <artifactId>cu-dependencies</artifactId>
+            <version>0.2.1</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+
+<!-- 这段必须自己写：import 只带版本表，不带仓库声明，
+     而 login-security starter 传递的 OpenSAML 只发布在 Shibboleth 仓库 -->
+<repositories>
+    <repository>
+        <id>shibboleth</id>
+        <url>https://build.shibboleth.net/maven/releases</url>
+        <releases>
+            <enabled>true</enabled>
+        </releases>
+        <snapshots>
+            <enabled>false</enabled>
+        </snapshots>
+    </repository>
+</repositories>
 
 <dependencies>
     <dependency>
@@ -52,11 +81,13 @@
         <artifactId>auth-rbac-security-spring-boot-starter</artifactId>
     </dependency>
     <dependency>
-        <groupId>mysql</groupId>
-        <artifactId>mysql-connector-java</artifactId>
+        <groupId>com.mysql</groupId>
+        <artifactId>mysql-connector-j</artifactId>
     </dependency>
 </dependencies>
 ```
+
+引入前先在本仓库 `mvn clean install -DskipTests`（框架构件与 `cu-dependencies` 都只进本地仓库）。三条必读与完整说明见 [根 README 的「路径二：接入自己的 MySQL 项目」](../README.md)，此处摘要：改版本要把自定义条目排在 `cu-dependencies` 的 import **之前**（先声明者胜）；parent 不是 `spring-boot-starter-parent` 时要自己开 `-parameters`，否则不写名称的 `@RequestParam` 在运行期才报错；`cu-parent` 只是框架自身构建用的聚合父 POM，外部项目不需要继承。
 
 **建表**：先执行 [relation/auth-rbac/auth-rbac.sql](../relation/auth-rbac/auth-rbac.sql)，再准备 `sys_user` / `sys_user_credential` / `sys_user_dept` / `sys_user_role` / `sys_role` / `sys_dept` 数据。使用 MySQL 持久化会话时，还要执行 [relation/login-security/spring-session-mysql.sql](../relation/login-security/spring-session-mysql.sql)。
 
