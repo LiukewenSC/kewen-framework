@@ -177,14 +177,13 @@ public class QiNiuStorageTemplate implements StorageTemplate {
 
         String key = resolveKey(relativeDirectory, fileName);
 
-        // https://developer.qiniu.com/kodo/1206/put-policy
+        // https://developer.qiniu.com/kodo/1206/put-policy（字段类型必须与文档一致，数值字段传字符串会导致整张策略解析失败）
         putPolicy.put("callbackUrl", callbackUrl);
 
         putPolicy.put("callbackBody", "{\"key\":\"$(key)\",\"hash\":\"$(etag)\",\"bucket\":\"$(bucket)\",\"size\":$(fsize)," +
                 "\"mimeType\":\"$(mimeType)\",\"fileId\":$(x:fileId)}"
         );
         putPolicy.put("callbackBodyType", "application/json");
-        putPolicy.put("persistentType", "1");
         if (persistentNotifyUrl != null && !persistentNotifyUrl.trim().isEmpty()) {
             putPolicy.put("persistentNotifyUrl", persistentNotifyUrl);
         }
