@@ -22,7 +22,7 @@ import java.util.List;
  * @author kewen
  * @since 2023-04-24
  */
-@ResponseBody
+@RestController
 @RequestMapping("/storage")
 @Slf4j
 public class FileStorageEndpoint {
