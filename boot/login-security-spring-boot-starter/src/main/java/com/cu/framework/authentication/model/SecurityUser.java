@@ -6,6 +6,8 @@ import org.springframework.security.core.AuthenticatedPrincipal;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
@@ -19,7 +21,10 @@ import java.util.List;
  */
 @Data
 @Accessors(chain = true)
-public class SecurityUser implements UserDetails, AuthenticatedPrincipal {
+public class SecurityUser implements UserDetails, AuthenticatedPrincipal, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 5276930894128725384L;
 
     private String token;
 

@@ -113,17 +113,34 @@ public class SecurityConfig {
 
 
     /**
-     * 跨域相关
-     * @return
+     * 跨域（CORS）配置源：定义浏览器跨域访问本服务时的放行策略。
+     * <p>
+     * 注意：当前方法为 private 且未标注 {@code @Bean}，securityFilterChain() 中
+     * {@code .cors(...)} 也被注释，因此该配置尚未生效。如需启用：
+     * <ol>
+     *     <li>在 securityFilterChain() 中打开 .cors(cors -> cors.configurationSource(...))；</li>
+     *     <li>并将本方法改为 {@code @Bean}，交由 Spring Security 的 CorsFilter 使用。</li>
+     * </ol>
+     * 另外 allowCredentials(true) 与 allowedOrigin("*") 在 Spring 6 下会冲突，
+     * 正式启用时应改用 setAllowedOriginPatterns(...) 或改为明确的来源白名单。
+     *
+     * @return 绑定到 /** 全路径的跨域配置源
      */
     private CorsConfigurationSource corsConfigurationSource(){
+        // 声明一套跨域规则
         CorsConfiguration corsConfiguration = new CorsConfiguration();
+        // 允许跨域请求携带凭证（Cookie、Session、Authorization 等），前后端分离登录必需
         corsConfiguration.setAllowCredentials(true);
+        // 允许任意来源的页面发起请求（注意：开启凭证后此处应改为 originPatterns）
         corsConfiguration.addAllowedOrigin("*");
+        // 允许任意请求头（如 Content-Type、Authorization）
         corsConfiguration.addAllowedHeader("*");
+        // 允许任意 HTTP 方法（GET/POST/PUT/DELETE/OPTIONS 等）
         corsConfiguration.addAllowedMethod("*");
 
+        // 按 URL 路径注册跨域规则
         UrlBasedCorsConfigurationSource corsConfigurationSource = new UrlBasedCorsConfigurationSource();
+        // 将上述规则应用到所有路径，使整个服务的接口都遵循这套跨域策略
         corsConfigurationSource.registerCorsConfiguration("/**",corsConfiguration);
         return corsConfigurationSource;
     }

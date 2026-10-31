@@ -156,6 +156,7 @@
 4. **依赖坐标**：
    - MySQL 驱动换 `com.mysql:mysql-connector-j`。
    - MyBatis-Plus 换 `mybatis-plus-spring-boot4-starter`，并显式引入 `mybatis-plus-extension`、`mybatis-plus-jsqlparser-4.9`（如用分页）。
+   - **会话持久化必须自己引入 `org.springframework.boot:spring-boot-starter-session-jdbc`**（Redis 会话换 `spring-boot-starter-session-data-redis`）。Boot 4 把会话的自动配置拆成了独立模块，而 `login-security-spring-boot-starter` 只带 Spring Session 本体 `org.springframework.session:spring-session-jdbc`。漏引入时应用不报错，只静默退回容器内存会话——实测症状是「`/login` 成功返回 token，但带 `Authorization` 头的请求全部 401，会话表 0 行」。本仓库 sample 只走浏览器 Cookie，覆盖不到这条，所以升级过程里没暴露出来。
    - 不再从本框架获得 springfox 与 magic-api 的版本管理；需要接口文档请自行引入 springdoc，需要 magic-api 请自行管理。
 5. **Spring Security 自定义**：`WebSecurityConfigurerAdapter` 已删除；自定义 `AbstractAuthenticationFilterConfigurer` 必须用 `http.with(...)`，不能用 `http.apply(...)`。
 6. **SAML**：如果使用 SAML，需要在构建环境能访问 Shibboleth 仓库。

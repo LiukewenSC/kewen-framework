@@ -34,7 +34,9 @@
 
 **必要实现**：`SecurityUserDetailsService`。它是加载用户的核心逻辑，没有实现时启动失败。示例实现见 [SampleInMemorySecurityUserDetailsService](../../sample/login-boot-sample/src/main/java/com/cu/framework/sample/login/SampleInMemorySecurityUserDetailsService.java)。
 
-**最小配置**：会话需要 DataSource 与 `spring-session-jdbc`。
+**最小配置**：会话持久化需要 DataSource + **`org.springframework.boot:spring-boot-starter-session-jdbc`**（用 Redis 会话则换成 `spring-boot-starter-session-data-redis`）。
+
+本 starter 只带 Spring Session 本体 `org.springframework.session:spring-session-jdbc`（提供 `JdbcIndexedSessionRepository` 等类），不带 Boot 4 拆出去的会话自动配置模块。缺它时应用**不会报错**，只会静默退回容器内存会话，实测表现为：`/login` 返回 200 并给出 token，但带 `Authorization: <token>` 的请求一律 401（只有 `JSESSIONID` Cookie 可用），会话表始终 0 行，启动日志里的会话对象是 `org.apache.catalina.session.StandardSessionFacade` 而不是 Spring Session。本仓库的 sample 全走浏览器 Cookie，所以覆盖不到这条。
 
 ```yaml
 spring:
@@ -119,7 +121,7 @@ curl http://localhost:8080/login/options
 ## 前置条件与已知空转项
 
 - **必须实现 `SecurityUserDetailsService`**；账号密码登录强依赖它，OAuth2 / OIDC / SAML2 不依赖它（用户信息从身份源拉取后按用户名映射本地账号）。
-- 会话持久化依赖 `spring-session-jdbc` 与 DataSource；MySQL 启动前执行 [relation/login-security/spring-session-mysql.sql](../../relation/login-security/spring-session-mysql.sql)，并把 `spring.session.jdbc.initialize-schema` 设为 `never`。
+- 会话持久化依赖使用方自己引入 **`org.springframework.boot:spring-boot-starter-session-jdbc`**（本 starter 只带 `org.springframework.session:spring-session-jdbc` 本体，Boot 4 的会话自动配置在独立模块里；漏引入会静默退回容器内存会话，`Authorization` 头认证失效）与 DataSource；MySQL 启动前执行 [relation/login-security/spring-session-mysql.sql](../../relation/login-security/spring-session-mysql.sql)，并把 `spring.session.jdbc.initialize-schema` 设为 `never`。
 - 没有登录页：`formLogin` 未启用，`loginPage(...)` 会直接启动失败；需要登录页时放行静态页并自行实现。
 - `cu.security.remember-me.*` 当前 `[未接线]`。
 - `cu.security.login.oauth2.clients[i].authorization-grant-type`、`user-info-authentication-method` 当前 `[未接线]`。
